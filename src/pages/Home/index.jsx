@@ -1,9 +1,9 @@
 import React from "react";
-import { Stack, Button, Typography, Container } from "@mui/material";
 
+import { Stack, Button, Typography, Container } from "@mui/material";
 import TwitterIcon from "@mui/icons-material/Twitter";
-import logoGoogle from "../../assets/logo-google.png";
-import logoApple from "../../assets/logo-apple.png";
+
+import { images } from "../../constants";
 
 import useStyles from "./styles";
 
@@ -38,7 +38,7 @@ const Home = () => {
               <Button className={classes.button} variant="outlined">
                 <img
                   className={classes.button__logo}
-                  src={logoGoogle}
+                  src={images.logoGoogle}
                   width="20px"
                   alt="logo google"
                 />
@@ -47,7 +47,7 @@ const Home = () => {
               <Button className={classes.button} variant="outlined">
                 <img
                   className={classes.button__logo}
-                  src={logoApple}
+                  src={images.logoApple}
                   width="20px"
                   alt="logo google"
                 />
