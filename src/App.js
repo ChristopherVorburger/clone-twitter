@@ -1,9 +1,9 @@
-import Home from "./pages/Home";
+import Prehome from "./pages/Prehome";
 
 function App() {
   return (
     <div className="App">
-      <Home />
+      <Prehome />
     </div>
   );
 }

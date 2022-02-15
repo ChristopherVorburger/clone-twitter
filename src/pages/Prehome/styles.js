@@ -1,12 +1,13 @@
 import { makeStyles } from "@mui/styles";
-import homeImage from "../../assets/home.png";
+
+import { images } from "../../constants";
 
 export default makeStyles({
   container: {
     margin: "2rem",
   },
   image: {
-    backgroundImage: `url(${homeImage})`,
+    backgroundImage: `url(${images.homeImage})`,
     backgroundPosition: "center",
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",

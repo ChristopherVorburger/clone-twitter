@@ -7,7 +7,7 @@ import { images } from "../../constants";
 
 import useStyles from "./styles";
 
-const Home = () => {
+const Sign = () => {
   const classes = useStyles();
   return (
     <>
@@ -82,4 +82,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Sign;
