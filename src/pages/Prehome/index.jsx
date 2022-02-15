@@ -11,10 +11,15 @@ const Sign = () => {
   const classes = useStyles();
   return (
     <>
-      <Stack direction="row">
+      <div className={classes.container} direction="row">
         <div className={classes.image} />
-        <Container className={classes.container} maxWidth="md">
-          <Stack direction="column" justifyContent="center" spacing={1}>
+        <Container maxWidth="md">
+          <Stack
+            className={classes.container__text}
+            direction="column"
+            justifyContent="center"
+            spacing={1}
+          >
             <TwitterIcon
               className={classes.logo}
               fontSize="large"
@@ -28,13 +33,13 @@ const Sign = () => {
               Happening now
             </Typography>
             <Typography
-              className={classes.title}
+              className={classes.subtitle}
               variant="h4"
               fontWeight="bold"
             >
               Join Twitter today.
             </Typography>
-            <Stack className={classes.texts}>
+            <Stack className={classes.texts} spacing={2}>
               <Button className={classes.button} variant="outlined">
                 <img
                   className={classes.button__logo}
@@ -74,7 +79,7 @@ const Sign = () => {
             </Stack>
           </Stack>
         </Container>
-      </Stack>
+      </div>
       <Container>
         <Typography textAlign="center">© 2022 Twitter, Inc.</Typography>
       </Container>

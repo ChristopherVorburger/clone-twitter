@@ -2,10 +2,19 @@ import { makeStyles } from "@mui/styles";
 
 import { images } from "../../constants";
 
-export default makeStyles({
+export default makeStyles((theme) => ({
   container: {
+    display: "flex",
+    [theme.breakpoints.down("md")]: {
+      display: "flex",
+      flexDirection: "column-reverse",
+    },
+  },
+
+  container__text: {
     margin: "2rem",
   },
+
   image: {
     backgroundImage: `url(${images.homeImage})`,
     backgroundPosition: "center",
@@ -15,12 +24,26 @@ export default makeStyles({
     height: "94vh",
     maxWidth: "60%",
     marginBottom: "1rem",
+    [theme.breakpoints.down("md")]: {
+      maxWidth: "100%",
+      height: "50vh",
+    },
   },
   logo: {
-    margin: "3rem 0",
+    margin: "1rem 0",
+    fontSize: "3rem!important",
   },
   title: {
     marginBottom: "2rem!important",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "2.6rem!important",
+    },
+  },
+  subtitle: {
+    marginBottom: "2rem!important",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "1.5rem!important",
+    },
   },
   texts: {
     width: "300px",
@@ -30,7 +53,6 @@ export default makeStyles({
     borderColor: "#d0dadf!important",
     textTransform: "none!important",
     fontWeight: "bold",
-    marginBottom: "1rem!important",
     height: "2.5rem",
   },
 
@@ -40,4 +62,4 @@ export default makeStyles({
   caption: {
     marginBottom: "3rem!important",
   },
-});
+}));
