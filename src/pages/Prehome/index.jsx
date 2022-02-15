@@ -7,12 +7,16 @@ import { images } from "../../constants";
 
 import useStyles from "./styles";
 
-const Sign = () => {
+const Prehome = () => {
   const classes = useStyles();
   return (
     <>
       <div className={classes.container} direction="row">
-        <div className={classes.image} />
+        <div
+          className={classes.image}
+          role="img"
+          aria-label="background with the twitter logo"
+        />
         <Container maxWidth="md">
           <Stack
             className={classes.container__text}
@@ -54,7 +58,7 @@ const Sign = () => {
                   className={classes.button__logo}
                   src={images.logoApple}
                   width="20px"
-                  alt="logo google"
+                  alt="logo apple"
                 />
                 <Typography color="black" fontWeight="bold">
                   Sign up with Apple
@@ -87,4 +91,4 @@ const Sign = () => {
   );
 };
 
-export default Sign;
+export default Prehome;
