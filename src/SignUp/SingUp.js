@@ -2,27 +2,10 @@ import React from "react";
 import useStyles from "./Styles";
 import CloseButton from "../components/CloseButton/CloseButton";
 import LogoTwitter from "../components/TwitterLogo/TwitterLogo";
-import { Typography, Button, TextField, Box } from "@mui/material";
+import { Typography, Button, TextField, Box, Stack } from "@mui/material";
 import { SelectMois, SelectJours, SelectAnnees } from "./DataSelect";
 
-function ButtonClose() {
-  return <CloseButton></CloseButton>;
-}
-
-function TwitterLogo() {
-  return <LogoTwitter />;
-}
-
-function AccountCreateTitle() {
-  const classes = useStyles();
-  return (
-    <div className="accountCreateTitle">
-      <Typography className={classes.accountCreateTitle}>
-        Créer votre compte
-      </Typography>
-    </div>
-  );
-}
+// ajout mui : @mui/icons-material
 
 function InputName() {
   return (
@@ -30,7 +13,7 @@ function InputName() {
       <Box
         component="form"
         sx={{
-          "& > :not(style)": { m: 1, width: "25ch" },
+          "& > :not(style)": { m: 1, width: "100%" },
         }}
       >
         <TextField variant="outlined" label="Nom et prénom" autoFocus={true} />
@@ -46,7 +29,7 @@ function InputPhoneEmail() {
         <Box
           component="form"
           sx={{
-            "& > :not(style)": { m: 1, width: "25ch" },
+            "& > :not(style)": { m: 1, width: "100%" },
           }}
         >
           <TextField variant="outlined" label="Téléphone" />
@@ -73,7 +56,7 @@ function InputPhoneEmail() {
   return (
     <div className="inputPhoneEmail">
       <InputPhone />
-      <InputEmail />
+      {/* <InputEmail /> */}
     </div>
   );
 }
@@ -82,35 +65,11 @@ function SwitchPhoneEmail() {
   const classes = useStyles();
   return (
     <div className="switchPhoneEmail">
-      <Typography className={classes.switchPhoneEmail}>
+      {/* <Typography className={classes.switchPhoneEmail}>
         Utiliser un téléphone
-      </Typography>
+      </Typography> */}
       <Typography className={classes.switchPhoneEmail}>
         Utiliser un email
-      </Typography>
-    </div>
-  );
-}
-
-function BirthdayTitle() {
-  const classes = useStyles();
-  return (
-    <div className="birthdayTitle">
-      <Typography className={classes.birthdayTitle}>
-        Date de naissance
-      </Typography>
-    </div>
-  );
-}
-
-function BirthdayText() {
-  const classes = useStyles();
-  return (
-    <div className="birthdayText">
-      <Typography className={classes.birthdayText}>
-        Cette information ne sera pas affichée publiquement. Confirmez votre
-        âge, même si ce compte est pour une entreprise, un animal de compagnie
-        ou autre chose.
       </Typography>
     </div>
   );
@@ -172,40 +131,57 @@ function MMDDYYYYInput() {
 }
 
 function NextButton() {
+  const classes = useStyles();
   return (
     <div className="nextButton">
-      <Button>Suivant</Button>
+      <Button className={classes.nextButton} variant="contained" size="large">
+        Suivant
+      </Button>
     </div>
   );
 }
 
 function SingUp() {
+  const classes = useStyles();
+
   return (
-    <div className="signUpContainer">
-      <div className="closeAndLogo">
-        <ButtonClose />
-        <TwitterLogo />
+    <Stack
+      alignItems="center"
+      justifyContent="center"
+      backgroundColor="rgba(0, 0, 0, 0.4)"
+      height="100vh"
+    >
+      <div className={classes.signUpContainer}>
+        <Stack direction="row" justifyContent="flex-start" spacing="10">
+          <CloseButton />
+          <LogoTwitter />
+        </Stack>
+        <Stack margin="25px">
+          <div className="accountCreate">
+            <Typography className={classes.accountCreateTitle}>
+              Créer votre compte
+            </Typography>
+            <InputName />
+            <InputPhoneEmail />
+            <SwitchPhoneEmail />
+          </div>
+          <div className="birthday">
+            <Typography className={classes.birthdayTitle}>
+              Date de naissance
+            </Typography>
+            <Typography className={classes.birthdayText}>
+              Cette information ne sera pas affichée publiquement. Confirmez
+              votre âge, même si ce compte est pour une entreprise, un animal de
+              compagnie ou autre chose.
+            </Typography>
+            <MMDDYYYYInput />
+          </div>
+          <div className="nextButton">
+            <NextButton />
+          </div>
+        </Stack>
       </div>
-      <div className="accountCreate">
-        <AccountCreateTitle />
-        <InputName />
-        <InputPhoneEmail />
-        <SwitchPhoneEmail />
-      </div>
-      <div className="birthday">
-        <BirthdayTitle />
-        <BirthdayText />
-        <MMDDYYYYInput />
-      </div>
-      <div className="nextButton">
-        <NextButton />
-      </div>
-    </div>
+    </Stack>
   );
 }
 export default SingUp;
-
-// info :
-//1: couleur : rgba(91, 112, 131, 0.4) (div body); black (div centre); rgb(217, 217, 217) (logo twitter et 2 titres);
-//rgb(29, 155, 240) (tout le bleu);#be1a24 (tout le rouge); rgb(47, 51, 54) (tout le gris)
-//2: ajout mui : @mui/icons-material

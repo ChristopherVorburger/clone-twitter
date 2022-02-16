@@ -24,7 +24,7 @@ function App() {
     // Pour rendre disponible notre nouveau thème, il faut wrapper
     // les composants où l'on souhaite l'utiliser avec un ThemeProvider
     <ThemeProvider theme={theme}>
-      <Prehome />
+      {/* <Prehome /> */}
       <SignUp />
     </ThemeProvider>
   );

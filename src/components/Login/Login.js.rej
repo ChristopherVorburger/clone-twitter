@@ -1,0 +1,18 @@
+diff a/src/components/Login/Login.js b/src/components/Login/Login.js	(rejected hunks)
+@@ -1,15 +1,5 @@
+ import React from "react";
+-import {
+-  Overlay,
+-  LoginModalContainer,
+-  LoginModal,
+-  IconTwitter,
+-  LoginTitle,
+-  LoginContent,
+-  ButtonLogin,
+-  Line,
+-  TxtCreateAcount,
+-} from "./Login.Style";
++import { Overlay, LoginModalContainer, LoginModal, IconTwitter, LoginTitle, LoginContent, ButtonLogin, Line, TxtCreateAcount } from "./Login.Style";
+ import LogoTwitter from "./img/logo-twitter.png";
+ import LogoGoogle from "./img/logo-google.png";
+ import LogoApple from "./img/logo-apple.png";
