@@ -1,4 +1,5 @@
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { Routes, Route } from "react-router-dom";
 
 import Prehome from "./pages/Prehome";
 
@@ -22,7 +23,9 @@ function App() {
     // Pour rendre disponible notre nouveau thème, il faut wrapper
     // les composants où l'on souhaite l'utiliser avec un ThemeProvider
     <ThemeProvider theme={theme}>
-      <Prehome />
+      <Routes>
+        <Route path="/" element={<Prehome />} />
+      </Routes>
     </ThemeProvider>
   );
 }
