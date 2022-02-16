@@ -25,9 +25,8 @@ function App() {
     // les composants où l'on souhaite l'utiliser avec un ThemeProvider
     <ThemeProvider theme={theme}>
       {/* <Prehome /> */}
+      {/* <Login /> */}
       <SignUp />
     </ThemeProvider>
   );
 }
-
-export default App;
