@@ -2,7 +2,7 @@ import React from "react";
 import useStyles from "./Styles";
 import CloseButton from "../components/CloseButton/CloseButton";
 import LogoTwitter from "../components/TwitterLogo/TwitterLogo";
-import { Typography, Button, Stack, TextField, Box } from "@mui/material";
+import { Typography, Button, TextField, Box } from "@mui/material";
 import { SelectMois, SelectJours, SelectAnnees } from "./DataSelect";
 
 function ButtonClose() {
