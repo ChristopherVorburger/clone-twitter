@@ -1,10 +1,13 @@
 import React from "react";
 import Login from "./components/Login/Login";
+import SignUp from "./SignUp/SingUp";
+
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { Routes, Route } from "react-router-dom";
 
 import Prehome from "./pages/Prehome";
 
-function App() {
+export default function App() {
   // Avec material UI, on a la possibilité de créer des thèmes
   // personnalisés avec la fonction createTheme.
   // On peut aussi, grâce à cette fonction, surcharger le thème
@@ -24,8 +27,9 @@ function App() {
     // Pour rendre disponible notre nouveau thème, il faut wrapper
     // les composants où l'on souhaite l'utiliser avec un ThemeProvider
     <ThemeProvider theme={theme}>
-      <Prehome />
+      <Routes>
+        <Route path="/" element={<Prehome />} />
+      </Routes>
     </ThemeProvider>
   );
 }
-
