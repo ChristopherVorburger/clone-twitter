@@ -62,7 +62,7 @@ export const ButtonLogin = styled.button`
   cursor: pointer;
   margin-bottom: ${({ mb }) => mb};
   background-color: ${({ bg }) => (bg ? bg : "#000")};
-  border-color: ${({ borderColor }) => (borderColor ? borderColor : "#000")};
+  border-color: ${({ borderColor }) => (borderColor ? borderColor : "")};
   font-weight: ${({ bold }) => (bold ? bold : "700")};
 
   img {
@@ -74,9 +74,8 @@ export const ButtonLogin = styled.button`
   }
 
   &:hover {
-    border-color: #d2e3fc;
-    border-color: ${({ borderColor }) => (borderColor ? borderColor : "#000")};
-    /* background-color: rgba(66, 133, 244, 0.04); */
+    border-color: ${({ borderColorHover }) => (borderColorHover ? borderColorHover : "")};
+    background-color: ${({ bgHover }) => (bgHover ? bgHover : "")};
   }
 
   span {

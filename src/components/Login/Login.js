@@ -15,28 +15,40 @@ import LogoTwitter from "./img/logo-twitter.png";
 import LogoGoogle from "./img/logo-google.png";
 import LogoApple from "./img/logo-apple.png";
 import { TextField } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import { makeStyles } from "@mui/styles";
 
 export default function Login() {
+  //Style cross Icon
+  const useStyles = makeStyles(() => ({
+    iconCross: {
+      position: "absolute",
+      left: "20px",
+      top: "20px",
+      cursor: "pointer",
+    },
+  }));
+
+  const classes = useStyles();
+
+  //Handle Form Login
   const handleForm = (e) => {
     e.preventDefault();
-
-    console.log("e");
   };
 
   return (
     <Overlay>
       <LoginModalContainer>
         <LoginModal>
-          <div>
-            <IconTwitter src={LogoTwitter} />
-          </div>
+          <CloseIcon className={classes.iconCross} />
+          <IconTwitter src={LogoTwitter} />
           <LoginTitle>Connectez-vous à Twitter</LoginTitle>
           <LoginContent>
-            <ButtonLogin borderColor='#dadce0' bg='transparent' mb='25px'>
+            <ButtonLogin borderColor='#dadce0' bg='transparent' bgHover='#F7FAFE' borderColorHover='#d2e3fc' mb='25px'>
               <img src={LogoGoogle} alt='logo de google' />
               <span>Se connecter avec Google</span>
             </ButtonLogin>
-            <ButtonLogin bg='transparent' borderColor='#dadce0'>
+            <ButtonLogin bg='transparent' bgHover='#E6E6E6' borderColor='#dadce0'>
               <img src={LogoApple} alt="logo d'apple" />
               <span>Se connecter avec Apple</span>
             </ButtonLogin>
