@@ -95,7 +95,10 @@ const NewHome = () => {
             </Stack>
           </Container>
         </Box>
-        <Box className={classes.image} />
+        <Box
+          title="background with the twitter logo"
+          className={classes.image}
+        />
       </Box>
       <>
         <Typography p="12px 16px" textAlign="center">
