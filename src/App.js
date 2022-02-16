@@ -1,3 +1,5 @@
+import React from "react";
+import Login from "./components/Login/Login";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 import Prehome from "./pages/Prehome";
@@ -27,4 +29,3 @@ function App() {
   );
 }
 
-export default App;
