@@ -11,7 +11,7 @@ test("Affiche la page de pré-acceuil hors connexion", () => {
     </ThemeProvider>
   );
   expect(
-    screen.getByLabelText("background with the twitter logo")
+    screen.getByTitle("background with the twitter logo")
   ).toBeInTheDocument();
   expect(screen.getByText("Happening now")).toBeInTheDocument();
   expect(screen.getByText("Join Twitter today.")).toBeInTheDocument();
