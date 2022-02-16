@@ -1,20 +1,13 @@
 import React from "react";
 import Login from "./components/Login/Login";
-import SignUp from "./SignUp/SingUp";
-
+import SignUp from "./pages/SignUp/SingUp";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { Routes, Route } from "react-router-dom";
 
 import Prehome from "./pages/Prehome";
 
 export default function App() {
-  // Avec material UI, on a la possibilité de créer des thèmes
-  // personnalisés avec la fonction createTheme.
-  // On peut aussi, grâce à cette fonction, surcharger le thème
-  // par défaut de material UI.
-  // Pour cela, on surcharge la valeur existante par une nouvelle
-  // valeur de la propriété en question.
-  // Exemple avec le changement de la couleur principale ci-dessous
+  // Création d'un thème pour changer la couleur principale de MUI
   const theme = createTheme({
     palette: {
       primary: {
@@ -24,11 +17,11 @@ export default function App() {
   });
 
   return (
-    // Pour rendre disponible notre nouveau thème, il faut wrapper
-    // les composants où l'on souhaite l'utiliser avec un ThemeProvider
     <ThemeProvider theme={theme}>
       <Routes>
         <Route path="/" element={<Prehome />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </ThemeProvider>
   );

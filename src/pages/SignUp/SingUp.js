@@ -1,7 +1,7 @@
 import React from "react";
 import useStyles from "./Styles";
-import CloseButton from "../components/CloseButton/CloseButton";
-import LogoTwitter from "../components/TwitterLogo/TwitterLogo";
+import CloseButton from "../../components/CloseButton/CloseButton";
+import LogoTwitter from "../../components/TwitterLogo/TwitterLogo";
 import { Typography, Button, TextField, Box } from "@mui/material";
 import { SelectMois, SelectJours, SelectAnnees } from "./DataSelect";
 

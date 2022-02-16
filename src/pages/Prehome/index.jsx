@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import { Box, Stack, Button, Typography, Container } from "@mui/material";
 import TwitterIcon from "@mui/icons-material/Twitter";
@@ -72,7 +73,13 @@ const NewHome = () => {
                   className={classes.button}
                   variant="contained"
                 >
-                  <Typography fontWeight="bold">
+                  <Typography
+                    color="#fff"
+                    sx={{ textDecoration: "none" }}
+                    component={Link}
+                    to="/signup"
+                    fontWeight="bold"
+                  >
                     Sign up with phone or email
                   </Typography>
                 </Button>
@@ -88,7 +95,12 @@ const NewHome = () => {
                 >
                   Already have an account?
                 </Typography>
-                <Button className={classes.button} variant="outlined">
+                <Button
+                  component={Link}
+                  to="/login"
+                  className={classes.button}
+                  variant="outlined"
+                >
                   <Typography fontWeight="bold">Sign in</Typography>
                 </Button>
               </Stack>
