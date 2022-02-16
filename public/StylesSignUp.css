@@ -1,3 +1,7 @@
-.SignUp {
+body {
   background-color: rgb(110, 110, 110);
+}
+.SignUp {
+  background-color: white;
+  border-radius: 20px;
 }

@@ -2,6 +2,6 @@ import { makeStyles } from "@mui/styles";
 
 export default makeStyles({
   logoSignUp: {
-    color: "#eff3f4",
+    color: "#1d9bf0",
   },
 });

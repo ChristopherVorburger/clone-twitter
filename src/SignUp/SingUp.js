@@ -2,7 +2,8 @@ import React from "react";
 import useStyles from "./Styles";
 import CloseButton from "../components/CloseButton/CloseButton";
 import LogoTwitter from "../components/TwitterLogo/TwitterLogo";
-import { Typography, Input, Button, Stack } from "@mui/material";
+import { Typography, Button, Stack, TextField, Box } from "@mui/material";
+import { SelectMois, SelectJours, SelectAnnees } from "./DataSelect";
 
 function ButtonClose() {
   return <CloseButton></CloseButton>;
@@ -26,7 +27,14 @@ function AccountCreateTitle() {
 function InputName() {
   return (
     <div className="inputName">
-      <Input /> Nom et prémon
+      <Box
+        component="form"
+        sx={{
+          "& > :not(style)": { m: 1, width: "25ch" },
+        }}
+      >
+        <TextField variant="outlined" label="Nom et prénom" autoFocus={true} />
+      </Box>
     </div>
   );
 }
@@ -35,7 +43,14 @@ function InputPhoneEmail() {
   const InputPhone = () => {
     return (
       <div className="inputPhone">
-        <Input /> Téléphone
+        <Box
+          component="form"
+          sx={{
+            "& > :not(style)": { m: 1, width: "25ch" },
+          }}
+        >
+          <TextField variant="outlined" label="Téléphone" />
+        </Box>
       </div>
     );
   };
@@ -43,7 +58,14 @@ function InputPhoneEmail() {
   const InputEmail = () => {
     return (
       <div className="inputEmail">
-        <Input /> Email
+        <Box
+          component="form"
+          sx={{
+            "& > :not(style)": { m: 1, width: "25ch" },
+          }}
+        >
+          <TextField variant="outlined" label="Email" />
+        </Box>
       </div>
     );
   };
@@ -57,28 +79,35 @@ function InputPhoneEmail() {
 }
 
 function SwitchPhoneEmail() {
+  const classes = useStyles();
   return (
     <div className="switchPhoneEmail">
-      <Stack direction="row" spacing={5}>
-        <Typography>Utiliser un téléphone</Typography>
-        <Typography>Utiliser un email</Typography>
-      </Stack>
+      <Typography className={classes.switchPhoneEmail}>
+        Utiliser un téléphone
+      </Typography>
+      <Typography className={classes.switchPhoneEmail}>
+        Utiliser un email
+      </Typography>
     </div>
   );
 }
 
 function BirthdayTitle() {
+  const classes = useStyles();
   return (
     <div className="birthdayTitle">
-      <Typography>Date de naissance</Typography>
+      <Typography className={classes.birthdayTitle}>
+        Date de naissance
+      </Typography>
     </div>
   );
 }
 
 function BirthdayText() {
+  const classes = useStyles();
   return (
     <div className="birthdayText">
-      <Typography>
+      <Typography className={classes.birthdayText}>
         Cette information ne sera pas affichée publiquement. Confirmez votre
         âge, même si ce compte est pour une entreprise, un animal de compagnie
         ou autre chose.
@@ -91,7 +120,14 @@ function MMDDYYYYInput() {
   const MonthInput = () => {
     return (
       <div className="monthInput">
-        <Input /> Mois
+        <Box
+          component="form"
+          sx={{
+            "& > :not(style)": { m: 1, width: "100ch" },
+          }}
+        >
+          <SelectMois />
+        </Box>
       </div>
     );
   };
@@ -99,7 +135,14 @@ function MMDDYYYYInput() {
   const DayInput = () => {
     return (
       <div className="dayInput">
-        <Input /> Jour
+        <Box
+          component="form"
+          sx={{
+            "& > :not(style)": { m: 1, width: "25ch" },
+          }}
+        >
+          <SelectJours />
+        </Box>
       </div>
     );
   };
@@ -107,7 +150,14 @@ function MMDDYYYYInput() {
   const YearInput = () => {
     return (
       <div className="yearInput">
-        <Input /> Année
+        <Box
+          component="form"
+          sx={{
+            "& > :not(style)": { m: 1, width: "25ch" },
+          }}
+        >
+          <SelectAnnees />
+        </Box>
       </div>
     );
   };

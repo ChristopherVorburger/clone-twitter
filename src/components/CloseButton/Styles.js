@@ -2,6 +2,7 @@ import { makeStyles } from "@mui/styles";
 
 export default makeStyles({
   buttonSignUp: {
-    color: "#eff3f4",
+    color: "rgb(15, 20, 25)",
+    fontSize: "25px !important",
   },
 });

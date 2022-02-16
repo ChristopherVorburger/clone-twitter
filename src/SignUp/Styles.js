@@ -2,17 +2,11 @@ import { makeStyles } from "@mui/styles";
 
 export default makeStyles({
   accountCreateTitle: {
-    fontFamily: [
-      "TwitterChirp",
-      "-apple-system",
-      "BlinkMacSystemFont",
-      '"Segoe UI"',
-      "Roboto",
-      "Helvetica",
-      "Arial",
-      "sans-serif",
-    ],
-    color: "#eff3f4",
+    color: "#0F1419",
+    fontSize: "23px !important",
+    fontWeight: "bold !important ",
   },
-  fontSize: "3rem",
+  switchPhoneEmail: { color: "#1d9bf0" },
+  birthdayTitle: { fontWeight: "bold !important " },
+  birthdayText: { color: "rgb(83, 100, 113)" },
 });
