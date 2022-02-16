@@ -1,5 +1,10 @@
-function App() {
-  return <div className="App">Hello world</div>;
-}
+import React from "react";
+import Login from "./components/Login/Login";
 
-export default App;
+export default function App() {
+  return (
+    <>
+      <Login />
+    </>
+  );
+}
