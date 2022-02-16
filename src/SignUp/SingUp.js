@@ -16,12 +16,12 @@ function AccountCreateTitle() {
   const classes = useStyles();
   return (
     <div className="accountCreateTitle">
-      <Typography>Créer votre compte</Typography>
+      <Typography className={classes.accountCreateTitle}>
+        Créer votre compte
+      </Typography>
     </div>
   );
 }
-
-/* font-family: TwitterChirp, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; */
 
 function InputName() {
   return (
