@@ -1,7 +1,5 @@
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 
-import "./App.css";
-
 import Prehome from "./pages/Prehome";
 
 function App() {
