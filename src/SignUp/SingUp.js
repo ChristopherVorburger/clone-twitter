@@ -68,7 +68,7 @@ function MMDDYYYYInput() {
   const classes = useStyles();
   const MonthInput = () => {
     return (
-      <Box component="form" className={classes.inputDay}>
+      <Box component="form" className={classes.inputMonth}>
         <SelectMois />
       </Box>
     );
@@ -84,7 +84,7 @@ function MMDDYYYYInput() {
 
   const YearInput = () => {
     return (
-      <Box component="form" className={classes.inputDay}>
+      <Box component="form" className={classes.inputYear}>
         <SelectAnnees />
       </Box>
     );
@@ -117,11 +117,14 @@ function SingUp() {
       justifyContent="center"
       backgroundColor="rgba(0, 0, 0, 0.4)"
       height="100vh"
+      className={classes.stackContainer}
     >
       <div className={classes.signUpContainer}>
-        <Stack direction="row" justifyContent="flex-start">
+        <Stack direction="row">
           <CloseButton />
-          <LogoTwitter />
+          <Stack justifyContent="center" alignItems="center" width="83%">
+            <LogoTwitter />
+          </Stack>
         </Stack>
         <Stack margin="15px 32px" spacing="20px">
           <Typography className={classes.accountCreateTitle}>
