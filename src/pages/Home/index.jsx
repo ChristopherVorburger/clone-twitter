@@ -1,6 +1,7 @@
-import { Box, Button, Container, Typography } from "@mui/material";
+import { Button, Container, Typography } from "@mui/material";
 import React from "react";
 import Header from "../../components/Header";
+import BottomNavigation from "../../components/BottomNavigation";
 
 import useStyles from "./styles";
 
@@ -30,11 +31,12 @@ const Home = () => {
               className={classes.button}
               sx={{ display: "flex" }}
             >
-              <Typography>Let's go!</Typography>
+              <Typography fontWeight="bold">Let's go!</Typography>
             </Button>
           </Container>
         </div>
       </main>
+      <BottomNavigation />
     </>
   );
 };

@@ -16,6 +16,7 @@ export default function App() {
       },
       black: {
         main: "#282d31",
+        darker: "#0f1419",
       },
       grey: {
         main: "#ccd6dd",
