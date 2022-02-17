@@ -19,6 +19,7 @@ export default function App() {
       },
       grey: {
         main: "#ccd6dd",
+        darker: "#536471",
       },
     },
   });

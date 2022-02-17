@@ -12,7 +12,7 @@ const Header = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar color="inherit" position="static">
+      <AppBar color="inherit" position="static" elevation={0}>
         <Toolbar>
           <IconButton
             size="large"
