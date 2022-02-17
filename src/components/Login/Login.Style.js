@@ -27,7 +27,6 @@ export const LoginModal = styled.div`
   background-color: #fff;
   padding: 20px;
   max-height: 90vh;
-  overflow-y: scroll;
   border-radius: 8px;
 `;
 
@@ -40,6 +39,14 @@ export const LoginTitle = styled.h2`
   color: #0f1419;
   margin: 20px 0 45px;
   text-align: center;
+`;
+
+export const LoginContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+  width: 100%;
 `;
 
 export const ButtonLogin = styled.button`
@@ -55,7 +62,7 @@ export const ButtonLogin = styled.button`
   cursor: pointer;
   margin-bottom: ${({ mb }) => mb};
   background-color: ${({ bg }) => (bg ? bg : "#000")};
-  border-color: ${({ borderColor }) => (borderColor ? borderColor : "#000")};
+  border-color: ${({ borderColor }) => (borderColor ? borderColor : "")};
   font-weight: ${({ bold }) => (bold ? bold : "700")};
 
   img {
@@ -67,9 +74,8 @@ export const ButtonLogin = styled.button`
   }
 
   &:hover {
-    border-color: #d2e3fc;
-    border-color: ${({ borderColor }) => (borderColor ? borderColor : "#000")};
-    /* background-color: rgba(66, 133, 244, 0.04); */
+    border-color: ${({ borderColorHover }) => (borderColorHover ? borderColorHover : "")};
+    background-color: ${({ bgHover }) => (bgHover ? bgHover : "")};
   }
 
   span {
@@ -80,6 +86,12 @@ export const ButtonLogin = styled.button`
 
 export const Line = styled.p`
   margin: 20px 0;
+`;
+
+export const LoginForm = styled.form`
+  width: 100%;
+  max-width: 290px;
+  margin-bottom: 25px;
 `;
 
 export const TxtCreateAcount = styled.p`
