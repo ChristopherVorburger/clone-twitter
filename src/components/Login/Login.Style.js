@@ -38,22 +38,24 @@ export const LoginTitle = styled.h2`
   font-size: 23px;
   color: #0f1419;
   margin: 20px 0 45px;
-  text-align: center;
+  font-weight: bold;
+  text-align: ${({ center }) => center && "center"};
 `;
 
 export const LoginContent = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: ${({ alignItem }) => (alignItem ? alignItem : "center")};
   overflow-y: auto;
   width: 100%;
+  padding: 20px 0;
 `;
 
 export const ButtonLogin = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  max-width: 290px;
+  max-width: ${({ maxWidth }) => maxWidth};
   width: 100%;
   min-height: 35px;
   border-radius: 20px;
@@ -90,7 +92,7 @@ export const Line = styled.p`
 
 export const LoginForm = styled.form`
   width: 100%;
-  max-width: 290px;
+  max-width: ${({ maxWidth }) => maxWidth};
   margin-bottom: 25px;
 `;
 
