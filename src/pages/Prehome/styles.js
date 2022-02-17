@@ -3,16 +3,59 @@ import { makeStyles } from "@mui/styles";
 import { images } from "../../constants";
 
 export default makeStyles((theme) => ({
-  container: {
-    display: "flex",
-    [theme.breakpoints.down("md")]: {
+  box__main: {
+    [theme.breakpoints.up("md")]: {
       display: "flex",
-      flexDirection: "column-reverse",
+      flexDirection: "row-reverse",
+      justifyContent: "flex-end",
     },
   },
-
-  container__text: {
-    margin: "2rem",
+  box__text: {
+    [theme.breakpoints.up("md")]: {
+      display: "flex",
+      alignItems: "center",
+    },
+  },
+  container: {
+    margin: "auto!important",
+    padding: "20px",
+    maxWidth: "600px",
+  },
+  icon__twitter: {
+    paddingBottom: "12px",
+    fontSize: "3rem!important",
+  },
+  title: {
+    margin: "2.5rem 0!important",
+    [theme.breakpoints.up("md")]: {
+      fontSize: "64px!important",
+      lineHeight: "84px!important",
+      letterSpacing: "-1.2px!important",
+    },
+  },
+  subtitle: {
+    margin: "0 0 1rem 0!important",
+    [theme.breakpoints.up("md")]: {
+      fontSize: "32px!important",
+      lineHeight: "84px!important",
+      letterSpacing: "-1.2px!important",
+    },
+  },
+  button: {
+    borderRadius: "20px!important",
+    borderColor: "#d0dadf!important",
+    textTransform: "none!important",
+    height: "2.5rem",
+    padding: "2px 10px!important",
+  },
+  button__logo: {
+    marginRight: "0.5rem",
+  },
+  line: {
+    width: "100%",
+    backgroundColor: "#eff3f4",
+    height: "1px",
+    margin: "0 4px",
   },
 
   image: {
@@ -21,45 +64,10 @@ export default makeStyles((theme) => ({
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
     width: "100vw",
-    height: "94vh",
-    maxWidth: "60%",
-    marginBottom: "1rem",
-    [theme.breakpoints.down("md")]: {
-      maxWidth: "100%",
-      height: "50vh",
+    height: "45vh",
+    [theme.breakpoints.up("md")]: {
+      width: "54%",
+      height: "94vh",
     },
-  },
-  logo: {
-    margin: "1rem 0",
-    fontSize: "3rem!important",
-  },
-  title: {
-    marginBottom: "2rem!important",
-    [theme.breakpoints.down("sm")]: {
-      fontSize: "2.6rem!important",
-    },
-  },
-  subtitle: {
-    marginBottom: "2rem!important",
-    [theme.breakpoints.down("sm")]: {
-      fontSize: "1.5rem!important",
-    },
-  },
-  texts: {
-    width: "300px",
-  },
-  button: {
-    borderRadius: "20px!important",
-    borderColor: "#d0dadf!important",
-    textTransform: "none!important",
-    fontWeight: "bold",
-    height: "2.5rem",
-  },
-
-  button__logo: {
-    marginRight: "0.5rem",
-  },
-  caption: {
-    marginBottom: "3rem!important",
   },
 }));
