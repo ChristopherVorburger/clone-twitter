@@ -14,6 +14,12 @@ export default function App() {
       primary: {
         main: "#1d9bf0",
       },
+      black: {
+        main: "#282d31",
+      },
+      grey: {
+        main: "#ccd6dd",
+      },
     },
   });
 
