@@ -8,7 +8,7 @@ import { images } from "../../constants";
 
 import useStyles from "./styles";
 
-const NewHome = () => {
+const PreHome = () => {
   const classes = useStyles();
   return (
     <main>
@@ -121,4 +121,4 @@ const NewHome = () => {
   );
 };
 
-export default NewHome;
+export default PreHome;

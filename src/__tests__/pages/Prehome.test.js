@@ -1,4 +1,9 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 import Prehome from "../../pages/Prehome";
+import SignUp from "../../pages/SignUp/SingUp";
+import Login from "../../components/Login/Login";
+
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 import { render, screen } from "@testing-library/react";
@@ -6,9 +11,15 @@ import { render, screen } from "@testing-library/react";
 test("Affiche la page de pré-acceuil hors connexion", () => {
   const theme = createTheme({});
   render(
-    <ThemeProvider theme={theme}>
-      <Prehome />
-    </ThemeProvider>
+    <Router>
+      <ThemeProvider theme={theme}>
+        <Routes>
+          <Route path="/" element={<Prehome />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </ThemeProvider>
+    </Router>
   );
   expect(
     screen.getByTitle("background with the twitter logo")
@@ -29,6 +40,6 @@ test("Affiche la page de pré-acceuil hors connexion", () => {
       "By signing up, you agree to the Terms of Service and Privacy Policy, including Cookie Use."
     )
   ).toBeInTheDocument();
-  expect(screen.getByRole("button", { name: /Sign in/i })).toBeInTheDocument();
+  expect(screen.getByRole("link", { name: /Sign in/i })).toBeInTheDocument();
   expect(screen.getByText("© 2022 Twitter, Inc.")).toBeInTheDocument();
 });
