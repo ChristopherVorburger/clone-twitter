@@ -4,7 +4,7 @@ import { hover } from "@testing-library/user-event/dist/hover";
 export default makeStyles({
   accountCreateTitle: {
     color: "#0F1419",
-    fontSize: "22px !important",
+    fontSize: "23px !important",
     fontWeight: "bold !important ",
   },
   switchPhoneEmail: { color: "rgb(29, 155, 240)", fontSize: "15px !important" },
@@ -15,6 +15,7 @@ export default makeStyles({
     borderRadius: "20px !important",
     textTransform: "none!important",
     fontWeight: "bold !important",
+    width: "90%",
   },
   signUpContainer: {
     width: "600px",
@@ -22,4 +23,8 @@ export default makeStyles({
     backgroundColor: "white",
     borderRadius: "15px",
   },
+  input: { width: "100%" },
+  inputDay: { width: "60%" },
+  inputMonh: { width: "20%" },
+  inputYear: { width: "300%" },
 });

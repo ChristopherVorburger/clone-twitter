@@ -6,11 +6,7 @@
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
     "@mui/icons-material": "^5.4.2",
-<<<<<<< HEAD
     "@mui/material": "^5.4.1",
-=======
-    "@mui/material": "^5.4.2",
->>>>>>> eae4aa601a344d25a93ce2edf4eab6cbdb806849
     "@mui/styles": "^5.4.2",
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.2",

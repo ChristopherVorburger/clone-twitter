@@ -4,6 +4,10 @@ import MenuItem from "@mui/material/MenuItem";
 
 const selectMois = [
   {
+    value: "",
+    label: "",
+  },
+  {
     value: "Janvier",
     label: "Janvier",
   },
@@ -54,28 +58,30 @@ const selectMois = [
 ];
 
 export function SelectMois() {
-  const [mois, setMois] = React.useState("Janvier");
+  const [mois, setMois] = React.useState("");
 
   const handleChange = (event) => {
     setMois(event.target.value);
   };
 
   return (
-    <div>
-      <TextField
-        id="outlined-select-currency"
-        select
-        label="Mois"
-        value={mois}
-        onChange={handleChange}
-      >
-        {selectMois.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
-            {option.label}
-          </MenuItem>
-        ))}
-      </TextField>
-    </div>
+    <TextField
+      id="outlined-select-currency"
+      select
+      label="Mois"
+      value={mois}
+      onChange={handleChange}
+      fullWidth={true}
+      InputLabelProps={{
+        shrink: true,
+      }}
+    >
+      {selectMois.map((option) => (
+        <MenuItem key={option.value} value={option.value}>
+          {option.label}
+        </MenuItem>
+      ))}
+    </TextField>
   );
 }
 
@@ -87,28 +93,30 @@ export function SelectJours() {
     selectJour.push(objet);
   }
 
-  const [jours, setJours] = React.useState(1);
+  const [jours, setJours] = React.useState("");
 
   const handleChange = (event) => {
     setJours(event.target.value);
   };
 
   return (
-    <div>
-      <TextField
-        id="outlined-select-currency"
-        select
-        label="Jour"
-        value={jours}
-        onChange={handleChange}
-      >
-        {selectJour.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
-            {option.label}
-          </MenuItem>
-        ))}
-      </TextField>
-    </div>
+    <TextField
+      id="outlined-select-currency"
+      select
+      label="Jour"
+      value={jours}
+      onChange={handleChange}
+      fullWidth={true}
+      InputLabelProps={{
+        shrink: true,
+      }}
+    >
+      {selectJour.map((option) => (
+        <MenuItem key={option.value} value={option.value}>
+          {option.label}
+        </MenuItem>
+      ))}
+    </TextField>
   );
 }
 
@@ -120,27 +128,29 @@ export function SelectAnnees() {
     selectAnnees.push(objet);
   }
 
-  const [annees, setAnnees] = React.useState(2022);
+  const [annees, setAnnees] = React.useState("");
 
   const handleChange = (event) => {
     setAnnees(event.target.value);
   };
 
   return (
-    <div>
-      <TextField
-        id="outlined-select-currency"
-        select
-        label="Année"
-        value={annees}
-        onChange={handleChange}
-      >
-        {selectAnnees.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
-            {option.label}
-          </MenuItem>
-        ))}
-      </TextField>
-    </div>
+    <TextField
+      id="outlined-select-currency"
+      select
+      label="Année"
+      value={annees}
+      onChange={handleChange}
+      fullWidth={true}
+      InputLabelProps={{
+        shrink: true,
+      }}
+    >
+      {selectAnnees.map((option) => (
+        <MenuItem key={option.value} value={option.value}>
+          {option.label}
+        </MenuItem>
+      ))}
+    </TextField>
   );
 }
