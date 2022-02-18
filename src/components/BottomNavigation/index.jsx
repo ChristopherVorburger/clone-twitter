@@ -1,17 +1,21 @@
 import * as React from "react";
 import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
-import HomeSharpIcon from "@mui/icons-material/HomeSharp";
-import SearchSharpIcon from "@mui/icons-material/SearchSharp";
-import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
-import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
+
+import { icons } from "../../constants";
 
 import useStyles from "./styles";
 
 export default function LabelBottomNavigation() {
   const classes = useStyles();
-
   const [value, setValue] = React.useState("home");
+
+  const iconsArray = [
+    icons.HomeSharpIcon,
+    icons.SearchSharpIcon,
+    icons.NotificationsOutlinedIcon,
+    icons.EmailOutlinedIcon,
+  ];
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -29,26 +33,17 @@ export default function LabelBottomNavigation() {
       value={value}
       onChange={handleChange}
     >
-      <BottomNavigationAction
-        showLabel="false"
-        value="home"
-        icon={<HomeSharpIcon sx={{ transform: "scale(1.3)" }} />}
-      />
-      <BottomNavigationAction
-        showLabel="false"
-        value="favorites"
-        icon={<SearchSharpIcon sx={{ transform: "scale(1.3)" }} />}
-      />
-      <BottomNavigationAction
-        showLabel="false"
-        value="nearby"
-        icon={<NotificationsOutlinedIcon sx={{ transform: "scale(1.3)" }} />}
-      />
-      <BottomNavigationAction
-        showLabel="false"
-        value="folder"
-        icon={<EmailOutlinedIcon sx={{ transform: "scale(1.3)" }} />}
-      />
+      {/* Loop through the 'iconsArray' array and use the render() function to display the component */}
+      {iconsArray.map((icon, index) => {
+        return (
+          <BottomNavigationAction
+            key={index}
+            showLabel={false}
+            icon={icon.type.render()}
+            sx={{ transform: "scale(1.3)" }}
+          />
+        );
+      })}
     </BottomNavigation>
   );
 }

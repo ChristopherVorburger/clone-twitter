@@ -1,5 +1,5 @@
 import { Box, Button, Container, Typography } from "@mui/material";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../../components/Header";
 import BottomNavigation from "../../components/BottomNavigation";
 
@@ -10,12 +10,44 @@ import LeftNavbar from "../../components/LeftNavbar";
 const Home = () => {
   const classes = useStyles();
 
+  // state to set dimension of the screen
+  const [screenSize, getDimension] = useState({
+    dynamicWidth: window.innerWidth,
+    dynamicHeight: window.innerHeight,
+  });
+
+  // function to set the dimension
+  const setDimension = () => {
+    getDimension({
+      dynamicWidth: window.innerWidth,
+      dynamicHeight: window.innerHeight,
+    });
+  };
+
+  // useEffect to watch the resizing of the screen
+  useEffect(() => {
+    window.addEventListener("resize", setDimension);
+
+    return () => {
+      window.removeEventListener("resize", setDimension);
+    };
+  }, [screenSize]);
+
+  // assign a value to the width of the drawer
+  const drawerWidth = screenSize.dynamicWidth < 600 ? 0 : 88;
+
   return (
     <>
-      <Header />
-      <LeftNavbar />
+      <Header drawerWidth={drawerWidth} />
+      <LeftNavbar drawerWidth={drawerWidth} />
       <main>
-        <Box height="100vh">
+        <Box
+          sx={{
+            width: `calc(100% - ${drawerWidth}px)`,
+            ml: `${drawerWidth}px`,
+          }}
+          height="100vh"
+        >
           <Container sx={{ margin: "30px auto", padding: "0 30px" }}>
             <Typography mb="0.5rem" fontWeight="bold" fontSize="29px">
               Welcome to Twitter!
