@@ -25,6 +25,10 @@ export default makeStyles({
   switchPhoneEmail: {
     fontSize: "15px !important",
     color: "rgb(29, 155, 240)",
+    "&:hover": {
+      textDecoration: "underline",
+      cursor: "pointer",
+    },
   },
   birthdayTitle: {
     fontSize: "15px !important",

@@ -5,6 +5,7 @@ import LogoTwitter from "../../components/TwitterLogo/TwitterLogo";
 import { Typography, Button, TextField, Box, Stack } from "@mui/material";
 import { SelectMonth, SelectDay, SelectYear } from "./DataSelect";
 import { Link } from "react-router-dom";
+import { style } from "@mui/system";
 
 function InputName() {
   return (
@@ -19,7 +20,7 @@ function InputName() {
   );
 }
 
-function InputPhoneEmail() {
+function InputPhoneEmail({ switchPhoneEmail }) {
   const InputPhone = () => {
     return (
       <Box component="form">
@@ -36,26 +37,43 @@ function InputPhoneEmail() {
     );
   };
 
-  return (
-    <>
-      {/* <InputPhone /> */}
-      <InputEmail />
-    </>
-  );
+  let inputRender;
+
+  if (switchPhoneEmail === "Phone") {
+    inputRender = <InputEmail />;
+  } else if (switchPhoneEmail === "Email") {
+    inputRender = <InputPhone />;
+  }
+
+  return <>{inputRender}</>;
 }
 
-function SwitchPhoneEmail() {
+function SwitchPhoneEmail({ switchPhoneEmail, setSwitchPhoneEmail }) {
   const classes = useStyles();
-  return (
-    <>
-      {/* <Typography className={classes.switchPhoneEmail}>
+
+  let switchRender;
+
+  if (switchPhoneEmail === "Phone") {
+    switchRender = (
+      <Typography
+        className={classes.switchPhoneEmail}
+        onClick={() => setSwitchPhoneEmail("Email")}
+      >
         Utiliser un téléphone
-      </Typography> */}
-      <Typography className={classes.switchPhoneEmail}>
+      </Typography>
+    );
+  } else if (switchPhoneEmail === "Email") {
+    switchRender = (
+      <Typography
+        className={classes.switchPhoneEmail}
+        onClick={() => setSwitchPhoneEmail("Phone")}
+      >
         Utiliser un email
       </Typography>
-    </>
-  );
+    );
+  }
+
+  return <>{switchRender}</>;
 }
 
 function MMDDYYYYInput() {
@@ -99,6 +117,8 @@ function MMDDYYYYInput() {
 
 function SingUp() {
   const classes = useStyles();
+  const [switchPhoneEmail, setSwitchPhoneEmail] = React.useState("Email");
+
   return (
     <div className={classes.mainContainer}>
       <Stack
@@ -128,9 +148,12 @@ function SingUp() {
             </Typography>
             <Stack className="input" spacing={4}>
               <InputName />
-              <InputPhoneEmail />
+              <InputPhoneEmail switchPhoneEmail={switchPhoneEmail} />
             </Stack>
-            <SwitchPhoneEmail />
+            <SwitchPhoneEmail
+              switchPhoneEmail={switchPhoneEmail}
+              setSwitchPhoneEmail={setSwitchPhoneEmail}
+            />
           </Stack>
           <Stack className="birthday">
             <Typography className={classes.birthdayTitle}>
