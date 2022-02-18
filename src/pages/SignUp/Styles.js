@@ -30,7 +30,7 @@ export default makeStyles({
       cursor: "pointer",
     },
   },
-  birthdayTitle: {
+  birthdayPasswordTitle: {
     fontSize: "15px !important",
     fontWeight: "bold !important",
   },
@@ -41,15 +41,18 @@ export default makeStyles({
   nextButton: {
     backgroundColor: "#999999 !important",
     textTransform: "none !important",
+    textDecoration: "none !important",
     borderRadius: "50px !important",
     fontWeight: "bold !important",
     color: "white !important",
-    position: "relative",
+    alignItems: "center !important",
+    margin: "0 auto !important",
+    width: "100%",
   },
   page: {
     [theme.breakpoints.up("desktop")]: {
       width: "600px !important",
-      height: "650px !important",
+      height: "750px !important",
       borderRadius: "15px",
       backgroundColor: "white",
       margin: "0 !important",

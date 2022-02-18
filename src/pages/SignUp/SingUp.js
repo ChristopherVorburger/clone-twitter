@@ -159,6 +159,28 @@ function MMDDYYYYInput() {
   );
 }
 
+const PasswordInput = () => {
+  const [isOk, setIsOk] = React.useState(false);
+
+  const handleChange = (e) => {
+    console.log(e.target.value);
+    e.target.value.length >= 10 ? setIsOk(false) : setIsOk(true);
+  };
+  return (
+    <Box>
+      <TextField
+        type="password"
+        variant="outlined"
+        label="Mot de passe"
+        fullWidth={true}
+        onChange={handleChange}
+        error={isOk}
+        helperText={isOk === true ? "Votre mot de passe est trop cour" : null}
+      />
+    </Box>
+  );
+};
+
 function SingUp() {
   const classes = useStyles();
   const [switchPhoneEmail, setSwitchPhoneEmail] = React.useState("Email");
@@ -199,8 +221,12 @@ function SingUp() {
               setSwitchPhoneEmail={setSwitchPhoneEmail}
             />
           </Stack>
+          <Typography className={classes.birthdayPasswordTitle}>
+            Créer votre mot de passe
+          </Typography>
+          <PasswordInput />
           <Stack className="birthday">
-            <Typography className={classes.birthdayTitle}>
+            <Typography className={classes.birthdayPasswordTitle}>
               Date de naissance
             </Typography>
             <Typography className={classes.birthdayText}>

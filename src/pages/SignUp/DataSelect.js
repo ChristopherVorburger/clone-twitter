@@ -89,8 +89,7 @@ export function SelectDay() {
   const selectDay = [];
 
   for (let i = 0; i < 32; i++) {
-    const objet = { value: `${i}`, label: `${i}` };
-    selectDay.push(objet);
+    selectDay.push({ value: `${i}`, label: `${i}` });
   }
 
   const [day, setDay] = React.useState("");
@@ -124,8 +123,7 @@ export function SelectYear() {
   const selectYear = [];
 
   for (let i = 2022; i > 1901; i--) {
-    const objet = { value: `${i}`, label: `${i}` };
-    selectYear.push(objet);
+    selectYear.push({ value: `${i}`, label: `${i}` });
   }
 
   const [year, setYear] = React.useState("");
