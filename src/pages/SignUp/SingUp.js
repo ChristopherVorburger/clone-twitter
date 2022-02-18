@@ -5,16 +5,24 @@ import LogoTwitter from "../../components/TwitterLogo/TwitterLogo";
 import { Typography, Button, TextField, Box, Stack } from "@mui/material";
 import { SelectMonth, SelectDay, SelectYear } from "./DataSelect";
 import { Link } from "react-router-dom";
-import { style } from "@mui/system";
 
 function InputName() {
+  const [error, setError] = React.useState(false);
+  const handleChange = (e) => {
+    e.target.value.length >= 3 && e.target.value.includes(" ")
+      ? setError(false)
+      : setError(true);
+  };
   return (
     <Box component="form">
       <TextField
         variant="outlined"
         label="Nom et prénom"
-        autoFocus={true}
         fullWidth={true}
+        autoFocus={true}
+        onChange={handleChange}
+        error={error}
+        helperText={error === true ? "Quel est votre nom ?" : null}
       />
     </Box>
   );
@@ -22,17 +30,53 @@ function InputName() {
 
 function InputPhoneEmail({ switchPhoneEmail }) {
   const InputPhone = () => {
+    const [error, setError] = React.useState(false);
+    const handleChange = (e) => {
+      console.log(e.target.value);
+      typeof parseInt(e.target.value) === "number" &&
+      e.target.value.length === 10
+        ? setError(false)
+        : setError(true);
+    };
     return (
       <Box component="form">
-        <TextField variant="outlined" label="Téléphone" fullWidth={true} />
+        <TextField
+          variant="outlined"
+          label="Téléphone"
+          fullWidth={true}
+          onChange={handleChange}
+          error={error}
+          helperText={
+            error === true
+              ? "Veuillez entrer un numéro de téléphone valide."
+              : null
+          }
+        />
       </Box>
     );
   };
 
   const InputEmail = () => {
+    const [error, setError] = React.useState(false);
+
+    const handleChange = (e) => {
+      console.log(e.target.value);
+      e.target.value.includes("@") && e.target.value.includes(".")
+        ? setError(false)
+        : setError(true);
+    };
     return (
-      <Box component="form">
-        <TextField variant="outlined" label="Email" fullWidth={true} />
+      <Box>
+        <TextField
+          variant="outlined"
+          label="Email"
+          fullWidth={true}
+          onChange={handleChange}
+          error={error}
+          helperText={
+            error === true ? "Veuillez entrer un email valide." : null
+          }
+        />
       </Box>
     );
   };
