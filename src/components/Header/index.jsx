@@ -2,9 +2,10 @@ import React from "react";
 
 import { AppBar, Box, IconButton, Toolbar, Typography } from "@mui/material";
 
-import AutoAwesomeSharpIcon from "@mui/icons-material/AutoAwesomeSharp";
-
 import useStyles from "./styles";
+
+import { icons } from "../../constants";
+
 import ProfileButton from "../buttons/ProfileButton";
 
 const Header = ({ drawerWidth }) => {
@@ -20,7 +21,9 @@ const Header = ({ drawerWidth }) => {
     >
       <AppBar color="inherit" position="static" elevation={0}>
         <Toolbar>
-          <ProfileButton />
+          <Box className={classes.header__button_profile}>
+            <ProfileButton />
+          </Box>
           <Typography
             fontSize="1rem"
             fontWeight="bold"
@@ -31,7 +34,7 @@ const Header = ({ drawerWidth }) => {
           </Typography>
 
           <IconButton sx={{ padding: "0" }} aria-label="menu">
-            <AutoAwesomeSharpIcon
+            <icons.AutoAwesomeSharpIcon
               sx={{
                 color: "black.main",
                 transform: "rotate(180deg)",
