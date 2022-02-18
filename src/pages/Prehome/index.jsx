@@ -43,7 +43,7 @@ const PreHome = () => {
                     width="20px"
                     alt="logo google"
                   />
-                  <Typography fontSize="14px" color="black">
+                  <Typography fontSize="14px" color="black.main">
                     Sign up with Google
                   </Typography>
                 </Button>
@@ -54,7 +54,11 @@ const PreHome = () => {
                     width="20px"
                     alt="logo apple"
                   />
-                  <Typography fontSize="15px" color="black" fontWeight="bold">
+                  <Typography
+                    fontSize="15px"
+                    color="black.main"
+                    fontWeight="bold"
+                  >
                     Sign up with Apple
                   </Typography>
                 </Button>

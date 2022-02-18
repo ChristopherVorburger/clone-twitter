@@ -6,3 +6,7 @@
 :root {
   overflow-x: hidden !important;
 }
+
+.Mui-selected {
+  color: inherit !important;
+}
