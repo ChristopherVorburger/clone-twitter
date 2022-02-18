@@ -65,25 +65,23 @@ export function SelectMonth() {
   };
 
   return (
-    <div>
-      <TextField
-        id="outlined-select-currency"
-        select
-        label="Mois"
-        value={month}
-        onChange={handleChange}
-        fullWidth={true}
-        InputLabelProps={{
-          shrink: true,
-        }}
-      >
-        {selectMonth.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
-            {option.label}
-          </MenuItem>
-        ))}
-      </TextField>
-    </div>
+    <TextField
+      id="outlined-select-currency"
+      select
+      label="Mois"
+      value={month}
+      onChange={handleChange}
+      fullWidth={true}
+      InputLabelProps={{
+        shrink: true,
+      }}
+    >
+      {selectMonth.map((option) => (
+        <MenuItem key={option.value} value={option.value}>
+          {option.label}
+        </MenuItem>
+      ))}
+    </TextField>
   );
 }
 
@@ -102,25 +100,23 @@ export function SelectDay() {
   };
 
   return (
-    <div>
-      <TextField
-        id="outlined-select-currency"
-        select
-        label="Jour"
-        value={day}
-        onChange={handleChange}
-        fullWidth={true}
-        InputLabelProps={{
-          shrink: true,
-        }}
-      >
-        {selectDay.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
-            {option.label}
-          </MenuItem>
-        ))}
-      </TextField>
-    </div>
+    <TextField
+      id="outlined-select-currency"
+      select
+      label="Jour"
+      value={day}
+      onChange={handleChange}
+      fullWidth={true}
+      InputLabelProps={{
+        shrink: true,
+      }}
+    >
+      {selectDay.map((option) => (
+        <MenuItem key={option.value} value={option.value}>
+          {option.label}
+        </MenuItem>
+      ))}
+    </TextField>
   );
 }
 
@@ -139,24 +135,22 @@ export function SelectYear() {
   };
 
   return (
-    <div>
-      <TextField
-        id="outlined-select-currency"
-        select
-        label="Année"
-        value={year}
-        onChange={handleChange}
-        fullWidth={true}
-        InputLabelProps={{
-          shrink: true,
-        }}
-      >
-        {selectYear.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
-            {option.label}
-          </MenuItem>
-        ))}
-      </TextField>
-    </div>
+    <TextField
+      id="outlined-select-currency"
+      select
+      label="Année"
+      value={year}
+      onChange={handleChange}
+      fullWidth={true}
+      InputLabelProps={{
+        shrink: true,
+      }}
+    >
+      {selectYear.map((option) => (
+        <MenuItem key={option.value} value={option.value}>
+          {option.label}
+        </MenuItem>
+      ))}
+    </TextField>
   );
 }
