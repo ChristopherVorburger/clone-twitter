@@ -1,11 +1,11 @@
-import { Box, Button, Container, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import Header from "../../components/Header";
 import BottomNavigation from "../../components/BottomNavigation";
 
 import useStyles from "./styles";
-import AddTweetButton from "../../components/buttons/AddTweetButton";
 import LeftNavbar from "../../components/LeftNavbar";
+import Welcome from "../../components/Welcome";
 
 const Home = () => {
   const classes = useStyles();
@@ -38,41 +38,10 @@ const Home = () => {
 
   return (
     <>
-      <Header drawerWidth={drawerWidth} />
       <LeftNavbar drawerWidth={drawerWidth} />
       <main>
-        <Box
-          sx={{
-            width: `calc(100% - ${drawerWidth}px)`,
-            ml: `${drawerWidth}px`,
-          }}
-          height="100vh"
-        >
-          <Container sx={{ margin: "30px auto", padding: "0 30px" }}>
-            <Typography mb="0.5rem" fontWeight="bold" fontSize="29px">
-              Welcome to Twitter!
-            </Typography>
-            <Typography
-              mb="27px"
-              fontWeight="light"
-              fontSize="14px"
-              color="grey.darker"
-            >
-              This is the best place to see what’s happening in your world. Find
-              some people and topics to follow now.
-            </Typography>
-            <Button
-              variant="contained"
-              className={classes.button}
-              sx={{ display: "flex" }}
-            >
-              <Typography fontWeight="bold">Let's go!</Typography>
-            </Button>
-          </Container>
-          <Box className={classes.button__add_tweet}>
-            <AddTweetButton />
-          </Box>
-        </Box>
+        <Header drawerWidth={drawerWidth} />
+        <Welcome drawerWidth={drawerWidth} />
       </main>
       <BottomNavigation />
     </>

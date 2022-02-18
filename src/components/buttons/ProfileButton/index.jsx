@@ -2,13 +2,13 @@ import React from "react";
 
 import { IconButton } from "@mui/material";
 
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { icons } from "../../../constants";
 
 const ProfileButton = () => {
   return (
     <div>
       <IconButton size="large" edge="start" aria-label="menu" sx={{ mr: 2 }}>
-        <AccountCircleIcon
+        <icons.AccountCircleIcon
           sx={{ color: "grey.main", transform: "scale(1.5)" }}
         />
       </IconButton>

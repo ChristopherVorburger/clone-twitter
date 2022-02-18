@@ -1,19 +1,13 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Drawer from "@mui/material/Drawer";
-import {
-  Toolbar,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-} from "@mui/material";
-
-import TwitterLogo from "../TwitterLogo/TwitterLogo";
+import { Toolbar, List, ListItem, ListItemIcon } from "@mui/material";
 
 import { icons } from "../../constants";
 
 import useStyles from "./styles";
+import ProfileButton from "../buttons/ProfileButton";
 import AddTweetButton from "../buttons/AddTweetButton";
+import { Box } from "@mui/system";
 
 const LeftNavbar = ({ drawerWidth }) => {
   const classes = useStyles();
@@ -37,16 +31,23 @@ const LeftNavbar = ({ drawerWidth }) => {
         "& .MuiDrawer-paper": {
           width: drawerWidth,
           boxSizing: "border-box",
+          overflowX: "hidden",
         },
       }}
       variant="permanent"
       anchor="left"
     >
-      <Toolbar>
+      <Toolbar sx={{}}>
         <List>
           <ListItem button>
-            <ListItemIcon sx={{ transform: "scale(1.2)", mb: "1rem" }}>
-              <TwitterLogo />
+            <ListItemIcon
+              sx={{
+                transform: "scale(1.2)",
+                mb: "1rem",
+                color: "primary.main",
+              }}
+            >
+              <icons.TwitterIcon />
             </ListItemIcon>
           </ListItem>
           {/* Loop through the 'iconsArray' array and use the render() function to display the component */}
@@ -59,10 +60,10 @@ const LeftNavbar = ({ drawerWidth }) => {
               </ListItem>
             );
           })}
-          <ListItem button sx={{ bottom: "-5rem" }}>
+          <ListItem button sx={{ bottom: "-8rem" }}>
             <ListItemIcon
               sx={{
-                transform: "scale(0.8)",
+                transform: "scale(1)",
                 mb: "1rem",
               }}
             >
@@ -71,6 +72,19 @@ const LeftNavbar = ({ drawerWidth }) => {
           </ListItem>
         </List>
       </Toolbar>
+      <Box
+        button
+        sx={{
+          transform: "scale(1.5)",
+          position: "absolute",
+          bottom: "30px",
+          left: "30px",
+        }}
+      >
+        <ListItem button>
+          <ProfileButton />
+        </ListItem>
+      </Box>
     </Drawer>
   );
 };
