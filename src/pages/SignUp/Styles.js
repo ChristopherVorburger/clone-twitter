@@ -1,12 +1,30 @@
 import { makeStyles } from "@mui/styles";
 
 export default makeStyles({
-  accountCreateTitle: {
-    color: "#0F1419",
-    fontSize: "23px !important",
-    fontWeight: "bold !important ",
+  logo: {
+    marginLeft: "40% ",
   },
-  switchPhoneEmail: { color: "#1d9bf0" },
-  birthdayTitle: { fontWeight: "bold !important " },
-  birthdayText: { color: "rgb(83, 100, 113)" },
+  accountCreateTitle: {
+    fontWeight: "bold !important",
+    fontSize: "23px !important ",
+  },
+  switchPhoneEmail: {
+    fontSize: "15px !important",
+    color: "rgb(29, 155, 240)",
+  },
+  birthdayTitle: {
+    fontSize: "15px !important",
+    fontWeight: "bold !important",
+  },
+  birthdayText: {
+    fontSize: "15px !important",
+    color: "rgb(83, 100, 113)",
+  },
+  nextButton: {
+    backgroundColor: "#999999 !important",
+    textTransform: "none !important",
+    borderRadius: "50px !important",
+    fontWeight: "bold !important",
+    color: "white !important",
+  },
 });

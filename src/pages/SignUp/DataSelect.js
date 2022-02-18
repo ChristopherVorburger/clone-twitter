@@ -2,7 +2,11 @@ import React from "react";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 
-const selectMois = [
+const selectMonth = [
+  {
+    value: "",
+    label: "",
+  },
   {
     value: "Janvier",
     label: "Janvier",
@@ -53,11 +57,11 @@ const selectMois = [
   },
 ];
 
-export function SelectMois() {
-  const [mois, setMois] = React.useState("Janvier");
+export function SelectMonth() {
+  const [month, setMonth] = React.useState("");
 
   const handleChange = (event) => {
-    setMois(event.target.value);
+    setMonth(event.target.value);
   };
 
   return (
@@ -66,10 +70,14 @@ export function SelectMois() {
         id="outlined-select-currency"
         select
         label="Mois"
-        value={mois}
+        value={month}
         onChange={handleChange}
+        fullWidth={true}
+        InputLabelProps={{
+          shrink: true,
+        }}
       >
-        {selectMois.map((option) => (
+        {selectMonth.map((option) => (
           <MenuItem key={option.value} value={option.value}>
             {option.label}
           </MenuItem>
@@ -79,18 +87,18 @@ export function SelectMois() {
   );
 }
 
-export function SelectJours() {
-  const selectJour = [];
+export function SelectDay() {
+  const selectDay = [];
 
   for (let i = 0; i < 32; i++) {
     const objet = { value: `${i}`, label: `${i}` };
-    selectJour.push(objet);
+    selectDay.push(objet);
   }
 
-  const [jours, setJours] = React.useState(1);
+  const [day, setDay] = React.useState("");
 
   const handleChange = (event) => {
-    setJours(event.target.value);
+    setDay(event.target.value);
   };
 
   return (
@@ -99,10 +107,14 @@ export function SelectJours() {
         id="outlined-select-currency"
         select
         label="Jour"
-        value={jours}
+        value={day}
         onChange={handleChange}
+        fullWidth={true}
+        InputLabelProps={{
+          shrink: true,
+        }}
       >
-        {selectJour.map((option) => (
+        {selectDay.map((option) => (
           <MenuItem key={option.value} value={option.value}>
             {option.label}
           </MenuItem>
@@ -112,18 +124,18 @@ export function SelectJours() {
   );
 }
 
-export function SelectAnnees() {
-  const selectAnnees = [];
+export function SelectYear() {
+  const selectYear = [];
 
   for (let i = 2022; i > 1901; i--) {
     const objet = { value: `${i}`, label: `${i}` };
-    selectAnnees.push(objet);
+    selectYear.push(objet);
   }
 
-  const [annees, setAnnees] = React.useState(2022);
+  const [year, setYear] = React.useState("");
 
   const handleChange = (event) => {
-    setAnnees(event.target.value);
+    setYear(event.target.value);
   };
 
   return (
@@ -132,10 +144,14 @@ export function SelectAnnees() {
         id="outlined-select-currency"
         select
         label="Année"
-        value={annees}
+        value={year}
         onChange={handleChange}
+        fullWidth={true}
+        InputLabelProps={{
+          shrink: true,
+        }}
       >
-        {selectAnnees.map((option) => (
+        {selectYear.map((option) => (
           <MenuItem key={option.value} value={option.value}>
             {option.label}
           </MenuItem>

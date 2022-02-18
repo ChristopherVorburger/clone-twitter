@@ -2,210 +2,154 @@ import React from "react";
 import useStyles from "./Styles";
 import CloseButton from "../../components/CloseButton/CloseButton";
 import LogoTwitter from "../../components/TwitterLogo/TwitterLogo";
-import { Typography, Button, TextField, Box } from "@mui/material";
-import { SelectMois, SelectJours, SelectAnnees } from "./DataSelect";
-
-function ButtonClose() {
-  return <CloseButton></CloseButton>;
-}
-
-function TwitterLogo() {
-  return <LogoTwitter />;
-}
-
-function AccountCreateTitle() {
-  const classes = useStyles();
-  return (
-    <div className="accountCreateTitle">
-      <Typography className={classes.accountCreateTitle}>
-        Créer votre compte
-      </Typography>
-    </div>
-  );
-}
+import { Typography, Button, TextField, Box, Stack } from "@mui/material";
+import { SelectMonth, SelectDay, SelectYear } from "./DataSelect";
+import { Link } from "react-router-dom";
 
 function InputName() {
   return (
-    <div className="inputName">
-      <Box
-        component="form"
-        sx={{
-          "& > :not(style)": { m: 1, width: "25ch" },
-        }}
-      >
-        <TextField variant="outlined" label="Nom et prénom" autoFocus={true} />
-      </Box>
-    </div>
+    <Box component="form">
+      <TextField
+        variant="outlined"
+        label="Nom et prénom"
+        autoFocus={true}
+        fullWidth={true}
+      />
+    </Box>
   );
 }
 
 function InputPhoneEmail() {
   const InputPhone = () => {
     return (
-      <div className="inputPhone">
-        <Box
-          component="form"
-          sx={{
-            "& > :not(style)": { m: 1, width: "25ch" },
-          }}
-        >
-          <TextField variant="outlined" label="Téléphone" />
-        </Box>
-      </div>
+      <Box component="form">
+        <TextField variant="outlined" label="Téléphone" fullWidth={true} />
+      </Box>
     );
   };
 
   const InputEmail = () => {
     return (
-      <div className="inputEmail">
-        <Box
-          component="form"
-          sx={{
-            "& > :not(style)": { m: 1, width: "25ch" },
-          }}
-        >
-          <TextField variant="outlined" label="Email" />
-        </Box>
-      </div>
+      <Box component="form">
+        <TextField variant="outlined" label="Email" fullWidth={true} />
+      </Box>
     );
   };
 
   return (
-    <div className="inputPhoneEmail">
-      <InputPhone />
+    <>
+      {/* <InputPhone /> */}
       <InputEmail />
-    </div>
+    </>
   );
 }
 
 function SwitchPhoneEmail() {
   const classes = useStyles();
   return (
-    <div className="switchPhoneEmail">
-      <Typography className={classes.switchPhoneEmail}>
+    <>
+      {/* <Typography className={classes.switchPhoneEmail}>
         Utiliser un téléphone
-      </Typography>
+      </Typography> */}
       <Typography className={classes.switchPhoneEmail}>
         Utiliser un email
       </Typography>
-    </div>
-  );
-}
-
-function BirthdayTitle() {
-  const classes = useStyles();
-  return (
-    <div className="birthdayTitle">
-      <Typography className={classes.birthdayTitle}>
-        Date de naissance
-      </Typography>
-    </div>
-  );
-}
-
-function BirthdayText() {
-  const classes = useStyles();
-  return (
-    <div className="birthdayText">
-      <Typography className={classes.birthdayText}>
-        Cette information ne sera pas affichée publiquement. Confirmez votre
-        âge, même si ce compte est pour une entreprise, un animal de compagnie
-        ou autre chose.
-      </Typography>
-    </div>
+    </>
   );
 }
 
 function MMDDYYYYInput() {
   const MonthInput = () => {
     return (
-      <div className="monthInput">
-        <Box
-          component="form"
-          sx={{
-            "& > :not(style)": { m: 1, width: "100ch" },
-          }}
-        >
-          <SelectMois />
-        </Box>
-      </div>
+      <Box component="form" width="48%">
+        <SelectMonth />
+      </Box>
     );
   };
 
   const DayInput = () => {
     return (
-      <div className="dayInput">
-        <Box
-          component="form"
-          sx={{
-            "& > :not(style)": { m: 1, width: "25ch" },
-          }}
-        >
-          <SelectJours />
-        </Box>
-      </div>
+      <Box component="form" width="22%">
+        <SelectDay />
+      </Box>
     );
   };
 
   const YearInput = () => {
     return (
-      <div className="yearInput">
-        <Box
-          component="form"
-          sx={{
-            "& > :not(style)": { m: 1, width: "25ch" },
-          }}
-        >
-          <SelectAnnees />
-        </Box>
-      </div>
+      <Box component="form" width="30%">
+        <SelectYear />
+      </Box>
     );
   };
 
   return (
-    <div className="MM-DD-YYYYInput">
+    <Stack
+      className="MM-DD-YYYYInput"
+      direction="row"
+      marginTop="15px"
+      spacing={2}
+    >
       <MonthInput />
       <DayInput />
       <YearInput />
-    </div>
-  );
-}
-
-function NextButton() {
-  return (
-    <div className="nextButton">
-      <Button>Suivant</Button>
-    </div>
+    </Stack>
   );
 }
 
 function SingUp() {
+  const classes = useStyles();
   return (
-    <div className="signUpContainer">
-      <div className="closeAndLogo">
-        <ButtonClose />
-        <TwitterLogo />
-      </div>
-      <div className="accountCreate">
-        <AccountCreateTitle />
-        <InputName />
-        <InputPhoneEmail />
-        <SwitchPhoneEmail />
-      </div>
-      <div className="birthday">
-        <BirthdayTitle />
-        <BirthdayText />
-        <MMDDYYYYInput />
-      </div>
-      <div className="nextButton">
-        <NextButton />
-      </div>
-    </div>
+    <Stack
+      className="page"
+      heigth="100%"
+      width="83%"
+      margin="5px auto"
+      spacing={2.5}
+    >
+      <Stack className="logoAndClose" direction="row" alignItems="center">
+        <Link to="/">
+          <CloseButton />
+        </Link>
+        <Stack className={classes.logo}>
+          <LogoTwitter />
+        </Stack>
+      </Stack>
+      <Stack
+        className={classes.signupContainer}
+        height="100%"
+        width="92%"
+        marginLeft="25px !important"
+        spacing={2}
+      >
+        <Stack className="accountCreate" spacing={4}>
+          <Typography className={classes.accountCreateTitle}>
+            Créer votre compte
+          </Typography>
+          <Stack className="input" spacing={4}>
+            <InputName />
+            <InputPhoneEmail />
+          </Stack>
+          <SwitchPhoneEmail />
+        </Stack>
+        <Stack className="birthday">
+          <Typography className={classes.birthdayTitle}>
+            Date de naissance
+          </Typography>
+          <Typography className={classes.birthdayText}>
+            Cette information ne sera pas affichée publiquement. Confirmez votre
+            âge, même si ce compte est pour une entreprise, un animal de
+            compagnie ou autre chose.
+          </Typography>
+          <MMDDYYYYInput />
+        </Stack>
+      </Stack>
+      <Stack className="nextButton">
+        <Button className={classes.nextButton} size="large">
+          Suivant
+        </Button>
+      </Stack>
+    </Stack>
   );
 }
 export default SingUp;
-
-// info :
-//1: couleur : rgba(91, 112, 131, 0.4) (div body); black (div centre); rgb(217, 217, 217) (logo twitter et 2 titres);
-//rgb(29, 155, 240) (tout le bleu);#be1a24 (tout le rouge); rgb(47, 51, 54) (tout le gris)
-//2: ajout mui : @mui/icons-material
