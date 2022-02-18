@@ -4,7 +4,8 @@ import Header from "../../components/Header";
 import BottomNavigation from "../../components/BottomNavigation";
 
 import useStyles from "./styles";
-import ButtonAddTweet from "../../components/ButtonAddTweet";
+import AddTweetButton from "../../components/buttons/AddTweetButton";
+import LeftNavbar from "../../components/LeftNavbar";
 
 const Home = () => {
   const classes = useStyles();
@@ -12,6 +13,7 @@ const Home = () => {
   return (
     <>
       <Header />
+      <LeftNavbar />
       <main>
         <Box height="100vh">
           <Container sx={{ margin: "30px auto", padding: "0 30px" }}>
@@ -35,7 +37,9 @@ const Home = () => {
               <Typography fontWeight="bold">Let's go!</Typography>
             </Button>
           </Container>
-          <ButtonAddTweet />
+          <Box className={classes.button__add_tweet}>
+            <AddTweetButton />
+          </Box>
         </Box>
       </main>
       <BottomNavigation />

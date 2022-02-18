@@ -2,10 +2,10 @@ import React from "react";
 
 import { AppBar, Box, IconButton, Toolbar, Typography } from "@mui/material";
 
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AutoAwesomeSharpIcon from "@mui/icons-material/AutoAwesomeSharp";
 
 import useStyles from "./styles";
+import ProfileButton from "../buttons/ProfileButton";
 
 const Header = () => {
   const classes = useStyles();
@@ -14,16 +14,7 @@ const Header = () => {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar color="inherit" position="static" elevation={0}>
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
-            <AccountCircleIcon
-              sx={{ color: "grey.main", transform: "scale(1.5)" }}
-            />
-          </IconButton>
+          <ProfileButton />
           <Typography
             fontSize="1rem"
             fontWeight="bold"

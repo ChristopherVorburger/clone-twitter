@@ -5,8 +5,13 @@ export default makeStyles((theme) => ({
     borderRadius: "40px!important",
     textTransform: "none!important",
     width: "40%",
-    maxWidth: "380px",
+    maxWidth: "120px",
     minWidth: "49px!important",
     minHeight: "49px!important",
+  },
+  button__add_tweet: {
+    [theme.breakpoints.up("sm")]: {
+      display: "none!important",
+    },
   },
 }));
