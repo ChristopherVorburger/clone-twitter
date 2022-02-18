@@ -31,6 +31,7 @@ const LeftNavbar = ({ drawerWidth }) => {
         "& .MuiDrawer-paper": {
           width: drawerWidth,
           boxSizing: "border-box",
+          overflowX: "hidden",
         },
       }}
       variant="permanent"
