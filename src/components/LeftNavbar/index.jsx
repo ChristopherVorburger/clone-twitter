@@ -5,7 +5,9 @@ import { Toolbar, List, ListItem, ListItemIcon } from "@mui/material";
 import { icons } from "../../constants";
 
 import useStyles from "./styles";
+import ProfileButton from "../buttons/ProfileButton";
 import AddTweetButton from "../buttons/AddTweetButton";
+import { Box } from "@mui/system";
 
 const LeftNavbar = ({ drawerWidth }) => {
   const classes = useStyles();
@@ -34,7 +36,7 @@ const LeftNavbar = ({ drawerWidth }) => {
       variant="permanent"
       anchor="left"
     >
-      <Toolbar>
+      <Toolbar sx={{}}>
         <List>
           <ListItem button>
             <ListItemIcon
@@ -57,10 +59,10 @@ const LeftNavbar = ({ drawerWidth }) => {
               </ListItem>
             );
           })}
-          <ListItem button sx={{ bottom: "-5rem" }}>
+          <ListItem button sx={{ bottom: "-8rem" }}>
             <ListItemIcon
               sx={{
-                transform: "scale(0.8)",
+                transform: "scale(1)",
                 mb: "1rem",
               }}
             >
@@ -69,6 +71,19 @@ const LeftNavbar = ({ drawerWidth }) => {
           </ListItem>
         </List>
       </Toolbar>
+      <Box
+        button
+        sx={{
+          transform: "scale(1.5)",
+          position: "absolute",
+          bottom: "30px",
+          left: "30px",
+        }}
+      >
+        <ListItem button>
+          <ProfileButton />
+        </ListItem>
+      </Box>
     </Drawer>
   );
 };
