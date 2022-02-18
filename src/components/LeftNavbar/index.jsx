@@ -1,14 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Drawer from "@mui/material/Drawer";
-import {
-  Toolbar,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-} from "@mui/material";
-
-import TwitterLogo from "../TwitterLogo/TwitterLogo";
+import { Toolbar, List, ListItem, ListItemIcon } from "@mui/material";
 
 import { icons } from "../../constants";
 
@@ -45,8 +37,14 @@ const LeftNavbar = ({ drawerWidth }) => {
       <Toolbar>
         <List>
           <ListItem button>
-            <ListItemIcon sx={{ transform: "scale(1.2)", mb: "1rem" }}>
-              <TwitterLogo />
+            <ListItemIcon
+              sx={{
+                transform: "scale(1.2)",
+                mb: "1rem",
+                color: "primary.main",
+              }}
+            >
+              <icons.TwitterIcon />
             </ListItemIcon>
           </ListItem>
           {/* Loop through the 'iconsArray' array and use the render() function to display the component */}

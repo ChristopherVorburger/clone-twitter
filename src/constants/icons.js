@@ -6,6 +6,7 @@ import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import FeaturedPlayListOutlinedIcon from "@mui/icons-material/FeaturedPlayListOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import TwitterIcon from "@mui/icons-material/Twitter";
 
 const icons = {
   HomeSharpIcon,
@@ -16,6 +17,7 @@ const icons = {
   FeaturedPlayListOutlinedIcon,
   PersonOutlineOutlinedIcon,
   MoreHorizIcon,
+  TwitterIcon,
 };
 
 export default icons;
