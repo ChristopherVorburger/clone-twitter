@@ -3,9 +3,8 @@ import React from "react";
 import Header from "../../components/Header";
 import BottomNavigation from "../../components/BottomNavigation";
 
-import { GiFeather } from "react-icons/gi";
-
 import useStyles from "./styles";
+import ButtonAddTweet from "../../components/ButtonAddTweet";
 
 const Home = () => {
   const classes = useStyles();
@@ -36,10 +35,7 @@ const Home = () => {
               <Typography fontWeight="bold">Let's go!</Typography>
             </Button>
           </Container>
-          <Box className={classes.button__feather}>
-            <div className={classes.button__feather_plus}>+</div>
-            <GiFeather size="1.7rem" color="white" />
-          </Box>
+          <ButtonAddTweet />
         </Box>
       </main>
       <BottomNavigation />

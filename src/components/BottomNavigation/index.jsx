@@ -6,7 +6,11 @@ import SearchSharpIcon from "@mui/icons-material/SearchSharp";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 
+import useStyles from "./styles";
+
 export default function LabelBottomNavigation() {
+  const classes = useStyles();
+
   const [value, setValue] = React.useState("home");
 
   const handleChange = (event, newValue) => {
@@ -15,6 +19,7 @@ export default function LabelBottomNavigation() {
 
   return (
     <BottomNavigation
+      className={classes.bottom_navigation}
       sx={{
         width: "100%",
         maxWidth: "500px",
