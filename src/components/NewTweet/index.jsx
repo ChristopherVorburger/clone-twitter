@@ -90,6 +90,7 @@ const NewTweet = ({ drawerWidth }) => {
               })}
             </List>
             <Button
+              variant="contained"
               sx={{
                 textTransform: "none",
                 borderRadius: "50px",
