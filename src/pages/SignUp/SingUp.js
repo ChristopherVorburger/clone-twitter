@@ -5,6 +5,8 @@ import LogoTwitter from "../../components/TwitterLogo/TwitterLogo";
 import { Typography, Button, TextField, Box, Stack } from "@mui/material";
 import { SelectMonth, SelectDay, SelectYear } from "./DataSelect";
 import { Link } from "react-router-dom";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebase-config";
 
 function InputName() {
   const [error, setError] = React.useState(false);
@@ -56,7 +58,7 @@ function InputPhoneEmail({ switchPhoneEmail }) {
     );
   };
 
-  const InputEmail = () => {
+  const InputEmail = ({ setRegisterEmail }) => {
     const [error, setError] = React.useState(false);
 
     const handleChange = (e) => {
@@ -64,6 +66,7 @@ function InputPhoneEmail({ switchPhoneEmail }) {
       e.target.value.includes("@") && e.target.value.includes(".")
         ? setError(false)
         : setError(true);
+      setRegisterEmail(e.target.value);
     };
     return (
       <Box>
@@ -159,12 +162,12 @@ function MMDDYYYYInput() {
   );
 }
 
-const PasswordInput = () => {
+const PasswordInput = ({ setRegisterPassword }) => {
   const [isOk, setIsOk] = React.useState(false);
 
   const handleChange = (e) => {
-    console.log(e.target.value);
     e.target.value.length >= 10 ? setIsOk(false) : setIsOk(true);
+    setRegisterPassword(e.target.value);
   };
   return (
     <Box>
@@ -184,6 +187,21 @@ const PasswordInput = () => {
 function SingUp() {
   const classes = useStyles();
   const [switchPhoneEmail, setSwitchPhoneEmail] = React.useState("Email");
+  const [registerEmail, setRegisterEmail] = React.useState("");
+  const [registerPassword, setRegisterPassword] = React.useState("");
+
+  const register = async () => {
+    try {
+      const user = await createUserWithEmailAndPassword(
+        auth,
+        registerEmail,
+        registerPassword
+      );
+      console.log(user);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   return (
     <div className={classes.mainContainer}>
@@ -214,7 +232,10 @@ function SingUp() {
             </Typography>
             <Stack className="input" spacing={4}>
               <InputName />
-              <InputPhoneEmail switchPhoneEmail={switchPhoneEmail} />
+              <InputPhoneEmail
+                switchPhoneEmail={switchPhoneEmail}
+                setRegisterEmail={setRegisterEmail}
+              />
             </Stack>
             <SwitchPhoneEmail
               switchPhoneEmail={switchPhoneEmail}
@@ -224,7 +245,7 @@ function SingUp() {
           <Typography className={classes.birthdayPasswordTitle}>
             Créer votre mot de passe
           </Typography>
-          <PasswordInput />
+          <PasswordInput setRegisterPassword={setRegisterPassword} />
           <Stack className="birthday">
             <Typography className={classes.birthdayPasswordTitle}>
               Date de naissance
@@ -237,7 +258,11 @@ function SingUp() {
             <MMDDYYYYInput />
           </Stack>
           <Stack className="nextButton" backgroundColor="white">
-            <Button className={classes.nextButton} size="large">
+            <Button
+              className={classes.nextButton}
+              size="large"
+              onClick={register}
+            >
               Suivant
             </Button>
           </Stack>
