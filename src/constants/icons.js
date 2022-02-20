@@ -9,6 +9,13 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import AutoAwesomeSharpIcon from "@mui/icons-material/AutoAwesomeSharp";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
+import GifBoxOutlinedIcon from "@mui/icons-material/GifBoxOutlined";
+import LeaderboardOutlinedIcon from "@mui/icons-material/LeaderboardOutlined";
+import SentimentSatisfiedAltOutlinedIcon from "@mui/icons-material/SentimentSatisfiedAltOutlined";
+import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
+import FmdGoodOutlinedIcon from "@mui/icons-material/FmdGoodOutlined";
+import PublicOutlinedIcon from "@mui/icons-material/PublicOutlined";
 
 const icons = {
   HomeSharpIcon,
@@ -22,6 +29,13 @@ const icons = {
   TwitterIcon,
   AutoAwesomeSharpIcon,
   AccountCircleIcon,
+  ImageOutlinedIcon,
+  GifBoxOutlinedIcon,
+  LeaderboardOutlinedIcon,
+  SentimentSatisfiedAltOutlinedIcon,
+  CalendarTodayOutlinedIcon,
+  FmdGoodOutlinedIcon,
+  PublicOutlinedIcon,
 };
 
 export default icons;
