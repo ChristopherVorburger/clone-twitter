@@ -23,69 +23,74 @@ const LeftNavbar = ({ drawerWidth }) => {
     icons.MoreHorizIcon,
   ];
   return (
-    <Drawer
-      className={classes.drawer}
-      sx={{
-        width: drawerWidth,
-        flexShrink: 0,
-        "& .MuiDrawer-paper": {
-          width: drawerWidth,
-          boxSizing: "border-box",
-          overflowX: "hidden",
-        },
-      }}
-      variant="permanent"
-      anchor="left"
-    >
-      <Toolbar sx={{}}>
-        <List>
-          <ListItem button>
-            <ListItemIcon
-              sx={{
-                transform: "scale(1.2)",
-                mb: "1rem",
-                color: "primary.main",
-              }}
-            >
-              <icons.TwitterIcon />
-            </ListItemIcon>
-          </ListItem>
-          {/* Loop through the 'iconsArray' array and use the render() function to display the component */}
-          {iconsArray.map((icon, index) => {
-            return (
-              <ListItem button key={index}>
-                <ListItemIcon sx={{ transform: "scale(1.2)", mb: "1rem" }}>
-                  {icon.type.render()}
-                </ListItemIcon>
-              </ListItem>
-            );
-          })}
-          <ListItem button sx={{ bottom: "-8rem" }}>
-            <ListItemIcon
-              sx={{
-                transform: "scale(1)",
-                mb: "1rem",
-              }}
-            >
-              <AddTweetButton />
-            </ListItemIcon>
-          </ListItem>
-        </List>
-      </Toolbar>
-      <Box
-        button
+    <Box display="flex" justifyContent="flex-end">
+      <Drawer
+        className={classes.drawer}
         sx={{
-          transform: "scale(1.5)",
-          position: "absolute",
-          bottom: "30px",
-          left: "30px",
+          width: drawerWidth,
+          flexShrink: 0,
+          "& .MuiDrawer-paper": {
+            width: drawerWidth,
+            boxSizing: "border-box",
+            overflowX: "hidden",
+          },
         }}
+        variant="permanent"
+        anchor="left"
       >
-        <ListItem button>
-          <ProfileButton />
-        </ListItem>
-      </Box>
-    </Drawer>
+        <Toolbar>
+          <Box
+            display="flex"
+            flexDirection="column"
+            justifyContent="space-between"
+            height="100vh"
+          >
+            <Box>
+              <List>
+                <ListItem button>
+                  <ListItemIcon
+                    sx={{
+                      transform: "scale(1.2)",
+                      mb: "1rem",
+                      color: "primary.main",
+                    }}
+                  >
+                    <icons.TwitterIcon />
+                  </ListItemIcon>
+                </ListItem>
+                {/* Loop through the 'iconsArray' array and use the render() function to display the component */}
+                {iconsArray.map((icon, index) => {
+                  return (
+                    <ListItem button key={index}>
+                      <ListItemIcon
+                        sx={{ transform: "scale(1.2)", mb: "1rem" }}
+                      >
+                        {icon.type.render()}
+                      </ListItemIcon>
+                    </ListItem>
+                  );
+                })}
+                <ListItem button sx={{ bottom: "-8rem" }}>
+                  <ListItemIcon
+                    sx={{
+                      transform: "scale(1)",
+                      mb: "1rem",
+                    }}
+                  >
+                    <AddTweetButton />
+                  </ListItemIcon>
+                </ListItem>
+              </List>
+            </Box>
+            <Box>
+              <ListItem button>
+                <ProfileButton />
+              </ListItem>
+            </Box>
+          </Box>
+        </Toolbar>
+      </Drawer>
+    </Box>
   );
 };
 
