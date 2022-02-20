@@ -63,6 +63,7 @@ export const ButtonLogin = styled.button`
   transition: all 0.2s ease;
   cursor: pointer;
   margin-bottom: ${({ mb }) => mb};
+  margin-top: ${({ mb }) => mb};
   background-color: ${({ bg }) => (bg ? bg : "#000")};
   border-color: ${({ borderColor }) => (borderColor ? borderColor : "")};
   font-weight: ${({ bold }) => (bold ? bold : "700")};
