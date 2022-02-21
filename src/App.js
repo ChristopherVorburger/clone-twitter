@@ -1,7 +1,5 @@
-import React from "react";
 import { Routes, Route } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-
 import Prehome from "./pages/Prehome";
 import SignUp from "./pages/SignUp/SingUp";
 import Login from "./components/Login/Login";

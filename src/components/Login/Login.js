@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef, useEffect } from "react";
+import React, { useState, useContext, useRef } from "react";
 import {
   Overlay,
   LoginModalContainer,
@@ -19,11 +19,17 @@ import CloseIcon from "@mui/icons-material/Close";
 import { makeStyles } from "@mui/styles";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/authContext";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import Alert from "@mui/material/Alert";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [emalValid, setEmalValid] = useState(null);
+  const [loginError, setLoginError] = useState(false);
+
   const { signIn } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   //Style cross Icon
   const useStyles = makeStyles(() => ({
@@ -37,7 +43,15 @@ export default function Login() {
 
   const classes = useStyles();
 
-  const handleSubmit = () => {
+  // Add Input with Ref
+  const inputs = useRef([]);
+  const addInputs = (el) => {
+    if (el && !inputs.current.includes(el)) {
+      inputs.current.push(el);
+    }
+  };
+
+  const handleEmailAdress = () => {
     //regex test if email is valid
     let regex =
       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -49,12 +63,21 @@ export default function Login() {
     }
   };
 
-  //Handle Login
-  const handleForm = async () => {
-    console.log("ok");
+  const handleForm = async (e) => {
+    e.preventDefault();
+    try {
+      const cred = await signIn(inputs.current[0].value, inputs.current[1].value);
+      navigate("/home");
+      setLoginError(false);
+    } catch (err) {
+      console.log(err);
+      setLoginError(true);
+    }
   };
 
-  // const handleFormValidation
+  // Connexion with Google
+  const provider = new GoogleAuthProvider();
+
   return (
     <Overlay>
       <LoginModalContainer>
@@ -78,13 +101,23 @@ export default function Login() {
                   style={{ marginBottom: "30px" }}
                   value={email}
                   disabled={true}
+                  inputRef={addInputs}
                 />
-                <TextField type='password' required fullWidth={true} size='medium' id='password' label='Mot de passe' variant='outlined' />
-                <ButtonLogin bg='black' color='white' borderColor='black' bold mb='25px' mt='25px'>
+                <TextField
+                  type='password'
+                  required
+                  fullWidth={true}
+                  size='medium'
+                  id='password'
+                  label='Mot de passe'
+                  variant='outlined'
+                  inputRef={addInputs}
+                />
+                <ButtonLogin bg='black' color='white' borderColor='black' bold margin='25px 0'>
                   <span>Se connecter</span>
                 </ButtonLogin>
               </LoginForm>
-
+              {loginError && <Alert severity='error'>Adresse mail ou mot de passe incorrect</Alert>}
               <TxtCreateAcount>
                 Vous n'avez pas de compte ?<Link to='/signup'>Inscrivez-vous </Link>
               </TxtCreateAcount>
@@ -98,7 +131,7 @@ export default function Login() {
             <IconTwitter src={LogoTwitter} />
             <LoginTitle>Connectez-vous à Twitter</LoginTitle>
             <LoginContent>
-              <ButtonLogin borderColor='#dadce0' bg='transparent' bgHover='#F7FAFE' borderColorHover='#d2e3fc' mb='25px' maxWidth='290px'>
+              <ButtonLogin borderColor='#dadce0' bg='transparent' bgHover='#F7FAFE' borderColorHover='#d2e3fc' margin='0 0 25px 0' maxWidth='290px'>
                 <img src={LogoGoogle} alt='logo de google' />
                 <span>Se connecter avec Google</span>
               </ButtonLogin>
@@ -120,10 +153,10 @@ export default function Login() {
                   variant='outlined'
                   onChange={(e) => setEmail(e.target.value)}
                 />
+                <ButtonLogin bg='black' color='white' borderColor='black' margin='25px 0 0' maxWidth='290px' onClick={handleEmailAdress}>
+                  <span>Suivant</span>
+                </ButtonLogin>
               </LoginForm>
-              <ButtonLogin bg='black' color='white' borderColor='black' bold mb='25px' maxWidth='290px' onClick={handleSubmit}>
-                <span>Suivant</span>
-              </ButtonLogin>
               <ButtonLogin bg='#fff' color='#000' borderColor='#dadce0' maxWidth='290px'>
                 <span>Mot de passe oublié ?</span>
               </ButtonLogin>
