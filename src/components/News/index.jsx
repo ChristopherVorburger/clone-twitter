@@ -2,13 +2,7 @@ import React from "react";
 import { Box } from "@mui/system";
 
 import useStyles from "./styles";
-import {
-  Container,
-  Input,
-  InputAdornment,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Input, InputAdornment, Typography } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 
 const News = () => {

@@ -8,7 +8,7 @@ import { icons } from "../../constants";
 
 import ProfileButton from "../buttons/ProfileButton";
 
-const Header = ({ drawerWidth }) => {
+const Header = () => {
   const classes = useStyles();
 
   return (

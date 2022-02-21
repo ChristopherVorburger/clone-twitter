@@ -5,16 +5,17 @@ import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import { icons } from "../../constants";
 
 import useStyles from "./styles";
+import { Link } from "react-router-dom";
 
 export default function LabelBottomNavigation() {
   const classes = useStyles();
   const [value, setValue] = React.useState("home");
 
   const iconsArray = [
-    icons.HomeSharpIcon,
-    icons.SearchSharpIcon,
-    icons.NotificationsOutlinedIcon,
-    icons.EmailOutlinedIcon,
+    { name: icons.HomeSharpIcon, path: "/home" },
+    { name: icons.SearchSharpIcon, path: "/explore" },
+    { name: icons.NotificationsOutlinedIcon, path: "/notifications" },
+    { name: icons.EmailOutlinedIcon, path: "/messages" },
   ];
 
   const handleChange = (event, newValue) => {
@@ -36,12 +37,12 @@ export default function LabelBottomNavigation() {
       {/* Loop through the 'iconsArray' array and use the render() function to display the component */}
       {iconsArray.map((icon, index) => {
         return (
-          <BottomNavigationAction
-            key={index}
-            showLabel={false}
-            icon={icon.type.render()}
-            sx={{ transform: "scale(1.3)" }}
-          />
+          <Link to={icon.path} key={index}>
+            <BottomNavigationAction
+              icon={icon.name.type.render()}
+              sx={{ transform: "scale(1.3)" }}
+            />
+          </Link>
         );
       })}
     </BottomNavigation>
