@@ -16,8 +16,16 @@ const Welcome = ({ drawerWidth }) => {
       }}
       height="100vh"
     >
-      <Container sx={{ margin: "30px auto", padding: "0 30px" }}>
-        <Typography mb="0.5rem" fontWeight="bold" fontSize="29px">
+      <Container
+        className={classes.welcome__container}
+        sx={{ margin: "30px auto", padding: "0 30px" }}
+      >
+        <Typography
+          className={classes.welcome__title}
+          mb="0.5rem"
+          fontWeight="bold"
+          fontSize="29px"
+        >
           Welcome to Twitter!
         </Typography>
         <Typography

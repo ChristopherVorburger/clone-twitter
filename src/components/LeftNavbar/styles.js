@@ -6,4 +6,13 @@ export default makeStyles((theme) => ({
       display: "none",
     },
   },
+  container: {
+    marginLeft: "5%!important",
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
+    },
+    [theme.breakpoints.up("lg")]: {
+      marginLeft: "20%!important",
+    },
+  },
 }));

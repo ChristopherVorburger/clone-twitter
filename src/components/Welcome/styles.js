@@ -14,4 +14,15 @@ export default makeStyles((theme) => ({
       display: "none!important",
     },
   },
+  welcome__title: {
+    [theme.breakpoints.up("sm")]: {
+      fontSize: "25px!important",
+    },
+  },
+  welcome__container: {
+    [theme.breakpoints.up("sm")]: {
+      padding: "0 2rem!important",
+      maxWidth: "400px",
+    },
+  },
 }));

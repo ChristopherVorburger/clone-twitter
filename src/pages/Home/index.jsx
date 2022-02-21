@@ -6,6 +6,8 @@ import useStyles from "./styles";
 import LeftNavbar from "../../components/LeftNavbar";
 import Welcome from "../../components/Welcome";
 import NewTweet from "../../components/NewTweet";
+import { Box, Divider, Stack } from "@mui/material";
+import News from "../../components/News";
 
 const Home = () => {
   const classes = useStyles();
@@ -38,12 +40,22 @@ const Home = () => {
 
   return (
     <>
-      <LeftNavbar drawerWidth={drawerWidth} />
-      <main>
-        <Header drawerWidth={drawerWidth} />
-        <NewTweet drawerWidth={drawerWidth} />
-        <Welcome drawerWidth={drawerWidth} />
-      </main>
+      <Stack direction="row">
+        <LeftNavbar drawerWidth={drawerWidth} />
+        <Box
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          borderLeft="1px solid #eff3f4"
+          borderRight="1px solid #eff3f4"
+        >
+          <Header drawerWidth={drawerWidth} />
+          <NewTweet drawerWidth={drawerWidth} />
+          <Divider sx={{ borderColor: "#eff3f4" }} />
+          <Welcome drawerWidth={drawerWidth} />
+        </Box>
+        <News />
+      </Stack>
       <BottomNavigation />
     </>
   );
