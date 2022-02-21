@@ -7,7 +7,6 @@ export default makeStyles((theme) => ({
     },
   },
   container: {
-    border: "1px solid red",
     marginLeft: "10%!important",
     [theme.breakpoints.down("sm")]: {
       display: "none",

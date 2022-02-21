@@ -30,6 +30,7 @@ const NewTweet = ({ drawerWidth }) => {
     <Box
       className={classes.new_tweet}
       sx={{
+        width: "100%",
         maxWidth: "600px",
         ml: "1.5rem",
       }}
@@ -77,10 +78,9 @@ const NewTweet = ({ drawerWidth }) => {
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
-              borderTop: "0.1px solid lightgrey",
-              borderBottom: "0.1px solid lightgrey",
               padding: "1rem 0",
               width: "100%",
+              borderTop: "1px solid #eff3f4",
             }}
           >
             <Box>
