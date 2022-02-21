@@ -52,6 +52,7 @@ const LeftNavbar = ({ drawerWidth }) => {
                     transform: "scale(1.2)",
                     color: "primary.main",
                     margin: "0.5rem",
+                    minWidth: "20px",
                   }}
                 >
                   <icons.TwitterIcon />
@@ -109,7 +110,7 @@ const LeftNavbar = ({ drawerWidth }) => {
                 sx={{
                   display: "flex",
                   justifyContent: "center",
-                  ml: "0.8rem",
+                  minWidth: "20px",
                 }}
               >
                 <ProfileButton />
