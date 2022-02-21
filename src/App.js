@@ -1,7 +1,5 @@
-import React from "react";
 import { Routes, Route } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-
 import Prehome from "./pages/Prehome";
 import SignUp from "./pages/SignUp/SingUp";
 import Login from "./components/Login/Login";
@@ -28,10 +26,10 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <Routes>
-        <Route path="/" element={<Prehome />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/home" element={<Home />} />
+        <Route path='/' element={<Prehome />} />
+        <Route path='/signup' element={<SignUp />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/home' element={<Home />} />
       </Routes>
     </ThemeProvider>
   );
