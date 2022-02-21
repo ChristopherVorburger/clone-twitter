@@ -6,7 +6,7 @@ import useStyles from "./styles";
 import LeftNavbar from "../../components/LeftNavbar";
 import Welcome from "../../components/Welcome";
 import NewTweet from "../../components/NewTweet";
-import { Box } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 
 const Home = () => {
   const classes = useStyles();
@@ -39,18 +39,14 @@ const Home = () => {
 
   return (
     <>
-      <LeftNavbar drawerWidth={drawerWidth} />
-      <Box
-        width="100%"
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <Header drawerWidth={drawerWidth} />
-        <NewTweet drawerWidth={drawerWidth} />
-        <Welcome drawerWidth={drawerWidth} />
-      </Box>
+      <Stack direction="row">
+        <LeftNavbar drawerWidth={drawerWidth} />
+        <Box display="flex" flexDirection="column" justifyContent="center">
+          <Header drawerWidth={drawerWidth} />
+          <NewTweet drawerWidth={drawerWidth} />
+          <Welcome drawerWidth={drawerWidth} />
+        </Box>
+      </Stack>
       <BottomNavigation />
     </>
   );

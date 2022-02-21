@@ -12,13 +12,7 @@ const Header = ({ drawerWidth }) => {
   const classes = useStyles();
 
   return (
-    <Box
-      sx={{
-        flexGrow: 1,
-        width: `calc(100% - ${drawerWidth}px)`,
-        ml: `${drawerWidth}px`,
-      }}
-    >
+    <Box>
       <AppBar color="inherit" position="static" elevation={0}>
         <Toolbar>
           <Box className={classes.header__button_profile}>

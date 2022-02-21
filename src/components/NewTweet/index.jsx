@@ -31,8 +31,7 @@ const NewTweet = ({ drawerWidth }) => {
       className={classes.new_tweet}
       sx={{
         maxWidth: "600px",
-        width: `calc(100% - ${drawerWidth}px)`,
-        ml: `${drawerWidth * 1.3}px`,
+        ml: "1.5rem",
       }}
     >
       <Stack direction="row">
