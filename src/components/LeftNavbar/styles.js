@@ -15,4 +15,9 @@ export default makeStyles((theme) => ({
       marginLeft: "20%!important",
     },
   },
+  icon__profile: {
+    "&:hover": {
+      backgroundColor: "none!important",
+    },
+  },
 }));

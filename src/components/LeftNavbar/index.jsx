@@ -32,45 +32,72 @@ const LeftNavbar = ({ drawerWidth }) => {
           justifyContent="space-between"
           height="100vh"
         >
-          <Box display="flex" alignItems="flex-end">
+          <Box display="flex" alignItems="flex-end" mr="1rem">
             <List>
-              <ListItem button>
+              <ListItemButton sx={{ borderRadius: "50px" }}>
                 <ListItemIcon
                   sx={{
+                    display: "flex",
+                    justifyContent: "center",
                     transform: "scale(1.2)",
-                    mb: "1rem",
                     color: "primary.main",
+                    margin: "0.5rem",
                   }}
                 >
                   <icons.TwitterIcon />
                 </ListItemIcon>
-              </ListItem>
+              </ListItemButton>
               {/* Loop through the 'iconsArray' array and use the render() function to display the component */}
               {iconsArray.map((icon, index) => {
                 return (
-                  <ListItemButton component={Link} to={icon.path} key={index}>
-                    <ListItemIcon sx={{ transform: "scale(1.2)", mb: "1rem" }}>
+                  <ListItemButton
+                    component={Link}
+                    to={icon.path}
+                    key={index}
+                    sx={{ borderRadius: "50px" }}
+                  >
+                    <ListItemIcon
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        transform: "scale(1.2)",
+                        m: "0.5rem",
+                      }}
+                    >
                       {icon.name.type.render()}
                     </ListItemIcon>
                   </ListItemButton>
                 );
               })}
-              <ListItem button sx={{ bottom: "-8rem" }}>
+              <ListItemButton
+                sx={{
+                  left: "1.5rem",
+                  bottom: "-8.5rem",
+                  backgroundColor: "white!important",
+                }}
+              >
                 <ListItemIcon
                   sx={{
                     transform: "scale(1)",
-                    mb: "1rem",
                   }}
                 >
                   <AddTweetButton />
                 </ListItemIcon>
-              </ListItem>
+              </ListItemButton>
             </List>
           </Box>
-          <Box>
-            <ListItem button>
-              <ProfileButton />
-            </ListItem>
+          <Box mr="1rem">
+            <ListItemButton sx={{ backgroundColor: "white!important" }}>
+              <ListItemIcon
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  ml: "0.8rem",
+                }}
+              >
+                <ProfileButton />
+              </ListItemIcon>
+            </ListItemButton>
           </Box>
         </Box>
       </Box>
