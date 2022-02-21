@@ -1,26 +1,27 @@
 import React from "react";
-import Drawer from "@mui/material/Drawer";
-import { Toolbar, List, ListItem, ListItemIcon, AppBar } from "@mui/material";
+import { List, ListItem, ListItemIcon, ListItemButton } from "@mui/material";
 
 import { icons } from "../../constants";
 
 import useStyles from "./styles";
 import ProfileButton from "../buttons/ProfileButton";
 import AddTweetButton from "../buttons/AddTweetButton";
+import { Link } from "react-router-dom";
+
 import { Box } from "@mui/system";
 
 const LeftNavbar = ({ drawerWidth }) => {
   const classes = useStyles();
 
   const iconsArray = [
-    icons.HomeSharpIcon,
-    icons.SearchSharpIcon,
-    icons.NotificationsOutlinedIcon,
-    icons.EmailOutlinedIcon,
-    icons.BookmarkBorderIcon,
-    icons.FeaturedPlayListOutlinedIcon,
-    icons.PersonOutlineOutlinedIcon,
-    icons.MoreHorizIcon,
+    { name: icons.HomeSharpIcon, path: "/home" },
+    { name: icons.SearchSharpIcon, path: "/explore" },
+    { name: icons.NotificationsOutlinedIcon, path: "/notifications" },
+    { name: icons.EmailOutlinedIcon, path: "/messages" },
+    { name: icons.BookmarkBorderIcon, path: "/bookmarks" },
+    { name: icons.FeaturedPlayListOutlinedIcon, path: "/" },
+    { name: icons.PersonOutlineOutlinedIcon, path: "/" },
+    { name: icons.MoreHorizIcon, path: "" },
   ];
   return (
     <Box className={classes.container}>
@@ -47,11 +48,11 @@ const LeftNavbar = ({ drawerWidth }) => {
               {/* Loop through the 'iconsArray' array and use the render() function to display the component */}
               {iconsArray.map((icon, index) => {
                 return (
-                  <ListItem button key={index}>
+                  <ListItemButton component={Link} to={icon.path} key={index}>
                     <ListItemIcon sx={{ transform: "scale(1.2)", mb: "1rem" }}>
-                      {icon.type.render()}
+                      {icon.name.type.render()}
                     </ListItemIcon>
-                  </ListItem>
+                  </ListItemButton>
                 );
               })}
               <ListItem button sx={{ bottom: "-8rem" }}>

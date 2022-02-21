@@ -19,12 +19,12 @@ const NewTweet = () => {
   const classes = useStyles();
 
   const iconsArray = [
-    icons.ImageOutlinedIcon,
-    icons.GifBoxOutlinedIcon,
-    icons.LeaderboardOutlinedIcon,
-    icons.SentimentSatisfiedAltOutlinedIcon,
-    icons.CalendarTodayOutlinedIcon,
-    icons.FmdGoodOutlinedIcon,
+    { name: icons.ImageOutlinedIcon, path: "/" },
+    { name: icons.GifBoxOutlinedIcon, path: "/" },
+    { name: icons.LeaderboardOutlinedIcon, path: "/" },
+    { name: icons.SentimentSatisfiedAltOutlinedIcon, path: "/" },
+    { name: icons.CalendarTodayOutlinedIcon, path: "/" },
+    { name: icons.FmdGoodOutlinedIcon, path: "/" },
   ];
   return (
     <Box
@@ -105,7 +105,7 @@ const NewTweet = () => {
                           color: "primary.main",
                         }}
                       >
-                        {icon.type.render()}
+                        {icon.name.type.render()}
                       </ListItemIcon>
                     </ListItemButton>
                   );
