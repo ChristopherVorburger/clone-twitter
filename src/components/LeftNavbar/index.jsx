@@ -1,5 +1,11 @@
 import React from "react";
-import { List, ListItem, ListItemIcon, ListItemButton } from "@mui/material";
+import {
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemButton,
+  ListItemText,
+} from "@mui/material";
 
 import { icons } from "../../constants";
 
@@ -14,14 +20,18 @@ const LeftNavbar = ({ drawerWidth }) => {
   const classes = useStyles();
 
   const iconsArray = [
-    { name: icons.HomeSharpIcon, path: "/home" },
-    { name: icons.SearchSharpIcon, path: "/explore" },
-    { name: icons.NotificationsOutlinedIcon, path: "/notifications" },
-    { name: icons.EmailOutlinedIcon, path: "/messages" },
-    { name: icons.BookmarkBorderIcon, path: "/bookmarks" },
-    { name: icons.FeaturedPlayListOutlinedIcon, path: "/" },
-    { name: icons.PersonOutlineOutlinedIcon, path: "/" },
-    { name: icons.MoreHorizIcon, path: "" },
+    { name: icons.HomeSharpIcon, path: "/home", text: "Home" },
+    { name: icons.SearchSharpIcon, path: "/explore", text: "Explore" },
+    {
+      name: icons.NotificationsOutlinedIcon,
+      path: "/notifications",
+      text: "Notifications",
+    },
+    { name: icons.EmailOutlinedIcon, path: "/messages", text: "Messages" },
+    { name: icons.BookmarkBorderIcon, path: "/bookmarks", text: "Bookmarks" },
+    { name: icons.FeaturedPlayListOutlinedIcon, path: "/", text: "Lists" },
+    { name: icons.PersonOutlineOutlinedIcon, path: "/", text: "Profile" },
+    { name: icons.MoreHorizIcon, path: "", text: "More" },
   ];
   return (
     <Box className={classes.container}>
@@ -62,10 +72,17 @@ const LeftNavbar = ({ drawerWidth }) => {
                         justifyContent: "center",
                         transform: "scale(1.2)",
                         m: "0.5rem",
+                        minWidth: "20px",
                       }}
                     >
                       {icon.name.type.render()}
                     </ListItemIcon>
+                    <ListItemText
+                      className={classes.icon__text}
+                      sx={{ ml: "1rem" }}
+                    >
+                      {icon.text}
+                    </ListItemText>
                   </ListItemButton>
                 );
               })}
