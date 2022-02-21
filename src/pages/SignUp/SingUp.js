@@ -184,7 +184,7 @@ const PasswordInput = ({ setRegisterPassword }) => {
   );
 };
 
-function SingUp() {
+function SignUp() {
   const classes = useStyles();
   const [switchPhoneEmail, setSwitchPhoneEmail] = React.useState("Email");
   const [registerEmail, setRegisterEmail] = React.useState("");
@@ -214,10 +214,10 @@ function SingUp() {
       >
         <Stack className="logoAndClose" direction="row" alignItems="center">
           <Link to="/">
-            <CloseButton />
+            <CloseButton role="button" />
           </Link>
           <Stack className={classes.logo}>
-            <LogoTwitter />
+            <LogoTwitter role="logo" />
           </Stack>
         </Stack>
         <Stack
@@ -231,10 +231,11 @@ function SingUp() {
               Créer votre compte
             </Typography>
             <Stack className="input" spacing={4}>
-              <InputName />
+              <InputName role="input" />
               <InputPhoneEmail
                 switchPhoneEmail={switchPhoneEmail}
                 setRegisterEmail={setRegisterEmail}
+                role="input"
               />
             </Stack>
             <SwitchPhoneEmail
@@ -245,7 +246,10 @@ function SingUp() {
           <Typography className={classes.birthdayPasswordTitle}>
             Créer votre mot de passe
           </Typography>
-          <PasswordInput setRegisterPassword={setRegisterPassword} />
+          <PasswordInput
+            setRegisterPassword={setRegisterPassword}
+            role="input"
+          />
           <Stack className="birthday">
             <Typography className={classes.birthdayPasswordTitle}>
               Date de naissance
@@ -255,13 +259,14 @@ function SingUp() {
               votre âge, même si ce compte est pour une entreprise, un animal de
               compagnie ou autre chose.
             </Typography>
-            <MMDDYYYYInput />
+            <MMDDYYYYInput role="input" />
           </Stack>
           <Stack className="nextButton" backgroundColor="white">
             <Button
               className={classes.nextButton}
               size="large"
               onClick={register}
+              role="button"
             >
               Suivant
             </Button>
@@ -271,4 +276,4 @@ function SingUp() {
     </div>
   );
 }
-export default SingUp;
+export default SignUp;
