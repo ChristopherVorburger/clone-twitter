@@ -15,7 +15,7 @@ import { icons } from "../../constants";
 
 import useStyles from "./styles";
 
-const NewTweet = ({ drawerWidth }) => {
+const NewTweet = () => {
   const classes = useStyles();
 
   const iconsArray = [

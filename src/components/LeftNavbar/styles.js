@@ -7,11 +7,11 @@ export default makeStyles((theme) => ({
     },
   },
   container: {
-    marginLeft: "10%!important",
+    marginLeft: "5%!important",
     [theme.breakpoints.down("sm")]: {
       display: "none",
     },
-    [theme.breakpoints.up("md")]: {
+    [theme.breakpoints.up("lg")]: {
       marginLeft: "20%!important",
     },
   },
