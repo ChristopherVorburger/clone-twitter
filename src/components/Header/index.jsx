@@ -33,7 +33,7 @@ const Header = ({ drawerWidth }) => {
             Home
           </Typography>
 
-          <IconButton sx={{ padding: "0" }} aria-label="menu">
+          <IconButton sx={{ padding: "1rem" }} aria-label="menu">
             <icons.AutoAwesomeSharpIcon
               sx={{
                 color: "black.main",
