@@ -1,13 +1,20 @@
 import React from "react";
-import { IconButton, Stack, Typography } from "@mui/material";
+import { IconButton, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 
 import { icons } from "../../../constants";
+import useStyles from "./styles";
 
 const Trend = ({ position, category, title, nbTweets }) => {
+  const classes = useStyles();
   return (
-    <Box mb="1rem">
-      <Box display="flex" justifyContent="space-between" alignItems="center">
+    <Box className={classes.container} p="1rem">
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        height="1.2rem"
+      >
         <Box display="flex">
           <Typography fontSize="13px" color="grey.main" mr="0.2rem">
             {position}
