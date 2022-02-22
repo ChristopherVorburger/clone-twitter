@@ -105,6 +105,7 @@ function SwitchPhoneEmail({ switchPhoneEmail, setSwitchPhoneEmail }) {
       <Typography
         className={classes.switchPhoneEmail}
         onClick={() => setSwitchPhoneEmail("Email")}
+        width={140}
       >
         Utiliser un téléphone
       </Typography>
@@ -114,6 +115,7 @@ function SwitchPhoneEmail({ switchPhoneEmail, setSwitchPhoneEmail }) {
       <Typography
         className={classes.switchPhoneEmail}
         onClick={() => setSwitchPhoneEmail("Phone")}
+        width={110}
       >
         Utiliser un email
       </Typography>
@@ -166,7 +168,7 @@ const PasswordInput = ({ setRegisterPassword }) => {
   const [isOk, setIsOk] = React.useState(false);
 
   const handleChange = (e) => {
-    e.target.value.length >= 10 ? setIsOk(false) : setIsOk(true);
+    e.target.value.length >= 6 ? setIsOk(false) : setIsOk(true);
     setRegisterPassword(e.target.value);
   };
   return (
