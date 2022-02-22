@@ -17,8 +17,13 @@ export default function App() {
         darker: "#0f1419",
       },
       grey: {
-        main: "#ccd6dd",
-        darker: "#536471",
+        main: "#536471",
+        button: "#cfd9de",
+        background__input: "#eff3f4",
+        background__trend: "#f7f9f9",
+      },
+      white: {
+        main: "#ffffff",
       },
     },
   });
@@ -26,10 +31,10 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <Routes>
-        <Route path='/' element={<Prehome />} />
-        <Route path='/signup' element={<SignUp />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/home' element={<Home />} />
+        <Route path="/" element={<Prehome />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/home" element={<Home />} />
       </Routes>
     </ThemeProvider>
   );
