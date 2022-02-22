@@ -9,22 +9,22 @@ const Trend = ({ position, category, title, nbTweets }) => {
     <Box mb="1rem">
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Box display="flex">
-          <Typography fontSize="13px" color="#536471" mr="0.2rem">
+          <Typography fontSize="13px" color="grey.main" mr="0.2rem">
             {position}
           </Typography>
-          <Typography fontSize="13px" color="#536471">
+          <Typography fontSize="13px" color="grey.main">
             ·
           </Typography>
           {category?.includes("Trending") ? (
-            <Typography fontSize="13px" color="#536471" m="0 0.2rem">
+            <Typography fontSize="13px" color="grey.main" m="0 0.2rem">
               {category}
             </Typography>
           ) : (
             <>
-              <Typography fontSize="13px" color="#536471" m="0 0.2rem">
+              <Typography fontSize="13px" color="grey.main" m="0 0.2rem">
                 {category}
               </Typography>
-              <Typography fontSize="13px" color="#536471">
+              <Typography fontSize="13px" color="grey.main">
                 · Trending
               </Typography>
             </>

@@ -14,7 +14,7 @@ const News = () => {
         className={classes.input}
         sx={{
           padding: "0.5rem",
-          backgroundColor: "#f7f9f9",
+          backgroundColor: "grey.background__input",
           borderRadius: "50px",
           content: "none",
         }}
@@ -26,8 +26,13 @@ const News = () => {
         }
         placeholder="Search Twitter"
       />
-      <Box m="2rem auto" p="1rem" backgroundColor="#f7f9f9" borderRadius="20px">
-        <Typography fontSize="20px" mb="2rem" fontWeight="bold">
+      <Box
+        m="1rem auto"
+        p="1rem"
+        backgroundColor="grey.background__trend"
+        borderRadius="20px"
+      >
+        <Typography fontSize="20px" mb="1rem" fontWeight="bold">
           Trends
         </Typography>
         <Box>
@@ -63,7 +68,12 @@ const News = () => {
           />
         </Box>
       </Box>
-      <Box m="2rem auto" p="1rem" backgroundColor="#f7f9f9" borderRadius="20px">
+      <Box
+        m="2rem auto"
+        p="1rem"
+        backgroundColor="grey.background__trend"
+        borderRadius="20px"
+      >
         <Typography fontSize="20px" mb="2rem" fontWeight="bold">
           Who to follow
         </Typography>
