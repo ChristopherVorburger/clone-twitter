@@ -1,126 +1,58 @@
-import React, { useRef, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import useStyles from "./Styles";
 import CloseButton from "../../components/CloseButton/CloseButton";
 import LogoTwitter from "../../components/TwitterLogo/TwitterLogo";
 import { Typography, Button, TextField, Box, Stack } from "@mui/material";
-import { SelectMonth, SelectDay, SelectYear } from "./DataSelect";
-import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../../context/authContext";
-import Alert from "@mui/material/Alert";
+import MenuItem from "@mui/material/MenuItem";
+import { selectMonth } from "./DataSelect";
+import { Link } from "react-router-dom";
+import { db } from "../../firebase-config";
+import { collection, getDocs, addDoc } from "firebase/firestore";
 
 function SignUp() {
   const classes = useStyles();
-  const nameRef = useRef();
-  const phoneRef = useRef();
-  const emailRef = useRef();
-  const passwordRef = useRef();
-  const monthRef = useRef();
-  const dayRef = useRef();
-  const yearRef = useRef();
-  const { signup } = useContext(AuthContext);
-  const navigate = useNavigate();
   const [switchPhoneEmail, setSwitchPhoneEmail] = React.useState("Email");
-  const [errorCreateAccount, setErrorCreateAccount] = React.useState(false);
-  const [loading, setLoading] = React.useState(false);
 
-  async function handleSubmit(e) {
-    e.preventDefault();
+  const [newName, setNewName] = React.useState("");
+  const [newEmail, setNewEmail] = React.useState("");
+  const [newPhone, setNewPhone] = React.useState("");
+  const [newPassword, setNewPassword] = React.useState("");
+  const [newMonth, setNewMonth] = React.useState("");
+  const [newDay, setNewDay] = React.useState(0);
+  const [newYear, setNewYear] = React.useState(0);
 
-    try {
-      setErrorCreateAccount("");
-      setLoading(true);
-      await signup(
-        nameRef.current[0].value,
-        phoneRef.current[1].value || emailRef.current[1].value,
-        passwordRef.current[2].value,
-        monthRef.current[3].value,
-        dayRef.current[4].value,
-        yearRef.current[5].value
-      );
-      navigate("/home");
-    } catch {
-      setErrorCreateAccount(true);
-    }
-    setLoading(false);
-  }
+  const [users, setUsers] = useState([]);
+  const usersCollectionRef = collection(db, "users");
 
-  const InputName = () => {
-    const handleChange = (e) => {};
-    return (
-      <Box>
-        <TextField
-          variant="outlined"
-          label="Nom et prénom"
-          fullWidth={true}
-          autoFocus={true}
-          onChange={handleChange}
-          ref={nameRef}
-        />
-      </Box>
-    );
+  const createUser = async () => {
+    await addDoc(usersCollectionRef, {
+      name: newName,
+      email: newEmail,
+      phone: newPhone,
+      password: newPassword,
+      age: {
+        month: newMonth,
+        day: newDay,
+        year: newYear,
+      },
+    });
   };
 
-  function InputPhoneEmail({ switchPhoneEmail }) {
-    const InputPhone = () => {
-      const handleChange = (e) => {};
-      return (
-        <Box>
-          <TextField
-            variant="outlined"
-            label="Téléphone"
-            fullWidth={true}
-            onChange={handleChange}
-            ref={phoneRef}
-          />
-        </Box>
-      );
+  useEffect(() => {
+    const getUsers = async () => {
+      const data = await getDocs(usersCollectionRef);
+      setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     };
 
-    const InputEmail = () => {
-      const handleChange = (e) => {};
-      return (
-        <Box>
-          <TextField
-            variant="outlined"
-            label="Email"
-            fullWidth={true}
-            onChange={handleChange}
-            ref={emailRef}
-          />
-        </Box>
-      );
-    };
+    getUsers();
+  }, []);
 
-    let inputRender;
+  const [errorName, setErrorName] = React.useState(false);
+  const [errorPhone, setErrorPhone] = React.useState(false);
+  const [errorEmail, setErrorEmail] = React.useState(false);
+  const [passwordIsOk, setPasswordIsOk] = React.useState(false);
 
-    if (switchPhoneEmail === "Phone") {
-      inputRender = <InputEmail />;
-    } else if (switchPhoneEmail === "Email") {
-      inputRender = <InputPhone />;
-    }
-
-    return <>{inputRender}</>;
-  }
-
-  const PasswordInput = () => {
-    const handleChange = (e) => {};
-    return (
-      <Box>
-        <TextField
-          type="password"
-          variant="outlined"
-          label="Mot de passe"
-          fullWidth={true}
-          onChange={handleChange}
-          ref={passwordRef}
-        />
-      </Box>
-    );
-  };
-
-  const SwitchPhoneEmail = ({ switchPhoneEmail, setSwitchPhoneEmail }) => {
-    const classes = useStyles();
-
+  function SwitchPhoneEmail() {
     let switchRender;
 
     if (switchPhoneEmail === "Phone") {
@@ -146,33 +78,21 @@ function SignUp() {
     }
 
     return <>{switchRender}</>;
-  };
+  }
+
+  const [month, setMonth] = React.useState("");
+  const [day, setDay] = React.useState("");
+  const selectDay = [];
+  for (let i = 0; i < 32; i++) {
+    selectDay.push({ value: `${i}`, label: `${i}` });
+  }
+  const [year, setYear] = React.useState("");
+  const selectYear = [];
+  for (let i = 2022; i > 1901; i--) {
+    selectYear.push({ value: `${i}`, label: `${i}` });
+  }
 
   function MMDDYYYYInput() {
-    const MonthInput = () => {
-      return (
-        <Box width="48%" ref={monthRef}>
-          <SelectMonth />
-        </Box>
-      );
-    };
-
-    const DayInput = () => {
-      return (
-        <Box width="22%" ref={dayRef}>
-          <SelectDay />
-        </Box>
-      );
-    };
-
-    const YearInput = () => {
-      return (
-        <Box width="30%" ref={yearRef}>
-          <SelectYear />
-        </Box>
-      );
-    };
-
     return (
       <Stack
         className="MM-DD-YYYYInput"
@@ -180,9 +100,69 @@ function SignUp() {
         marginTop="15px"
         spacing={2}
       >
-        <MonthInput />
-        <DayInput />
-        <YearInput />
+        <Box component="form" width="48%">
+          <TextField
+            select
+            label="Mois"
+            value={month}
+            onChange={(e) => {
+              setMonth(e.target.value);
+              setNewMonth(e.target.value);
+            }}
+            fullWidth={true}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          >
+            {selectMonth.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+        </Box>
+        <Box component="form" width="22%">
+          <TextField
+            select
+            label="Jour"
+            value={day}
+            onChange={(e) => {
+              setDay(e.target.value);
+              setNewDay(e.target.value);
+            }}
+            fullWidth={true}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          >
+            {selectDay.map((item) => (
+              <MenuItem key={item.value} value={item.value}>
+                {item.label}
+              </MenuItem>
+            ))}
+          </TextField>
+        </Box>
+        <Box component="form" width="30%">
+          <TextField
+            select
+            label="Année"
+            value={year}
+            onChange={(e) => {
+              setYear(e.target.value);
+              setNewYear(e.target.value);
+            }}
+            fullWidth={true}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          >
+            {selectYear.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+        </Box>
       </Stack>
     );
   }
@@ -198,64 +178,146 @@ function SignUp() {
       >
         <Stack className="logoAndClose" direction="row" alignItems="center">
           <Link to="/">
-            <CloseButton />
+            <CloseButton role="button" />
           </Link>
           <Stack className={classes.logo}>
-            <LogoTwitter />
+            <LogoTwitter role="logo" />
           </Stack>
         </Stack>
-        {errorCreateAccount && (
-          <Alert severity="error">La création du compte à échoué</Alert>
-        )}
-        <form name="formSignup" onSubmit={handleSubmit}>
-          <Stack
-            className={classes.signupContainer}
-            width="100%"
-            justifyContent="center"
-            spacing={2}
-          >
-            <Stack className="accountCreate" spacing={4}>
-              <Typography className={classes.accountCreateTitle}>
-                Créer votre compte
-              </Typography>
-              <Stack className="input" spacing={4}>
-                <InputName />
-                <InputPhoneEmail switchPhoneEmail={switchPhoneEmail} />
-              </Stack>
-              <SwitchPhoneEmail
-                switchPhoneEmail={switchPhoneEmail}
-                setSwitchPhoneEmail={setSwitchPhoneEmail}
-              />
-            </Stack>
-            <Typography className={classes.birthdayPasswordTitle}>
-              Créer votre mot de passe
+        <Stack
+          className={classes.signupContainer}
+          width="100%"
+          justifyContent="center"
+          spacing={2}
+        >
+          <Stack className="accountCreate" spacing={4}>
+            <Typography className={classes.accountCreateTitle}>
+              Créer votre compte
             </Typography>
-            <PasswordInput />
-            <Stack className="birthday">
-              <Typography className={classes.birthdayPasswordTitle}>
-                Date de naissance
-              </Typography>
-              <Typography className={classes.birthdayText}>
-                Cette information ne sera pas affichée publiquement. Confirmez
-                votre âge, même si ce compte est pour une entreprise, un animal
-                de compagnie ou autre chose.
-              </Typography>
-              <MMDDYYYYInput />
+            <Stack className="input" spacing={4}>
+              <Box component="form">
+                <TextField
+                  type="text"
+                  variant="outlined"
+                  label="Nom et prénom"
+                  fullWidth={true}
+                  autoFocus={true}
+                  onChange={(e) => {
+                    e.target.value.length >= 2
+                      ? setErrorName(false)
+                      : setErrorName(true);
+                    setNewName(e.target.value);
+                  }}
+                  error={errorName}
+                  helperText={
+                    errorName === true ? "Quel est votre nom ?" : null
+                  }
+                />
+              </Box>
+              {switchPhoneEmail === "Phone" ? (
+                <Box component="form">
+                  <TextField
+                    type="text"
+                    variant="outlined"
+                    label="Email"
+                    fullWidth={true}
+                    onChange={(e) => {
+                      e.target.value.includes("@") &&
+                      e.target.value.includes(".")
+                        ? setErrorEmail(false)
+                        : setErrorEmail(true);
+                      setNewEmail(e.target.value);
+                    }}
+                    error={errorEmail}
+                    helperText={
+                      errorEmail === true
+                        ? "Veuillez entrer un email valide."
+                        : null
+                    }
+                  />
+                </Box>
+              ) : switchPhoneEmail === "Email" ? (
+                <Box component="form">
+                  <TextField
+                    type="number"
+                    variant="outlined"
+                    label="Téléphone"
+                    fullWidth={true}
+                    onChange={(e) => {
+                      e.target.value.length === 10
+                        ? setErrorPhone(false)
+                        : setErrorPhone(true);
+                      setNewPhone(e.target.value);
+                    }}
+                    error={errorPhone}
+                    helperText={
+                      errorPhone === true
+                        ? "Veuillez entrer un numéro de téléphone valide."
+                        : null
+                    }
+                  />
+                </Box>
+              ) : null}
             </Stack>
-            <Stack className="nextButton" backgroundColor="white">
-              <Button
-                type="submit"
-                className={classes.nextButton}
-                size="large"
-                disabled={loading}
-              >
-                Suivant
-              </Button>
-            </Stack>
+            <SwitchPhoneEmail
+              switchPhoneEmail={switchPhoneEmail}
+              setSwitchPhoneEmail={setSwitchPhoneEmail}
+            />
           </Stack>
-        </form>
+          <Typography className={classes.birthdayPasswordTitle}>
+            Créer votre mot de passe
+          </Typography>
+          <Box component="form">
+            <TextField
+              type="password"
+              variant="outlined"
+              label="Mot de passe"
+              fullWidth={true}
+              onChange={(e) => {
+                e.target.value.length >= 6
+                  ? setPasswordIsOk(false)
+                  : setPasswordIsOk(true);
+                setNewPassword(e.target.value);
+              }}
+              error={passwordIsOk}
+              helperText={
+                passwordIsOk === true
+                  ? "Votre mot de passe est trop cour"
+                  : null
+              }
+            />
+          </Box>
+          <Stack className="birthday">
+            <Typography className={classes.birthdayPasswordTitle}>
+              Date de naissance
+            </Typography>
+            <Typography className={classes.birthdayText}>
+              Cette information ne sera pas affichée publiquement. Confirmez
+              votre âge, même si ce compte est pour une entreprise, un animal de
+              compagnie ou autre chose.
+            </Typography>
+            <MMDDYYYYInput />
+          </Stack>
+          <Stack className="nextButton" backgroundColor="white">
+            <Button
+              className={classes.nextButton}
+              size="large"
+              onClick={createUser}
+            >
+              Suivant
+            </Button>
+          </Stack>
+        </Stack>
       </Stack>
+      {users.map((user) => {
+        return (
+          <div>
+            <h1>Name: {user.name}</h1>
+          </div>
+        );
+      })}
     </div>
   );
 }
+
 export default SignUp;
