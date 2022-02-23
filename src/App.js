@@ -4,6 +4,7 @@ import Prehome from "./pages/Prehome";
 import SignUp from "./pages/SignUp/SingUp";
 import Login from "./components/Login/Login";
 import Home from "./pages/Home";
+import Exemple from "./components/Exemple";
 
 export default function App() {
   // Création d'un thème pour changer la couleur principale de MUI
@@ -17,8 +18,13 @@ export default function App() {
         darker: "#0f1419",
       },
       grey: {
-        main: "#ccd6dd",
-        darker: "#536471",
+        main: "#536471",
+        button: "#cfd9de",
+        background__input: "#eff3f4",
+        background__trend: "#f7f9f9",
+      },
+      white: {
+        main: "#ffffff",
       },
     },
   });
@@ -26,10 +32,11 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <Routes>
-        <Route path='/' element={<Prehome />} />
-        <Route path='/signup' element={<SignUp />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/home' element={<Home />} />
+        <Route path="/" element={<Prehome />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/exemple" element={<Exemple />} />
       </Routes>
     </ThemeProvider>
   );

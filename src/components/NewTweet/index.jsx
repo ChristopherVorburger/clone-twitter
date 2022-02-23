@@ -126,7 +126,7 @@ const NewTweet = () => {
                 <Typography
                   sx={{
                     fontWeight: "bold",
-                    color: "#fff",
+                    color: "white.main",
                   }}
                 >
                   Tweet
