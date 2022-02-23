@@ -156,12 +156,6 @@ function SignUp() {
     );
   }
 
-  const globalErrorName = errorName === true && setNewName !== "";
-  const globalErrorPassword = passwordIsOk === true && setNewPassword !== "";
-  const globalErrorEmail = errorEmail === true && setNewEmail !== "";
-  const globalErrorPhone = errorPhone === true && setNewPhone !== null;
-  const globalError = globalErrorName + globalErrorPassword;
-
   return (
     <div className={classes.mainContainer}>
       <Stack
@@ -239,7 +233,7 @@ function SignUp() {
                     label="Téléphone"
                     fullWidth={true}
                     onChange={(e) => {
-                      e.target.value.length === 10
+                      e.target.value.length >= 10
                         ? setErrorPhone(false)
                         : setErrorPhone(true);
                       setNewPhone(e.target.value);
@@ -296,7 +290,6 @@ function SignUp() {
               className={classes.nextButton}
               size="large"
               onClick={createUser}
-              disabled={globalError === true ? true : false}
             >
               Suivant
             </Button>
