@@ -22,7 +22,7 @@ export default makeStyles((theme) => ({
   welcome__container: {
     [theme.breakpoints.up("sm")]: {
       padding: "0 2rem!important",
-      maxWidth: "400px",
+      maxWidth: "595px",
     },
   },
 }));

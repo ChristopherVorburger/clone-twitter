@@ -8,7 +8,6 @@ import Welcome from "../../components/Welcome";
 import NewTweet from "../../components/NewTweet";
 import { Box, Divider, Stack } from "@mui/material";
 import News from "../../components/News";
-import Exemple from "../../components/Exemple";
 
 const Home = () => {
   const classes = useStyles();
@@ -53,7 +52,7 @@ const Home = () => {
           <Header drawerWidth={drawerWidth} />
           <NewTweet drawerWidth={drawerWidth} />
           <Divider sx={{ borderColor: "background__input" }} />
-          <Welcome drawerWidth={drawerWidth} />
+          <Welcome />
         </Box>
         <News />
       </Stack>
