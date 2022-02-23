@@ -1,37 +1,16 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import useStyles from "./Styles";
 import CloseButton from "../../components/CloseButton/CloseButton";
 import LogoTwitter from "../../components/TwitterLogo/TwitterLogo";
 import { Typography, Button, TextField, Box, Stack } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import { selectMonth } from "./DataSelect";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { db } from "../../firebase-config";
 import { collection, getDocs, addDoc } from "firebase/firestore";
-import { AuthContext } from "../../context/authContext";
 
 function SignUp() {
   const classes = useStyles();
-
-  const { signUp } = useContext(AuthContext);
-  const navigate = useNavigate();
-
-  const inputs = useRef([]);
-  const addInputs = (inputValues) => {
-    if (inputValues && !inputs.current.includes(inputValues)) {
-      inputs.current.push(inputValues);
-    }
-  };
-
-  const handleForm = async (e) => {
-    e.preventDefault();
-    try {
-      await signUp(inputs.current[0].value, inputs.current[1].value);
-      navigate("/home");
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   const [newName, setNewName] = React.useState("");
   const [newEmail, setNewEmail] = React.useState("");
@@ -46,15 +25,9 @@ function SignUp() {
 
   const createUser = async () => {
     await addDoc(usersCollectionRef, {
-      name: newName,
-      email: newEmail,
-      phone: newPhone,
-      password: newPassword,
-      age: {
-        month: newMonth,
-        day: newDay,
-        year: newYear,
-      },
+      newName,
+      newEmail,
+      newPhone,
     });
   };
 
@@ -104,7 +77,7 @@ function SignUp() {
   const [month, setMonth] = React.useState("");
   const [day, setDay] = React.useState("");
   const selectDay = [];
-  for (let i = 0; i < 32; i++) {
+  for (let i = 1; i < 32; i++) {
     selectDay.push({ value: `${i}`, label: `${i}` });
   }
   const [year, setYear] = React.useState("");
@@ -183,6 +156,12 @@ function SignUp() {
     );
   }
 
+  const globalErrorName = errorName === true && setNewName !== "";
+  const globalErrorPassword = passwordIsOk === true && setNewPassword !== "";
+  const globalErrorEmail = errorEmail === true && setNewEmail !== "";
+  const globalErrorPhone = errorPhone === true && setNewPhone !== null;
+  const globalError = globalErrorName + globalErrorPassword;
+
   return (
     <div className={classes.mainContainer}>
       <Stack
@@ -205,7 +184,6 @@ function SignUp() {
           width="100%"
           justifyContent="center"
           spacing={2}
-          onSubmit={handleForm}
         >
           <Stack spacing={4}>
             <Typography className={classes.accountCreateTitle}>
@@ -219,7 +197,6 @@ function SignUp() {
                   label="Nom et prénom"
                   fullWidth={true}
                   autoFocus={true}
-                  inputRef={addInputs}
                   onChange={(e) => {
                     e.target.value.length >= 2
                       ? setErrorName(false)
@@ -239,7 +216,6 @@ function SignUp() {
                     variant="outlined"
                     label="Email"
                     fullWidth={true}
-                    inputRef={addInputs}
                     onChange={(e) => {
                       e.target.value.includes("@") &&
                       e.target.value.includes(".")
@@ -262,7 +238,6 @@ function SignUp() {
                     variant="outlined"
                     label="Téléphone"
                     fullWidth={true}
-                    inputRef={addInputs}
                     onChange={(e) => {
                       e.target.value.length === 10
                         ? setErrorPhone(false)
@@ -321,6 +296,7 @@ function SignUp() {
               className={classes.nextButton}
               size="large"
               onClick={createUser}
+              disabled={globalError === true ? true : false}
             >
               Suivant
             </Button>
