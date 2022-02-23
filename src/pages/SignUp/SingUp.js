@@ -1,212 +1,197 @@
-import React from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import useStyles from "./Styles";
 import CloseButton from "../../components/CloseButton/CloseButton";
 import LogoTwitter from "../../components/TwitterLogo/TwitterLogo";
 import { Typography, Button, TextField, Box, Stack } from "@mui/material";
-import { SelectMonth, SelectDay, SelectYear } from "./DataSelect";
-import { Link } from "react-router-dom";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../firebase-config";
-
-function InputName() {
-  const [error, setError] = React.useState(false);
-  const handleChange = (e) => {
-    e.target.value.length >= 3 && e.target.value.includes(" ")
-      ? setError(false)
-      : setError(true);
-  };
-  return (
-    <Box component="form">
-      <TextField
-        variant="outlined"
-        label="Nom et prénom"
-        fullWidth={true}
-        autoFocus={true}
-        onChange={handleChange}
-        error={error}
-        helperText={error === true ? "Quel est votre nom ?" : null}
-      />
-    </Box>
-  );
-}
-
-function InputPhoneEmail({ switchPhoneEmail }) {
-  const InputPhone = () => {
-    const [error, setError] = React.useState(false);
-    const handleChange = (e) => {
-      console.log(e.target.value);
-      typeof parseInt(e.target.value) === "number" &&
-      e.target.value.length === 10
-        ? setError(false)
-        : setError(true);
-    };
-    return (
-      <Box component="form">
-        <TextField
-          variant="outlined"
-          label="Téléphone"
-          fullWidth={true}
-          onChange={handleChange}
-          error={error}
-          helperText={
-            error === true
-              ? "Veuillez entrer un numéro de téléphone valide."
-              : null
-          }
-        />
-      </Box>
-    );
-  };
-
-  const InputEmail = ({ setRegisterEmail }) => {
-    const [error, setError] = React.useState(false);
-
-    const handleChange = (e) => {
-      console.log(e.target.value);
-      e.target.value.includes("@") && e.target.value.includes(".")
-        ? setError(false)
-        : setError(true);
-      setRegisterEmail(e.target.value);
-    };
-    return (
-      <Box>
-        <TextField
-          variant="outlined"
-          label="Email"
-          fullWidth={true}
-          onChange={handleChange}
-          error={error}
-          helperText={
-            error === true ? "Veuillez entrer un email valide." : null
-          }
-        />
-      </Box>
-    );
-  };
-
-  let inputRender;
-
-  if (switchPhoneEmail === "Phone") {
-    inputRender = <InputEmail />;
-  } else if (switchPhoneEmail === "Email") {
-    inputRender = <InputPhone />;
-  }
-
-  return <>{inputRender}</>;
-}
-
-function SwitchPhoneEmail({ switchPhoneEmail, setSwitchPhoneEmail }) {
-  const classes = useStyles();
-
-  let switchRender;
-
-  if (switchPhoneEmail === "Phone") {
-    switchRender = (
-      <Typography
-        className={classes.switchPhoneEmail}
-        onClick={() => setSwitchPhoneEmail("Email")}
-      >
-        Utiliser un téléphone
-      </Typography>
-    );
-  } else if (switchPhoneEmail === "Email") {
-    switchRender = (
-      <Typography
-        className={classes.switchPhoneEmail}
-        onClick={() => setSwitchPhoneEmail("Phone")}
-      >
-        Utiliser un email
-      </Typography>
-    );
-  }
-
-  return <>{switchRender}</>;
-}
-
-function MMDDYYYYInput() {
-  const MonthInput = () => {
-    return (
-      <Box component="form" width="48%">
-        <SelectMonth />
-      </Box>
-    );
-  };
-
-  const DayInput = () => {
-    return (
-      <Box component="form" width="22%">
-        <SelectDay />
-      </Box>
-    );
-  };
-
-  const YearInput = () => {
-    return (
-      <Box component="form" width="30%">
-        <SelectYear />
-      </Box>
-    );
-  };
-
-  return (
-    <Stack
-      className="MM-DD-YYYYInput"
-      direction="row"
-      marginTop="15px"
-      spacing={2}
-    >
-      <MonthInput />
-      <DayInput />
-      <YearInput />
-    </Stack>
-  );
-}
-
-const PasswordInput = ({ setRegisterPassword }) => {
-  const [isOk, setIsOk] = React.useState(false);
-
-  const handleChange = (e) => {
-    e.target.value.length >= 10 ? setIsOk(false) : setIsOk(true);
-    setRegisterPassword(e.target.value);
-  };
-  return (
-    <Box>
-      <TextField
-        type="password"
-        variant="outlined"
-        label="Mot de passe"
-        fullWidth={true}
-        onChange={handleChange}
-        error={isOk}
-        helperText={isOk === true ? "Votre mot de passe est trop cour" : null}
-      />
-    </Box>
-  );
-};
+import MenuItem from "@mui/material/MenuItem";
+import { selectMonth } from "./DataSelect";
+import { Link, useNavigate } from "react-router-dom";
+import { db } from "../../firebase-config";
+import { collection, getDocs, addDoc } from "firebase/firestore";
+import { AuthContext } from "../../context/authContext";
 
 function SignUp() {
   const classes = useStyles();
-  const [switchPhoneEmail, setSwitchPhoneEmail] = React.useState("Email");
-  const [registerEmail, setRegisterEmail] = React.useState("");
-  const [registerPassword, setRegisterPassword] = React.useState("");
 
-  const register = async () => {
-    try {
-      const user = await createUserWithEmailAndPassword(
-        auth,
-        registerEmail,
-        registerPassword
-      );
-      console.log(user);
-    } catch (error) {
-      console.log(error.message);
+  const { signUp } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const inputs = useRef([]);
+  const addInputs = (inputValues) => {
+    if (inputValues && !inputs.current.includes(inputValues)) {
+      inputs.current.push(inputValues);
     }
   };
+
+  const handleForm = async (e) => {
+    e.preventDefault();
+    try {
+      await signUp(inputs.current[0].value, inputs.current[1].value);
+      navigate("/home");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const [newName, setNewName] = React.useState("");
+  const [newEmail, setNewEmail] = React.useState("");
+  const [newPhone, setNewPhone] = React.useState("");
+  const [newPassword, setNewPassword] = React.useState("");
+  const [newMonth, setNewMonth] = React.useState("");
+  const [newDay, setNewDay] = React.useState(0);
+  const [newYear, setNewYear] = React.useState(0);
+
+  const [users, setUsers] = useState([]);
+  const usersCollectionRef = collection(db, "users");
+
+  const createUser = async () => {
+    await addDoc(usersCollectionRef, {
+      name: newName,
+      email: newEmail,
+      phone: newPhone,
+      password: newPassword,
+      age: {
+        month: newMonth,
+        day: newDay,
+        year: newYear,
+      },
+    });
+  };
+
+  useEffect(() => {
+    const getUsers = async () => {
+      const data = await getDocs(usersCollectionRef);
+      setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    };
+
+    getUsers();
+  }, [usersCollectionRef]);
+
+  const [switchPhoneEmail, setSwitchPhoneEmail] = React.useState("Email");
+  const [errorName, setErrorName] = React.useState(false);
+  const [errorPhone, setErrorPhone] = React.useState(false);
+  const [errorEmail, setErrorEmail] = React.useState(false);
+  const [passwordIsOk, setPasswordIsOk] = React.useState(false);
+
+  function SwitchPhoneEmail() {
+    let switchRender;
+
+    if (switchPhoneEmail === "Phone") {
+      switchRender = (
+        <Typography
+          className={classes.switchPhoneEmail}
+          onClick={() => setSwitchPhoneEmail("Email")}
+          width={140}
+        >
+          Utiliser un téléphone
+        </Typography>
+      );
+    } else if (switchPhoneEmail === "Email") {
+      switchRender = (
+        <Typography
+          className={classes.switchPhoneEmail}
+          onClick={() => setSwitchPhoneEmail("Phone")}
+          width={110}
+        >
+          Utiliser un email
+        </Typography>
+      );
+    }
+
+    return <>{switchRender}</>;
+  }
+
+  const [month, setMonth] = React.useState("");
+  const [day, setDay] = React.useState("");
+  const selectDay = [];
+  for (let i = 0; i < 32; i++) {
+    selectDay.push({ value: `${i}`, label: `${i}` });
+  }
+  const [year, setYear] = React.useState("");
+  const selectYear = [];
+  for (let i = 2022; i > 1901; i--) {
+    selectYear.push({ value: `${i}`, label: `${i}` });
+  }
+
+  function MMDDYYYYInput() {
+    return (
+      <Stack
+        className="MM-DD-YYYYInput"
+        direction="row"
+        marginTop="15px"
+        spacing={2}
+      >
+        <Box component="form" width="48%">
+          <TextField
+            select
+            label="Mois"
+            value={month}
+            onChange={(e) => {
+              setMonth(e.target.value);
+              setNewMonth(e.target.value);
+            }}
+            fullWidth={true}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          >
+            {selectMonth.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+        </Box>
+        <Box component="form" width="22%">
+          <TextField
+            select
+            label="Jour"
+            value={day}
+            onChange={(e) => {
+              setDay(e.target.value);
+              setNewDay(e.target.value);
+            }}
+            fullWidth={true}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          >
+            {selectDay.map((item) => (
+              <MenuItem key={item.value} value={item.value}>
+                {item.label}
+              </MenuItem>
+            ))}
+          </TextField>
+        </Box>
+        <Box component="form" width="30%">
+          <TextField
+            select
+            label="Année"
+            value={year}
+            onChange={(e) => {
+              setYear(e.target.value);
+              setNewYear(e.target.value);
+            }}
+            fullWidth={true}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          >
+            {selectYear.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+        </Box>
+      </Stack>
+    );
+  }
 
   return (
     <div className={classes.mainContainer}>
       <Stack
-        className={("page", classes.page)}
+        className={("box", classes.box)}
         heigth="100vh"
         width="83%"
         margin="0 auto"
@@ -225,18 +210,79 @@ function SignUp() {
           width="100%"
           justifyContent="center"
           spacing={2}
+          onSubmit={handleForm}
         >
           <Stack className="accountCreate" spacing={4}>
             <Typography className={classes.accountCreateTitle}>
               Créer votre compte
             </Typography>
             <Stack className="input" spacing={4}>
-              <InputName role="input" />
-              <InputPhoneEmail
-                switchPhoneEmail={switchPhoneEmail}
-                setRegisterEmail={setRegisterEmail}
-                role="input"
-              />
+              <Box component="form">
+                <TextField
+                  type="text"
+                  variant="outlined"
+                  label="Nom et prénom"
+                  fullWidth={true}
+                  autoFocus={true}
+                  inputRef={addInputs}
+                  onChange={(e) => {
+                    e.target.value.length >= 2
+                      ? setErrorName(false)
+                      : setErrorName(true);
+                    setNewName(e.target.value);
+                  }}
+                  error={errorName}
+                  helperText={
+                    errorName === true ? "Quel est votre nom ?" : null
+                  }
+                />
+              </Box>
+              {switchPhoneEmail === "Phone" ? (
+                <Box component="form">
+                  <TextField
+                    type="text"
+                    variant="outlined"
+                    label="Email"
+                    fullWidth={true}
+                    inputRef={addInputs}
+                    onChange={(e) => {
+                      e.target.value.includes("@") &&
+                      e.target.value.includes(".")
+                        ? setErrorEmail(false)
+                        : setErrorEmail(true);
+                      setNewEmail(e.target.value);
+                    }}
+                    error={errorEmail}
+                    helperText={
+                      errorEmail === true
+                        ? "Veuillez entrer un email valide."
+                        : null
+                    }
+                  />
+                </Box>
+              ) : switchPhoneEmail === "Email" ? (
+                <Box component="form">
+                  <TextField
+                    type="number"
+                    variant="outlined"
+                    label="Téléphone"
+                    fullWidth={true}
+                    inputRef={addInputs}
+                    onChange={(e) => {
+                      e.target.value.length === 10
+                        ? setErrorPhone(false)
+                        : setErrorPhone(true);
+                      setNewPhone(e.target.value);
+                    }}
+                    error={errorPhone}
+                    helperText={
+                      errorPhone === true
+                        ? "Veuillez entrer un numéro de téléphone valide."
+                        : null
+                    }
+                  />
+                </Box>
+              ) : null}
             </Stack>
             <SwitchPhoneEmail
               switchPhoneEmail={switchPhoneEmail}
@@ -246,10 +292,26 @@ function SignUp() {
           <Typography className={classes.birthdayPasswordTitle}>
             Créer votre mot de passe
           </Typography>
-          <PasswordInput
-            setRegisterPassword={setRegisterPassword}
-            role="input"
-          />
+          <Box component="form">
+            <TextField
+              type="password"
+              variant="outlined"
+              label="Mot de passe"
+              fullWidth={true}
+              onChange={(e) => {
+                e.target.value.length >= 6
+                  ? setPasswordIsOk(false)
+                  : setPasswordIsOk(true);
+                setNewPassword(e.target.value);
+              }}
+              error={passwordIsOk}
+              helperText={
+                passwordIsOk === true
+                  ? "Votre mot de passe est trop cour"
+                  : null
+              }
+            />
+          </Box>
           <Stack className="birthday">
             <Typography className={classes.birthdayPasswordTitle}>
               Date de naissance
@@ -259,14 +321,13 @@ function SignUp() {
               votre âge, même si ce compte est pour une entreprise, un animal de
               compagnie ou autre chose.
             </Typography>
-            <MMDDYYYYInput role="input" />
+            <MMDDYYYYInput />
           </Stack>
           <Stack className="nextButton" backgroundColor="white">
             <Button
               className={classes.nextButton}
               size="large"
-              onClick={register}
-              role="button"
+              onClick={createUser}
             >
               Suivant
             </Button>
@@ -276,4 +337,5 @@ function SignUp() {
     </div>
   );
 }
+
 export default SignUp;

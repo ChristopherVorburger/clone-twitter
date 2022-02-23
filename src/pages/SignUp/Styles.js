@@ -49,7 +49,7 @@ export default makeStyles({
     margin: "0 auto !important",
     width: "100%",
   },
-  page: {
+  box: {
     [theme.breakpoints.up("desktop")]: {
       width: "600px !important",
       height: "750px !important",
