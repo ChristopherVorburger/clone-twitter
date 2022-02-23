@@ -65,7 +65,7 @@ function SignUp() {
     };
 
     getUsers();
-  }, [usersCollectionRef]);
+  }, []);
 
   const [switchPhoneEmail, setSwitchPhoneEmail] = React.useState("Email");
   const [errorName, setErrorName] = React.useState(false);
@@ -115,12 +115,7 @@ function SignUp() {
 
   function MMDDYYYYInput() {
     return (
-      <Stack
-        className="MM-DD-YYYYInput"
-        direction="row"
-        marginTop="15px"
-        spacing={2}
-      >
+      <Stack direction="row" marginTop="15px" spacing={2}>
         <Box component="form" width="48%">
           <TextField
             select
@@ -191,18 +186,18 @@ function SignUp() {
   return (
     <div className={classes.mainContainer}>
       <Stack
-        className={("box", classes.box)}
+        className={classes.box}
         heigth="100vh"
         width="83%"
         margin="0 auto"
         spacing={2.5}
       >
-        <Stack className="logoAndClose" direction="row" alignItems="center">
+        <Stack direction="row" alignItems="center">
           <Link to="/">
-            <CloseButton role="button" />
+            <CloseButton />
           </Link>
           <Stack className={classes.logo}>
-            <LogoTwitter role="logo" />
+            <LogoTwitter />
           </Stack>
         </Stack>
         <Stack
@@ -212,11 +207,11 @@ function SignUp() {
           spacing={2}
           onSubmit={handleForm}
         >
-          <Stack className="accountCreate" spacing={4}>
+          <Stack spacing={4}>
             <Typography className={classes.accountCreateTitle}>
               Créer votre compte
             </Typography>
-            <Stack className="input" spacing={4}>
+            <Stack spacing={4}>
               <Box component="form">
                 <TextField
                   type="text"
@@ -284,10 +279,7 @@ function SignUp() {
                 </Box>
               ) : null}
             </Stack>
-            <SwitchPhoneEmail
-              switchPhoneEmail={switchPhoneEmail}
-              setSwitchPhoneEmail={setSwitchPhoneEmail}
-            />
+            <SwitchPhoneEmail />
           </Stack>
           <Typography className={classes.birthdayPasswordTitle}>
             Créer votre mot de passe
@@ -312,7 +304,7 @@ function SignUp() {
               }
             />
           </Box>
-          <Stack className="birthday">
+          <Stack>
             <Typography className={classes.birthdayPasswordTitle}>
               Date de naissance
             </Typography>
@@ -323,7 +315,8 @@ function SignUp() {
             </Typography>
             <MMDDYYYYInput />
           </Stack>
-          <Stack className="nextButton" backgroundColor="white">
+          <Stack backgroundColor="white">
+            {/* <Link to={"/home"}> */}
             <Button
               className={classes.nextButton}
               size="large"
@@ -331,6 +324,7 @@ function SignUp() {
             >
               Suivant
             </Button>
+            {/* </Link> */}
           </Stack>
         </Stack>
       </Stack>
