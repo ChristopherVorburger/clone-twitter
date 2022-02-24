@@ -14,7 +14,7 @@ import {
 } from "./Tweet.Style";
 import Avatar from "./logo-tweet-test.jpeg";
 
-export default function Tweet() {
+export default function Tweet({ text }) {
   return (
     <TweetContainer>
       <TweetAvatar src={Avatar} />
@@ -24,10 +24,7 @@ export default function Tweet() {
           <TweetPseudo>@CerfiaFR</TweetPseudo>
           <TweetDate>32 min</TweetDate>
         </div>
-        <TweetTxt>
-          🚨🇪🇺🇷🇺 FLASH | L’#UE adopte plusieurs sanctions contre la #Russie, notamment envers les députés et les banques russes qui ont financé des
-          opérations en #Ukraine. (Officiel) #UkraineCrisis
-        </TweetTxt>
+        <TweetTxt>{text}</TweetTxt>
         {/* <TweetReactions>
           <Comments>26</Comments>
           <Retweets>23</Retweets>

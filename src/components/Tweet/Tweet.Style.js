@@ -13,13 +13,6 @@ export const TweetContainer = styled.div`
   color: #000;
   transition: background 0.2s ease;
   cursor: pointer;
-
-  /* a supprimer  */
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
   &:hover {
     background: #f7f7f7;
   }
