@@ -1,96 +1,92 @@
-import React, { useState, useEffect } from "react";
+// Tous les import que j'ai besoin
+import React from "react";
 import useStyles from "./Styles";
 import CloseButton from "../../components/CloseButton/CloseButton";
 import LogoTwitter from "../../components/TwitterLogo/TwitterLogo";
-import { Typography, Button, TextField, Box, Stack } from "@mui/material";
-import MenuItem from "@mui/material/MenuItem";
 import { selectMonth } from "./DataSelect";
-import { Link } from "react-router-dom";
-import { db } from "../../firebase-config";
 import {
-  collection,
-  getDocs,
+  Box,
+  Button,
+  MenuItem,
+  Stack,
+  Typography,
+  TextField,
+} from "@mui/material";
+import { Link } from "react-router-dom";
+import {
   addDoc,
+  collection,
+  getFirestore,
   serverTimestamp,
 } from "firebase/firestore";
 import { AuthContext } from "../../context/authContext";
 
+// Firestore
+const database = getFirestore();
+const usersCollectionRef = collection(database, "users");
+
+// Fonction principale SignUp
 function SignUp() {
+  // Const générales
   const classes = useStyles();
   const auth = React.useContext(AuthContext);
 
-  const [newName, setNewName] = React.useState("");
-  const [newEmail, setNewEmail] = React.useState("");
-  const [newEmailSignup, setNewEmailSignup] = React.useState("");
-  const [newPhone, setNewPhone] = React.useState("");
-  const [newPasswordSignup, setNewPasswordSignup] = React.useState("");
-  const [newMonth, setNewMonth] = React.useState("");
-  const [newDay, setNewDay] = React.useState(0);
-  const [newYear, setNewYear] = React.useState(0);
+  // State authentification
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
 
-  // const [users, setUsers] = useState([]);
-  // const usersCollectionRef = collection(db, "users");
-
-  const signupForm = document.querySelector("#signup-form");
-  console.log(signupForm);
-  signupForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-
-    const email = signupForm["signup-email"].value;
-    const password = signupForm["signup-password"].value;
-
-    // sign up the user & add firestore data
-    auth
-      .createUserWithEmailAndPassword(email, password)
-      .then((cred) => {
-        return db.collection("users").doc(cred.user.uid).set({
-          bio: signupForm["signup-bio"].value,
-        });
-      })
-      .then(() => {
-        signupForm.reset();
-      });
-  });
-
-  // const createUser = async () => {
-  //   await addDoc(usersCollectionRef, {
-  //     name: newName,
-  //     email: newEmail,
-  //     phone: newPhone,
-  //     created_at: serverTimestamp(),
-  //   });
-  // };
-  // const auth = React.useContext(AuthContext);
-  // const signUp = (e) => {
-  //   e.preventDefault();
-  //   auth
-  //     .signUp(newEmailSignup, newPasswordSignup)
-  //     .then((cred) => {
-  //       setNewEmailSignup("");
-  //       setNewPasswordSignup("");
-  //       console.log("user created : ", cred.user);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err.message);
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   const getUsers = async () => {
-  //     const data = await getDocs(usersCollectionRef);
-  //     setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-  //   };
-
-  //   getUsers();
-  // }, []);
-
-  const [switchPhoneEmail, setSwitchPhoneEmail] = React.useState("Email");
+  // State firestore
+  const [name, setName] = React.useState("");
+  const [username, setUserName] = React.useState("");
   const [errorName, setErrorName] = React.useState(false);
-  const [errorPhone, setErrorPhone] = React.useState(false);
-  const [errorEmail, setErrorEmail] = React.useState(false);
-  const [passwordIsOk, setPasswordIsOk] = React.useState(false);
+  const [errorUserName, setErrorUserName] = React.useState(false);
+  const [phone, setPhone] = React.useState(0);
 
-  function SwitchPhoneEmail() {
+  // Fonction qui crée un user dans l'authentification et le firestore
+  const signUp = (e) => {
+    e.preventDefault();
+    setErrorName(false);
+    setErrorUserName(false);
+
+    if (name === "" || name.lenght > 100) {
+      setErrorName(true);
+    } else if (username === "" || username.length > 100) {
+      setErrorUserName(true);
+    } else {
+      auth
+        .signUp(email, password)
+        .then((cred) => {
+          setEmail("");
+          setPassword("");
+          addDoc(usersCollectionRef, {
+            name,
+            username,
+            created_at: serverTimestamp(),
+            phone,
+            age: {
+              month,
+              day,
+              year,
+            },
+          })
+            .then(() => {
+              setName("");
+              setUserName("");
+            })
+            .catch((err) => {
+              console.log(err.message);
+            });
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+    }
+  };
+
+  // Fonction qui réalise le switch entre phone et email lors du click
+  const [switchPhoneEmail, setSwitchPhoneEmail] = React.useState("Email");
+
+  const SwitchPhoneEmail = () => {
     let switchRender;
 
     if (switchPhoneEmail === "Phone") {
@@ -114,62 +110,58 @@ function SignUp() {
         </Typography>
       );
     }
-
     return <>{switchRender}</>;
-  }
+  };
 
+  // State et boucle qui gèrent les select de la date de naissance
   const [month, setMonth] = React.useState("");
   const [day, setDay] = React.useState("");
+  const [year, setYear] = React.useState("");
+
   const selectDay = [];
   for (let i = 1; i < 32; i++) {
     selectDay.push({ value: `${i}`, label: `${i}` });
   }
-  const [year, setYear] = React.useState("");
   const selectYear = [];
   for (let i = 2022; i > 1901; i--) {
     selectYear.push({ value: `${i}`, label: `${i}` });
   }
 
-  function MMDDYYYYInput() {
+  // Fonction qui gère les 3 selects de la date de naissance
+  const MMDDYYYYInput = () => {
     return (
       <Stack direction="row" marginTop="15px" spacing={2}>
+        {/* Partie mois */}
         <Box width="48%">
           <TextField
-            select
-            label="Mois"
-            required
-            value={month}
-            onChange={(e) => {
-              setMonth(e.target.value);
-              setNewMonth(e.target.value);
-            }}
             fullWidth={true}
-            InputLabelProps={{
-              shrink: true,
-            }}
+            InputLabelProps={{ shrink: true }}
+            label="Mois"
+            onChange={(e) => setMonth(e.target.value)}
+            required
+            select
+            value={month}
           >
-            {selectMonth.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
+            {/* Remplissage du select Mois */}
+            {selectMonth.map((item) => (
+              <MenuItem key={item.value} value={item.value}>
+                {item.label}
               </MenuItem>
             ))}
           </TextField>
         </Box>
+        {/* Partie Jour */}
         <Box width="22%">
           <TextField
-            select
-            label="Jour"
-            required
-            value={day}
-            onChange={(e) => {
-              setDay(e.target.value);
-              setNewDay(e.target.value);
-            }}
             fullWidth={true}
-            InputLabelProps={{
-              shrink: true,
-            }}
+            InputLabelProps={{ shrink: true }}
+            label="Jour"
+            onChange={(e) => setDay(e.target.value)}
+            required
+            select
+            value={day}
           >
+            {/* Remplissage du select Jour */}
             {selectDay.map((item) => (
               <MenuItem key={item.value} value={item.value}>
                 {item.label}
@@ -177,42 +169,40 @@ function SignUp() {
             ))}
           </TextField>
         </Box>
+        {/* Partie Année */}
         <Box width="30%">
           <TextField
-            select
-            label="Année"
-            required
-            value={year}
-            onChange={(e) => {
-              setYear(e.target.value);
-              setNewYear(e.target.value);
-            }}
             fullWidth={true}
-            InputLabelProps={{
-              shrink: true,
-            }}
+            InputLabelProps={{ shrink: true }}
+            label="Année"
+            onChange={(e) => setYear(e.target.value)}
+            required
+            select
+            value={year}
           >
-            {selectYear.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
+            {/* Remplissage du select Jour */}
+            {selectYear.map((item) => (
+              <MenuItem key={item.value} value={item.value}>
+                {item.label}
               </MenuItem>
             ))}
           </TextField>
         </Box>
       </Stack>
     );
-  }
+  };
 
   return (
     <div className={classes.mainContainer}>
       <Stack
         className={classes.box}
-        heigth="100vh"
-        width="83%"
+        height="100vh"
         margin="0 auto"
         spacing={2.5}
+        width="83%"
       >
-        <Stack direction="row" alignItems="center">
+        {/* Le logo et le boutton close */}
+        <Stack alignItems="center" direction="row">
           <Link to="/">
             <CloseButton />
           </Link>
@@ -220,131 +210,108 @@ function SignUp() {
             <LogoTwitter />
           </Stack>
         </Stack>
-        <form id="signup-form">
+        <form action="submit" onSubmit={signUp}>
           <Stack
             className={classes.signupContainer}
-            width="100%"
             justifyContent="center"
             spacing={2}
+            width="100%"
           >
             <Stack spacing={4}>
               <Typography className={classes.accountCreateTitle}>
                 Créer votre compte
               </Typography>
               <Stack spacing={4}>
-                <Box>
-                  <TextField
-                    type="text"
-                    variant="outlined"
-                    label="Nom et prénom"
-                    required
-                    fullWidth={true}
-                    autoFocus={true}
-                    onChange={(e) => {
-                      e.target.value.length >= 2
-                        ? setErrorName(false)
-                        : setErrorName(true);
-                      setNewName(e.target.value);
-                    }}
-                    error={errorName}
-                    helperText={
-                      errorName === true ? "Quel est votre nom ?" : null
-                    }
-                  />
-                </Box>
+                {/* Input des Nom et Prénom */}
+                <TextField
+                  autoFocus={true}
+                  error={errorName}
+                  fullWidth={true}
+                  helperText={
+                    errorName === true ? "Quel est votre nom ?" : null
+                  }
+                  label="Nom et Prénom"
+                  onChange={(e) => {
+                    setName(e.target.value);
+                  }}
+                  required
+                />
+                {/* Input UserName */}
+                <TextField
+                  error={errorUserName}
+                  fullWidth={true}
+                  helperText={
+                    errorUserName === true
+                      ? "Choisissez un nom d'utilisateur."
+                      : null
+                  }
+                  label="Nom d'utilisateur"
+                  onChange={(e) => {
+                    setUserName(e.target.value);
+                  }}
+                  required
+                />
+                {/* Ternaire qui gère l'affichage entre input phone et email */}
                 {switchPhoneEmail === "Phone" ? (
-                  <Box>
-                    <TextField
-                      id="signup-email"
-                      type="text"
-                      variant="outlined"
-                      label="Email"
-                      required
-                      fullWidth={true}
-                      onChange={(e) => {
-                        e.target.value.includes("@") &&
-                        e.target.value.includes(".")
-                          ? setErrorEmail(false)
-                          : setErrorEmail(true);
-                        setNewEmail(e.target.value);
-                        setNewEmailSignup(e.target.value);
-                      }}
-                      error={errorEmail}
-                      helperText={
-                        errorEmail === true
-                          ? "Veuillez entrer un email valide."
-                          : null
-                      }
-                    />
-                  </Box>
+                  // Input Email
+                  <TextField
+                    fullWidth={true}
+                    label="Email"
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                    }}
+                    required
+                    type="email"
+                  ></TextField>
                 ) : switchPhoneEmail === "Email" ? (
-                  <Box>
-                    <TextField
-                      type="number"
-                      variant="outlined"
-                      label="Téléphone"
-                      required
-                      fullWidth={true}
-                      onChange={(e) => {
-                        e.target.value.length >= 10
-                          ? setErrorPhone(false)
-                          : setErrorPhone(true);
-                        setNewPhone(e.target.value);
-                      }}
-                      error={errorPhone}
-                      helperText={
-                        errorPhone === true
-                          ? "Veuillez entrer un numéro de téléphone valide."
-                          : null
-                      }
-                    />
-                  </Box>
+                  // Input Phone
+                  <TextField
+                    fullWidth={true}
+                    label="Phone"
+                    onChange={(e) => {
+                      setPhone(e.target.value);
+                    }}
+                    type="number"
+                  ></TextField>
                 ) : null}
               </Stack>
               <SwitchPhoneEmail />
-            </Stack>
-            <Typography className={classes.birthdayPasswordTitle}>
-              Créer votre mot de passe
-            </Typography>
-            <Box>
-              <TextField
-                id="signup-password"
-                type="password"
-                variant="outlined"
-                label="Mot de passe"
-                required
-                fullWidth={true}
-                onChange={(e) => {
-                  e.target.value.length >= 6
-                    ? setPasswordIsOk(false)
-                    : setPasswordIsOk(true);
-                  setNewPasswordSignup(e.target.value);
-                }}
-                error={passwordIsOk}
-                helperText={
-                  passwordIsOk === true
-                    ? "Votre mot de passe est trop cour"
-                    : null
-                }
-              />
-            </Box>
-            <Stack>
               <Typography className={classes.birthdayPasswordTitle}>
-                Date de naissance
+                Créer votre mot de passe
               </Typography>
-              <Typography className={classes.birthdayText}>
-                Cette information ne sera pas affichée publiquement. Confirmez
-                votre âge, même si ce compte est pour une entreprise, un animal
-                de compagnie ou autre chose.
-              </Typography>
-              <MMDDYYYYInput />
-            </Stack>
-            <Stack backgroundColor="white">
-              {/* <Link to={"/home"}> */}
-              <Button type="submit" className={classes.nextButton} size="large">
-                Suivant
-              </Button>
-              {/* </Link> */}
+              {/* Input Password */}
+              <TextField
+                fullWidth={true}
+                label="Mot de passe"
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                }}
+                required
+                type="password"
+              />
+              {/* Partie date de naissanse */}
+              <Stack>
+                <Typography className={classes.birthdayPasswordTitle}>
+                  Date de naissance
+                </Typography>
+                <Typography className={classes.birthdayText}>
+                  Cette information ne sera pas affichée publiquement. Confirmez
+                  votre âge, même si ce compte est pour une entreprise, un
+                  animal de compagnie ou autre chose.
+                </Typography>
+                <MMDDYYYYInput />
+              </Stack>
+              <Stack backgroundColor="white">
+                {/* <Link to={"/home"}> */}
+                <Button
+                  className={classes.nextButton}
+                  size="large"
+                  type="submit"
+                >
+                  Suivant
+                </Button>
+                {/* </Link> */}
+              </Stack>
             </Stack>
           </Stack>
         </form>
@@ -352,5 +319,4 @@ function SignUp() {
     </div>
   );
 }
-
 export default SignUp;
