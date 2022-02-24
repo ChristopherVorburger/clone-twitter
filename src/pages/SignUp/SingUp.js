@@ -34,6 +34,7 @@ function SignUp() {
   // State authentification
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [passwordConfirmation, setPasswordConfirmation] = React.useState(false);
 
   // State firestore
   const [name, setName] = React.useState("");
@@ -84,7 +85,7 @@ function SignUp() {
   };
 
   // Fonction qui réalise le switch entre phone et email lors du click
-  const [switchPhoneEmail, setSwitchPhoneEmail] = React.useState("Email");
+  const [switchPhoneEmail, setSwitchPhoneEmail] = React.useState("Phone");
 
   const SwitchPhoneEmail = () => {
     let switchRender;
@@ -194,13 +195,7 @@ function SignUp() {
 
   return (
     <div className={classes.mainContainer}>
-      <Stack
-        className={classes.box}
-        height="100vh"
-        margin="0 auto"
-        spacing={2.5}
-        width="83%"
-      >
+      <Stack className={classes.box} margin="0 auto" spacing={2.5} width="83%">
         {/* Le logo et le boutton close */}
         <Stack alignItems="center" direction="row">
           <Link to="/">
@@ -252,7 +247,17 @@ function SignUp() {
                   required
                 />
                 {/* Ternaire qui gère l'affichage entre input phone et email */}
-                {switchPhoneEmail === "Phone" ? (
+                {switchPhoneEmail === "Email" ? (
+                  // Input Phone
+                  <TextField
+                    fullWidth={true}
+                    label="Phone"
+                    onChange={(e) => {
+                      setPhone(e.target.value);
+                    }}
+                    type="number"
+                  ></TextField>
+                ) : switchPhoneEmail === "Phone" ? (
                   // Input Email
                   <TextField
                     fullWidth={true}
@@ -263,16 +268,6 @@ function SignUp() {
                     required
                     type="email"
                   ></TextField>
-                ) : switchPhoneEmail === "Email" ? (
-                  // Input Phone
-                  <TextField
-                    fullWidth={true}
-                    label="Phone"
-                    onChange={(e) => {
-                      setPhone(e.target.value);
-                    }}
-                    type="number"
-                  ></TextField>
                 ) : null}
               </Stack>
               <SwitchPhoneEmail />
@@ -281,10 +276,20 @@ function SignUp() {
               </Typography>
               {/* Input Password */}
               <TextField
+                error={passwordConfirmation}
                 fullWidth={true}
+                helperText={
+                  passwordConfirmation
+                    ? "Votre mot de passe est trop cours"
+                    : null
+                }
                 label="Mot de passe"
                 onChange={(e) => {
                   setPassword(e.target.value);
+                  setPasswordConfirmation(e.target.value);
+                  e.target.value.length >= 6
+                    ? setPasswordConfirmation(false)
+                    : setPasswordConfirmation(true);
                 }}
                 required
                 type="password"
