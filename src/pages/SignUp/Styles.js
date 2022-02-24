@@ -52,7 +52,7 @@ export default makeStyles({
   box: {
     [theme.breakpoints.up("desktop")]: {
       width: "600px !important",
-      height: "750px !important",
+      height: "850px !important",
       borderRadius: "15px",
       backgroundColor: "white",
       margin: "0 !important",
