@@ -78,7 +78,7 @@ const PreHome = () => {
                   variant="contained"
                 >
                   <Typography
-                    color="#fff"
+                    color="white.main"
                     sx={{ textDecoration: "none" }}
                     component={Link}
                     to="/signup"

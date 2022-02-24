@@ -43,7 +43,7 @@ export default makeStyles((theme) => ({
   },
   button: {
     borderRadius: "20px!important",
-    borderColor: "#d0dadf!important",
+    borderColor: `${theme.palette.grey.button}!important`,
     textTransform: "none!important",
     height: "2.5rem",
     padding: "2px 10px!important",
@@ -53,7 +53,7 @@ export default makeStyles((theme) => ({
   },
   line: {
     width: "100%",
-    backgroundColor: "#eff3f4",
+    backgroundColor: theme.palette.grey.background__input,
     height: "1px",
     margin: "0 4px",
   },

@@ -51,8 +51,8 @@ const Home = () => {
         >
           <Header drawerWidth={drawerWidth} />
           <NewTweet drawerWidth={drawerWidth} />
-          <Divider sx={{ borderColor: "#eff3f4" }} />
-          <Welcome drawerWidth={drawerWidth} />
+          <Divider sx={{ borderColor: "background__input" }} />
+          <Welcome />
         </Box>
         <News />
       </Stack>

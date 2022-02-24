@@ -13,6 +13,6 @@ export default makeStyles((theme) => ({
     position: "absolute",
     right: "35px",
     bottom: "30px",
-    color: "white",
+    color: theme.palette.white.main,
   },
 }));

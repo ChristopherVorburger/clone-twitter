@@ -12,7 +12,12 @@ export default makeStyles((theme) => ({
       display: "none",
     },
     [theme.breakpoints.up("lg")]: {
-      marginLeft: "20%!important",
+      marginLeft: "15%!important",
+    },
+  },
+  icon__text: {
+    [theme.breakpoints.down("lg")]: {
+      display: "none",
     },
   },
 }));
