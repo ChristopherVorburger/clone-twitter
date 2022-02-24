@@ -11,9 +11,6 @@ export default makeStyles((theme) => ({
     [theme.breakpoints.down("sm")]: {
       display: "none",
     },
-    [theme.breakpoints.up("lg")]: {
-      marginLeft: "15%!important",
-    },
   },
   icon__text: {
     [theme.breakpoints.down("lg")]: {

@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  Box,
-  Button,
-  Divider,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Divider, TextField, Typography } from "@mui/material";
 
 // Import des fonctions du firestore
 import {

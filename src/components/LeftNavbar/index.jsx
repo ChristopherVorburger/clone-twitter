@@ -15,7 +15,7 @@ import { Link } from "react-router-dom";
 
 import { Box } from "@mui/system";
 
-const LeftNavbar = ({ drawerWidth }) => {
+const LeftNavbar = () => {
   const classes = useStyles();
 
   const iconsArray = [

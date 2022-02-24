@@ -5,14 +5,13 @@ import { Box, Button, Container, Typography } from "@mui/material";
 
 import useStyles from "./styles";
 
-const Welcome = ({ drawerWidth }) => {
+const Welcome = () => {
   const classes = useStyles();
   return (
     <Box
       sx={{
-        width: `calc(100% - ${drawerWidth}px)`,
+        width: "100%",
         maxWidth: "600px",
-        ml: `${drawerWidth}px`,
       }}
       height="100vh"
     >
