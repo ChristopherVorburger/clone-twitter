@@ -11,7 +11,7 @@ import Tweet from "../../components/Tweet/Tweet";
 
 // components MUI
 import CircularProgress from "@mui/material/CircularProgress";
-import { Box, Divider, Stack } from "@mui/material";
+import { Box, Divider } from "@mui/material";
 
 // hooks
 import { useFirestore } from "../../utils/useFirestore";
