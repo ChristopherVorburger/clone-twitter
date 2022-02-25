@@ -16,14 +16,25 @@ import { Box, Divider } from "@mui/material";
 // hooks
 import { useFirestore } from "../../utils/useFirestore";
 
+// Import du context Auth
+import { AuthContext } from "../../context/authContext";
+
 import useStyles from "./styles";
 
 const Home = () => {
   const classes = useStyles();
+
+  // Utilisation du hook useContext pour récupérer le contexte Auth
+  const auth = React.useContext(AuthContext);
+
+  // gestion affichage des tweets à l'aide du hooks personalisé et réutilisable : "useFirestore"
   const tweets = useFirestore("tweets");
 
-  // gestion affichage des tweets à l'aide du hooks personalisé et éutilisable : "useFirestore"
-  console.log(tweets, "tweets depuis home");
+  // On filtre les tweets à afficher
+  // Ici en l'occurrence ceux qui ont le même author_id que la personne connectée
+  const filteredTweets = tweets?.filter(
+    (tweet) => tweet.author_id === auth.authUser.uid
+  );
   return (
     <>
       <Box display="flex" justifyContent="center">
@@ -40,7 +51,8 @@ const Home = () => {
           {/* <Welcome /> */}
           {tweets ? (
             <>
-              {tweets.map((tweet) => (
+              {/* On map sur le tableau filtré */}
+              {filteredTweets.map((tweet) => (
                 <Tweet key={tweet.id} text={tweet.text} />
               ))}
             </>

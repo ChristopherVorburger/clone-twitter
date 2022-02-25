@@ -15,7 +15,7 @@ import {
   setDoc,
 } from "firebase/firestore";
 
-// Import du context
+// Import du context Auth
 import { AuthContext } from "../../context/authContext";
 
 // Initialisation de firestore
