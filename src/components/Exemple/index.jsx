@@ -23,7 +23,6 @@ const database = getFirestore();
 
 // Référence des collections
 const tweetsCollectionRef = collection(database, "tweets");
-const usersCollectionRef = collection(database, "users");
 
 // Utilisation de onSnapshot qui permet de rafraichir la page à
 // chaque changement sur la collection choisie :

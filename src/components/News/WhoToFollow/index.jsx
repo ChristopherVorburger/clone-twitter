@@ -2,24 +2,24 @@ import React from "react";
 import { Box, Button, Typography } from "@mui/material";
 import useStyles from "./styles";
 
-const WhoToFollow = ({ image, pseudo, name, comment }) => {
+const WhoToFollow = ({ image, name, username, comment }) => {
   const classes = useStyles();
   return (
     <Box className={classes.container} p="1rem">
       <Box display="flex" justifyContent="space-between">
         <Box display="flex" justifyContent="space-between">
           <Box mr="1rem">
-            <img src={image} alt={pseudo} width="40px" />
+            <img src={image} alt={name} width="40px" />
           </Box>
           <Box>
             <Box>
               <Typography fontSize="15px" fontWeight="bold">
-                {pseudo}
+                {name}
               </Typography>
             </Box>
             <Box>
               <Typography fontSize="15px" color="grey.main">
-                {name}
+                {username}
               </Typography>
             </Box>
           </Box>

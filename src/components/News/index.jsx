@@ -1,6 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Box } from "@mui/system";
-import { Input, InputAdornment, Typography } from "@mui/material";
+import {
+  CircularProgress,
+  Input,
+  InputAdornment,
+  Typography,
+} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 
 import useStyles from "./styles";
@@ -9,8 +14,28 @@ import { images } from "../../constants";
 import Trend from "./Trend";
 import WhoToFollow from "./WhoToFollow";
 
+// Import des fonctions du firestore
+import { db } from "../../firebase-config";
+import { collection, onSnapshot } from "firebase/firestore";
+
+// Référence des collections
+const usersCollectionRef = collection(db, "users");
+
 const News = () => {
   const classes = useStyles();
+
+  // State utilisateurs
+  const [users, setUsers] = useState([]);
+
+  // On récupère les utilisateurs
+  useEffect(() => {
+    onSnapshot(usersCollectionRef, (snapshot) => {
+      setUsers(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  console.log(users);
+
   return (
     <Box className={classes.container} m="1rem" maxWidth="350px">
       <Input
@@ -78,30 +103,18 @@ const News = () => {
         <Typography fontSize="20px" fontWeight="bold" p="1rem">
           Who to follow
         </Typography>
-        <Box>
-          <WhoToFollow
-            image={images.logoGoogle}
-            pseudo="Google"
-            name="@google"
-            comment="Petite entreprise familiale"
-          />
-        </Box>
-        <Box>
-          <WhoToFollow
-            image={images.jdg}
-            pseudo="Joueur du Grenier"
-            name="@Frederic_Molas"
-            comment="Grand shaman de l'auto-punition"
-          />
-        </Box>
-        <Box>
-          <WhoToFollow
-            image={images.logoApple}
-            pseudo="Apple"
-            name="@apple"
-            comment=""
-          />
-        </Box>
+        {users.slice(0, 3).map((user) => {
+          return (
+            <Box>
+              <WhoToFollow
+                key={user.id}
+                image={images.logoGoogle}
+                name={user.name}
+                username={`@${user.username}`}
+              />
+            </Box>
+          );
+        })}
       </Box>
       <Box m="2rem auto" p="1rem">
         <Typography fontSize="15px" color="grey.main">
