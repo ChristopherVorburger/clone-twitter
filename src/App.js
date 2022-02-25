@@ -5,6 +5,7 @@ import SignUp from "./pages/SignUp/SingUp";
 import Login from "./components/Login/Login";
 import Home from "./pages/Home";
 import Exemple from "./components/Exemple";
+import ToggleColorMode from "./components/DarkMode/DarkMode";
 
 export default function App() {
   // Création d'un thème pour changer la couleur principale de MUI
@@ -37,6 +38,7 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/home" element={<Home />} />
         <Route path="/exemple" element={<Exemple />} />
+        <Route path="/test" element={<ToggleColorMode />} />
       </Routes>
     </ThemeProvider>
   );
