@@ -33,7 +33,7 @@ const Home = () => {
   // On filtre les tweets à afficher
   // Ici en l'occurrence ceux qui ont le même author_id que la personne connectée
   const filteredTweets = tweets?.filter(
-    (tweet) => tweet.author_id === auth.authUser.uid
+    (tweet) => tweet.author_id === auth.authUser?.uid
   );
   return (
     <>
@@ -48,10 +48,13 @@ const Home = () => {
           <Header />
           <NewTweet />
           <Divider sx={{ borderColor: "background__input" }} />
-          {/* <Welcome /> */}
+          {/* Si le tableau filtré est vide, autrement dit si l'utilisateur n'a pas de followings
+           et qu'il n'a aucun tweets, on affiche le composant welcome */}
+          {filteredTweets?.length === 0 ? <Welcome /> : null}
+          {/* Sinon, */}
+          {/* On map sur le tableau filtré */}
           {tweets ? (
             <>
-              {/* On map sur le tableau filtré */}
               {filteredTweets.map((tweet) => (
                 <Tweet key={tweet.id} text={tweet.text} />
               ))}

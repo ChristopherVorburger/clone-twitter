@@ -6,4 +6,9 @@ export default makeStyles((theme) => ({
       display: "none!important",
     },
   },
+  header__container: {
+    [theme.breakpoints.up("lg")]: {
+      minWidth: "600px",
+    },
+  },
 }));
