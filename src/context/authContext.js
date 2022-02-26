@@ -5,14 +5,12 @@ import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   signOut,
-
 } from "firebase/auth";
 import { auth } from "../firebase-config";
 
 export const AuthContext = createContext();
 
 export function AuthContextProvider(props) {
-
   const signUp = (email, pwd) =>
     createUserWithEmailAndPassword(auth, email, pwd);
   const signIn = (email, pwd) => signInWithEmailAndPassword(auth, email, pwd);
@@ -27,14 +25,11 @@ export function AuthContextProvider(props) {
       setLoadingData(false);
       // TODO: log à supprimer avant la prod
       console.log("currentUser", currentUser);
-
       return unsubscribe;
     });
   }, []);
-
   return (
     <AuthContext.Provider value={{ signUp, signIn, authUser, signUserOut }}>
-
       {!loadingData && props.children}
     </AuthContext.Provider>
   );

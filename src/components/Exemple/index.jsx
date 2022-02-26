@@ -12,9 +12,10 @@ import {
   serverTimestamp,
   // getDoc,
   updateDoc,
+  setDoc,
 } from "firebase/firestore";
 
-// Import du context
+// Import du context Auth
 import { AuthContext } from "../../context/authContext";
 
 // Initialisation de firestore
@@ -22,7 +23,6 @@ const database = getFirestore();
 
 // Référence des collections
 const tweetsCollectionRef = collection(database, "tweets");
-const usersCollectionRef = collection(database, "users");
 
 // Utilisation de onSnapshot qui permet de rafraichir la page à
 // chaque changement sur la collection choisie :
@@ -33,7 +33,7 @@ onSnapshot(tweetsCollectionRef, (snapshot) => {
   snapshot.docs.forEach((doc) => {
     tweets.push({ ...doc.data(), id: doc.id });
   });
-  console.log(tweets);
+  console.log("tweets Exemple", tweets);
 });
 
 const Exemple = () => {
@@ -69,6 +69,7 @@ const Exemple = () => {
       text,
       // on utilise serverTimestamp() pour créer automatiquement la date de création du tweet
       created_at: serverTimestamp(),
+      author_id: auth.authUser.uid,
     })
       .then(() => {
         // on nettoie l'input si ok
@@ -159,9 +160,13 @@ const Exemple = () => {
           setEmail("");
           setPassword("");
           console.log("User created in authentification : ", cred.user);
-          // Puis, on utilise addDoc sur la collection 'users' de notre BDD pour ajouter
-          // un user dans firestore
-          addDoc(usersCollectionRef, {
+
+          // Puis, on utilise setDoc pour ajouter un user dans firestore
+          // On cible une référence ( qui n'existe pas )
+          const userRef = doc(database, "users", cred.user.uid);
+          // Et vu qu'elle n'existe pas, elle va être automatiquement créée
+          // De cette manière, on crée le user avec le même ID qu'il possède dans authentification
+          setDoc(userRef, {
             name,
             username,
             // on utilise serverTimestamp() pour créer automatiquement la date de création du user

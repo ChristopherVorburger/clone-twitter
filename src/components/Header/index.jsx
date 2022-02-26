@@ -12,7 +12,7 @@ const Header = () => {
   const classes = useStyles();
 
   return (
-    <Box>
+    <Box className={classes.header__container}>
       <AppBar color="inherit" position="static" elevation={0}>
         <Toolbar>
           <Box className={classes.header__button_profile}>
