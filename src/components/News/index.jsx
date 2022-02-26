@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Box } from "@mui/system";
-import {
-  CircularProgress,
-  Input,
-  InputAdornment,
-  Typography,
-} from "@mui/material";
+import { Input, InputAdornment, Typography } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 
 import useStyles from "./styles";
@@ -34,7 +29,7 @@ const News = () => {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  console.log(users);
+  console.log("users News", users);
 
   return (
     <Box className={classes.container} m="1rem" maxWidth="350px">
@@ -103,14 +98,14 @@ const News = () => {
         <Typography fontSize="20px" fontWeight="bold" p="1rem">
           Who to follow
         </Typography>
+        {/* On affiche les utilisateurs dans who to follow en limitant leur nombre à trois */}
         {users.slice(0, 3).map((user) => {
           return (
-            <Box>
+            <Box key={user.id}>
               <WhoToFollow
-                key={user.id}
                 image={images.logoGoogle}
                 name={user.name}
-                username={`@${user.username}`}
+                username={user.username}
               />
             </Box>
           );

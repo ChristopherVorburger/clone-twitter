@@ -27,7 +27,7 @@ const Home = () => {
   // Utilisation du hook useContext pour récupérer le contexte Auth
   const auth = React.useContext(AuthContext);
 
-  // gestion affichage des tweets à l'aide du hooks personalisé et réutilisable : "useFirestore"
+  // Utilisation du hook perso useFirestore pour récupérer les tweets
   const tweets = useFirestore("tweets");
 
   // On filtre les tweets à afficher
@@ -56,7 +56,12 @@ const Home = () => {
           {tweets ? (
             <>
               {filteredTweets.map((tweet) => (
-                <Tweet key={tweet.id} text={tweet.text} />
+                <Tweet
+                  key={tweet.id}
+                  text={tweet.text}
+                  author_id={tweet.author_id}
+                  created_at={tweet.created_at}
+                />
               ))}
             </>
           ) : (

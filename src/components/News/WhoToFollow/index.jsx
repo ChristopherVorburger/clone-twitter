@@ -19,7 +19,7 @@ const WhoToFollow = ({ image, name, username, comment }) => {
             </Box>
             <Box>
               <Typography fontSize="15px" color="grey.main">
-                {username}
+                {`@${username}`}
               </Typography>
             </Box>
           </Box>

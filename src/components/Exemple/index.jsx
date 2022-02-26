@@ -33,7 +33,7 @@ onSnapshot(tweetsCollectionRef, (snapshot) => {
   snapshot.docs.forEach((doc) => {
     tweets.push({ ...doc.data(), id: doc.id });
   });
-  console.log(tweets);
+  console.log("tweets Exemple", tweets);
 });
 
 const Exemple = () => {
