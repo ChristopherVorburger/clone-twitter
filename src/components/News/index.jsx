@@ -95,11 +95,16 @@ const News = () => {
         </Typography>
         {/* On affiche les utilisateurs non suivi dans who to follow en limitant leur nombre à trois */}
         {unfollowUsers?.slice(0, 3).map((user) => {
-          return (
-            <Box key={user.id}>
-              <WhoToFollow user={user} />
-            </Box>
-          );
+          // On affiche pas l'utilisateur connecté
+          if (user.id === auth.authUser.uid) {
+            return null;
+          } else {
+            return (
+              <Box key={user.id}>
+                <WhoToFollow user={user} />
+              </Box>
+            );
+          }
         })}
       </Box>
       <Box m="2rem auto" p="1rem">
