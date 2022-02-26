@@ -31,6 +31,8 @@ export function AuthContextProvider(props) {
   // afin de récupérer les datas de l'utilisateur connecté
   const userData = users?.filter((user) => user.id === authUser?.uid);
 
+  console.log("user data", userData);
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setAuthUser(currentUser);

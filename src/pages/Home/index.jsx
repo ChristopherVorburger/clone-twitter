@@ -32,9 +32,15 @@ const Home = () => {
 
   // On filtre les tweets à afficher
   // Ici en l'occurrence ceux qui ont le même author_id que la personne connectée
-  const filteredTweets = tweets?.filter(
-    (tweet) => tweet.author_id === auth.authUser?.uid
-  );
+  const filteredTweets = tweets?.filter((tweet) => {
+    return (
+      tweet.author_id === auth.authUser.uid ||
+      auth.userData?.[0]?.following?.includes(tweet.author_id)
+    );
+  });
+
+  console.log("tableau de following", auth.userData?.[0]?.following);
+
   return (
     <>
       <Box display="flex" justifyContent="center">

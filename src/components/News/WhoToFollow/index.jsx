@@ -25,10 +25,10 @@ const WhoToFollow = ({ user }) => {
     console.log("following", following);
 
     // Référence au user (id) à mettre à jour
-    const docRef = doc(db, "users", auth.authUser.uid);
+    const docRef = doc(db, "users", auth?.authUser?.uid);
 
     // Sécurité pour ne pas se suivre soi-même
-    if (auth.authUser.uid === user.id) {
+    if (auth?.authUser.uid === user.id) {
       console.log(
         "Oui, il faut s'aimer soi-même mais de là à se suivre soit même il y a des limites"
       );
