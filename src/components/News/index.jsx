@@ -1,35 +1,30 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Box } from "@mui/system";
 import { Input, InputAdornment, Typography } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 
 import useStyles from "./styles";
-import { images } from "../../constants";
 
 import Trend from "./Trend";
 import WhoToFollow from "./WhoToFollow";
 
-// Import des fonctions du firestore
-import { db } from "../../firebase-config";
-import { collection, onSnapshot } from "firebase/firestore";
+// Import du context Auth
+import { AuthContext } from "../../context/authContext";
 
-// Référence des collections
-const usersCollectionRef = collection(db, "users");
+import { useFirestore } from "../../utils/useFirestore";
 
 const News = () => {
   const classes = useStyles();
 
-  // State utilisateurs
-  const [users, setUsers] = useState([]);
+  // Utilisation du hook useContext pour récupérer le contexte Auth
+  const auth = React.useContext(AuthContext);
 
-  // On récupère les utilisateurs
-  useEffect(() => {
-    onSnapshot(usersCollectionRef, (snapshot) => {
-      setUsers(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  console.log("users News", users);
+  const users = useFirestore("users");
+
+  // Filtre des utilisateurs pour obtenir les non suivis
+  const unfollowUsers = users?.filter((user) => {
+    return !auth?.userData?.[0]?.following?.includes(user.id);
+  });
 
   return (
     <Box className={classes.container} m="1rem" maxWidth="350px">
@@ -98,17 +93,18 @@ const News = () => {
         <Typography fontSize="20px" fontWeight="bold" p="1rem">
           Who to follow
         </Typography>
-        {/* On affiche les utilisateurs dans who to follow en limitant leur nombre à trois */}
-        {users.slice(0, 3).map((user) => {
-          return (
-            <Box key={user.id}>
-              <WhoToFollow
-                image={images.logoGoogle}
-                name={user.name}
-                username={user.username}
-              />
-            </Box>
-          );
+        {/* On affiche les utilisateurs non suivi dans who to follow en limitant leur nombre à trois */}
+        {unfollowUsers?.slice(0, 3).map((user) => {
+          // On affiche pas l'utilisateur connecté
+          if (user.id === auth.authUser?.uid) {
+            return null;
+          } else {
+            return (
+              <Box key={user.id}>
+                <WhoToFollow user={user} />
+              </Box>
+            );
+          }
         })}
       </Box>
       <Box m="2rem auto" p="1rem">
