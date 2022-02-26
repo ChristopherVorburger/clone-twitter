@@ -14,7 +14,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { Box, Divider } from "@mui/material";
 
 // hooks
-import { useFirestore } from "../../utils/useFirestore";
+import { useFirestoreWithQuery } from "../../utils/useFirestoreWithQuery";
 
 // Import du context Auth
 import { AuthContext } from "../../context/authContext";
@@ -28,7 +28,7 @@ const Home = () => {
   const auth = React.useContext(AuthContext);
 
   // Utilisation du hook perso useFirestore pour récupérer les tweets
-  const tweets = useFirestore("tweets");
+  const tweets = useFirestoreWithQuery("tweets");
 
   // On filtre les tweets à afficher
   // Ici en l'occurrence ceux qui ont le même author_id que la personne connectée
