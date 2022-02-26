@@ -31,13 +31,14 @@ export function AuthContextProvider(props) {
   // afin de récupérer les datas de l'utilisateur connecté
   const userData = users?.filter((user) => user.id === authUser?.uid);
 
+  // TODO: À supprimer avant la prod
   console.log("user data", userData);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setAuthUser(currentUser);
       setLoadingData(false);
-      // TODO: log à supprimer avant la prod
+      // TODO: À supprimer avant la prod
       console.log("currentUser", currentUser);
       return unsubscribe;
     });

@@ -6,7 +6,7 @@ export function useFirestoreWithQuery(ref) {
   const database = getFirestore();
   const [data, setData] = useState();
   const collectionRef = collection(database, ref);
-  // order tweets by created_at proprety
+  // Filtre par date de la collection retournée grâce aux fonctions query et orderBy
   const q = query(collectionRef, orderBy("created_at", "desc"));
 
   useEffect(() => {

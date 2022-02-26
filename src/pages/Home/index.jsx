@@ -31,15 +31,14 @@ const Home = () => {
   const tweets = useFirestoreWithQuery("tweets");
 
   // On filtre les tweets à afficher
-  // Ici en l'occurrence ceux qui ont le même author_id que la personne connectée
+  // Ici en l'occurrence ceux qui ont le même author_id que l'utilisateur connecté
+  // et aussi ceux que l'utilisateur connecté a comme following
   const filteredTweets = tweets?.filter((tweet) => {
     return (
       tweet.author_id === auth.authUser.uid ||
       auth.userData?.[0]?.following?.includes(tweet.author_id)
     );
   });
-
-  console.log("tableau de following", auth.userData?.[0]?.following);
 
   return (
     <>

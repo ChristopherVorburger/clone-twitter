@@ -22,7 +22,6 @@ const WhoToFollow = ({ user }) => {
 
     // Récupération du tableau de following
     const following = auth?.userData?.[0]?.following;
-    console.log("following", following);
 
     // Référence au user (id) à mettre à jour
     const docRef = doc(db, "users", auth?.authUser?.uid);
