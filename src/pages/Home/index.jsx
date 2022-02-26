@@ -35,7 +35,7 @@ const Home = () => {
   // et aussi ceux que l'utilisateur connecté a comme following
   const filteredTweets = tweets?.filter((tweet) => {
     return (
-      tweet.author_id === auth.authUser.uid ||
+      tweet.author_id === auth?.authUser?.uid ||
       auth.userData?.[0]?.following?.includes(tweet.author_id)
     );
   });
