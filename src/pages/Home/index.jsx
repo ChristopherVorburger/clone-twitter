@@ -21,6 +21,9 @@ import { AuthContext } from "../../context/authContext";
 
 import useStyles from "./styles";
 
+//Import des icones
+import { icons } from "../../constants";
+
 const Home = () => {
   const classes = useStyles();
 
@@ -40,7 +43,6 @@ const Home = () => {
       auth.userData?.[0]?.following?.includes(tweet.author_id)
     );
   });
-
   return (
     <>
       <Box display="flex" justifyContent="center">
@@ -51,7 +53,7 @@ const Home = () => {
           borderLeft="1px solid #eff3f4"
           borderRight="1px solid #eff3f4"
         >
-          <Header />
+          <Header iconsRight={icons.AutoAwesomeSharpIcon} />
           <NewTweet />
           <Divider sx={{ borderColor: "background__input" }} />
           {/* Si le tableau filtré est vide, autrement dit si l'utilisateur n'a pas de followings
