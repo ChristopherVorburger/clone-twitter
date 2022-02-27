@@ -11,7 +11,7 @@ export default makeStyles((theme) => ({
     display: "flex!important",
     justifyContent: "flex-start!important",
     [theme.breakpoints.up("lg")]: {
-      minWidth: "600px",
+      minWidth: "590px",
     },
   },
 }));

@@ -13,6 +13,9 @@ import { AuthContext } from "../../context/authContext";
 //Import des icones
 import { icons } from "../../constants";
 
+//Import des images
+import { images } from "../../constants";
+
 import useStyles from "./styles";
 
 const Profile = () => {
@@ -40,7 +43,17 @@ const Profile = () => {
           borderLeft="1px solid #eff3f4"
           borderRight="1px solid #eff3f4"
         >
+          {/* TODO: Rendre dynamique le subtitle */}
           <Header iconsLeft={icons.ArrowBackIcon} subtitle={"10 tweets"} />
+          <Box sx={{}} className={classes.profile__cover} maxWidth="590px">
+            <img
+              className={classes.profile__cover}
+              src={images.w11}
+              alt=""
+              width="100%"
+              height="38%"
+            />
+          </Box>
         </Box>
         <News />
       </Box>
