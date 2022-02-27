@@ -3,13 +3,11 @@ import { useLocation } from "react-router-dom";
 
 import { AppBar, Box, IconButton, Toolbar, Typography } from "@mui/material";
 
-import useStyles from "./styles";
-
-import { icons } from "../../constants";
-
 import ProfileButton from "../buttons/ProfileButton";
 
-const Header = () => {
+import useStyles from "./styles";
+
+const Header = ({ iconsLeft, iconsRight, subtitle }) => {
   const classes = useStyles();
 
   // Fonction pour convertir la première lettre d'une string en lettre capitale
@@ -27,26 +25,49 @@ const Header = () => {
     <Box className={classes.header__container}>
       <AppBar color="inherit" position="static" elevation={0}>
         <Toolbar>
-          <Box className={classes.header__button_profile}>
-            <ProfileButton />
-          </Box>
-          <Typography
-            fontSize="1rem"
-            fontWeight="bold"
-            component="div"
-            sx={{ flexGrow: 1 }}
-          >
-            {pathname}
-          </Typography>
-
-          <IconButton sx={{ padding: "1rem" }} aria-label="menu">
-            <icons.AutoAwesomeSharpIcon
+          {/* TODO: Optimiser cet affichage dynamique */}
+          <>
+            {pathname === "Home" ? (
+              <Box className={classes.header__button_profile}>
+                <ProfileButton />
+              </Box>
+            ) : null}
+          </>
+          <Box>
+            <IconButton
               sx={{
+                padding: "1rem",
                 color: "black.main",
-                transform: "rotate(180deg)",
               }}
-            />
-          </IconButton>
+              aria-label="menu"
+            >
+              {iconsLeft?.type?.render()}
+            </IconButton>
+          </Box>
+          <Box
+            width="100%"
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Box>
+              <Typography fontSize="20px" fontWeight="bold">
+                {pathname}
+              </Typography>
+              <Typography fontSize="15px">{subtitle}</Typography>
+            </Box>
+            <Box>
+              <IconButton
+                sx={{
+                  color: "black.main",
+                  transform: "rotate(180deg)",
+                }}
+                aria-label="menu"
+              >
+                {iconsRight?.type?.render()}
+              </IconButton>
+            </Box>
+          </Box>
         </Toolbar>
       </AppBar>
     </Box>

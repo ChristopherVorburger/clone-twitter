@@ -10,7 +10,13 @@ import BottomNavigation from "../../components/BottomNavigation";
 
 import { AuthContext } from "../../context/authContext";
 
+//Import des icones
+import { icons } from "../../constants";
+
+import useStyles from "./styles";
+
 const Profile = () => {
+  const classes = useStyles();
   // Utilisation du hook useContext pour récupérer le contexte Auth
   const { username } = useParams();
   const auth = React.useContext(AuthContext);
@@ -20,11 +26,13 @@ const Profile = () => {
     console.log("Autre utilisateur");
   }
 
-  console.log(auth?.userData?.[0]?.name);
-
   return (
     <>
-      <Box display="flex" justifyContent="center">
+      <Box
+        className={classes.profile__container}
+        display="flex"
+        justifyContent="center"
+      >
         <LeftNavbar />
         <Box
           display="flex"
@@ -32,12 +40,11 @@ const Profile = () => {
           borderLeft="1px solid #eff3f4"
           borderRight="1px solid #eff3f4"
         >
-          <Header />
+          <Header iconsLeft={icons.ArrowBackIcon} subtitle={"10 tweets"} />
         </Box>
         <News />
       </Box>
       <BottomNavigation />
-      <div>Profil de {username}</div>
     </>
   );
 };

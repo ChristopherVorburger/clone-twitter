@@ -7,6 +7,9 @@ export default makeStyles((theme) => ({
     },
   },
   header__container: {
+    width: "100%!important",
+    display: "flex!important",
+    justifyContent: "flex-start!important",
     [theme.breakpoints.up("lg")]: {
       minWidth: "600px",
     },
