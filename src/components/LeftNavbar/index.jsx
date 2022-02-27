@@ -1,5 +1,4 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import {
   List,
   ListItemIcon,
@@ -23,7 +22,6 @@ const LeftNavbar = () => {
   const auth = React.useContext(AuthContext);
 
   const classes = useStyles();
-  const navigate = useNavigate();
 
   const iconsArray = [
     { name: icons.HomeSharpIcon, path: "/home", text: "Home" },
