@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 
-import { Box } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 
 import Header from "../../components/Header";
 import LeftNavbar from "../../components/LeftNavbar";
@@ -45,14 +45,42 @@ const Profile = () => {
         >
           {/* TODO: Rendre dynamique le subtitle */}
           <Header iconsLeft={icons.ArrowBackIcon} subtitle={"10 tweets"} />
-          <Box sx={{}} className={classes.profile__cover} maxWidth="590px">
+          <Box maxWidth="590px" maxHeight="200px">
             <img
               className={classes.profile__cover}
               src={images.w11}
               alt=""
               width="100%"
-              height="38%"
+              height="100%"
             />
+          </Box>
+          <Box mb="1rem" p="12px 1rem 0 1rem">
+            <Box display="flex" justifyContent="space-between">
+              <Box>Image profil</Box>
+              <Box>
+                <Button variant="outlined" className={classes.button}>
+                  <Typography color="black.main" fontWeight="bold">
+                    Edit profile
+                  </Typography>
+                </Button>
+              </Box>
+            </Box>
+            <Box m="4px 0 12px 0">
+              <Typography fontSize="20px" lineHeight="24px" fontWeight="bold">
+                {auth?.userData?.[0]?.name}
+              </Typography>
+              <Typography fontSize="15px" color="grey.main">
+                {`@${auth?.userData?.[0]?.username}`}
+              </Typography>
+            </Box>
+            <Box mb="12px">
+              <Box>
+                <Typography>Description</Typography>
+              </Box>
+              <Box>
+                <Typography>Translate bio</Typography>
+              </Box>
+            </Box>
           </Box>
         </Box>
         <News />
