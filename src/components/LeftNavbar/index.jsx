@@ -15,7 +15,12 @@ import { Link } from "react-router-dom";
 
 import { Box } from "@mui/system";
 
+import { AuthContext } from "../../context/authContext";
+
 const LeftNavbar = () => {
+  // Utilisation du hook useContext pour récupérer le contexte Auth
+  const auth = React.useContext(AuthContext);
+
   const classes = useStyles();
 
   const iconsArray = [
@@ -29,7 +34,11 @@ const LeftNavbar = () => {
     { name: icons.EmailOutlinedIcon, path: "/messages", text: "Messages" },
     { name: icons.BookmarkBorderIcon, path: "/bookmarks", text: "Bookmarks" },
     { name: icons.FeaturedPlayListOutlinedIcon, path: "/", text: "Lists" },
-    { name: icons.PersonOutlineOutlinedIcon, path: "/", text: "Profile" },
+    {
+      name: icons.PersonOutlineOutlinedIcon,
+      path: `/${auth?.userData?.[0]?.username}`,
+      text: "Profile",
+    },
     { name: icons.MoreHorizIcon, path: "", text: "More" },
   ];
   return (
