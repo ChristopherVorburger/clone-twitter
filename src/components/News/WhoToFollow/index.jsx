@@ -20,14 +20,20 @@ const WhoToFollow = ({ user }) => {
   const updateUserFollowing = (e) => {
     e.preventDefault();
 
-    // Récupération du tableau de following
+    // Récupération du tableau de following de l'utilisateur connecté
     const following = auth?.userData?.[0]?.following;
 
-    // Référence au user (id) à mettre à jour
-    const docRef = doc(db, "users", auth?.authUser?.uid);
+    // Récupération du tableau de follower de l'utilisateur ciblé
+    const follower = user.follower;
+
+    // Référence à l'id de l'utilisateur connecté à mettre à jour
+    const currentUserRef = doc(db, "users", auth?.authUser?.uid);
+
+    // Référence à l'id de l'utilisateur ciblé à mettre à jour
+    const followedUserRef = doc(db, "users", user.id);
 
     // Sécurité pour ne pas se suivre soi-même
-    if (auth?.authUser.uid === user.id) {
+    if (auth?.authUser?.uid === user.id) {
       console.log(
         "Oui, il faut s'aimer soi-même mais de là à se suivre soit même il y a des limites"
       );
@@ -40,25 +46,73 @@ const WhoToFollow = ({ user }) => {
       return;
     }
 
-    // Si l'utilisateur n'a pas de following, on crée un tableau avec son
+    // Si l'utilisateur connecté n'a pas de following, on crée un tableau avec son
     // premier following
     if (!following) {
-      updateDoc(docRef, {
+      updateDoc(currentUserRef, {
         following: [user.id],
       })
         .then(() => {
           console.log("ajout d'un premier following");
+          // Si l'utilisateur ajouté n'a pas de follower, on crée un tableau avec son
+          // premier follower
+          if (!follower) {
+            updateDoc(followedUserRef, {
+              follower: [auth?.authUser?.uid],
+            })
+              .then(() => {
+                console.log("ajout d'un premier follower");
+              })
+              .catch((err) => {
+                console.log(err.massage);
+              });
+            // Sinon, mise à jour du tableau follower de l'utilisateur ajouté
+          } else {
+            updateDoc(followedUserRef, {
+              follower: [...user?.follower, auth?.authUser?.uid],
+            })
+              .then(() => {
+                console.log("ajout d'un follower");
+              })
+              .catch((err) => {
+                console.log(err.massage);
+              });
+          }
         })
         .catch((err) => {
           console.log(err.massage);
         });
       // Sinon, mise à jour du tableau following
     } else {
-      updateDoc(docRef, {
+      updateDoc(currentUserRef, {
         following: [...auth?.userData?.[0]?.following, user.id],
       })
         .then(() => {
           console.log("ajout d'un following");
+          // Si l'utilisateur ajouté n'a pas de follower, on crée un tableau avec son
+          // premier follower
+          if (!follower) {
+            updateDoc(followedUserRef, {
+              follower: [auth?.authUser?.uid],
+            })
+              .then(() => {
+                console.log("ajout d'un premier follower");
+              })
+              .catch((err) => {
+                console.log(err.massage);
+              });
+            // Sinon, mise à jour du tableau follower de l'utilisateur ajouté
+          } else {
+            updateDoc(followedUserRef, {
+              follower: [...user?.follower, auth?.authUser?.uid],
+            })
+              .then(() => {
+                console.log("ajout d'un follower");
+              })
+              .catch((err) => {
+                console.log(err.massage);
+              });
+          }
         })
         .catch((err) => {
           console.log(err.massage);
