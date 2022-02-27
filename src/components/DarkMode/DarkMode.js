@@ -4,15 +4,19 @@ import { useTheme, ThemeProvider, createTheme } from "@mui/material/styles";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 
+// Context d'une fonction de switch de mode
 const ColorModeContext = React.createContext({
   toggleColorMode: () => {},
 });
 
 function ButtonDarkMode() {
+  // Utilisation du theme MUI modifier plus bas ligne 57
   const theme = useTheme();
+  // Déclaration de const pour récupérer la fonction de switch
   const colorMode = React.useContext(ColorModeContext);
   return (
     <Box
+      // Sur un click on switch de mode
       onClick={colorMode.toggleColorMode}
       sx={{
         display: "flex",
@@ -27,6 +31,7 @@ function ButtonDarkMode() {
     >
       {theme.palette.mode} mode
       <Box sx={{ ml: 1 }} color="inherit">
+        {/* Ternaire qui gère l'icon l'ors d'un click */}
         {theme.palette.mode === "dark" ? (
           <Brightness7Icon />
         ) : (
@@ -39,6 +44,7 @@ function ButtonDarkMode() {
 
 function ToggleColorMode() {
   const [mode, setMode] = React.useState("light");
+  // 'Import' de la fonction de switch avec les paramètres
   const colorMode = React.useMemo(
     () => ({
       toggleColorMode: () => {
@@ -47,7 +53,7 @@ function ToggleColorMode() {
     }),
     []
   );
-
+  //Thème modifié
   const theme = React.useMemo(
     () =>
       createTheme({
@@ -59,6 +65,7 @@ function ToggleColorMode() {
   );
 
   return (
+    // Le .Provider sert à maj tous les composants enfants avec la value de color mode
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <ButtonDarkMode />
@@ -67,6 +74,7 @@ function ToggleColorMode() {
   );
 }
 
+// Fonction simplification pour import
 export default function BouttonDarkMode() {
   return (
     <ToggleColorMode>
