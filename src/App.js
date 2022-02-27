@@ -10,7 +10,7 @@ import Profile from "./pages/Profile";
 
 export default function App() {
   // Création d'un thème pour changer la couleur principale de MUI
-  const theme = createTheme({
+  let theme = createTheme({
     palette: {
       primary: {
         main: "#1d9bf0",
