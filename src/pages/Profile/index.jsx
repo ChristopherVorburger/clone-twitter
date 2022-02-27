@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 
-import { Box, Divider } from "@mui/material";
+import { Box } from "@mui/material";
 
 import Header from "../../components/Header";
 import LeftNavbar from "../../components/LeftNavbar";
@@ -20,6 +20,8 @@ const Profile = () => {
     console.log("Autre utilisateur");
   }
 
+  console.log(auth?.userData?.[0]?.name);
+
   return (
     <>
       <Box display="flex" justifyContent="center">
@@ -31,7 +33,6 @@ const Profile = () => {
           borderRight="1px solid #eff3f4"
         >
           <Header />
-          <Divider sx={{ borderColor: "background__input" }} />
         </Box>
         <News />
       </Box>

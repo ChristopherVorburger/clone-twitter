@@ -40,7 +40,6 @@ const Home = () => {
       auth.userData?.[0]?.following?.includes(tweet.author_id)
     );
   });
-
   return (
     <>
       <Box display="flex" justifyContent="center">

@@ -1,4 +1,5 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 
 import { AppBar, Box, IconButton, Toolbar, Typography } from "@mui/material";
 
@@ -10,6 +11,17 @@ import ProfileButton from "../buttons/ProfileButton";
 
 const Header = () => {
   const classes = useStyles();
+
+  // Fonction pour convertir la première lettre d'une string en lettre capitale
+  const capitalize = (str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
+
+  // Utilisation du hook useLocation pour récupérer le chemin de l'url
+  const location = useLocation();
+
+  // Conversion du pathname pour en faire le titre du header
+  const pathname = capitalize(location.pathname.slice(1));
 
   return (
     <Box className={classes.header__container}>
@@ -24,7 +36,7 @@ const Header = () => {
             component="div"
             sx={{ flexGrow: 1 }}
           >
-            Home
+            {pathname}
           </Typography>
 
           <IconButton sx={{ padding: "1rem" }} aria-label="menu">
