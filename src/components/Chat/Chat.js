@@ -1,5 +1,3 @@
-'use strict';
-
 import { initializeApp } from 'firebase/app';
 import {
   getAuth,
@@ -30,15 +28,13 @@ import {
 import { getMessaging, getToken, onMessage } from 'firebase/messaging';
 import { getPerformance } from 'firebase/performance';
 
-import { getFirebaseConfig } from './firebase-config.js';
+import { getFirebaseConfig } from '../../firebase-config.js';
 
 // Signs-in Friendly Chat.
 async function signIn() {
-  async function signIn() {
-    // Sign in Firebase using popup auth and Google as the identity provider.
-    var provider = new GoogleAuthProvider();
-    await signInWithPopup(getAuth(), provider);
-  }
+  // Sign in Firebase using popup auth and Google as the identity provider.
+  var provider = new GoogleAuthProvider();
+  await signInWithPopup(getAuth(), provider);
 }
 
 // Signs-out of Friendly Chat.
@@ -47,13 +43,12 @@ function signOutUser() {
   signOut(getAuth());
 }
 
-// Initialize firebase auth
+// Initiate firebase auth
 function initFirebaseAuth() {
   // Listen to auth state changes.
   onAuthStateChanged(getAuth(), authStateObserver);
 }
 
-// Returns the signed-in user's profile Pic URL.
 // Returns the signed-in user's profile Pic URL.
 function getProfilePicUrl() {
   return getAuth().currentUser.photoURL || '/images/profile_placeholder.png';
@@ -69,7 +64,7 @@ function isUserSignedIn() {
   return !!getAuth().currentUser;
 }
 
-// Saves a new message to Cloud Firestore.
+// Saves a new message on the Cloud Firestore.
 async function saveMessage(messageText) {
   // Add a new message entry to the Firebase database.
   try {
@@ -147,6 +142,7 @@ async function saveImageMessage(file) {
     );
   }
 }
+
 // Saves the messaging device token to Cloud Firestore.
 async function saveMessagingDeviceToken() {
   try {
@@ -215,6 +211,8 @@ function onMediaFileSelected(event) {
 function onMessageFormSubmit(e) {
   e.preventDefault();
   // Check that the user entered a message and is signed in.
+  var messageInputElement = document.getElementById('message');
+
   if (messageInputElement.value && checkSignedInWithMessage()) {
     saveMessage(messageInputElement.value).then(function () {
       // Clear message text field and re-enable the SEND button.
@@ -226,6 +224,11 @@ function onMessageFormSubmit(e) {
 
 // Triggers when the auth state change for instance when the user signs-in or signs-out.
 function authStateObserver(user) {
+  var userPicElement = document.getElementById('user-pic');
+  var userNameElement = document.getElementById('user-name');
+  var signOutButtonElement = document.getElementById('sign-out');
+  var signInButtonElement = document.getElementById('sign-in');
+
   if (user) {
     // User is signed in!
     // Get the signed-in user's profile pic and name.
@@ -314,6 +317,7 @@ function createAndInsertMessage(id, timestamp) {
   container.innerHTML = MESSAGE_TEMPLATE;
   const div = container.firstChild;
   div.setAttribute('id', id);
+  var messageListElement = document.getElementById('messages');
 
   // If timestamp is null, assume we've gotten a brand new message.
   // https://stackoverflow.com/a/47781432/4816918
@@ -353,6 +357,8 @@ function createAndInsertMessage(id, timestamp) {
 function displayMessage(id, timestamp, name, text, picUrl, imageUrl) {
   var div =
     document.getElementById(id) || createAndInsertMessage(id, timestamp);
+  var messageInputElement = document.getElementById('message');
+  var messageListElement = document.getElementById('messages');
 
   // profile picture
   if (picUrl) {
@@ -389,6 +395,9 @@ function displayMessage(id, timestamp, name, text, picUrl, imageUrl) {
 // Enables or disables the submit button depending on the values of the input
 // fields.
 function toggleButton() {
+  var messageInputElement = document.getElementById('message');
+  var submitButtonElement = document.getElementById('submit');
+
   if (messageInputElement.value) {
     submitButtonElement.removeAttribute('disabled');
   } else {
@@ -397,42 +406,149 @@ function toggleButton() {
 }
 
 // Shortcuts to DOM Elements.
-var messageListElement = document.getElementById('messages');
+// var messageListElement = document.getElementById('messages');
 var messageFormElement = document.getElementById('message-form');
-var messageInputElement = document.getElementById('message');
-var submitButtonElement = document.getElementById('submit');
+// var messageInputElement = document.getElementById('message');
+// var submitButtonElement = document.getElementById('submit');
 var imageButtonElement = document.getElementById('submitImage');
 var imageFormElement = document.getElementById('image-form');
 var mediaCaptureElement = document.getElementById('mediaCapture');
-var userPicElement = document.getElementById('user-pic');
-var userNameElement = document.getElementById('user-name');
+// var userPicElement = document.getElementById('user-pic');
+// var userNameElement = document.getElementById('user-name');
 var signInButtonElement = document.getElementById('sign-in');
-var signOutButtonElement = document.getElementById('sign-out');
+// var signOutButtonElement = document.getElementById('sign-out');
 var signInSnackbarElement = document.getElementById('must-signin-snackbar');
 
-// Saves message on form submit.
-messageFormElement.addEventListener('submit', onMessageFormSubmit);
-signOutButtonElement.addEventListener('click', signOutUser);
-signInButtonElement.addEventListener('click', signIn);
+// // Saves message on form submit.
+// messageFormElement.addEventListener('submit', onMessageFormSubmit);
+// signOutButtonElement.addEventListener('click', signOutUser);
+// signInButtonElement.addEventListener('click', signIn);
 
-// Toggle for the button.
-messageInputElement.addEventListener('keyup', toggleButton);
-messageInputElement.addEventListener('change', toggleButton);
+// // Toggle for the button.
+// messageInputElement.addEventListener('keyup', toggleButton);
+// messageInputElement.addEventListener('change', toggleButton);
 
-// Events for image upload.
-imageButtonElement.addEventListener('click', function (e) {
-  e.preventDefault();
-  mediaCaptureElement.click();
-});
-mediaCaptureElement.addEventListener('change', onMediaFileSelected);
+// // Events for image upload.
+// imageButtonElement.addEventListener('click', function (e) {
+//   e.preventDefault();
+//   mediaCaptureElement.click();
+// });
+// mediaCaptureElement.addEventListener('change', onMediaFileSelected);
 
-const firebaseAppConfig = getFirebaseConfig();
 // TODO 0: Initialize Firebase
-
+const firebaseAppConfig = getFirebaseConfig();
+initializeApp(firebaseAppConfig);
 // TODO 12: Initialize Firebase Performance Monitoring
 
 initFirebaseAuth();
 loadMessages();
 
-const firebaseAppConfig = getFirebaseConfig();
-initializeApp(firebaseAppConfig);
+export default function Chat() {
+  return (
+    <div className="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-header">
+      {/* <!-- Header section containing logo --> */}
+      <header className="mdl-layout__header mdl-color-text--white mdl-color--light-blue-700">
+        <div className="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid">
+          <div className="mdl-layout__header-row mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
+            <h3>
+              <i className="material-icons">chat_bubble_outline</i> Friendly
+              Chat
+            </h3>
+          </div>
+          <div id="user-container">
+            <div hidden id="user-pic"></div>
+            <div hidden id="user-name"></div>
+            <button
+              hidden
+              id="sign-out"
+              onClick={() => signOutUser()}
+              className="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white"
+            >
+              Sign-out
+            </button>
+            <button
+              id="sign-in"
+              className="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white"
+              onClick={() => signIn()}
+            >
+              <i className="material-icons">account_circle</i>Sign-in with
+              Google
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <main className="mdl-layout__content mdl-color--grey-100">
+        <div
+          id="messages-card-container"
+          className="mdl-cell mdl-cell--12-col mdl-grid"
+        >
+          {/* <!-- Messages container --> */}
+          <div
+            id="messages-card"
+            className="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--6-col-tablet mdl-cell--6-col-desktop"
+          >
+            <div className="mdl-card__supporting-text mdl-color-text--grey-600">
+              <div id="messages"></div>
+              <form
+                id="message-form"
+                action="#"
+                onSubmit={(e) => onMessageFormSubmit(e)}
+              >
+                <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                  <input
+                    className="mdl-textfield__input"
+                    type="text"
+                    id="message"
+                    onKeyUp={() => toggleButton()}
+                    onChange={() => toggleButton()}
+                    autoComplete="off"
+                  />
+                  <label className="mdl-textfield__label" htmlFor="message">
+                    Message...
+                  </label>
+                </div>
+                <button
+                  id="submit"
+                  disabled
+                  type="submit"
+                  onSubmit={(e) => onMessageFormSubmit(e)}
+                  className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+                >
+                  Send
+                </button>
+              </form>
+              <form id="image-form" action="#">
+                <input
+                  id="mediaCapture"
+                  type="file"
+                  accept="image/*"
+                  capture="camera"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    mediaCaptureElement.click();
+                  }}
+                />
+                <button
+                  id="submitImage"
+                  title="Add an image"
+                  className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--amber-400 mdl-color-text--white"
+                >
+                  <i className="material-icons">image</i>
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <div
+            id="must-signin-snackbar"
+            className="mdl-js-snackbar mdl-snackbar"
+          >
+            <div className="mdl-snackbar__text"></div>
+            <button className="mdl-snackbar__action" type="button"></button>
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+}
