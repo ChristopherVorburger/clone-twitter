@@ -13,17 +13,11 @@ import {
   TextField,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-import {
-  addDoc,
-  collection,
-  getFirestore,
-  serverTimestamp,
-} from "firebase/firestore";
+import { doc, getFirestore, serverTimestamp, setDoc } from "firebase/firestore";
 import { AuthContext } from "../../context/authContext";
 
 // Firestore
 const database = getFirestore();
-const usersCollectionRef = collection(database, "users");
 
 // Fonction principale SignUp
 function SignUp() {
@@ -59,7 +53,8 @@ function SignUp() {
         .then((cred) => {
           setEmail("");
           setPassword("");
-          addDoc(usersCollectionRef, {
+          const userRef = doc(database, "users", cred.user.uid);
+          setDoc(userRef, {
             name,
             username,
             created_at: serverTimestamp(),
