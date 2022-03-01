@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 
 // components
 import Header from "../../components/Header";
@@ -24,10 +24,11 @@ import useStyles from "./styles";
 //Import des icones
 import { icons } from "../../constants";
 import ModalAddTweets from "../../components/ModalAddTweets/ModalAddTweets";
+import { ModalContext } from "../../context/modalContext";
 
 const Home = () => {
   const classes = useStyles();
-
+  const { showModal } = useContext(ModalContext);
   // Utilisation du hook useContext pour récupérer le contexte Auth
   const auth = React.useContext(AuthContext);
 
@@ -41,9 +42,11 @@ const Home = () => {
   const filteredTweets = tweets?.filter((tweet) => {
     return tweet.author_id === auth?.authUser?.uid || auth.userData?.[0]?.following?.includes(tweet.author_id);
   });
+  console.log(showModal);
   return (
     <>
-      <ModalAddTweets />
+      {showModal && <ModalAddTweets />}
+
       <Box display='flex' justifyContent='center'>
         <LeftNavbar />
         <Box display='flex' flexDirection='column' borderLeft='1px solid #eff3f4' borderRight='1px solid #eff3f4'>
