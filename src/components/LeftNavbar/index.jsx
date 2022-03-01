@@ -57,7 +57,7 @@ const LeftNavbar = () => {
                   sx={{
                     display: "flex",
                     justifyContent: "center",
-                    transform: "scale(1.2)",
+                    transform: "scale(2)",
                     color: "primary.main",
                     margin: "0.5rem",
                     minWidth: "20px",
@@ -79,8 +79,8 @@ const LeftNavbar = () => {
                       sx={{
                         display: "flex",
                         justifyContent: "center",
-                        transform: "scale(1.2)",
-                        m: "0.5rem",
+                        transform: "scale(2)",
+                        m: "0.8rem 0.5rem",
                         minWidth: "20px",
                       }}
                     >
@@ -88,7 +88,10 @@ const LeftNavbar = () => {
                     </ListItemIcon>
                     <ListItemText
                       className={classes.icon__text}
-                      sx={{ ml: "1rem" }}
+                      sx={{
+                        ml: "1rem",
+                        fontSize: "fontSize.large",
+                      }}
                     >
                       {icon.text}
                     </ListItemText>

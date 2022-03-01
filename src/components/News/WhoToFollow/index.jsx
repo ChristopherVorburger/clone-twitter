@@ -125,17 +125,17 @@ const WhoToFollow = ({ user }) => {
       <Box display="flex" justifyContent="space-between">
         <Box display="flex" justifyContent="space-between">
           <Box mr="1rem">
-            <img src={user.image} alt={user.name} width="40px" />
+            <img src={user?.image} alt={user?.name} width="40px" />
           </Box>
           <Box>
             <Box>
-              <Typography fontSize="15px" fontWeight="bold">
-                {user.name}
+              <Typography fontSize="fontSize.main" fontWeight="mainBold">
+                {user?.name}
               </Typography>
             </Box>
             <Box>
-              <Typography fontSize="15px" color="grey.main">
-                {`@${user.username}`}
+              <Typography fontSize="fontSize.main" color="grey.main">
+                {`@${user?.username}`}
               </Typography>
             </Box>
           </Box>
@@ -145,8 +145,8 @@ const WhoToFollow = ({ user }) => {
             <Button
               variant="contained"
               sx={{
-                fontSize: "13px",
-                fontWeight: "bold",
+                fontSize: "fontSize.small",
+                fontWeight: "mainBold",
                 backgroundColor: "black.main",
                 borderRadius: "50px",
               }}
@@ -158,8 +158,8 @@ const WhoToFollow = ({ user }) => {
         </Box>
       </Box>
       <Box display="flex" justifyContent="center">
-        <Typography fontSize="15px" color="grey.main">
-          {user.comment}
+        <Typography fontSize="fontSize.main" color="grey.main">
+          {user?.comment}
         </Typography>
       </Box>
     </Box>

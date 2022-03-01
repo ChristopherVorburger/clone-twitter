@@ -29,6 +29,16 @@ export default function App() {
         main: "#ffffff",
       },
     },
+    typography: {
+      fontSize: {
+        small: 13,
+        main: 15,
+        large: 20,
+      },
+      lightBold: 400,
+      mainBold: 700,
+      titleBold: 800,
+    },
   });
 
   return (

@@ -40,13 +40,14 @@ const NewTweet = () => {
         <Stack alignItems="flex-start">
           <Box>
             <TextField
+              autoComplete="off"
               sx={{
                 border: "none!important",
                 "& .MuiOutlinedInput-notchedOutline": {
                   borderStyle: "none",
                 },
                 "& .MuiOutlinedInput-input": {
-                  fontSize: "1.3rem!important",
+                  fontSize: "fontSize.large",
                   padding: "16.5px 0!important",
                 },
               }}
@@ -65,8 +66,8 @@ const NewTweet = () => {
               <icons.PublicOutlinedIcon />
               <Typography
                 sx={{
-                  fontWeight: "bold",
-                  fontSize: "12px",
+                  fontWeight: "mainBold",
+                  fontSize: "fontSize.small",
                 }}
               >
                 Everyone can reply
@@ -119,13 +120,12 @@ const NewTweet = () => {
                   textTransform: "none",
                   borderRadius: "50px",
                   backgroundColor: "primary.main",
-                  fontWeight: "bold",
                   width: "80px",
                 }}
               >
                 <Typography
                   sx={{
-                    fontWeight: "bold",
+                    fontWeight: "mainBold",
                     color: "white.main",
                   }}
                 >

@@ -28,7 +28,7 @@ export default function LabelBottomNavigation() {
       sx={{
         width: "100%",
         maxWidth: "500px",
-        position: "absolute",
+        position: "fixed",
         bottom: "0",
       }}
       value={value}

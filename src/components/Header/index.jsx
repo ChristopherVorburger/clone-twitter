@@ -51,10 +51,10 @@ const Header = ({ iconsLeft, iconsRight, subtitle }) => {
             alignItems="center"
           >
             <Box>
-              <Typography fontSize="20px" fontWeight="bold">
+              <Typography fontSize="fontSize.large" fontWeight="mainBold">
                 {pathname}
               </Typography>
-              <Typography fontSize="15px">{subtitle}</Typography>
+              <Typography fontSize="fontSize.main">{subtitle}</Typography>
             </Box>
             <Box>
               <IconButton
