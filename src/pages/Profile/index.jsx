@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useParams } from "react-router-dom";
 
-import { Box, Button, IconButton, Typography } from "@mui/material";
+import { Box, Button, Tab, Tabs, Typography } from "@mui/material";
 
 import Header from "../../components/Header";
 import LeftNavbar from "../../components/LeftNavbar";
@@ -18,8 +18,22 @@ import { images } from "../../constants";
 
 import useStyles from "./styles";
 
+// Liens pour la Nav Tab
+function LinkTab(props) {
+  return <Tab component={Link} {...props} />;
+}
+
 const Profile = () => {
   const classes = useStyles();
+
+  // State pour la nav tab
+  const [value, setValue] = React.useState(0);
+
+  // Fonction de la nav tab
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
   // Utilisation du hook useContext pour récupérer le contexte Auth
   const { username } = useParams();
   const auth = React.useContext(AuthContext);
@@ -42,9 +56,11 @@ const Profile = () => {
           flexDirection="column"
           borderLeft="1px solid #eff3f4"
           borderRight="1px solid #eff3f4"
+          maxWidth="590px"
         >
           {/* TODO: Rendre dynamique le subtitle */}
           <Header iconsLeft={icons.ArrowBackIcon} subtitle={"10 tweets"} />
+          {/* Premier bloc */}
           <Box maxWidth="590px" maxHeight="200px">
             <img
               className={classes.profile__cover}
@@ -132,6 +148,41 @@ const Profile = () => {
                   </Box>
                 </Link>
               </Box>
+            </Box>
+            {/* Nav Tab */}
+            <Box
+              display="flex"
+              justifyContent="center"
+              width="100%"
+              fontSize="fontSize.main"
+              textTransform="none"
+            >
+              <Tabs
+                value={value}
+                onChange={handleChange}
+                aria-label="nav tabs example"
+              >
+                <LinkTab
+                  className={classes.profile__link_nav}
+                  to={`/${auth?.userData?.[0]?.username}`}
+                  label="Tweet"
+                />
+                <LinkTab
+                  className={classes.profile__link_nav}
+                  to={`/${auth?.userData?.[0]?.username}/with_replies`}
+                  label="Tweet & replies"
+                />
+                <LinkTab
+                  className={classes.profile__link_nav}
+                  to={`/${auth?.userData?.[0]?.username}/media`}
+                  label="Media"
+                />
+                <LinkTab
+                  className={classes.profile__link_nav}
+                  to={`/${auth?.userData?.[0]?.username}/likes`}
+                  label="Likes"
+                />
+              </Tabs>
             </Box>
           </Box>
         </Box>
