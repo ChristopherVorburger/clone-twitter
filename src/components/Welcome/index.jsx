@@ -30,7 +30,7 @@ const Welcome = () => {
         <Typography
           mb="27px"
           fontWeight="light"
-          fontSize="14px"
+          fontSize="fontSize.main"
           color="grey.darker"
         >
           This is the best place to see what’s happening in your world. Find

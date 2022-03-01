@@ -49,7 +49,12 @@ const News = () => {
         backgroundColor="grey.background__trend"
         borderRadius="20px"
       >
-        <Typography fontSize="20px" mb="1rem" fontWeight="bold" p="1rem">
+        <Typography
+          fontSize="fontSize.large"
+          mb="1rem"
+          fontWeight="800"
+          p="1rem"
+        >
           Trends
         </Typography>
         <Box>
@@ -90,7 +95,7 @@ const News = () => {
         backgroundColor="grey.background__trend"
         borderRadius="20px"
       >
-        <Typography fontSize="20px" fontWeight="bold" p="1rem">
+        <Typography fontSize="fontSize.large" fontWeight="mainBold" p="1rem">
           Who to follow
         </Typography>
         {/* On affiche les utilisateurs non suivi dans who to follow en limitant leur nombre à trois */}
@@ -108,7 +113,7 @@ const News = () => {
         })}
       </Box>
       <Box m="2rem auto" p="1rem">
-        <Typography fontSize="15px" color="grey.main">
+        <Typography fontSize="fontSize.main" color="grey.main">
           Terms of Service Privacy Policy Cookie Policy Accessibility Ads info
           More © 2022 Twitter, Inc.
         </Typography>

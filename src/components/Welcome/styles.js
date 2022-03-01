@@ -7,7 +7,7 @@ export default makeStyles((theme) => ({
     width: "40%",
     maxWidth: "120px",
     minWidth: "49px!important",
-    minHeight: "49px!important",
+    minHeight: "46px!important",
   },
   button__add_tweet: {
     [theme.breakpoints.up("sm")]: {

@@ -40,13 +40,14 @@ const NewTweet = () => {
         <Stack alignItems="flex-start">
           <Box>
             <TextField
+              autoComplete="off"
               sx={{
                 border: "none!important",
                 "& .MuiOutlinedInput-notchedOutline": {
                   borderStyle: "none",
                 },
                 "& .MuiOutlinedInput-input": {
-                  fontSize: "1.3rem!important",
+                  fontSize: "fontSize.large",
                   padding: "16.5px 0!important",
                 },
               }}
@@ -66,7 +67,7 @@ const NewTweet = () => {
               <Typography
                 sx={{
                   fontWeight: "bold",
-                  fontSize: "12px",
+                  fontSize: "fontSize.small",
                 }}
               >
                 Everyone can reply

@@ -20,14 +20,14 @@ const PreHome = () => {
               <Typography
                 className={classes.title}
                 fontSize="44px"
-                fontWeight="bold"
+                fontWeight="mainBold"
               >
                 Happening now
               </Typography>
               <Typography
                 className={classes.subtitle}
                 fontSize="23px"
-                fontWeight="bold"
+                fontWeight="mainBold"
               >
                 Join Twitter today.
               </Typography>
@@ -55,7 +55,7 @@ const PreHome = () => {
                     alt="logo apple"
                   />
                   <Typography
-                    fontSize="15px"
+                    fontSize="fontSize.main"
                     color="black.main"
                     fontWeight="bold"
                   >

@@ -66,19 +66,23 @@ const Profile = () => {
               </Box>
             </Box>
             <Box m="4px 0 12px 0">
-              <Typography fontSize="20px" lineHeight="24px" fontWeight="bold">
+              <Typography
+                fontSize="fontSize.large"
+                lineHeight="24px"
+                fontWeight="bold"
+              >
                 {auth?.userData?.[0]?.name}
               </Typography>
-              <Typography fontSize="15px" color="grey.main">
+              <Typography fontSize="fontSize.main" color="grey.main">
                 {`@${auth?.userData?.[0]?.username}`}
               </Typography>
             </Box>
             <Box mb="12px">
               <Box>
-                <Typography>Description</Typography>
+                <Typography fontSize="fontSize.main">Description</Typography>
               </Box>
               <Box>
-                <Typography>Translate bio</Typography>
+                <Typography fontSize="fontSize.small">Translate bio</Typography>
               </Box>
             </Box>
           </Box>
