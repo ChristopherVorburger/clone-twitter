@@ -59,7 +59,7 @@ const Profile = () => {
               <Box>Image profil</Box>
               <Box>
                 <Button variant="outlined" className={classes.button}>
-                  <Typography color="black.main" fontWeight="bold">
+                  <Typography color="black.main" fontWeight="mainBold">
                     Edit profile
                   </Typography>
                 </Button>
@@ -69,7 +69,7 @@ const Profile = () => {
               <Typography
                 fontSize="fontSize.large"
                 lineHeight="24px"
-                fontWeight="bold"
+                fontWeight="mainBold"
               >
                 {auth?.userData?.[0]?.name}
               </Typography>

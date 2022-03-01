@@ -66,7 +66,7 @@ const NewTweet = () => {
               <icons.PublicOutlinedIcon />
               <Typography
                 sx={{
-                  fontWeight: "bold",
+                  fontWeight: "mainBold",
                   fontSize: "fontSize.small",
                 }}
               >
@@ -120,13 +120,12 @@ const NewTweet = () => {
                   textTransform: "none",
                   borderRadius: "50px",
                   backgroundColor: "primary.main",
-                  fontWeight: "bold",
                   width: "80px",
                 }}
               >
                 <Typography
                   sx={{
-                    fontWeight: "bold",
+                    fontWeight: "mainBold",
                     color: "white.main",
                   }}
                 >

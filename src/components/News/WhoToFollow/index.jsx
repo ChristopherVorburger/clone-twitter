@@ -129,7 +129,7 @@ const WhoToFollow = ({ user }) => {
           </Box>
           <Box>
             <Box>
-              <Typography fontSize="fontSize.main" fontWeight="bold">
+              <Typography fontSize="fontSize.main" fontWeight="mainBold">
                 {user.name}
               </Typography>
             </Box>
@@ -146,7 +146,7 @@ const WhoToFollow = ({ user }) => {
               variant="contained"
               sx={{
                 fontSize: "fontSize.small",
-                fontWeight: "bold",
+                fontWeight: "mainBold",
                 backgroundColor: "black.main",
                 borderRadius: "50px",
               }}

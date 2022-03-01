@@ -52,7 +52,7 @@ const Trend = ({ position, category, title, nbTweets }) => {
         </Box>
       </Box>
       <Box>
-        <Typography fontSize="fontSize.main" fontWeight="bold">
+        <Typography fontSize="fontSize.main" fontWeight="mainBold">
           {title}
         </Typography>
       </Box>
