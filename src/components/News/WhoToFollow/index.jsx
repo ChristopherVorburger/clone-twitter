@@ -3,7 +3,13 @@ import { Box, Button, Typography } from "@mui/material";
 
 // import des fonctions firebase
 import { db } from "../../../firebase-config";
-import { doc, updateDoc } from "firebase/firestore";
+import {
+  arrayRemove,
+  deleteDoc,
+  doc,
+  updateDoc,
+  deleteField,
+} from "firebase/firestore";
 
 // Import du context Auth
 import { AuthContext } from "../../../context/authContext";
@@ -16,21 +22,21 @@ const WhoToFollow = ({ user }) => {
   // Utilisation du hook useContext pour récupérer le contexte Auth
   const auth = React.useContext(AuthContext);
 
+  // Récupération du tableau de following de l'utilisateur connecté
+  const following = auth?.userData?.[0]?.following;
+
+  // Récupération du tableau de follower de l'utilisateur ciblé
+  const follower = user.follower;
+
+  // Référence à l'id de l'utilisateur connecté à mettre à jour
+  const currentUserRef = doc(db, "users", auth?.authUser?.uid);
+
+  // Référence à l'id de l'utilisateur ciblé à mettre à jour
+  const followedUserRef = doc(db, "users", user.id);
+
   // fonction pour ajouter un following
-  const updateUserFollowing = (e) => {
+  const followUser = (e) => {
     e.preventDefault();
-
-    // Récupération du tableau de following de l'utilisateur connecté
-    const following = auth?.userData?.[0]?.following;
-
-    // Récupération du tableau de follower de l'utilisateur ciblé
-    const follower = user.follower;
-
-    // Référence à l'id de l'utilisateur connecté à mettre à jour
-    const currentUserRef = doc(db, "users", auth?.authUser?.uid);
-
-    // Référence à l'id de l'utilisateur ciblé à mettre à jour
-    const followedUserRef = doc(db, "users", user.id);
 
     // Sécurité pour ne pas se suivre soi-même
     if (auth?.authUser?.uid === user.id) {
@@ -120,6 +126,20 @@ const WhoToFollow = ({ user }) => {
     }
   };
 
+  // Fonction pour unfollow
+  const unfollowUser = () => {
+    // Suppression du following dans les datas de l'utilisateur connecté
+    updateDoc(currentUserRef, {
+      following: arrayRemove(user.id),
+    });
+    // Suppression du follower dans les datas de l'utilisateur supprimé
+    updateDoc(followedUserRef, {
+      follower: arrayRemove(auth?.authUser?.uid),
+    });
+  };
+
+  //console.log("user id", user.id);
+
   return (
     <Box className={classes.container} p="1rem">
       <Box display="flex" justifyContent="space-between">
@@ -142,18 +162,33 @@ const WhoToFollow = ({ user }) => {
         </Box>
         <Box>
           <Box>
-            <Button
-              variant="contained"
-              sx={{
-                fontSize: "font.small",
-                fontWeight: "mainBold",
-                backgroundColor: "black.main",
-                borderRadius: "50px",
-              }}
-              onClick={updateUserFollowing}
-            >
-              Follow
-            </Button>
+            {auth?.userData?.[0]?.following?.includes(user.id) ? (
+              <Button
+                variant="contained"
+                sx={{
+                  fontSize: "font.small",
+                  fontWeight: "mainBold",
+                  backgroundColor: "black.main",
+                  borderRadius: "50px",
+                }}
+                onClick={unfollowUser}
+              >
+                UnFollow
+              </Button>
+            ) : (
+              <Button
+                variant="contained"
+                sx={{
+                  fontSize: "font.small",
+                  fontWeight: "mainBold",
+                  backgroundColor: "black.main",
+                  borderRadius: "50px",
+                }}
+                onClick={followUser}
+              >
+                Follow
+              </Button>
+            )}
           </Box>
         </Box>
       </Box>

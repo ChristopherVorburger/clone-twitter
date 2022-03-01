@@ -170,7 +170,7 @@ const Profile = () => {
                 >
                   <Box display="flex" color="black.main">
                     <Typography fontWeight="mainBold" mr="4px">
-                      1
+                      {auth?.userData?.[0]?.following?.length}
                     </Typography>
                     <Typography>Following</Typography>
                   </Box>
@@ -183,7 +183,7 @@ const Profile = () => {
                 >
                   <Box display="flex" color="black.main">
                     <Typography fontWeight="mainBold" mr="4px">
-                      1
+                      {auth?.userData?.[0]?.follower?.length}
                     </Typography>
                     <Typography>Followers</Typography>
                   </Box>

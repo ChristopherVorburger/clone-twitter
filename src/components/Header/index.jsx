@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 import { AppBar, Box, IconButton, Toolbar, Typography } from "@mui/material";
 
@@ -8,6 +9,7 @@ import useStyles from "./styles";
 
 const Header = ({ iconsLeft, iconsRight, subtitle, title }) => {
   const classes = useStyles();
+  const navigate = useNavigate();
 
   return (
     <Box className={classes.header__container}>
@@ -28,6 +30,7 @@ const Header = ({ iconsLeft, iconsRight, subtitle, title }) => {
                 color: "black.main",
               }}
               aria-label="menu"
+              onClick={() => navigate(-1)}
             >
               {iconsLeft?.type?.render()}
             </IconButton>
