@@ -125,17 +125,17 @@ const WhoToFollow = ({ user }) => {
       <Box display="flex" justifyContent="space-between">
         <Box display="flex" justifyContent="space-between">
           <Box mr="1rem">
-            <img src={user.image} alt={user.name} width="40px" />
+            <img src={user?.image} alt={user?.name} width="40px" />
           </Box>
           <Box>
             <Box>
               <Typography fontSize="fontSize.main" fontWeight="mainBold">
-                {user.name}
+                {user?.name}
               </Typography>
             </Box>
             <Box>
               <Typography fontSize="fontSize.main" color="grey.main">
-                {`@${user.username}`}
+                {`@${user?.username}`}
               </Typography>
             </Box>
           </Box>
@@ -159,7 +159,7 @@ const WhoToFollow = ({ user }) => {
       </Box>
       <Box display="flex" justifyContent="center">
         <Typography fontSize="fontSize.main" color="grey.main">
-          {user.comment}
+          {user?.comment}
         </Typography>
       </Box>
     </Box>
