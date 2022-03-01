@@ -35,6 +35,7 @@ export default function App() {
         main: 15,
         large: 20,
       },
+      lightBold: 400,
       mainBold: 700,
       titleBold: 800,
     },

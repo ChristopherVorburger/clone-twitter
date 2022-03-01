@@ -1,7 +1,7 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, IconButton, Typography } from "@mui/material";
 
 import Header from "../../components/Header";
 import LeftNavbar from "../../components/LeftNavbar";
@@ -58,7 +58,7 @@ const Profile = () => {
             <Box display="flex" justifyContent="space-between">
               <Box>Image profil</Box>
               <Box>
-                <Button variant="outlined" className={classes.button}>
+                <Button variant="outlined" className={classes.profile__button}>
                   <Typography color="black.main" fontWeight="mainBold">
                     Edit profile
                   </Typography>
@@ -82,7 +82,55 @@ const Profile = () => {
                 <Typography fontSize="fontSize.main">Description</Typography>
               </Box>
               <Box>
-                <Typography fontSize="fontSize.small">Translate bio</Typography>
+                <Typography fontSize="fontSize.small" color="primary.main">
+                  Translate bio
+                </Typography>
+              </Box>
+            </Box>
+            <Box
+              display="flex"
+              alignItems="center"
+              fontSize="fontSize.main"
+              color="grey.main"
+              mb="12px"
+            >
+              <Box display="flex" alignItems="center" mr="12px">
+                <Typography fontSize="fontSize.large" mr="4px">
+                  <icons.FmdGoodOutlinedIcon />
+                </Typography>
+                <Typography>Caravane</Typography>
+              </Box>
+              <Box display="flex" alignItems="center">
+                <Typography fontSize="fontSize.large" mr="4px">
+                  <icons.DateRangeOutlinedIcon />
+                </Typography>
+                <Typography>Joined February 2022</Typography>
+              </Box>
+            </Box>
+            <Box display="flex" fontSize="fontSize.main">
+              <Box mr="20px">
+                <Link
+                  to="/following"
+                  textDecoration="none"
+                  className={classes.profile__link}
+                >
+                  <Box display="flex" color="black.main">
+                    <Typography fontWeight="mainBold" mr="4px">
+                      1
+                    </Typography>
+                    <Typography>Following</Typography>
+                  </Box>
+                </Link>
+              </Box>
+              <Box>
+                <Link to="/followers" className={classes.profile__link}>
+                  <Box display="flex" color="black.main">
+                    <Typography fontWeight="mainBold" mr="4px">
+                      1
+                    </Typography>
+                    <Typography>Followers</Typography>
+                  </Box>
+                </Link>
               </Box>
             </Box>
           </Box>

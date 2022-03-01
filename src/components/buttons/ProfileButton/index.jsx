@@ -7,9 +7,9 @@ import { icons } from "../../../constants";
 const ProfileButton = () => {
   return (
     <div>
-      <IconButton size="large" aria-label="menu" sx={{ mr: 2 }}>
+      <IconButton size="large" aria-label="menu" sx={{ mt: 2, mr: 2 }}>
         <icons.AccountCircleIcon
-          sx={{ color: "grey.main", transform: "scale(1.5)" }}
+          sx={{ color: "grey.main", transform: "scale(3)" }}
         />
       </IconButton>
     </div>
