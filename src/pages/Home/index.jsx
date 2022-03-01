@@ -53,7 +53,7 @@ const Home = () => {
           borderLeft="1px solid #eff3f4"
           borderRight="1px solid #eff3f4"
         >
-          <Header iconsRight={icons.AutoAwesomeSharpIcon} />
+          <Header title="Home" iconsRight={icons.AutoAwesomeSharpIcon} />
           <NewTweet />
           <Divider sx={{ borderColor: "background__input" }} />
           {/* Si le tableau filtré est vide, autrement dit si l'utilisateur n'a pas de followings

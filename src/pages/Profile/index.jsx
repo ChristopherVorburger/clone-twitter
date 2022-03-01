@@ -10,24 +10,29 @@ import {
   Typography,
 } from "@mui/material";
 
+// Import composants React
 import Header from "../../components/Header";
 import LeftNavbar from "../../components/LeftNavbar";
 import News from "../../components/News";
 import BottomNavigation from "../../components/BottomNavigation";
-
-import { AuthContext } from "../../context/authContext";
-
-//Import des icones
-import { icons } from "../../constants";
-
-//Import des images
-import { images } from "../../constants";
-
-import useStyles from "./styles";
-import { useFirestoreWithQuery } from "../../utils/useFirestoreWithQuery";
 import Tweet from "../../components/Tweet/Tweet";
 import WhoToFollow from "../../components/News/WhoToFollow";
+
+// Import Auth Context
+import { AuthContext } from "../../context/authContext";
+
+// Import des icones
+import { icons } from "../../constants";
+
+// Import des images
+import { images } from "../../constants";
+
+// Import hooks
+import { useFirestoreWithQuery } from "../../utils/useFirestoreWithQuery";
 import { useFirestore } from "../../utils/useFirestore";
+
+// Import styles
+import useStyles from "./styles";
 
 // Liens pour la Nav Tab
 function LinkTab(props) {
@@ -88,7 +93,11 @@ const Profile = () => {
           width="100%"
         >
           {/* TODO: Rendre dynamique le subtitle */}
-          <Header iconsLeft={icons.ArrowBackIcon} subtitle={"10 tweets"} />
+          <Header
+            title={auth.userData?.[0]?.name}
+            iconsLeft={icons.ArrowBackIcon}
+            subtitle={"10 tweets"}
+          />
           {/* Premier bloc */}
           <Box maxWidth="590px" maxHeight="200px">
             <img

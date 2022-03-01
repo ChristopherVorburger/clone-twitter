@@ -57,9 +57,8 @@ const LeftNavbar = () => {
                   sx={{
                     display: "flex",
                     justifyContent: "center",
-                    transform: "scale(2)",
+                    transform: "scale(1.2)",
                     color: "primary.main",
-                    margin: "0.5rem",
                     minWidth: "20px",
                   }}
                 >
@@ -79,9 +78,9 @@ const LeftNavbar = () => {
                       sx={{
                         display: "flex",
                         justifyContent: "center",
-                        transform: "scale(2)",
-                        m: "0.8rem 0.5rem",
+                        transform: "scale(1.2)",
                         minWidth: "20px",
+                        color: "black.main",
                       }}
                     >
                       {icon.name.type.render()}
@@ -91,6 +90,7 @@ const LeftNavbar = () => {
                       sx={{
                         ml: "1rem",
                         fontSize: "font.large",
+                        color: "black.main",
                       }}
                     >
                       {icon.text}
