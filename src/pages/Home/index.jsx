@@ -23,6 +23,7 @@ import useStyles from "./styles";
 
 //Import des icones
 import { icons } from "../../constants";
+import ModalAddTweets from "../../components/ModalAddTweets/ModalAddTweets";
 
 const Home = () => {
   const classes = useStyles();
@@ -38,21 +39,14 @@ const Home = () => {
   // Ici en l'occurrence ceux qui ont le même author_id que l'utilisateur connecté
   // et aussi ceux que l'utilisateur connecté a comme following
   const filteredTweets = tweets?.filter((tweet) => {
-    return (
-      tweet.author_id === auth?.authUser?.uid ||
-      auth.userData?.[0]?.following?.includes(tweet.author_id)
-    );
+    return tweet.author_id === auth?.authUser?.uid || auth.userData?.[0]?.following?.includes(tweet.author_id);
   });
   return (
     <>
-      <Box display="flex" justifyContent="center">
+      <ModalAddTweets />
+      <Box display='flex' justifyContent='center'>
         <LeftNavbar />
-        <Box
-          display="flex"
-          flexDirection="column"
-          borderLeft="1px solid #eff3f4"
-          borderRight="1px solid #eff3f4"
-        >
+        <Box display='flex' flexDirection='column' borderLeft='1px solid #eff3f4' borderRight='1px solid #eff3f4'>
           <Header iconsRight={icons.AutoAwesomeSharpIcon} />
           <NewTweet />
           <Divider sx={{ borderColor: "background__input" }} />
@@ -64,12 +58,7 @@ const Home = () => {
           {tweets ? (
             <>
               {filteredTweets.map((tweet) => (
-                <Tweet
-                  key={tweet.id}
-                  text={tweet.text}
-                  author_id={tweet.author_id}
-                  created_at={tweet.created_at}
-                />
+                <Tweet key={tweet.id} text={tweet.text} author_id={tweet.author_id} created_at={tweet.created_at} />
               ))}
             </>
           ) : (

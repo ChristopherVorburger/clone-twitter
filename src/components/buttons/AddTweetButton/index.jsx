@@ -9,9 +9,9 @@ const ButtonAddTweet = () => {
   const classes = useStyles();
 
   return (
-    <Box className={classes.button__feather}>
+    <Box className={classes.button__feather} role='button' onClick={() => {}}>
       <div className={classes.button__feather_plus}>+</div>
-      <GiFeather size="1.7rem" color="white" />
+      <GiFeather size='1.7rem' color='white' />
     </Box>
   );
 };
