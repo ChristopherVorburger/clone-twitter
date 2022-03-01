@@ -43,7 +43,7 @@ const LeftNavbar = () => {
   ];
   return (
     <Box className={classes.container}>
-      <Box className={classes.drawer}>
+      <Box>
         <Box
           display="flex"
           flexDirection="column"
@@ -90,7 +90,7 @@ const LeftNavbar = () => {
                       className={classes.icon__text}
                       sx={{
                         ml: "1rem",
-                        fontSize: "fontSize.large",
+                        fontSize: "font.large",
                       }}
                     >
                       {icon.text}

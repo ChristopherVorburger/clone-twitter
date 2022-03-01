@@ -55,7 +55,7 @@ const PreHome = () => {
                     alt="logo apple"
                   />
                   <Typography
-                    fontSize="fontSize.main"
+                    fontSize="font.main"
                     color="black.main"
                     fontWeight="mainBold"
                   >

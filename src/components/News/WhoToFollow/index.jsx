@@ -129,12 +129,12 @@ const WhoToFollow = ({ user }) => {
           </Box>
           <Box>
             <Box>
-              <Typography fontSize="fontSize.main" fontWeight="mainBold">
+              <Typography fontSize="font.main" fontWeight="mainBold">
                 {user?.name}
               </Typography>
             </Box>
             <Box>
-              <Typography fontSize="fontSize.main" color="grey.main">
+              <Typography fontSize="font.main" color="grey.main">
                 {`@${user?.username}`}
               </Typography>
             </Box>
@@ -145,7 +145,7 @@ const WhoToFollow = ({ user }) => {
             <Button
               variant="contained"
               sx={{
-                fontSize: "fontSize.small",
+                fontSize: "font.small",
                 fontWeight: "mainBold",
                 backgroundColor: "black.main",
                 borderRadius: "50px",
@@ -158,7 +158,7 @@ const WhoToFollow = ({ user }) => {
         </Box>
       </Box>
       <Box display="flex" justifyContent="center">
-        <Typography fontSize="fontSize.main" color="grey.main">
+        <Typography fontSize="font.main" color="grey.main">
           {user?.comment}
         </Typography>
       </Box>

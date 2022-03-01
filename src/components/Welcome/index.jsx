@@ -27,7 +27,7 @@ const Welcome = () => {
         >
           Welcome to Twitter!
         </Typography>
-        <Typography mb="27px" fontSize="fontSize.main">
+        <Typography mb="27px" fontSize="font.main">
           This is the best place to see what’s happening in your world. Find
           some people and topics to follow now.
         </Typography>

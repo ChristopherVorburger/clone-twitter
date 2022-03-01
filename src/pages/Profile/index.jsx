@@ -112,22 +112,22 @@ const Profile = () => {
             </Box>
             <Box m="4px 0 12px 0">
               <Typography
-                fontSize="fontSize.large"
+                fontSize="font.large"
                 lineHeight="24px"
                 fontWeight="mainBold"
               >
                 {auth?.userData?.[0]?.name}
               </Typography>
-              <Typography fontSize="fontSize.main" color="grey.main">
+              <Typography fontSize="font.main" color="grey.main">
                 {`@${auth?.userData?.[0]?.username}`}
               </Typography>
             </Box>
             <Box mb="12px">
               <Box>
-                <Typography fontSize="fontSize.main">Description</Typography>
+                <Typography fontSize="font.main">Description</Typography>
               </Box>
               <Box>
-                <Typography fontSize="fontSize.small" color="primary.main">
+                <Typography fontSize="font.small" color="primary.main">
                   Translate bio
                 </Typography>
               </Box>
@@ -135,27 +135,27 @@ const Profile = () => {
             <Box
               display="flex"
               alignItems="center"
-              fontSize="fontSize.main"
+              fontSize="font.main"
               color="grey.main"
               mb="12px"
             >
               <Box display="flex" alignItems="center" mr="12px">
-                <Typography fontSize="fontSize.large" mr="4px">
+                <Typography fontSize="font.large" mr="4px">
                   <icons.FmdGoodOutlinedIcon />
                 </Typography>
                 <Typography>Caravane</Typography>
               </Box>
               <Box display="flex" alignItems="center">
-                <Typography fontSize="fontSize.large" mr="4px">
+                <Typography fontSize="font.large" mr="4px">
                   <icons.DateRangeOutlinedIcon />
                 </Typography>
                 <Typography>Joined February 2022</Typography>
               </Box>
             </Box>
-            <Box display="flex" fontSize="fontSize.main">
+            <Box display="flex" fontSize="font.main">
               <Box mr="20px">
                 <Link
-                  to="/following"
+                  to={`/${auth?.userData?.[0]?.username}/following`}
                   textDecoration="none"
                   className={classes.profile__link}
                 >
@@ -168,7 +168,10 @@ const Profile = () => {
                 </Link>
               </Box>
               <Box>
-                <Link to="/followers" className={classes.profile__link}>
+                <Link
+                  to={`/${auth?.userData?.[0]?.username}/followers`}
+                  className={classes.profile__link}
+                >
                   <Box display="flex" color="black.main">
                     <Typography fontWeight="mainBold" mr="4px">
                       1
@@ -183,7 +186,7 @@ const Profile = () => {
               display="flex"
               justifyContent="center"
               width="100%"
-              fontSize="fontSize.main"
+              fontSize="font.main"
               textTransform="none"
             >
               <Tabs
@@ -244,7 +247,7 @@ const Profile = () => {
                   );
                 }
               })}
-              {/* TODO: Ajouter le voir plus */}
+              {/* TODO: Ajouter le 'voir plus' */}
             </Box>
           </Box>
         </Box>

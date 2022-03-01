@@ -7,6 +7,9 @@ import Login from "./components/Login/Login";
 import Home from "./pages/Home";
 import Exemple from "./components/Exemple";
 import Profile from "./pages/Profile";
+import Followers from "./pages/Followers";
+import Following from "./pages/Following";
+import LeftNavbar from "./components/LeftNavbar";
 
 export default function App() {
   // Création d'un thème pour changer la couleur principale de MUI
@@ -30,7 +33,7 @@ export default function App() {
       },
     },
     typography: {
-      fontSize: {
+      font: {
         small: 13,
         main: 15,
         large: 20,
@@ -50,6 +53,8 @@ export default function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/exemple" element={<Exemple />} />
         <Route path="/:username" element={<Profile />} />
+        <Route path="/:username/followers" element={<Followers />} />
+        <Route path="/:username/following" element={<Following />} />
       </Routes>
     </ThemeProvider>
   );
