@@ -1,7 +1,14 @@
 import React from "react";
 import { Link, useParams } from "react-router-dom";
 
-import { Box, Button, Tab, Tabs, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Tab,
+  Tabs,
+  Typography,
+} from "@mui/material";
 
 import Header from "../../components/Header";
 import LeftNavbar from "../../components/LeftNavbar";
@@ -17,6 +24,8 @@ import { icons } from "../../constants";
 import { images } from "../../constants";
 
 import useStyles from "./styles";
+import { useFirestoreWithQuery } from "../../utils/useFirestoreWithQuery";
+import Tweet from "../../components/Tweet/Tweet";
 
 // Liens pour la Nav Tab
 function LinkTab(props) {
@@ -43,6 +52,15 @@ const Profile = () => {
     console.log("Autre utilisateur");
   }
 
+  // Utilisation du hook perso useFirestoreWithQuery pour récupérer les tweets dans l'ordre de publication
+  const tweets = useFirestoreWithQuery("tweets");
+
+  // On filtre les tweets à afficher
+  // Ici en l'occurrence ceux qui ont le même author_id que la personne connectée
+  const filteredTweets = tweets?.filter((tweet) => {
+    return tweet.author_id === auth?.authUser?.uid;
+  });
+
   return (
     <>
       <Box
@@ -57,6 +75,7 @@ const Profile = () => {
           borderLeft="1px solid #eff3f4"
           borderRight="1px solid #eff3f4"
           maxWidth="590px"
+          width="100%"
         >
           {/* TODO: Rendre dynamique le subtitle */}
           <Header iconsLeft={icons.ArrowBackIcon} subtitle={"10 tweets"} />
@@ -183,6 +202,22 @@ const Profile = () => {
                   label="Likes"
                 />
               </Tabs>
+            </Box>
+            <Box>
+              {tweets ? (
+                <>
+                  {filteredTweets.map((tweet) => (
+                    <Tweet
+                      key={tweet.id}
+                      text={tweet.text}
+                      author_id={tweet.author_id}
+                      created_at={tweet.created_at}
+                    />
+                  ))}
+                </>
+              ) : (
+                <CircularProgress />
+              )}
             </Box>
           </Box>
         </Box>

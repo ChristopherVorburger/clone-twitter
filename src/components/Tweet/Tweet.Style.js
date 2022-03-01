@@ -9,7 +9,7 @@ export const TweetContainer = styled.div`
   background-color: #fff;
   font-family: "Lato", sans-serif;
   border: 1px solid rgb(239, 243, 244);
-  padding: 15px;
+  padding: 15px 0;
   color: #000;
   transition: background 0.2s ease;
   cursor: pointer;
