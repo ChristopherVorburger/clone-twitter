@@ -47,7 +47,7 @@ const NewTweet = () => {
                   borderStyle: "none",
                 },
                 "& .MuiOutlinedInput-input": {
-                  fontSize: "fontSize.large",
+                  fontSize: "font.large",
                   padding: "16.5px 0!important",
                 },
               }}
@@ -67,7 +67,7 @@ const NewTweet = () => {
               <Typography
                 sx={{
                   fontWeight: "mainBold",
-                  fontSize: "fontSize.small",
+                  fontSize: "font.small",
                 }}
               >
                 Everyone can reply

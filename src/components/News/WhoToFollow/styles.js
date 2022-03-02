@@ -6,4 +6,11 @@ export default makeStyles((theme) => ({
       backgroundColor: theme.palette.grey.background__input,
     },
   },
+  button: {
+    "&:hover": {
+      backgroundColor: "#fdc9ce!important",
+      borderColor: "#f4212e!important",
+      color: "#f4212e!important",
+    },
+  },
 }));

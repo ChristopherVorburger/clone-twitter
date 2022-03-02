@@ -3,7 +3,7 @@ import { Box, Button, Typography } from "@mui/material";
 
 // import des fonctions firebase
 import { db } from "../../../firebase-config";
-import { doc, updateDoc } from "firebase/firestore";
+import { arrayRemove, doc, updateDoc } from "firebase/firestore";
 
 // Import du context Auth
 import { AuthContext } from "../../../context/authContext";
@@ -12,25 +12,26 @@ import useStyles from "./styles";
 
 const WhoToFollow = ({ user }) => {
   const classes = useStyles();
+  const [textButton, setTextButton] = React.useState("Following");
 
   // Utilisation du hook useContext pour récupérer le contexte Auth
   const auth = React.useContext(AuthContext);
 
+  // Récupération du tableau de following de l'utilisateur connecté
+  const following = auth?.userData?.[0]?.following;
+
+  // Récupération du tableau de follower de l'utilisateur ciblé
+  const follower = user.follower;
+
+  // Référence à l'id de l'utilisateur connecté à mettre à jour
+  const currentUserRef = doc(db, "users", auth?.authUser?.uid);
+
+  // Référence à l'id de l'utilisateur ciblé à mettre à jour
+  const followedUserRef = doc(db, "users", user.id);
+
   // fonction pour ajouter un following
-  const updateUserFollowing = (e) => {
+  const followUser = (e) => {
     e.preventDefault();
-
-    // Récupération du tableau de following de l'utilisateur connecté
-    const following = auth?.userData?.[0]?.following;
-
-    // Récupération du tableau de follower de l'utilisateur ciblé
-    const follower = user.follower;
-
-    // Référence à l'id de l'utilisateur connecté à mettre à jour
-    const currentUserRef = doc(db, "users", auth?.authUser?.uid);
-
-    // Référence à l'id de l'utilisateur ciblé à mettre à jour
-    const followedUserRef = doc(db, "users", user.id);
 
     // Sécurité pour ne pas se suivre soi-même
     if (auth?.authUser?.uid === user.id) {
@@ -120,6 +121,18 @@ const WhoToFollow = ({ user }) => {
     }
   };
 
+  // Fonction pour unfollow
+  const unfollowUser = () => {
+    // Suppression du following dans les datas de l'utilisateur connecté
+    updateDoc(currentUserRef, {
+      following: arrayRemove(user.id),
+    });
+    // Suppression du follower dans les datas de l'utilisateur supprimé
+    updateDoc(followedUserRef, {
+      follower: arrayRemove(auth?.authUser?.uid),
+    });
+  };
+
   return (
     <Box className={classes.container} p="1rem">
       <Box display="flex" justifyContent="space-between">
@@ -129,36 +142,60 @@ const WhoToFollow = ({ user }) => {
           </Box>
           <Box>
             <Box>
-              <Typography fontSize="fontSize.main" fontWeight="mainBold">
+              <Typography fontSize="font.main" fontWeight="mainBold">
                 {user?.name}
               </Typography>
             </Box>
             <Box>
-              <Typography fontSize="fontSize.main" color="grey.main">
+              <Typography fontSize="font.main" color="grey.main">
                 {`@${user?.username}`}
               </Typography>
             </Box>
           </Box>
         </Box>
         <Box>
-          <Box>
-            <Button
-              variant="contained"
-              sx={{
-                fontSize: "fontSize.small",
-                fontWeight: "mainBold",
-                backgroundColor: "black.main",
-                borderRadius: "50px",
-              }}
-              onClick={updateUserFollowing}
-            >
-              Follow
-            </Button>
+          <Box
+            onMouseEnter={() => setTextButton("Unfollow")}
+            onMouseLeave={() => setTextButton("Following")}
+          >
+            {auth?.userData?.[0]?.following?.includes(user.id) ? (
+              <Button
+                className={classes.button}
+                variant="outlined"
+                disableElevation
+                sx={{
+                  color: "black.main",
+                  fontSize: "font.small",
+                  fontWeight: "mainBold",
+                  backgroundColor: "white.main",
+                  borderColor: "grey.button",
+                  borderRadius: "50px",
+                  textTransform: "none",
+                  minWidth: "6rem",
+                }}
+                onClick={unfollowUser}
+              >
+                {textButton}
+              </Button>
+            ) : (
+              <Button
+                variant="contained"
+                sx={{
+                  fontSize: "font.small",
+                  fontWeight: "mainBold",
+                  backgroundColor: "black.main",
+                  borderRadius: "50px",
+                }}
+                onClick={followUser}
+              >
+                Follow
+              </Button>
+            )}
           </Box>
         </Box>
       </Box>
       <Box display="flex" justifyContent="center">
-        <Typography fontSize="fontSize.main" color="grey.main">
+        <Typography fontSize="font.main" color="grey.main">
           {user?.comment}
         </Typography>
       </Box>

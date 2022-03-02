@@ -37,12 +37,14 @@ export default function LabelBottomNavigation() {
       {/* Loop through the 'iconsArray' array and use the render() function to display the component */}
       {iconsArray.map((icon, index) => {
         return (
-          <Link to={icon.path} key={index}>
-            <BottomNavigationAction
-              icon={icon.name.type.render()}
-              sx={{ transform: "scale(1.3)" }}
-            />
-          </Link>
+          <BottomNavigationAction
+            key={index}
+            component={Link}
+            to={icon.path}
+            icon={icon.name.type.render()}
+            sx={{ transform: "scale(1.3)" }}
+            showlabel="false"
+          />
         );
       })}
     </BottomNavigation>
