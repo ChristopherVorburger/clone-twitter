@@ -42,7 +42,7 @@ const Home = () => {
   const filteredTweets = tweets?.filter((tweet) => {
     return tweet.author_id === auth?.authUser?.uid || auth.userData?.[0]?.following?.includes(tweet.author_id);
   });
-  console.log(showModal);
+
   return (
     <>
       {showModal && <ModalAddTweets />}

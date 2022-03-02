@@ -1,21 +1,27 @@
-import React from "react";
-import {
-  Box,
-  Button,
-  List,
-  ListItemButton,
-  ListItemIcon,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { useState, useContext } from "react";
+import { Box, Button, List, ListItemButton, ListItemIcon, Stack, TextField, Typography } from "@mui/material";
 import ProfileButton from "../buttons/ProfileButton";
 
 import { icons } from "../../constants";
 
 import useStyles from "./styles";
+import {
+  getFirestore,
+  collection,
+  onSnapshot,
+  addDoc,
+  deleteDoc,
+  doc,
+  serverTimestamp,
+  // getDoc,
+  updateDoc,
+  setDoc,
+} from "firebase/firestore";
+import { AuthContext } from "../../context/authContext";
 
 const NewTweet = () => {
+  const [text, setText] = useState("");
+  const auth = useContext(AuthContext);
   const classes = useStyles();
 
   const iconsArray = [
@@ -26,6 +32,31 @@ const NewTweet = () => {
     { name: icons.CalendarTodayOutlinedIcon, path: "/" },
     { name: icons.FmdGoodOutlinedIcon, path: "/" },
   ];
+
+  // Initialisation de firestore
+  const database = getFirestore();
+
+  // Référence des collections
+  const tweetsCollectionRef = collection(database, "tweets");
+
+  const addTweet = (e) => {
+    e.preventDefault();
+
+    addDoc(tweetsCollectionRef, {
+      text,
+      // on utilise serverTimestamp() pour créer automatiquement la date de création du tweet
+      created_at: serverTimestamp(),
+      author_id: auth.authUser.uid,
+    })
+      .then(() => {
+        // on nettoie l'input si ok
+        setText("");
+        console.log("Tweet created !");
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  };
   return (
     <Box
       className={classes.new_tweet}
@@ -33,11 +64,10 @@ const NewTweet = () => {
         width: "100%",
         maxWidth: "600px",
         ml: "1.5rem",
-      }}
-    >
-      <Stack direction="row">
+      }}>
+      <Stack direction='row'>
         <ProfileButton />
-        <Stack alignItems="flex-start">
+        <Stack alignItems='flex-start'>
           <Box>
             <TextField
               sx={{
@@ -51,6 +81,7 @@ const NewTweet = () => {
                 },
               }}
               placeholder="What's happening?"
+              onChange={(e) => setText(e.target.value)}
             />
           </Box>
           <Box>
@@ -60,15 +91,13 @@ const NewTweet = () => {
                 padding: " 0.5rem 1rem!important",
                 textTransform: "none",
                 borderRadius: "50px",
-              }}
-            >
+              }}>
               <icons.PublicOutlinedIcon />
               <Typography
                 sx={{
                   fontWeight: "bold",
                   fontSize: "12px",
-                }}
-              >
+                }}>
                 Everyone can reply
               </Typography>
             </Button>
@@ -81,14 +110,9 @@ const NewTweet = () => {
               padding: "1rem 0",
               width: "100%",
               borderTop: "1px solid #eff3f4",
-            }}
-          >
+            }}>
             <Box>
-              <List
-                sx={{ display: "flex" }}
-                component="nav"
-                aria-label="main mailbox folders"
-              >
+              <List sx={{ display: "flex" }} component='nav' aria-label='main mailbox folders'>
                 {/* Loop through the 'iconsArray' array and use the render() function to display the component */}
                 {iconsArray.map((icon, index) => {
                   return (
@@ -96,15 +120,13 @@ const NewTweet = () => {
                       key={index}
                       sx={{
                         padding: "0 0.2rem!important",
-                      }}
-                    >
+                      }}>
                       <ListItemIcon
                         sx={{
                           minWidth: "0",
                           transform: "scale(0.8)",
                           color: "primary.main",
-                        }}
-                      >
+                        }}>
                         {icon.name.type.render()}
                       </ListItemIcon>
                     </ListItemButton>
@@ -114,21 +136,20 @@ const NewTweet = () => {
             </Box>
             <Box>
               <Button
-                variant="contained"
+                variant='contained'
                 sx={{
                   textTransform: "none",
                   borderRadius: "50px",
                   backgroundColor: "primary.main",
                   fontWeight: "bold",
                   width: "80px",
-                }}
-              >
+                }}>
                 <Typography
+                  onClick={addTweet}
                   sx={{
                     fontWeight: "bold",
                     color: "white.main",
-                  }}
-                >
+                  }}>
                   Tweet
                 </Typography>
               </Button>
