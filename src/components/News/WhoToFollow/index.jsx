@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Button, Typography } from "@mui/material";
 
 // import des fonctions firebase
-import { db } from "../../../firebase-config";
+import { database } from "../../../firebase-config";
 import { arrayRemove, doc, updateDoc } from "firebase/firestore";
 
 // Import du context Auth
@@ -24,10 +24,10 @@ const WhoToFollow = ({ user }) => {
   const follower = user.follower;
 
   // Référence à l'id de l'utilisateur connecté à mettre à jour
-  const currentUserRef = doc(db, "users", auth?.authUser?.uid);
+  const currentUserRef = doc(database, "users", auth?.authUser?.uid);
 
   // Référence à l'id de l'utilisateur ciblé à mettre à jour
-  const followedUserRef = doc(db, "users", user.id);
+  const followedUserRef = doc(database, "users", user.id);
 
   // fonction pour ajouter un following
   const followUser = (e) => {
