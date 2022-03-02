@@ -26,6 +26,11 @@ const News = () => {
     return !auth?.userData?.[0]?.following?.includes(user.id);
   });
 
+  // Filtre les utilisateurs non suivis pour supprimer l'utilisateur connecté du tableau
+  const filterUnfollowUsers = unfollowUsers?.filter((user) => {
+    return user?.id !== auth?.authUser?.uid;
+  });
+
   return (
     <Box className={classes.container} m="1rem" maxWidth="350px">
       <Input
@@ -94,17 +99,13 @@ const News = () => {
           Who to follow
         </Typography>
         {/* On affiche les utilisateurs non suivi dans who to follow en limitant leur nombre à trois */}
-        {unfollowUsers?.slice(0, 3).map((user) => {
+        {filterUnfollowUsers?.slice(0, 3).map((user) => {
           // On affiche pas l'utilisateur connecté
-          if (user?.id === auth?.authUser?.uid) {
-            return null;
-          } else {
-            return (
-              <Box key={user?.id}>
-                <WhoToFollow user={user} />
-              </Box>
-            );
-          }
+          return (
+            <Box key={user?.id}>
+              <WhoToFollow user={user} />
+            </Box>
+          );
         })}
       </Box>
       <Box m="2rem auto" p="1rem">
