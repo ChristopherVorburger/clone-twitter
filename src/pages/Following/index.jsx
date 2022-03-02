@@ -55,8 +55,6 @@ const Following = () => {
     return auth?.userData?.[0]?.following?.includes(user.id);
   });
 
-  console.log("following", auth?.userData?.[0]?.following);
-
   return (
     <Box display="flex" justifyContent="center">
       <LeftNavbar />

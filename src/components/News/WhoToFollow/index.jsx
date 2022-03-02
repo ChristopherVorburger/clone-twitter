@@ -3,13 +3,7 @@ import { Box, Button, Typography } from "@mui/material";
 
 // import des fonctions firebase
 import { db } from "../../../firebase-config";
-import {
-  arrayRemove,
-  deleteDoc,
-  doc,
-  updateDoc,
-  deleteField,
-} from "firebase/firestore";
+import { arrayRemove, doc, updateDoc } from "firebase/firestore";
 
 // Import du context Auth
 import { AuthContext } from "../../../context/authContext";
@@ -18,6 +12,7 @@ import useStyles from "./styles";
 
 const WhoToFollow = ({ user }) => {
   const classes = useStyles();
+  const [textButton, setTextButton] = React.useState("Following");
 
   // Utilisation du hook useContext pour récupérer le contexte Auth
   const auth = React.useContext(AuthContext);
@@ -138,8 +133,6 @@ const WhoToFollow = ({ user }) => {
     });
   };
 
-  //console.log("user id", user.id);
-
   return (
     <Box className={classes.container} p="1rem">
       <Box display="flex" justifyContent="space-between">
@@ -161,19 +154,28 @@ const WhoToFollow = ({ user }) => {
           </Box>
         </Box>
         <Box>
-          <Box>
+          <Box
+            onMouseEnter={() => setTextButton("Unfollow")}
+            onMouseLeave={() => setTextButton("Following")}
+          >
             {auth?.userData?.[0]?.following?.includes(user.id) ? (
               <Button
-                variant="contained"
+                className={classes.button}
+                variant="outlined"
+                disableElevation
                 sx={{
+                  color: "black.main",
                   fontSize: "font.small",
                   fontWeight: "mainBold",
-                  backgroundColor: "black.main",
+                  backgroundColor: "white.main",
+                  borderColor: "grey.button",
                   borderRadius: "50px",
+                  textTransform: "none",
+                  minWidth: "6rem",
                 }}
                 onClick={unfollowUser}
               >
-                UnFollow
+                {textButton}
               </Button>
             ) : (
               <Button
