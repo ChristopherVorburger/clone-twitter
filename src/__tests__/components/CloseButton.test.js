@@ -5,7 +5,7 @@ import { render, screen } from "@testing-library/react";
 test("Affichage du bouton close", () => {
   render(<CloseButton />);
 
-  const buttonElement = screen.getByTestId("CloseButton");
+  const buttonElement = screen.queryByTestId("CloseButton");
 
   expect(buttonElement).toBeInTheDocument();
 });
