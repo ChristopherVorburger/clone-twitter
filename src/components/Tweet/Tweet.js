@@ -27,13 +27,13 @@ export default function Tweet({ text, author_id, created_at }) {
   const users = useFirestore("users");
 
   //Recherche de l'id du user qui match avec l'author_id du tweet
-  const matchedUser = users?.filter((user) => user.id === author_id);
+  const matchedUser = users?.filter((user) => user?.id === author_id);
 
   // calcul de la date du tweet avec la librairie date-fns
   // formateDistance permet de calculer l'interval entre deux dates
   // On soustrait donc la date du tweet formatée à la date actuelle de cette manière
   const tweetDate = formatDistance(
-    new Date(zonedTimeToUtc(created_at.toDate())),
+    new Date(zonedTimeToUtc(created_at?.toDate())),
     new Date(),
     // ajout du suffixe 'il y a' et traduction en français
     // (date fns utilise i18n)

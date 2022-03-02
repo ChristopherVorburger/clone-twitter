@@ -23,7 +23,7 @@ const News = () => {
 
   // Filtre des utilisateurs pour obtenir les non suivis
   const unfollowUsers = users?.filter((user) => {
-    return !auth?.userData?.[0]?.following?.includes(user.id);
+    return !auth?.userData?.[0]?.following?.includes(user?.id);
   });
 
   // Filtre les utilisateurs non suivis pour supprimer l'utilisateur connecté du tableau

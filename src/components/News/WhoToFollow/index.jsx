@@ -21,20 +21,20 @@ const WhoToFollow = ({ user }) => {
   const following = auth?.userData?.[0]?.following;
 
   // Récupération du tableau de follower de l'utilisateur ciblé
-  const follower = user.follower;
+  const follower = user?.follower;
 
   // Référence à l'id de l'utilisateur connecté à mettre à jour
   const currentUserRef = doc(database, "users", auth?.authUser?.uid);
 
   // Référence à l'id de l'utilisateur ciblé à mettre à jour
-  const followedUserRef = doc(database, "users", user.id);
+  const followedUserRef = doc(database, "users", user?.id);
 
   // fonction pour ajouter un following
   const followUser = (e) => {
     e.preventDefault();
 
     // Sécurité pour ne pas se suivre soi-même
-    if (auth?.authUser?.uid === user.id) {
+    if (auth?.authUser?.uid === user?.id) {
       console.log(
         "Oui, il faut s'aimer soi-même mais de là à se suivre soit même il y a des limites"
       );
@@ -42,7 +42,7 @@ const WhoToFollow = ({ user }) => {
     }
 
     // Sécurité pour ne pas suivre deux fois la même personne
-    if (auth?.userData?.[0]?.following?.includes(user.id)) {
+    if (auth?.userData?.[0]?.following?.includes(user?.id)) {
       console.log("Vous suivez déjà cette personne !");
       return;
     }
@@ -51,7 +51,7 @@ const WhoToFollow = ({ user }) => {
     // premier following
     if (!following) {
       updateDoc(currentUserRef, {
-        following: [user.id],
+        following: [user?.id],
       })
         .then(() => {
           console.log("ajout d'un premier following");
@@ -86,7 +86,7 @@ const WhoToFollow = ({ user }) => {
       // Sinon, mise à jour du tableau following
     } else {
       updateDoc(currentUserRef, {
-        following: [...auth?.userData?.[0]?.following, user.id],
+        following: [...auth?.userData?.[0]?.following, user?.id],
       })
         .then(() => {
           console.log("ajout d'un following");
@@ -125,7 +125,7 @@ const WhoToFollow = ({ user }) => {
   const unfollowUser = () => {
     // Suppression du following dans les datas de l'utilisateur connecté
     updateDoc(currentUserRef, {
-      following: arrayRemove(user.id),
+      following: arrayRemove(user?.id),
     });
     // Suppression du follower dans les datas de l'utilisateur supprimé
     updateDoc(followedUserRef, {
@@ -158,7 +158,7 @@ const WhoToFollow = ({ user }) => {
             onMouseEnter={() => setTextButton("Unfollow")}
             onMouseLeave={() => setTextButton("Following")}
           >
-            {auth?.userData?.[0]?.following?.includes(user.id) ? (
+            {auth?.userData?.[0]?.following?.includes(user?.id) ? (
               <Button
                 className={classes.button}
                 variant="outlined"
@@ -179,6 +179,7 @@ const WhoToFollow = ({ user }) => {
               </Button>
             ) : (
               <Button
+                className={classes.button_black}
                 variant="contained"
                 sx={{
                   fontSize: "font.small",

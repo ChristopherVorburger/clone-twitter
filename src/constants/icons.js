@@ -18,6 +18,7 @@ import FmdGoodOutlinedIcon from "@mui/icons-material/FmdGoodOutlined";
 import PublicOutlinedIcon from "@mui/icons-material/PublicOutlined";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import DateRangeOutlinedIcon from "@mui/icons-material/DateRangeOutlined";
+import CloseIcon from "@mui/icons-material/Close";
 
 const icons = {
   HomeSharpIcon,
@@ -40,6 +41,7 @@ const icons = {
   PublicOutlinedIcon,
   ArrowBackIcon,
   DateRangeOutlinedIcon,
+  CloseIcon,
 };
 
 export default icons;

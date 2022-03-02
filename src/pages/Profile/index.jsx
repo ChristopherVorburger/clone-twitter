@@ -33,6 +33,7 @@ import { useFirestore } from "../../utils/useFirestore";
 
 // Import styles
 import useStyles from "./styles";
+import EditProfileModal from "../../components/EditProfileModal";
 
 // Liens pour la Nav Tab
 function LinkTab(props) {
@@ -41,6 +42,11 @@ function LinkTab(props) {
 
 const Profile = () => {
   const classes = useStyles();
+
+  // State pour la modale edit profile
+  const [open, setOpen] = React.useState(false);
+  const handleClose = () => setOpen(false);
+  const handleOpen = () => setOpen(true);
 
   // State pour la nav tab
   const [value, setValue] = React.useState(0);
@@ -83,6 +89,11 @@ const Profile = () => {
 
   return (
     <>
+      <EditProfileModal
+        open={open}
+        handleOpen={handleOpen}
+        handleClose={handleClose}
+      />
       <Box
         className={classes.profile__container}
         display="flex"
@@ -117,7 +128,11 @@ const Profile = () => {
             <Box display="flex" justifyContent="space-between">
               <Box>Image profil</Box>
               <Box>
-                <Button variant="outlined" className={classes.profile__button}>
+                <Button
+                  variant="outlined"
+                  onClick={handleOpen}
+                  className={classes.profile__button}
+                >
                   <Typography color="black.main" fontWeight="mainBold">
                     Edit profile
                   </Typography>
