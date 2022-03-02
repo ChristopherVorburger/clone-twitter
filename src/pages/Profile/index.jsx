@@ -70,6 +70,11 @@ const Profile = () => {
     return !auth?.userData?.[0]?.following?.includes(user.id);
   });
 
+  // Filtre les utilisateurs non suivis pour supprimer l'utilisateur connecté du tableau
+  const filterUnfollowUsers = unfollowUsers?.filter((user) => {
+    return user?.id !== auth?.authUser?.uid;
+  });
+
   // On filtre les tweets à afficher
   // Ici en l'occurrence ceux qui ont le même author_id que la personne connectée
   const filteredTweets = tweets?.filter((tweet) => {
@@ -244,7 +249,7 @@ const Profile = () => {
             </Box>
             {/* Utilisateurs pouvant être suivis */}
             <Box>
-              {unfollowUsers?.slice(0, 3).map((user) => {
+              {filterUnfollowUsers?.slice(0, 3).map((user) => {
                 // On affiche pas l'utilisateur connecté
                 if (user?.id === auth?.authUser?.uid) {
                   return null;
