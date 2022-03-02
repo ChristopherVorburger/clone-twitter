@@ -20,4 +20,17 @@ export default makeStyles((theme) => ({
   button: {
     textTransform: "none!important",
   },
+  cover: {
+    objectFit: "cover",
+  },
+  avatar: {
+    width: "50px",
+    height: "50px",
+    borderRadius: "50%",
+    objectFit: "cover",
+    objectPosition: "center",
+    transform: "scale(2.5)",
+    backgroundColor: theme.palette.white.main,
+    border: `2px solid ${theme.palette.white.main}`,
+  },
 }));

@@ -3,13 +3,12 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import Header from "../Header";
 
-import { icons } from "../../constants";
+import { icons, images } from "../../constants";
 
 import useStyles from "./styles";
 import { IconButton } from "@mui/material";
-import { minWidth } from "@mui/system";
+import ProfileButton from "../buttons/ProfileButton";
 
 const EditProfileModal = ({ open, handleClose }) => {
   const classes = useStyles();
@@ -23,8 +22,8 @@ const EditProfileModal = ({ open, handleClose }) => {
         sx={{ padding: 0 }}
       >
         <Box className={classes.modal}>
-          {/* Header */}
           <Box className={classes.container}>
+            {/* Header */}
             <Box display="flex" alignItems="center" height="53px" p="0 1rem">
               <Box justifyContent="flex-start">
                 <IconButton sx={{ padding: "0.5rem", marginRight: "1rem" }}>
@@ -51,6 +50,31 @@ const EditProfileModal = ({ open, handleClose }) => {
                   Save
                 </Button>
               </Box>
+            </Box>
+            <Box display="flex" justifyContent="center">
+              <Box maxWidth="590px" maxHeight="200px">
+                <img
+                  className={classes.cover}
+                  src={images.w11}
+                  alt=""
+                  width="100%"
+                  height="100%"
+                />
+              </Box>
+            </Box>
+            {/* <Box>
+              <IconButton
+                sx={{
+                  transform: "scale(2.5)",
+                  margin: "0 0 0 4rem",
+                  backgroundColor: "white.main",
+                }}
+              >
+                <ProfileButton />
+              </IconButton>
+            </Box> */}
+            <Box sx={{ margin: "-1rem 0 0 4rem" }}>
+              <img className={classes.avatar} src={images.jdg} alt="" />
             </Box>
           </Box>
         </Box>
