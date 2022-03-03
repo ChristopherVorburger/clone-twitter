@@ -91,8 +91,8 @@ const Profile = () => {
     <>
       <EditProfileModal
         open={open}
-        handleOpen={handleOpen}
         handleClose={handleClose}
+        setOpen={setOpen}
       />
       <Box
         className={classes.profile__container}
@@ -153,7 +153,9 @@ const Profile = () => {
             </Box>
             <Box mb="12px">
               <Box>
-                <Typography fontSize="font.main">Description</Typography>
+                <Typography fontSize="font.main">
+                  {auth?.userData?.[0]?.description}
+                </Typography>
               </Box>
               <Box>
                 <Typography fontSize="font.small" color="primary.main">
@@ -172,7 +174,7 @@ const Profile = () => {
                 <Typography fontSize="font.large" mr="4px">
                   <icons.FmdGoodOutlinedIcon />
                 </Typography>
-                <Typography>Caravane</Typography>
+                <Typography>{auth?.userData?.[0]?.location}</Typography>
               </Box>
               <Box display="flex" alignItems="center">
                 <Typography fontSize="font.large" mr="4px">

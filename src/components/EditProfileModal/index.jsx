@@ -1,9 +1,15 @@
-import React from "react";
+import { useState, useContext, useReducer } from "react";
 import { Link } from "react-router-dom";
 
 // Fonctions firebase
 import { database } from "../../firebase-config";
-import { arrayRemove, doc, updateDoc } from "firebase/firestore";
+import {
+  arrayRemove,
+  doc,
+  serverTimestamp,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 
 // Composants MUI
 import Box from "@mui/material/Box";
@@ -26,7 +32,6 @@ import { AuthContext } from "../../context/authContext";
 
 // Reducer
 const reducer = (state, action) => {
-  console.log("reducer");
   switch (action.type) {
     case "update":
       return {
@@ -40,21 +45,22 @@ const reducer = (state, action) => {
 
 const EditProfileModal = ({ open, handleClose }) => {
   const classes = useStyles();
+  const [nameError, setNameError] = useState(false);
 
   //Utilisation du contexte Auth
-  const auth = React.useContext(AuthContext);
+  const auth = useContext(AuthContext);
 
   // Valeurs de départ pour le reducer
   const initialValue = {
     name: auth?.userData?.[0]?.name,
     description: auth?.userData?.[0]?.description,
     location: auth?.userData?.[0]?.location,
-    website: auth?.userData?.[0]?.website,
-    birthDate: auth?.userData?.[0]?.age,
+    website: "",
+    age: "",
   };
 
   // Utilisation du reducer
-  const [state, dispatch] = React.useReducer(reducer, initialValue);
+  const [state, dispatch] = useReducer(reducer, initialValue);
 
   // Action sut les inputs
   const inputAction = (event) => {
@@ -70,10 +76,27 @@ const EditProfileModal = ({ open, handleClose }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    updateDoc(currentUserRef, {
-      name: state.name,
-    });
+    setNameError(false);
+    if (state.name === "") {
+      setNameError(true);
+    }
+    if (state.website === undefined) {
+      setDoc(currentUserRef, {
+        ...auth.userData,
+        name: state.name,
+        description: state.description,
+        location: state.location,
+        website: "",
+      });
+    } else {
+      updateDoc(currentUserRef, {
+        name: state.name,
+        description: state.description,
+        location: state.location,
+        website: state.website,
+        age: state.age,
+      });
+    }
   };
 
   return (
@@ -152,6 +175,7 @@ const EditProfileModal = ({ open, handleClose }) => {
                   label="Name"
                   fullWidth
                   autoFocus
+                  error={nameError}
                 />
               </Box>
               <Box className={classes.field}>
