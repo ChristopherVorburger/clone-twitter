@@ -16,6 +16,7 @@ export default makeStyles((theme) => ({
     minHeight: "400px",
     maxHeight: "90vh",
     borderRadius: "16px",
+    overflowY: "scroll",
   },
   button: {
     textTransform: "none!important",
@@ -32,5 +33,13 @@ export default makeStyles((theme) => ({
     transform: "scale(2.5)",
     backgroundColor: theme.palette.white.main,
     border: `2px solid ${theme.palette.white.main}`,
+  },
+  field: {
+    padding: "12px 1rem!important",
+  },
+  link_pro: {
+    "&:hover": {
+      backgroundColor: theme.palette.grey.background__trend,
+    },
   },
 }));
