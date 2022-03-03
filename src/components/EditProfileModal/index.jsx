@@ -1,4 +1,4 @@
-import { useState, useContext, useReducer } from "react";
+import { useState, useContext, useReducer, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 // Fonctions firebase
@@ -45,6 +45,7 @@ const reducer = (state, action) => {
 
 const EditProfileModal = ({ open, handleClose }) => {
   const classes = useStyles();
+  console.log("open", open);
   const [nameError, setNameError] = useState(false);
 
   //Utilisation du contexte Auth
@@ -61,6 +62,8 @@ const EditProfileModal = ({ open, handleClose }) => {
 
   // Utilisation du reducer
   const [state, dispatch] = useReducer(reducer, initialValue);
+  // Destructuration des valeurs
+  const { name, description, location, website, age } = state;
 
   // Action sut les inputs
   const inputAction = (event) => {
@@ -74,29 +77,30 @@ const EditProfileModal = ({ open, handleClose }) => {
   const currentUserRef = doc(database, "users", auth?.authUser?.uid);
   console.log("userco", currentUserRef);
 
+  useEffect(() => {
+    if (name?.length === 0) {
+      setNameError(true);
+    } else {
+      setNameError(false);
+    }
+  }, [name]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setNameError(false);
     if (state.name === "") {
       setNameError(true);
     }
-    if (state.website === undefined) {
-      setDoc(currentUserRef, {
-        ...auth.userData,
-        name: state.name,
-        description: state.description,
-        location: state.location,
-        website: "",
-      });
-    } else {
-      updateDoc(currentUserRef, {
-        name: state.name,
-        description: state.description,
-        location: state.location,
-        website: state.website,
-        age: state.age,
-      });
-    }
+
+    updateDoc(currentUserRef, {
+      name,
+      description,
+      location,
+      website,
+      age,
+    });
+
+    handleClose();
   };
 
   return (
@@ -114,7 +118,10 @@ const EditProfileModal = ({ open, handleClose }) => {
               {/* Header */}
               <Box display="flex" alignItems="center" height="53px" p="0 1rem">
                 <Box justifyContent="flex-start">
-                  <IconButton sx={{ padding: "0.5rem", marginRight: "1rem" }}>
+                  <IconButton
+                    onClick={() => handleClose()}
+                    sx={{ padding: "0.5rem", marginRight: "1rem" }}
+                  >
                     <icons.CloseIcon />
                   </IconButton>
                 </Box>
@@ -134,6 +141,7 @@ const EditProfileModal = ({ open, handleClose }) => {
                       backgroundColor: "black.main",
                       borderRadius: "50px",
                     }}
+                    disabled={nameError}
                   >
                     Save
                   </Button>
@@ -168,7 +176,7 @@ const EditProfileModal = ({ open, handleClose }) => {
               </Box>
               <Box className={classes.field}>
                 <TextField
-                  value={state.name}
+                  value={name}
                   type="text"
                   name="name"
                   onChange={inputAction}
@@ -177,10 +185,15 @@ const EditProfileModal = ({ open, handleClose }) => {
                   autoFocus
                   error={nameError}
                 />
+                {nameError ? (
+                  <Typography ml="1rem" fontSize="font.small" color="error">
+                    Name can’t be blank
+                  </Typography>
+                ) : null}
               </Box>
               <Box className={classes.field}>
                 <TextField
-                  value={state.description}
+                  value={description}
                   type="text"
                   name="description"
                   onChange={inputAction}
@@ -192,7 +205,7 @@ const EditProfileModal = ({ open, handleClose }) => {
               </Box>
               <Box className={classes.field}>
                 <TextField
-                  value={state.location}
+                  value={location}
                   type="text"
                   name="location"
                   onChange={inputAction}
@@ -202,7 +215,7 @@ const EditProfileModal = ({ open, handleClose }) => {
               </Box>
               <Box className={classes.field}>
                 <TextField
-                  value={state.website}
+                  value={website}
                   type="text"
                   name="website"
                   onChange={inputAction}
@@ -226,10 +239,9 @@ const EditProfileModal = ({ open, handleClose }) => {
                     Edit
                   </Typography>
                 </Box>
+                {/* TODO: Mettre en place la mise à jour de la date de naissance */}
                 <Box>
-                  <Typography fontSize="font.large">
-                    {state.birthDate}
-                  </Typography>
+                  <Typography fontSize="font.large">{age}</Typography>
                 </Box>
               </Box>
               <Box
