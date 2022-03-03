@@ -1,25 +1,32 @@
 import React from "react";
 import { Link } from "react-router-dom";
+
+// Fonctions firebase
+import { database } from "../../firebase-config";
+import { arrayRemove, doc, updateDoc } from "firebase/firestore";
+
+// Composants MUI
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
+import { IconButton, TextField } from "@mui/material";
 
+// Icones et images
 import { icons, images } from "../../constants";
 
+// Styles
 import useStyles from "./styles";
-import { IconButton, TextField } from "@mui/material";
+
+// Composant React
 import ProfileButton from "../buttons/ProfileButton";
 
-const initialValue = {
-  name: "Le nom",
-  description: "Biographie",
-  location: "Ville",
-  website: "",
-  birthDate: "19 Avril 2000",
-};
+// Context
+import { AuthContext } from "../../context/authContext";
 
+// Reducer
 const reducer = (state, action) => {
+  console.log("reducer");
   switch (action.type) {
     case "update":
       return {
@@ -33,12 +40,39 @@ const reducer = (state, action) => {
 
 const EditProfileModal = ({ open, handleClose }) => {
   const classes = useStyles();
+
+  //Utilisation du contexte Auth
+  const auth = React.useContext(AuthContext);
+
+  // Valeurs de départ pour le reducer
+  const initialValue = {
+    name: auth?.userData?.[0]?.name,
+    description: auth?.userData?.[0]?.description,
+    location: auth?.userData?.[0]?.location,
+    website: auth?.userData?.[0]?.website,
+    birthDate: auth?.userData?.[0]?.age,
+  };
+
+  // Utilisation du reducer
   const [state, dispatch] = React.useReducer(reducer, initialValue);
 
+  // Action sut les inputs
   const inputAction = (event) => {
     dispatch({
       type: "update",
       payload: { key: event.target.name, value: event.target.value },
+    });
+  };
+
+  // Référence à l'id de l'utilisateur connecté à mettre à jour
+  const currentUserRef = doc(database, "users", auth?.authUser?.uid);
+  console.log("userco", currentUserRef);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    updateDoc(currentUserRef, {
+      name: state.name,
     });
   };
 
@@ -51,48 +85,49 @@ const EditProfileModal = ({ open, handleClose }) => {
         aria-describedby="modal-modal-description"
         sx={{ padding: 0 }}
       >
-        <Box className={classes.modal}>
-          <Box className={classes.container}>
-            {/* Header */}
-            <Box display="flex" alignItems="center" height="53px" p="0 1rem">
-              <Box justifyContent="flex-start">
-                <IconButton sx={{ padding: "0.5rem", marginRight: "1rem" }}>
-                  <icons.CloseIcon />
-                </IconButton>
+        <form onSubmit={handleSubmit}>
+          <Box className={classes.modal}>
+            <Box className={classes.container}>
+              {/* Header */}
+              <Box display="flex" alignItems="center" height="53px" p="0 1rem">
+                <Box justifyContent="flex-start">
+                  <IconButton sx={{ padding: "0.5rem", marginRight: "1rem" }}>
+                    <icons.CloseIcon />
+                  </IconButton>
+                </Box>
+                <Box flexGrow={1}>
+                  <Typography fontSize="font.large" fontWeight="mainBold">
+                    Edit profile
+                  </Typography>
+                </Box>
+                <Box>
+                  <Button
+                    className={classes.button}
+                    type="submit"
+                    variant="contained"
+                    sx={{
+                      fontSize: "font.small",
+                      fontWeight: "mainBold",
+                      backgroundColor: "black.main",
+                      borderRadius: "50px",
+                    }}
+                  >
+                    Save
+                  </Button>
+                </Box>
               </Box>
-              <Box flexGrow={1}>
-                <Typography fontSize="font.large" fontWeight="mainBold">
-                  Edit profile
-                </Typography>
+              <Box display="flex" justifyContent="center">
+                <Box maxWidth="590px" maxHeight="200px">
+                  <img
+                    className={classes.cover}
+                    src={images.w11}
+                    alt=""
+                    width="100%"
+                    height="100%"
+                  />
+                </Box>
               </Box>
-              <Box>
-                <Button
-                  className={classes.button}
-                  variant="contained"
-                  sx={{
-                    fontSize: "font.small",
-                    fontWeight: "mainBold",
-                    backgroundColor: "black.main",
-                    borderRadius: "50px",
-                  }}
-                  onClick={() => {}}
-                >
-                  Save
-                </Button>
-              </Box>
-            </Box>
-            <Box display="flex" justifyContent="center">
-              <Box maxWidth="590px" maxHeight="200px">
-                <img
-                  className={classes.cover}
-                  src={images.w11}
-                  alt=""
-                  width="100%"
-                  height="100%"
-                />
-              </Box>
-            </Box>
-            {/* <Box>
+              {/* <Box>
               <IconButton
                 sx={{
                   transform: "scale(2.5)",
@@ -103,23 +138,27 @@ const EditProfileModal = ({ open, handleClose }) => {
                 <ProfileButton />
               </IconButton>
             </Box> */}
-            <Box mb="3rem">
-              <Box sx={{ margin: "-1rem 0 0 4rem" }}>
-                <img className={classes.avatar} src={images.jdg} alt="" />
+              <Box mb="3rem">
+                <Box sx={{ margin: "-1rem 0 0 4rem" }}>
+                  <img className={classes.avatar} src={images.jdg} alt="" />
+                </Box>
               </Box>
-            </Box>
-            <form action="">
               <Box className={classes.field}>
                 <TextField
                   value={state.name}
+                  type="text"
+                  name="name"
                   onChange={inputAction}
                   label="Name"
                   fullWidth
+                  autoFocus
                 />
               </Box>
               <Box className={classes.field}>
                 <TextField
                   value={state.description}
+                  type="text"
+                  name="description"
                   onChange={inputAction}
                   label="Bio"
                   multiline
@@ -130,6 +169,8 @@ const EditProfileModal = ({ open, handleClose }) => {
               <Box className={classes.field}>
                 <TextField
                   value={state.location}
+                  type="text"
+                  name="location"
                   onChange={inputAction}
                   label="Location"
                   fullWidth
@@ -138,44 +179,48 @@ const EditProfileModal = ({ open, handleClose }) => {
               <Box className={classes.field}>
                 <TextField
                   value={state.website}
+                  type="text"
+                  name="website"
                   onChange={inputAction}
                   label="Website"
                   fullWidth
                 />
               </Box>
-            </form>
-            <Box sx={{ padding: "12px 1rem!important" }}>
-              <Box display="flex">
-                <Typography fontSize="font.main" color="grey.main">
-                  Birth date
-                </Typography>
-                <Typography m="0 4px 0 4px">·</Typography>
-                <Typography
-                  fontSize="font.main"
-                  color="primary.main"
-                  component={Link}
-                  //   TODO: câbler le lien
-                  to=""
-                >
-                  Edit
-                </Typography>
+              <Box sx={{ padding: "12px 1rem!important" }}>
+                <Box display="flex">
+                  <Typography fontSize="font.main" color="grey.main">
+                    Birth date
+                  </Typography>
+                  <Typography m="0 4px 0 4px">·</Typography>
+                  <Typography
+                    fontSize="font.main"
+                    color="primary.main"
+                    component={Link}
+                    //   TODO: câbler le lien
+                    to=""
+                  >
+                    Edit
+                  </Typography>
+                </Box>
+                <Box>
+                  <Typography fontSize="font.large">
+                    {state.birthDate}
+                  </Typography>
+                </Box>
               </Box>
-              <Box>
-                <Typography fontSize="font.large">{state.birthDate}</Typography>
-              </Box>
-            </Box>
-            <Box
-              className={classes.link_pro}
-              mb="3rem"
-              sx={{ padding: "12px 1rem!important" }}
-            >
-              <Box display="flex" justifyContent="space-between">
-                <Typography>Swicth to professional</Typography>
-                <icons.ArrowBackIcon sx={{ transform: "rotate(180deg)" }} />
+              <Box
+                className={classes.link_pro}
+                mb="3rem"
+                sx={{ padding: "12px 1rem!important" }}
+              >
+                <Box display="flex" justifyContent="space-between">
+                  <Typography>Swicth to professional</Typography>
+                  <icons.ArrowBackIcon sx={{ transform: "rotate(180deg)" }} />
+                </Box>
               </Box>
             </Box>
           </Box>
-        </Box>
+        </form>
       </Modal>
     </>
   );

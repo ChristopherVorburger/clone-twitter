@@ -10,10 +10,7 @@ import Profile from "./pages/Profile";
 import Followers from "./pages/Followers";
 import Following from "./pages/Following";
 
-import { storage } from "./firebase-config";
-
 export default function App() {
-  console.log("storage", storage);
   // Création d'un thème pour changer la couleur principale de MUI
   let theme = createTheme({
     palette: {
