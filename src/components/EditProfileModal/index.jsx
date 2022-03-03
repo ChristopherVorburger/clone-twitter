@@ -2,21 +2,17 @@ import { useState, useContext, useReducer, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 // Fonctions firebase
-import { database } from "../../firebase-config";
-import {
-  arrayRemove,
-  doc,
-  serverTimestamp,
-  setDoc,
-  updateDoc,
-} from "firebase/firestore";
+import { database, storage } from "../../firebase-config";
+import { addDoc, doc, updateDoc, collection } from "firebase/firestore";
+
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 // Composants MUI
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import { IconButton, TextField } from "@mui/material";
+import { IconButton, Input, TextField } from "@mui/material";
 
 // Icones et images
 import { icons, images } from "../../constants";
@@ -47,6 +43,10 @@ const EditProfileModal = ({ open, handleClose }) => {
   const classes = useStyles();
   console.log("open", open);
   const [nameError, setNameError] = useState(false);
+  const [imageSelected, setImageSelected] = useState([]);
+
+  //Référence de la coleciton d'images'
+  const imagesCollectionRef = collection(database, "photos");
 
   //Utilisation du contexte Auth
   const auth = useContext(AuthContext);
@@ -58,12 +58,14 @@ const EditProfileModal = ({ open, handleClose }) => {
     location: auth?.userData?.[0]?.location,
     website: "",
     age: "",
+    profile_image_url: auth?.userData?.[0]?.profile_image_url,
   };
 
   // Utilisation du reducer
   const [state, dispatch] = useReducer(reducer, initialValue);
   // Destructuration des valeurs
-  const { name, description, location, website, age } = state;
+  const { name, description, location, website, age, profile_image_url } =
+    state;
 
   // Action sut les inputs
   const inputAction = (event) => {
@@ -103,6 +105,24 @@ const EditProfileModal = ({ open, handleClose }) => {
     handleClose();
   };
 
+  const handleUpload = async (e) => {
+    e.preventDefault();
+
+    const photoRef = ref(storage, `images/profile/${imageSelected.name}`);
+
+    // upload de l'image dans le firebase storage
+    await uploadBytes(photoRef, imageSelected);
+
+    // get the url of the picture
+    const photoLink = await getDownloadURL(photoRef);
+
+    // create the photo in the database
+    updateDoc(currentUserRef, {
+      profile_image_url: photoLink,
+    });
+    handleClose();
+  };
+
   return (
     <>
       <Modal
@@ -112,7 +132,7 @@ const EditProfileModal = ({ open, handleClose }) => {
         aria-describedby="modal-modal-description"
         sx={{ padding: 0 }}
       >
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleUpload}>
           <Box className={classes.modal}>
             <Box className={classes.container}>
               {/* Header */}
@@ -158,21 +178,52 @@ const EditProfileModal = ({ open, handleClose }) => {
                   />
                 </Box>
               </Box>
-              {/* <Box>
-              <IconButton
-                sx={{
-                  transform: "scale(2.5)",
-                  margin: "0 0 0 4rem",
-                  backgroundColor: "white.main",
-                }}
-              >
-                <ProfileButton />
-              </IconButton>
-            </Box> */}
               <Box mb="3rem">
-                <Box sx={{ margin: "-1rem 0 0 4rem" }}>
-                  <img className={classes.avatar} src={images.jdg} alt="" />
-                </Box>
+                {profile_image_url ? (
+                  <Box sx={{ margin: "-1rem 0 0 4rem" }}>
+                    <img
+                      className={classes.avatar}
+                      src={profile_image_url}
+                      alt=""
+                    />
+                    <IconButton size="small">
+                      <label for="files" className={classes.image}>
+                        <icons.AddAPhotoOutlinedIcon />
+                      </label>
+                      <input
+                        onChange={(e) => setImageSelected(e.target.files[0])}
+                        className={classes.image}
+                        id="files"
+                        style={{ visibility: "hidden" }}
+                        type="file"
+                      />
+                    </IconButton>
+                  </Box>
+                ) : (
+                  <Box
+                    className={classes.avatar}
+                    sx={{
+                      transform: "scale(2.2)",
+                      margin: "-1rem 0 0 3.5rem",
+                      backgroundColor: "white.main",
+                    }}
+                  >
+                    <Box className={classes.image}>
+                      <IconButton size="small">
+                        <label for="files" className={classes.image}>
+                          <icons.AddAPhotoOutlinedIcon />
+                        </label>
+                        <input
+                          onChange={(e) => setImageSelected(e.target.files[0])}
+                          className={classes.image}
+                          id="files"
+                          style={{ visibility: "hidden" }}
+                          type="file"
+                        />
+                      </IconButton>
+                    </Box>
+                  </Box>
+                )}
               </Box>
               <Box className={classes.field}>
                 <TextField
