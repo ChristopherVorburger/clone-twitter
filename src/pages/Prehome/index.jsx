@@ -16,7 +16,11 @@ const PreHome = () => {
         <Box p={2} className={classes.box__text}>
           <Container className={classes.container} maxWidth="md">
             <Stack direction="column" justifyContent="center">
-              <TwitterIcon className={classes.icon__twitter} color="primary" />
+              <TwitterIcon
+                data-testid="TwitterIcon"
+                className={classes.icon__twitter}
+                color="primary"
+              />
               <Typography
                 className={classes.title}
                 fontSize="44px"
@@ -33,6 +37,7 @@ const PreHome = () => {
               </Typography>
               <Stack width="300px" maxWidth="380px">
                 <Button
+                  data-testid="GoogleButton"
                   sx={{ marginBottom: "0.5rem" }}
                   className={classes.button}
                   variant="outlined"
@@ -47,7 +52,11 @@ const PreHome = () => {
                     Sign up with Google
                   </Typography>
                 </Button>
-                <Button className={classes.button} variant="outlined">
+                <Button
+                  data-testid="AppleButton"
+                  className={classes.button}
+                  variant="outlined"
+                >
                   <img
                     className={classes.button__logo}
                     src={images.logoApple}
@@ -73,6 +82,7 @@ const PreHome = () => {
                   <div className={classes.line} />
                 </Stack>
                 <Button
+                  data-testid="ClasicButtonSignup"
                   sx={{ marginBottom: "0.5rem" }}
                   className={classes.button}
                   variant="contained"
@@ -83,6 +93,7 @@ const PreHome = () => {
                     component={Link}
                     to="/signup"
                     fontWeight="bold"
+                    role="link"
                   >
                     Sign up with phone or email
                   </Typography>
@@ -100,6 +111,7 @@ const PreHome = () => {
                   Already have an account?
                 </Typography>
                 <Button
+                  data-testid="SigninButton"
                   component={Link}
                   to="/login"
                   className={classes.button}

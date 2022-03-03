@@ -1,45 +1,78 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
 import Prehome from "../../pages/Prehome";
-import SignUp from "../../pages/SignUp/SingUp";
-import Login from "../../components/Login/Login";
 
-import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { render, screen } from "../test/ThemeAndRouter";
 
-import { render, screen } from "@testing-library/react";
+test("Affichage des éléments (sauf bouttons) de la page pré-acceuil", () => {
+  render(<Prehome />);
 
-test("Affiche la page de pré-acceuil hors connexion", () => {
-  const theme = createTheme({});
-  render(
-    <Router>
-      <ThemeProvider theme={theme}>
-        <Routes>
-          <Route path="/" element={<Prehome />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/login" element={<Login />} />
-        </Routes>
-      </ThemeProvider>
-    </Router>
+  const bacgroundImageElement = screen.queryByTitle(
+    "background with the twitter logo"
   );
-  expect(
-    screen.getByTitle("background with the twitter logo")
-  ).toBeInTheDocument();
-  expect(screen.getByText("Happening now")).toBeInTheDocument();
-  expect(screen.getByText("Join Twitter today.")).toBeInTheDocument();
-  expect(screen.getByAltText("logo google")).toBeInTheDocument();
-  expect(
-    screen.getByRole("button", { name: /Sign up with Google/i })
-  ).toBeInTheDocument();
-  expect(screen.getByAltText("logo apple")).toBeInTheDocument();
-  expect(
-    screen.getByRole("button", { name: /Sign up with Apple/i })
-  ).toBeInTheDocument();
-  expect(screen.getByText("Sign up with phone or email")).toBeInTheDocument();
-  expect(
-    screen.getByText(
-      "By signing up, you agree to the Terms of Service and Privacy Policy, including Cookie Use."
-    )
-  ).toBeInTheDocument();
-  expect(screen.getByRole("link", { name: /Sign in/i })).toBeInTheDocument();
-  expect(screen.getByText("© 2022 Twitter, Inc.")).toBeInTheDocument();
+  const twitterIconElement = screen.queryByTestId("TwitterIcon");
+  const happeningTitleElement = screen.queryByText("Happening now");
+  const joiningTitleElement = screen.queryByText("Join Twitter today.");
+  const orDividerElement = screen.queryByText("or");
+  const PrivacyPolicyElement = screen.queryByText(
+    "By signing up, you agree to the Terms of Service and Privacy Policy, including Cookie Use."
+  );
+
+  const alreadyAccountElement = screen.queryByText("Already have an account?");
+  const copyrightElement = screen.queryByText("© 2022 Twitter, Inc.");
+
+  expect(bacgroundImageElement).toBeInTheDocument();
+  expect(twitterIconElement).toBeInTheDocument();
+  expect(happeningTitleElement).toBeInTheDocument();
+  expect(joiningTitleElement).toBeInTheDocument();
+  expect(orDividerElement).toBeInTheDocument();
+  expect(PrivacyPolicyElement).toBeInTheDocument();
+  expect(alreadyAccountElement).toBeInTheDocument();
+  expect(copyrightElement).toBeInTheDocument();
+});
+
+test("Affichage boutton SignUp Google", () => {
+  render(<Prehome />);
+
+  const buttonElement = screen.queryByTestId("GoogleButton");
+  const imageElement = screen.queryByAltText("logo google");
+  const textElement = screen.queryByText("Sign up with Google");
+
+  expect(buttonElement).toBeInTheDocument();
+  expect(imageElement).toBeInTheDocument();
+  expect(textElement).toBeInTheDocument();
+});
+
+test("Affichage boutton SignUp Apple", () => {
+  render(<Prehome />);
+
+  const buttonElement = screen.queryByTestId("AppleButton");
+  const imageElement = screen.queryByAltText("logo apple");
+  const textElement = screen.queryByText("Sign up with Apple");
+
+  expect(buttonElement).toBeInTheDocument();
+  expect(imageElement).toBeInTheDocument();
+  expect(textElement).toBeInTheDocument();
+});
+
+test("Affichage et link boutton SignUp Phone Email", () => {
+  render(<Prehome />);
+
+  const buttonElement = screen.queryByTestId("ClasicButtonSignup");
+  const textElement = screen.queryByText("Sign up with phone or email");
+  const linkElement = screen.getByRole("link", {
+    name: /Sign up with phone or email/i,
+  });
+
+  expect(buttonElement).toBeInTheDocument();
+  expect(textElement).toBeInTheDocument();
+  expect(linkElement).toHaveBeenCalledWith({ to: "/signup" });
+});
+
+test("Affichage et link boutton SignIn", () => {
+  render(<Prehome />);
+
+  const buttonElement = screen.queryByTestId("SigninButton");
+  const textElement = screen.queryByText("Sign in");
+
+  expect(buttonElement).toBeInTheDocument();
+  expect(textElement).toBeInTheDocument();
 });
