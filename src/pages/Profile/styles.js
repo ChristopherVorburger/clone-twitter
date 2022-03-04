@@ -5,6 +5,8 @@ export default makeStyles((theme) => ({
     [theme.breakpoints.down("sm")]: {},
   },
   profile__cover: {
+    width: "590px",
+    height: "200px",
     objectFit: "cover",
   },
   profile__button: {

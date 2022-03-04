@@ -23,6 +23,9 @@ export default makeStyles((theme) => ({
   },
   cover: {
     objectFit: "cover",
+    width: "590px",
+    height: "200px",
+    opacity: 0.75,
   },
   avatar__container: {
     position: "relative",
@@ -47,6 +50,18 @@ export default makeStyles((theme) => ({
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%) scale(0.8)",
+    padding: "0.5rem",
+  },
+  button__add_cover: {
+    position: "absolute!important",
+    borderRadius: "50%",
+    width: "50px",
+    top: "30%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    backgroundColor: `${theme.palette.black.main}!important`,
+    color: `${theme.palette.white.main}!important`,
+    cursor: "pointer!important",
     padding: "0.5rem",
   },
   field: {
