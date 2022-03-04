@@ -62,7 +62,7 @@ const LeftNavbar = () => {
                     minWidth: "20px",
                   }}
                 >
-                  <icons.TwitterIcon />
+                  <icons.TwitterIcon data-testid="TwitterIcon" />
                 </ListItemIcon>
               </ListItemButton>
               {/* Loop through the 'iconsArray' array and use the render() function to display the component */}

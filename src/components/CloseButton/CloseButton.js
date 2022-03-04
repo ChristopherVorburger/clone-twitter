@@ -5,7 +5,7 @@ import useStyles from "./Styles";
 function CloseButton() {
   const classes = useStyles();
   return (
-    <IconButton>
+    <IconButton data-testid="CloseButton">
       <CloseIcon className={classes.buttonSignUp} />
     </IconButton>
   );

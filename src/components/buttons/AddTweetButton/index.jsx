@@ -9,7 +9,7 @@ const ButtonAddTweet = () => {
   const { showModal, setShowModal } = useContext(ModalContext);
 
   return (
-    <Box className={classes.button__feather} role='button' onClick={() => setShowModal(!showModal)}>
+    <Box className={classes.button__feather} data-testid="featherIconButton" role='button' onClick={() => setShowModal(!showModal)}>
       <div className={classes.button__feather_plus}>+</div>
       <GiFeather size='1.7rem' color='white' />
     </Box>
