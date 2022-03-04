@@ -10,7 +10,6 @@ export function useFirestoreWithQuery(ref) {
 
   useEffect(() => {
     if (!ref) return;
-
     onSnapshot(q, (snapshot) => {
       setData(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     });

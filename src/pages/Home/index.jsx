@@ -40,14 +40,17 @@ const Home = () => {
   // Ici en l'occurrence ceux qui ont le même author_id que l'utilisateur connecté
   // et aussi ceux que l'utilisateur connecté a comme following
   const filteredTweets = tweets?.filter((tweet) => {
-    return tweet.author_id === auth?.authUser?.uid || auth.userData?.[0]?.following?.includes(tweet.author_id);
+    return (
+      tweet?.author_id === auth?.authUser?.uid ||
+      auth?.userData?.[0]?.following?.includes(tweet.author_id)
+    );
   });
 
   return (
     <>
       {showModal && <ModalAddTweets />}
 
-      <Box display='flex' justifyContent='center'>
+      <Box display="flex" justifyContent="center">
         <LeftNavbar />
 
         <Box
@@ -68,7 +71,12 @@ const Home = () => {
           {tweets ? (
             <>
               {filteredTweets.map((tweet) => (
-                <Tweet key={tweet.id} text={tweet.text} author_id={tweet.author_id} created_at={tweet.created_at} />
+                <Tweet
+                  key={tweet?.id}
+                  text={tweet?.text}
+                  author_id={tweet?.author_id}
+                  created_at={tweet?.created_at}
+                />
               ))}
             </>
           ) : (

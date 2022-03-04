@@ -1,5 +1,15 @@
 import { useState, useContext } from "react";
-import { Box, Button, List, ListItemButton, ListItemIcon, Stack, TextField, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import {
+  Box,
+  Button,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import ProfileButton from "../buttons/ProfileButton";
 
 import { icons } from "../../constants";
@@ -23,6 +33,7 @@ const NewTweet = () => {
   const [text, setText] = useState("");
   const auth = useContext(AuthContext);
   const classes = useStyles();
+  const navigate = useNavigate();
 
   const iconsArray = [
     { name: icons.ImageOutlinedIcon, path: "/" },
@@ -64,10 +75,11 @@ const NewTweet = () => {
         width: "100%",
         maxWidth: "600px",
         ml: "1.5rem",
-      }}>
-      <Stack direction='row'>
+      }}
+    >
+      <Stack direction="row">
         <ProfileButton />
-        <Stack alignItems='flex-start'>
+        <Stack alignItems="flex-start">
           <Box>
             <TextField
               autoComplete="off"
@@ -92,11 +104,11 @@ const NewTweet = () => {
                 padding: " 0.5rem 1rem!important",
                 textTransform: "none",
                 borderRadius: "50px",
-              }}>
+              }}
+            >
               <icons.PublicOutlinedIcon />
               <Typography
                 sx={{
-
                   fontWeight: "mainBold",
                   fontSize: "font.small",
                 }}
@@ -113,9 +125,14 @@ const NewTweet = () => {
               padding: "1rem 0",
               width: "100%",
               borderTop: "1px solid #eff3f4",
-            }}>
+            }}
+          >
             <Box>
-              <List sx={{ display: "flex" }} component='nav' aria-label='main mailbox folders'>
+              <List
+                sx={{ display: "flex" }}
+                component="nav"
+                aria-label="main mailbox folders"
+              >
                 {/* Loop through the 'iconsArray' array and use the render() function to display the component */}
                 {iconsArray.map((icon, index) => {
                   return (
@@ -123,13 +140,15 @@ const NewTweet = () => {
                       key={index}
                       sx={{
                         padding: "0 0.2rem!important",
-                      }}>
+                      }}
+                    >
                       <ListItemIcon
                         sx={{
                           minWidth: "0",
                           transform: "scale(0.8)",
                           color: "primary.main",
-                        }}>
+                        }}
+                      >
                         {icon.name.type.render()}
                       </ListItemIcon>
                     </ListItemButton>
@@ -139,19 +158,21 @@ const NewTweet = () => {
             </Box>
             <Box>
               <Button
-                variant='contained'
+                variant="contained"
                 sx={{
                   textTransform: "none",
                   borderRadius: "50px",
                   backgroundColor: "primary.main",
                   width: "80px",
-                }}>
+                }}
+              >
                 <Typography
                   onClick={addTweet}
                   sx={{
                     fontWeight: "mainBold",
                     color: "white.main",
-                  }}>
+                  }}
+                >
                   Tweet
                 </Typography>
               </Button>
