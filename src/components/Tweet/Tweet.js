@@ -29,17 +29,6 @@ export default function Tweet({ text, author_id, created_at }) {
   //Recherche de l'id du user qui match avec l'author_id du tweet
   const matchedUser = users?.filter((user) => user?.id === author_id);
 
-  // calcul de la date du tweet avec la librairie date-fns
-  // formateDistance permet de calculer l'interval entre deux dates
-  // On soustrait donc la date du tweet formatée à la date actuelle de cette manière
-  const tweetDate = formatDistance(
-    new Date(zonedTimeToUtc(created_at?.toDate())),
-    new Date(),
-    // ajout du suffixe 'il y a' et traduction en français
-    // (date fns utilise i18n)
-    { addSuffix: true, locale: fr }
-  );
-
   return (
     <TweetContainer>
       <TweetAvatar src={matchedUser?.[0]?.profile_image_url} />
@@ -47,7 +36,20 @@ export default function Tweet({ text, author_id, created_at }) {
         <div>
           <TweetAuthor>{matchedUser?.[0]?.name} </TweetAuthor>
           <TweetPseudo>{`@${matchedUser?.[0]?.username}`}</TweetPseudo>
-          <TweetDate>{tweetDate}</TweetDate>
+          <TweetDate>
+            {/* calcul de la date du tweet avec la librairie date-fns
+            formateDistance permet de calculer l'interval entre deux dates
+            On soustrait donc la date du tweet formatée à la date actuelle de cette manière */}
+            {!created_at
+              ? null
+              : formatDistance(
+                  new Date(zonedTimeToUtc(created_at?.toDate())),
+                  new Date(),
+                  // ajout du suffixe 'il y a' et traduction en français
+                  // (date fns utilise i18n)
+                  { addSuffix: true, locale: fr }
+                )}
+          </TweetDate>
         </div>
         <TweetTxt>{text}</TweetTxt>
         {/* <TweetReactions>
