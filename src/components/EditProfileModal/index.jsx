@@ -53,6 +53,7 @@ const EditProfileModal = () => {
 
   console.log("imageselected", imageSelected);
   console.log("coverselected", coverSelected);
+  console.log("file", file);
 
   //Utilisation du contexte Auth
   const auth = useContext(AuthContext);
@@ -290,13 +291,17 @@ const EditProfileModal = () => {
                   </Box>
                 ) : (
                   <Box maxWidth="590px" maxHeight="200px">
-                    <img
-                      className={classes.cover}
-                      src={images.w11}
-                      alt=""
-                      width="100%"
-                      height="100%"
-                    />
+                    {coverFile ? (
+                      <img className={classes.cover} src={coverFile} alt="" />
+                    ) : (
+                      <img
+                        className={classes.cover}
+                        src={cover_url}
+                        alt=""
+                        width="100%"
+                        height="100%"
+                      />
+                    )}
                     <Box>
                       <IconButton
                         size="large"
@@ -382,11 +387,13 @@ const EditProfileModal = () => {
                   <Box
                     className={classes.avatar}
                     sx={{
-                      transform: "scale(2.2)",
                       margin: "-1rem 0 0 3.5rem",
                       backgroundColor: "white.main",
                     }}
                   >
+                    {file ? (
+                      <img className={classes.avatar} src={file} alt="" />
+                    ) : null}
                     <Box className={classes.image}>
                       <IconButton size="small">
                         <label
@@ -396,7 +403,13 @@ const EditProfileModal = () => {
                           <icons.AddAPhotoOutlinedIcon />
                         </label>
                         <input
-                          onChange={(e) => setImageSelected(e.target.files[0])}
+                          onChange={(e) => {
+                            return (
+                              setImageSelected(e.target.files[0]),
+                              // Création de l'aperçu de l'image
+                              setFile(URL.createObjectURL(e.target.files[0]))
+                            );
+                          }}
                           className={classes.image}
                           id="profilImageFiles"
                           style={{ visibility: "hidden" }}
