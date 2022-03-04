@@ -22,4 +22,21 @@ export default makeStyles((theme) => ({
     padding: "0 2rem!important",
     minHeight: "53px!important",
   },
+  avatar: {
+    width: "150px",
+    height: "150px",
+    borderRadius: "50%",
+    objectFit: "cover",
+    objectPosition: "center",
+    marginTop: "-50%",
+    backgroundColor: theme.palette.white.main,
+    border: `2px solid ${theme.palette.white.main}`,
+  },
+  image: {
+    top: "50%",
+    left: "50%",
+    position: "absolute",
+    transform: "translate(-50%, -50%)",
+    cursor: "pointer",
+  },
 }));

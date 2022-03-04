@@ -1,9 +1,9 @@
 import { useState, useContext, useReducer, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // Fonctions firebase
 import { database, storage } from "../../firebase-config";
-import { addDoc, doc, updateDoc, collection } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
@@ -19,9 +19,6 @@ import { icons, images } from "../../constants";
 
 // Styles
 import useStyles from "./styles";
-
-// Composant React
-import ProfileButton from "../buttons/ProfileButton";
 
 // Context
 import { AuthContext } from "../../context/authContext";
@@ -39,14 +36,17 @@ const reducer = (state, action) => {
   }
 };
 
-const EditProfileModal = ({ open, handleClose }) => {
+const EditProfileModal = () => {
   const classes = useStyles();
-  console.log("open", open);
+  const navigate = useNavigate();
+
+  // States pour la modale
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   const [nameError, setNameError] = useState(false);
   const [imageSelected, setImageSelected] = useState([]);
-
-  //Référence de la coleciton d'images'
-  const imagesCollectionRef = collection(database, "photos");
 
   //Utilisation du contexte Auth
   const auth = useContext(AuthContext);
@@ -56,10 +56,12 @@ const EditProfileModal = ({ open, handleClose }) => {
     name: auth?.userData?.[0]?.name,
     description: auth?.userData?.[0]?.description,
     location: auth?.userData?.[0]?.location,
-    website: "",
-    age: "",
+    website: auth?.userData?.[0]?.website,
+    // age: auth?.userData?.[0]?.age,
     profile_image_url: auth?.userData?.[0]?.profile_image_url,
   };
+  console.log(initialValue);
+  console.log(auth);
 
   // Utilisation du reducer
   const [state, dispatch] = useReducer(reducer, initialValue);
@@ -77,8 +79,8 @@ const EditProfileModal = ({ open, handleClose }) => {
 
   // Référence à l'id de l'utilisateur connecté à mettre à jour
   const currentUserRef = doc(database, "users", auth?.authUser?.uid);
-  console.log("userco", currentUserRef);
 
+  // Gestion du champ input name vide
   useEffect(() => {
     if (name?.length === 0) {
       setNameError(true);
@@ -87,59 +89,67 @@ const EditProfileModal = ({ open, handleClose }) => {
     }
   }, [name]);
 
-  const handleSubmit = (e) => {
+  // Fonction pour editer le profil
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setNameError(false);
     if (state.name === "") {
       setNameError(true);
     }
 
-    updateDoc(currentUserRef, {
-      name,
-      description,
-      location,
-      website,
-      age,
-    });
+    // Si pas de nouvelle image on met simplement à jour les données des inputs
+    if (imageSelected.name === undefined) {
+      updateDoc(currentUserRef, {
+        name,
+        description,
+        location,
+        website,
+        // age,
+      });
+      // Sinon on enregistre l'image dans le storage et on met à jour les données
+      // ce qui nous permet d'ajouter aussi l'url de l'image dans les datas du user connecté
+    } else {
+      // Référence du storage
+      const photoRef = ref(storage, `images/profile/${imageSelected.name}`);
 
-    handleClose();
-  };
+      // upload de l'image dans le firebase storage
+      await uploadBytes(photoRef, imageSelected);
 
-  const handleUpload = async (e) => {
-    e.preventDefault();
+      // On obtient l'url de l'image avec getDownloadUrl
+      const photoLink = await getDownloadURL(photoRef);
 
-    const photoRef = ref(storage, `images/profile/${imageSelected.name}`);
-
-    // upload de l'image dans le firebase storage
-    await uploadBytes(photoRef, imageSelected);
-
-    // get the url of the picture
-    const photoLink = await getDownloadURL(photoRef);
-
-    // create the photo in the database
-    updateDoc(currentUserRef, {
-      profile_image_url: photoLink,
-    });
-    handleClose();
+      updateDoc(currentUserRef, {
+        name,
+        description,
+        location,
+        website,
+        // age,
+        profile_image_url: photoLink,
+      });
+    }
+    // Retour à la page de profil
+    navigate(`/${auth?.userData?.[0]?.username}`);
   };
 
   return (
     <>
       <Modal
-        open={open}
+        open={true}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
         sx={{ padding: 0 }}
       >
-        <form onSubmit={handleUpload}>
+        <form onSubmit={handleSubmit}>
           <Box className={classes.modal}>
             <Box className={classes.container}>
               {/* Header */}
               <Box display="flex" alignItems="center" height="53px" p="0 1rem">
                 <Box justifyContent="flex-start">
                   <IconButton
-                    onClick={() => handleClose()}
+                    onClick={() =>
+                      navigate(`/${auth?.userData?.[0]?.username}`)
+                    }
                     sx={{ padding: "0.5rem", marginRight: "1rem" }}
                   >
                     <icons.CloseIcon />
@@ -167,6 +177,7 @@ const EditProfileModal = ({ open, handleClose }) => {
                   </Button>
                 </Box>
               </Box>
+              {/* Images */}
               <Box display="flex" justifyContent="center">
                 <Box maxWidth="590px" maxHeight="200px">
                   <img
@@ -180,24 +191,29 @@ const EditProfileModal = ({ open, handleClose }) => {
               </Box>
               <Box mb="3rem">
                 {profile_image_url ? (
-                  <Box sx={{ margin: "-1rem 0 0 4rem" }}>
+                  <Box
+                    className={classes.avatar}
+                    sx={{ margin: "-1rem 0 0 4rem" }}
+                  >
                     <img
                       className={classes.avatar}
                       src={profile_image_url}
                       alt=""
                     />
-                    <IconButton size="small">
-                      <label for="files" className={classes.image}>
-                        <icons.AddAPhotoOutlinedIcon />
-                      </label>
-                      <input
-                        onChange={(e) => setImageSelected(e.target.files[0])}
-                        className={classes.image}
-                        id="files"
-                        style={{ visibility: "hidden" }}
-                        type="file"
-                      />
-                    </IconButton>
+                    <Box className={classes.image}>
+                      <IconButton size="small">
+                        <label htmlFor="files" className={classes.image}>
+                          <icons.AddAPhotoOutlinedIcon />
+                        </label>
+                        <input
+                          onChange={(e) => setImageSelected(e.target.files[0])}
+                          className={classes.image}
+                          id="files"
+                          style={{ visibility: "hidden" }}
+                          type="file"
+                        />
+                      </IconButton>
+                    </Box>
                   </Box>
                 ) : (
                   <Box
@@ -210,7 +226,7 @@ const EditProfileModal = ({ open, handleClose }) => {
                   >
                     <Box className={classes.image}>
                       <IconButton size="small">
-                        <label for="files" className={classes.image}>
+                        <label htmlFor="files" className={classes.image}>
                           <icons.AddAPhotoOutlinedIcon />
                         </label>
                         <input
@@ -225,6 +241,7 @@ const EditProfileModal = ({ open, handleClose }) => {
                   </Box>
                 )}
               </Box>
+              {/* Formulaire */}
               <Box className={classes.field}>
                 <TextField
                   value={name}
@@ -233,7 +250,6 @@ const EditProfileModal = ({ open, handleClose }) => {
                   onChange={inputAction}
                   label="Name"
                   fullWidth
-                  autoFocus
                   error={nameError}
                 />
                 {nameError ? (

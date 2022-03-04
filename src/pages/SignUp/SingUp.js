@@ -60,7 +60,7 @@ function SignUp() {
           setEmail("");
           setPassword("");
           const userRef = doc(database, "users", cred.user.uid);
-          addDoc(userRef, {
+          setDoc(userRef, {
             name,
             username,
             created_at: serverTimestamp(),
@@ -70,6 +70,13 @@ function SignUp() {
               day,
               year,
             },
+            description: "",
+            location: "",
+            website: "",
+            followers: [],
+            following: [],
+            profile_image_url: "",
+            cover_url: "",
           })
             .then(() => {
               setName("");
