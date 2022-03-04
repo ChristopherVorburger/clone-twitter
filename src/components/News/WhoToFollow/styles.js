@@ -18,4 +18,11 @@ export default makeStyles((theme) => ({
   button_black: {
     textTransform: "none!important",
   },
+  avatar: {
+    width: "50px",
+    height: "50px",
+    borderRadius: "50%",
+    objectFit: "cover",
+    objectPosition: "center",
+  },
 }));

@@ -138,7 +138,12 @@ const WhoToFollow = ({ user }) => {
       <Box display="flex" justifyContent="space-between">
         <Box display="flex" justifyContent="space-between">
           <Box mr="1rem">
-            <img src={user?.image} alt={user?.name} width="40px" />
+            <img
+              className={classes.avatar}
+              src={user?.profile_image_url}
+              alt={user?.name}
+              width="40px"
+            />
           </Box>
           <Box>
             <Box>
