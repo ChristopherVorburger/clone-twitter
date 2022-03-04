@@ -47,6 +47,7 @@ const EditProfileModal = () => {
 
   const [nameError, setNameError] = useState(false);
   const [imageSelected, setImageSelected] = useState([]);
+  const [file, setFile] = useState();
 
   //Utilisation du contexte Auth
   const auth = useContext(AuthContext);
@@ -195,18 +196,29 @@ const EditProfileModal = () => {
                     className={classes.avatar}
                     sx={{ margin: "-1rem 0 0 4rem" }}
                   >
-                    <img
-                      className={classes.avatar}
-                      src={profile_image_url}
-                      alt=""
-                    />
+                    {/* Si il y a une image en attente d'Upload on affiche son aperçu sinon on affiche l'image de profil */}
+                    {file ? (
+                      <img className={classes.avatar} src={file} alt="" />
+                    ) : (
+                      <img
+                        className={classes.avatar}
+                        src={profile_image_url}
+                        alt=""
+                      />
+                    )}
                     <Box className={classes.image}>
                       <IconButton size="small">
                         <label htmlFor="files" className={classes.image}>
                           <icons.AddAPhotoOutlinedIcon />
                         </label>
                         <input
-                          onChange={(e) => setImageSelected(e.target.files[0])}
+                          onChange={(e) => {
+                            return (
+                              setImageSelected(e.target.files[0]),
+                              // Création de l'aperçu de l'image
+                              setFile(URL.createObjectURL(e.target.files[0]))
+                            );
+                          }}
                           className={classes.image}
                           id="files"
                           style={{ visibility: "hidden" }}
