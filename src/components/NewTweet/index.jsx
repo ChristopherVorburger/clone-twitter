@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+
 import {
   Box,
   Button,
@@ -10,30 +10,26 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+
 import ProfileButton from "../buttons/ProfileButton";
 
 import { icons } from "../../constants";
 
 import useStyles from "./styles";
+
 import {
   getFirestore,
   collection,
-  onSnapshot,
   addDoc,
-  deleteDoc,
-  doc,
   serverTimestamp,
-  // getDoc,
-  updateDoc,
-  setDoc,
 } from "firebase/firestore";
+
 import { AuthContext } from "../../context/authContext";
 
 const NewTweet = () => {
   const [text, setText] = useState("");
   const auth = useContext(AuthContext);
   const classes = useStyles();
-  const navigate = useNavigate();
 
   const iconsArray = [
     { name: icons.ImageOutlinedIcon, path: "/" },
@@ -68,6 +64,7 @@ const NewTweet = () => {
         console.log(err.message);
       });
   };
+  console.log(text);
   return (
     <Box
       className={classes.new_tweet}
@@ -82,6 +79,7 @@ const NewTweet = () => {
         <Stack alignItems="flex-start">
           <Box>
             <TextField
+              value={text}
               autoComplete="off"
               sx={{
                 border: "none!important",
