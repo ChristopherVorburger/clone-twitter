@@ -29,7 +29,7 @@ export function AuthContextProvider(props) {
 
   // Recherche de l'id du user qui match avec celui du user connecté
   // afin de récupérer les datas de l'utilisateur connecté
-  const userData = users?.filter((user) => user.id === authUser?.uid);
+  const userData = users?.filter((user) => user?.id === authUser?.uid);
 
   // TODO: À supprimer avant la prod
   console.log("user data", userData);

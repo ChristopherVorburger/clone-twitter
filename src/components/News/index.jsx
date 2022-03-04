@@ -23,7 +23,12 @@ const News = () => {
 
   // Filtre des utilisateurs pour obtenir les non suivis
   const unfollowUsers = users?.filter((user) => {
-    return !auth?.userData?.[0]?.following?.includes(user.id);
+    return !auth?.userData?.[0]?.following?.includes(user?.id);
+  });
+
+  // Filtre les utilisateurs non suivis pour supprimer l'utilisateur connecté du tableau
+  const filterUnfollowUsers = unfollowUsers?.filter((user) => {
+    return user?.id !== auth?.authUser?.uid;
   });
 
   return (
@@ -49,7 +54,7 @@ const News = () => {
         backgroundColor="grey.background__trend"
         borderRadius="20px"
       >
-        <Typography fontSize="20px" mb="1rem" fontWeight="bold" p="1rem">
+        <Typography fontSize="font.large" mb="1rem" fontWeight="800" p="1rem">
           Trends
         </Typography>
         <Box>
@@ -90,25 +95,21 @@ const News = () => {
         backgroundColor="grey.background__trend"
         borderRadius="20px"
       >
-        <Typography fontSize="20px" fontWeight="bold" p="1rem">
+        <Typography fontSize="font.large" fontWeight="mainBold" p="1rem">
           Who to follow
         </Typography>
         {/* On affiche les utilisateurs non suivi dans who to follow en limitant leur nombre à trois */}
-        {unfollowUsers?.slice(0, 3).map((user) => {
+        {filterUnfollowUsers?.slice(0, 3).map((user) => {
           // On affiche pas l'utilisateur connecté
-          if (user.id === auth.authUser?.uid) {
-            return null;
-          } else {
-            return (
-              <Box key={user.id}>
-                <WhoToFollow user={user} />
-              </Box>
-            );
-          }
+          return (
+            <Box key={user?.id}>
+              <WhoToFollow user={user} />
+            </Box>
+          );
         })}
       </Box>
       <Box m="2rem auto" p="1rem">
-        <Typography fontSize="15px" color="grey.main">
+        <Typography fontSize="font.main" color="grey.main">
           Terms of Service Privacy Policy Cookie Policy Accessibility Ads info
           More © 2022 Twitter, Inc.
         </Typography>

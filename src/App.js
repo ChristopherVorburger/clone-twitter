@@ -7,6 +7,9 @@ import Login from "./components/Login/Login";
 import Home from "./pages/Home";
 import Exemple from "./components/Exemple";
 import Profile from "./pages/Profile";
+import Followers from "./pages/Followers";
+import Following from "./pages/Following";
+import EditProfileModal from "./components/EditProfileModal";
 
 export default function App() {
   // Création d'un thème pour changer la couleur principale de MUI
@@ -29,6 +32,16 @@ export default function App() {
         main: "#ffffff",
       },
     },
+    typography: {
+      font: {
+        small: 13,
+        main: 15,
+        large: 20,
+      },
+      lightBold: 400,
+      mainBold: 700,
+      titleBold: 800,
+    },
   });
 
   return (
@@ -40,6 +53,9 @@ export default function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/exemple" element={<Exemple />} />
         <Route path="/:username" element={<Profile />} />
+        <Route path="/:username/followers" element={<Followers />} />
+        <Route path="/:username/following" element={<Following />} />
+        <Route path="/settings/profile" element={<EditProfileModal />} />
       </Routes>
     </ThemeProvider>
   );
