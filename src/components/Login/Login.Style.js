@@ -8,6 +8,7 @@ export const Overlay = styled.div`
   bottom: 0;
   width: 100%;
   background-color: rgba(0, 0, 0, 0.4);
+  z-index: 9;
 `;
 
 export const LoginModalContainer = styled.div`
