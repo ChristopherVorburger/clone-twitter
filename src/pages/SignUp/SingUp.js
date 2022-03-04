@@ -13,7 +13,13 @@ import {
   TextField,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-import { doc, getFirestore, serverTimestamp, setDoc } from "firebase/firestore";
+import {
+  doc,
+  getFirestore,
+  serverTimestamp,
+  setDoc,
+  addDoc,
+} from "firebase/firestore";
 import { AuthContext } from "../../context/authContext";
 
 // Firestore
@@ -64,6 +70,13 @@ function SignUp() {
               day,
               year,
             },
+            description: "",
+            location: "",
+            website: "",
+            followers: [],
+            following: [],
+            profile_image_url: "",
+            cover_url: "",
           })
             .then(() => {
               setName("");

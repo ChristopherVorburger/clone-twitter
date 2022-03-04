@@ -170,6 +170,14 @@ const Exemple = () => {
             username,
             // on utilise serverTimestamp() pour créer automatiquement la date de création du user
             created_at: serverTimestamp(),
+            description: "",
+            location: "",
+            website: "",
+            followers: [],
+            following: [],
+            profile_image_url: "",
+            cover_url: "",
+            age: "",
           })
             .then(() => {
               // on nettoie les inputs si ok

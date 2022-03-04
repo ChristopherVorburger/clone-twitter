@@ -24,9 +24,11 @@ export const TweetAvatar = styled.img`
   border-radius: 50%;
   object-fit: cover;
   object-position: center;
+  margin-left: 1rem;
 `;
 
 export const TweetContent = styled.div`
+  margin-left: 1rem;
   grid-column: 2;
 
   div {

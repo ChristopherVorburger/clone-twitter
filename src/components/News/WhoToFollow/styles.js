@@ -7,10 +7,15 @@ export default makeStyles((theme) => ({
     },
   },
   button: {
+    textTransform: "none!important",
+
     "&:hover": {
       backgroundColor: "#fdc9ce!important",
       borderColor: "#f4212e!important",
       color: "#f4212e!important",
     },
+  },
+  button_black: {
+    textTransform: "none!important",
   },
 }));

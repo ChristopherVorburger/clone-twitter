@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 
 import {
   Box,
@@ -33,6 +33,8 @@ import { useFirestore } from "../../utils/useFirestore";
 
 // Import styles
 import useStyles from "./styles";
+import EditProfileModal from "../../components/EditProfileModal";
+import ProfileButton from "../../components/buttons/ProfileButton";
 
 // Liens pour la Nav Tab
 function LinkTab(props) {
@@ -41,6 +43,7 @@ function LinkTab(props) {
 
 const Profile = () => {
   const classes = useStyles();
+  const navigate = useNavigate();
 
   // State pour la nav tab
   const [value, setValue] = React.useState(0);
@@ -114,10 +117,28 @@ const Profile = () => {
             />
           </Box>
           <Box mb="1rem" p="12px 1rem 0 1rem">
-            <Box display="flex" justifyContent="space-between">
-              <Box>Image profil</Box>
+            <Box display="flex" justifyContent="space-between" mb="2rem">
+              {auth?.userData?.[0]?.profile_image_url ? (
+                <Box>
+                  <img
+                    className={classes.avatar}
+                    src={auth?.userData?.[0]?.profile_image_url}
+                    alt=""
+                  />
+                </Box>
+              ) : (
+                <Box sx={{}}>
+                  <Box>
+                    <img className={classes.avatar} src={images.user} alt="" />
+                  </Box>
+                </Box>
+              )}
               <Box>
-                <Button variant="outlined" className={classes.profile__button}>
+                <Button
+                  variant="outlined"
+                  onClick={() => navigate("/settings/profile")}
+                  className={classes.profile__button}
+                >
                   <Typography color="black.main" fontWeight="mainBold">
                     Edit profile
                   </Typography>
@@ -138,7 +159,9 @@ const Profile = () => {
             </Box>
             <Box mb="12px">
               <Box>
-                <Typography fontSize="font.main">Description</Typography>
+                <Typography fontSize="font.main">
+                  {auth?.userData?.[0]?.description}
+                </Typography>
               </Box>
               <Box>
                 <Typography fontSize="font.small" color="primary.main">
@@ -157,7 +180,7 @@ const Profile = () => {
                 <Typography fontSize="font.large" mr="4px">
                   <icons.FmdGoodOutlinedIcon />
                 </Typography>
-                <Typography>Caravane</Typography>
+                <Typography>{auth?.userData?.[0]?.location}</Typography>
               </Box>
               <Box display="flex" alignItems="center">
                 <Typography fontSize="font.large" mr="4px">
@@ -188,7 +211,7 @@ const Profile = () => {
                 >
                   <Box display="flex" color="black.main">
                     <Typography fontWeight="mainBold" mr="4px">
-                      {auth?.userData?.[0]?.follower?.length}
+                      {auth?.userData?.[0]?.followers?.length}
                     </Typography>
                     <Typography>Followers</Typography>
                   </Box>

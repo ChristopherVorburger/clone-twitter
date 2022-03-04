@@ -3,6 +3,7 @@ import logoApple from "../assets/logo-apple.png";
 import homeImage from "../assets/home.png";
 import jdg from "../assets/jdg.png";
 import w11 from "../assets/w11.jpeg";
+import user from "../assets/user.png";
 
 const images = {
   logoGoogle,
@@ -10,6 +11,7 @@ const images = {
   homeImage,
   jdg,
   w11,
+  user,
 };
 
 export default images;
