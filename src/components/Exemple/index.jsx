@@ -33,7 +33,6 @@ onSnapshot(tweetsCollectionRef, (snapshot) => {
   snapshot.docs.forEach((doc) => {
     tweets.push({ ...doc.data(), id: doc.id });
   });
-  console.log("tweets Exemple", tweets);
 });
 
 const Exemple = () => {
@@ -171,6 +170,14 @@ const Exemple = () => {
             username,
             // on utilise serverTimestamp() pour créer automatiquement la date de création du user
             created_at: serverTimestamp(),
+            description: "",
+            location: "",
+            website: "",
+            followers: [],
+            following: [],
+            profile_image_url: "",
+            cover_url: "",
+            age: "",
           })
             .then(() => {
               // on nettoie les inputs si ok

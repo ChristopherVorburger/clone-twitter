@@ -43,7 +43,7 @@ const LeftNavbar = () => {
   ];
   return (
     <Box className={classes.container}>
-      <Box className={classes.drawer}>
+      <Box>
         <Box
           display="flex"
           flexDirection="column"
@@ -59,7 +59,6 @@ const LeftNavbar = () => {
                     justifyContent: "center",
                     transform: "scale(1.2)",
                     color: "primary.main",
-                    margin: "0.5rem",
                     minWidth: "20px",
                   }}
                 >
@@ -80,15 +79,19 @@ const LeftNavbar = () => {
                         display: "flex",
                         justifyContent: "center",
                         transform: "scale(1.2)",
-                        m: "0.5rem",
                         minWidth: "20px",
+                        color: "black.main",
                       }}
                     >
                       {icon.name.type.render()}
                     </ListItemIcon>
                     <ListItemText
                       className={classes.icon__text}
-                      sx={{ ml: "1rem" }}
+                      sx={{
+                        ml: "1rem",
+                        fontSize: "font.large",
+                        color: "black.main",
+                      }}
                     >
                       {icon.text}
                     </ListItemText>

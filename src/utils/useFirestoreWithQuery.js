@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import { onSnapshot, collection, query, orderBy } from "firebase/firestore";
-import { getFirestore } from "firebase/firestore";
+import { database } from "../firebase-config";
 
 export function useFirestoreWithQuery(ref) {
-  const database = getFirestore();
   const [data, setData] = useState();
   const collectionRef = collection(database, ref);
   // Filtre par date de la collection retournée grâce aux fonctions query et orderBy
