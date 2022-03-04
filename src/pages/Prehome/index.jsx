@@ -24,14 +24,14 @@ const PreHome = () => {
               <Typography
                 className={classes.title}
                 fontSize="44px"
-                fontWeight="bold"
+                fontWeight="mainBold"
               >
                 Happening now
               </Typography>
               <Typography
                 className={classes.subtitle}
                 fontSize="23px"
-                fontWeight="bold"
+                fontWeight="mainBold"
               >
                 Join Twitter today.
               </Typography>
@@ -64,9 +64,9 @@ const PreHome = () => {
                     alt="logo apple"
                   />
                   <Typography
-                    fontSize="15px"
+                    fontSize="font.main"
                     color="black.main"
-                    fontWeight="bold"
+                    fontWeight="mainBold"
                   >
                     Sign up with Apple
                   </Typography>
@@ -94,7 +94,7 @@ const PreHome = () => {
                     sx={{ textDecoration: "none" }}
                     component={Link}
                     to="/signup"
-                    fontWeight="bold"
+                    fontWeight="mainBold"
                     role="link"
                   >
                     Sign up with phone or email
@@ -107,7 +107,7 @@ const PreHome = () => {
                 <Typography
                   mt="2.5rem"
                   mb="1rem"
-                  fontWeight="bold"
+                  fontWeight="mainBold"
                   gutterBottom
                 >
                   Already have an account?
@@ -119,7 +119,7 @@ const PreHome = () => {
                   className={classes.button}
                   variant="outlined"
                 >
-                  <Typography fontWeight="bold">Sign in</Typography>
+                  <Typography fontWeight="mainBold">Sign in</Typography>
                 </Button>
               </Stack>
             </Stack>

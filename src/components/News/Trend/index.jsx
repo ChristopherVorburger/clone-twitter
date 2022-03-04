@@ -16,22 +16,22 @@ const Trend = ({ position, category, title, nbTweets }) => {
         height="1.2rem"
       >
         <Box display="flex">
-          <Typography fontSize="13px" color="grey.main" mr="0.2rem">
+          <Typography fontSize="font.small" color="grey.main" mr="0.2rem">
             {position}
           </Typography>
-          <Typography fontSize="13px" color="grey.main">
+          <Typography fontSize="font.small" color="grey.main">
             ·
           </Typography>
           {category?.includes("Trending") ? (
-            <Typography fontSize="13px" color="grey.main" m="0 0.2rem">
+            <Typography fontSize="font.small" color="grey.main" m="0 0.2rem">
               {category}
             </Typography>
           ) : (
             <>
-              <Typography fontSize="13px" color="grey.main" m="0 0.2rem">
+              <Typography fontSize="font.small" color="grey.main" m="0 0.2rem">
                 {category}
               </Typography>
-              <Typography fontSize="13px" color="grey.main">
+              <Typography fontSize="font.small" color="grey.main">
                 · Trending
               </Typography>
             </>
@@ -44,12 +44,12 @@ const Trend = ({ position, category, title, nbTweets }) => {
         </Box>
       </Box>
       <Box>
-        <Typography fontSize="15px" fontWeight="bold">
+        <Typography fontSize="font.main" fontWeight="mainBold">
           {title}
         </Typography>
       </Box>
       <Box>
-        <Typography fontSize="13px" color="#536471">
+        <Typography fontSize="font.small" color="#536471">
           {nbTweets} Tweets
         </Typography>
       </Box>

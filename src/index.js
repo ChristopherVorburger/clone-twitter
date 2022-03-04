@@ -6,12 +6,15 @@ import "./index.css";
 import App from "./App";
 import "./index.css";
 import { AuthContextProvider } from "./context/authContext";
+import { ModalContextProvider } from "./context/modalContext";
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
       <AuthContextProvider>
-        <App />
+        <ModalContextProvider>
+          <App />
+        </ModalContextProvider>
       </AuthContextProvider>
     </Router>
   </React.StrictMode>,

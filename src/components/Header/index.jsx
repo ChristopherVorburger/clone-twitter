@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { AppBar, Box, IconButton, Toolbar, Typography } from "@mui/material";
 
@@ -7,19 +7,9 @@ import ProfileButton from "../buttons/ProfileButton";
 
 import useStyles from "./styles";
 
-const Header = ({ iconsLeft, iconsRight, subtitle }) => {
+const Header = ({ iconsLeft, iconsRight, subtitle, title }) => {
   const classes = useStyles();
-
-  // Fonction pour convertir la première lettre d'une string en lettre capitale
-  const capitalize = (str) => {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  };
-
-  // Utilisation du hook useLocation pour récupérer le chemin de l'url
-  const location = useLocation();
-
-  // Conversion du pathname pour en faire le titre du header
-  const pathname = capitalize(location.pathname.slice(1));
+  const navigate = useNavigate();
 
   return (
     <Box className={classes.header__container}>
@@ -27,7 +17,7 @@ const Header = ({ iconsLeft, iconsRight, subtitle }) => {
         <Toolbar>
           {/* TODO: Optimiser cet affichage dynamique */}
           <>
-            {pathname === "Home" ? (
+            {title === "Home" ? (
               <Box className={classes.header__button_profile}>
                 <ProfileButton />
               </Box>
@@ -40,6 +30,7 @@ const Header = ({ iconsLeft, iconsRight, subtitle }) => {
                 color: "black.main",
               }}
               aria-label="menu"
+              onClick={() => navigate(-1)}
             >
               {iconsLeft?.type?.render()}
             </IconButton>
@@ -51,10 +42,12 @@ const Header = ({ iconsLeft, iconsRight, subtitle }) => {
             alignItems="center"
           >
             <Box>
-              <Typography fontSize="20px" fontWeight="bold">
-                {pathname}
+              <Typography fontSize="font.large" fontWeight="mainBold">
+                {title}
               </Typography>
-              <Typography fontSize="15px">{subtitle}</Typography>
+              <Typography fontSize="font.small" color="grey.main">
+                {subtitle}
+              </Typography>
             </Box>
             <Box>
               <IconButton

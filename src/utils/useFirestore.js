@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import { onSnapshot, collection } from "firebase/firestore";
-import { getFirestore } from "firebase/firestore";
+import { database } from "../firebase-config";
 
 export function useFirestore(ref) {
-  const database = getFirestore();
   const [data, setData] = useState();
   const collectionRef = collection(database, ref);
 
