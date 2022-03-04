@@ -12,7 +12,7 @@ import {
   Typography,
   TextField,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { doc, getFirestore, serverTimestamp, setDoc } from "firebase/firestore";
 import { AuthContext } from "../../context/authContext";
 
@@ -24,6 +24,7 @@ function SignUp() {
   // Const générales
   const classes = useStyles();
   const auth = React.useContext(AuthContext);
+  const navigate = useNavigate();
 
   // State authentification
   const [email, setEmail] = React.useState("");
@@ -48,6 +49,7 @@ function SignUp() {
     } else if (username === "" || username.length > 100) {
       setErrorUserName(true);
     } else {
+      navigate("/home");
       auth
         .signUp(email, password)
         .then((cred) => {
