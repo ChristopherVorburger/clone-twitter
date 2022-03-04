@@ -66,7 +66,10 @@ export default function Login() {
   const handleForm = async (e) => {
     e.preventDefault();
     try {
-      const cred = await signIn(inputs.current[0].value, inputs.current[1].value);
+      const cred = await signIn(
+        inputs.current[0].value,
+        inputs.current[1].value
+      );
       navigate("/home");
       setLoginError(false);
     } catch (err) {
@@ -83,85 +86,136 @@ export default function Login() {
       <LoginModalContainer>
         {emalValid ? (
           <LoginModal>
-            <Link to='/' style={{ color: "#000" }}>
-              <CloseIcon className={classes.iconCross} />
+            <Link to="/" style={{ color: "#000" }}>
+              <CloseIcon
+                data-testid="closeButtonModal2"
+                className={classes.iconCross}
+              />
             </Link>
-            <IconTwitter src={LogoTwitter} />
+            <IconTwitter data-testid="twitterIcon2" src={LogoTwitter} />
             <LoginTitle center>Entrez votre mot de passe</LoginTitle>
             <LoginContent>
               <LoginForm onSubmit={handleForm}>
                 <TextField
-                  type='email'
+                  type="email"
                   required
                   fullWidth={true}
-                  size='medium'
-                  id='email'
-                  label='Adresse mail'
-                  variant='outlined'
+                  size="medium"
+                  id="email"
+                  label="Adresse mail"
+                  variant="outlined"
                   style={{ marginBottom: "30px" }}
                   value={email}
                   disabled={true}
                   inputRef={addInputs}
                 />
                 <TextField
-                  type='password'
+                  type="password"
                   required
                   fullWidth={true}
-                  size='medium'
-                  id='password'
-                  label='Mot de passe'
-                  variant='outlined'
+                  size="medium"
+                  id="password"
+                  label="Mot de passe"
+                  variant="outlined"
                   inputRef={addInputs}
                 />
-                <ButtonLogin bg='black' color='white' borderColor='black' bold margin='25px 0'>
+                <ButtonLogin
+                  bg="black"
+                  color="white"
+                  borderColor="black"
+                  bold
+                  margin="25px 0"
+                  data-testid="connectClassicButton"
+                >
                   <span>Se connecter</span>
                 </ButtonLogin>
               </LoginForm>
-              {loginError && <Alert severity='error'>Adresse mail ou mot de passe incorrect</Alert>}
+              {loginError && (
+                <Alert role="alert" severity="error">
+                  Adresse mail ou mot de passe incorrect
+                </Alert>
+              )}
               <TxtCreateAcount>
-                Vous n'avez pas de compte ?<Link to='/signup'>Inscrivez-vous </Link>
+                Vous n'avez pas de compte ?
+                <Link to="/signup">Inscrivez-vous </Link>
               </TxtCreateAcount>
             </LoginContent>
           </LoginModal>
         ) : (
           <LoginModal>
-            <Link to='/' style={{ color: "#000" }}>
-              <CloseIcon className={classes.iconCross} />
+            <Link to="/" style={{ color: "#000" }}>
+              <CloseIcon
+                data-testid="closeButtonModal1"
+                className={classes.iconCross}
+              />
             </Link>
-            <IconTwitter src={LogoTwitter} />
+            <IconTwitter data-testid="twitterIcon1" src={LogoTwitter} />
             <LoginTitle>Connectez-vous à Twitter</LoginTitle>
             <LoginContent>
-              <ButtonLogin borderColor='#dadce0' bg='transparent' bgHover='#F7FAFE' borderColorHover='#d2e3fc' margin='0 0 25px 0' maxWidth='290px'>
-                <img src={LogoGoogle} alt='logo de google' />
+              <ButtonLogin
+                borderColor="#dadce0"
+                bg="transparent"
+                bgHover="#F7FAFE"
+                borderColorHover="#d2e3fc"
+                margin="0 0 25px 0"
+                maxWidth="290px"
+                data-testid="connectButtonGoogle"
+              >
+                <img src={LogoGoogle} alt="logo de google" />
                 <span>Se connecter avec Google</span>
               </ButtonLogin>
-              <ButtonLogin bg='transparent' bgHover='#E6E6E6' borderColor='#dadce0' maxWidth='290px'>
+              <ButtonLogin
+                bg="transparent"
+                bgHover="#E6E6E6"
+                borderColor="#dadce0"
+                maxWidth="290px"
+                data-testid="connectButtonApple"
+              >
                 <img src={LogoApple} alt="logo d'apple" />
                 <span>Se connecter avec Apple</span>
               </ButtonLogin>
               <Line>ou</Line>
-              <LoginForm maxWidth='290px'>
+              <LoginForm role="form" maxWidth="290px">
                 <TextField
                   error={emalValid === false ? true : false}
-                  helperText={emalValid === false ? "Veuillez entrer un email valide." : ""}
-                  type='email'
+                  helperText={
+                    emalValid === false
+                      ? "Veuillez entrer un email valide."
+                      : ""
+                  }
+                  type="email"
                   required
                   fullWidth={true}
-                  size='medium'
-                  id='outlined-basic'
-                  label='Adresse mail'
-                  variant='outlined'
+                  size="medium"
+                  id="outlined-basic"
+                  label="Adresse mail"
+                  variant="outlined"
                   onChange={(e) => setEmail(e.target.value)}
                 />
-                <ButtonLogin bg='black' color='white' borderColor='black' margin='25px 0 0' maxWidth='290px' onClick={handleEmailAdress}>
+                <ButtonLogin
+                  bg="black"
+                  color="white"
+                  borderColor="black"
+                  margin="25px 0 0"
+                  maxWidth="290px"
+                  onClick={handleEmailAdress}
+                  data-testid="buttonNextModal"
+                >
                   <span>Suivant</span>
                 </ButtonLogin>
               </LoginForm>
-              <ButtonLogin bg='#fff' color='#000' borderColor='#dadce0' maxWidth='290px'>
+              <ButtonLogin
+                bg="#fff"
+                color="#000"
+                borderColor="#dadce0"
+                maxWidth="290px"
+                data-testid="forgotPassword"
+              >
                 <span>Mot de passe oublié ?</span>
               </ButtonLogin>
               <TxtCreateAcount>
-                Vous n'avez pas de compte ?<Link to='/signup'>Inscrivez-vous </Link>
+                Vous n'avez pas de compte ?
+                <Link to="/signup">Inscrivez-vous </Link>
               </TxtCreateAcount>
             </LoginContent>
           </LoginModal>
