@@ -108,13 +108,21 @@ const Profile = () => {
           />
           {/* Premier bloc */}
           <Box maxWidth="590px" maxHeight="200px">
-            <img
-              className={classes.profile__cover}
-              src={images.w11}
-              alt=""
-              width="100%"
-              height="100%"
-            />
+            {auth?.userData?.[0]?.cover_url ? (
+              <img
+                className={classes.profile__cover}
+                src={auth?.userData?.[0]?.cover_url}
+                alt=""
+              />
+            ) : (
+              <img
+                className={classes.profile__cover}
+                src={images.w11}
+                alt=""
+                width="100%"
+                height="100%"
+              />
+            )}
           </Box>
           <Box mb="1rem" p="12px 1rem 0 1rem">
             <Box display="flex" justifyContent="space-between" mb="2rem">

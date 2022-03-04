@@ -47,7 +47,12 @@ const EditProfileModal = () => {
 
   const [nameError, setNameError] = useState(false);
   const [imageSelected, setImageSelected] = useState([]);
+  const [coverSelected, setCoverSelected] = useState([]);
   const [file, setFile] = useState();
+  const [coverFile, setCoverFile] = useState();
+
+  console.log("imageselected", imageSelected);
+  console.log("coverselected", coverSelected);
 
   //Utilisation du contexte Auth
   const auth = useContext(AuthContext);
@@ -60,15 +65,21 @@ const EditProfileModal = () => {
     website: auth?.userData?.[0]?.website,
     // age: auth?.userData?.[0]?.age,
     profile_image_url: auth?.userData?.[0]?.profile_image_url,
+    cover_url: auth?.userData?.[0]?.cover_url,
   };
-  console.log(initialValue);
-  console.log(auth);
 
   // Utilisation du reducer
   const [state, dispatch] = useReducer(reducer, initialValue);
   // Destructuration des valeurs
-  const { name, description, location, website, age, profile_image_url } =
-    state;
+  const {
+    name,
+    description,
+    location,
+    website,
+    age,
+    profile_image_url,
+    cover_url,
+  } = state;
 
   // Action sut les inputs
   const inputAction = (event) => {
@@ -98,8 +109,8 @@ const EditProfileModal = () => {
       setNameError(true);
     }
 
-    // Si pas de nouvelle image on met simplement à jour les données des inputs
-    if (imageSelected.name === undefined) {
+    // Si pas de nouvelle image de profil ou de cover, mise à jour des données des inputs
+    if (imageSelected.name === undefined && coverSelected.name === undefined) {
       updateDoc(currentUserRef, {
         name,
         description,
@@ -107,17 +118,20 @@ const EditProfileModal = () => {
         website,
         // age,
       });
-      // Sinon on enregistre l'image dans le storage et on met à jour les données
-      // ce qui nous permet d'ajouter aussi l'url de l'image dans les datas du user connecté
-    } else {
-      // Référence du storage
-      const photoRef = ref(storage, `images/profile/${imageSelected.name}`);
 
-      // upload de l'image dans le firebase storage
-      await uploadBytes(photoRef, imageSelected);
+      // Si nouvelle image mais pas de cover, mise à jour des données et upload de l'image de profil
+    } else if (coverSelected.name === undefined) {
+      // Référence du storage
+      const profileImageRef = ref(
+        storage,
+        `images/profile/${imageSelected.name}`
+      );
+
+      // upload de l'image de profil dans le firebase storage
+      await uploadBytes(profileImageRef, imageSelected);
 
       // On obtient l'url de l'image avec getDownloadUrl
-      const photoLink = await getDownloadURL(photoRef);
+      const profileImageLink = await getDownloadURL(profileImageRef);
 
       updateDoc(currentUserRef, {
         name,
@@ -125,7 +139,54 @@ const EditProfileModal = () => {
         location,
         website,
         // age,
-        profile_image_url: photoLink,
+        profile_image_url: profileImageLink,
+      });
+
+      // Si nouvelle cover mais pas d'image de profil, mise à jour des données et upload de la cover
+    } else if (imageSelected.name === undefined) {
+      // Référence du storage
+      const coverRef = ref(storage, `images/cover/${coverSelected.name}`);
+
+      // Upload de la cover dans le firebase storage
+      await uploadBytes(coverRef, coverSelected);
+
+      // On obtient l'url de l'image avec getDownloadUrl
+      const coverLink = await getDownloadURL(coverRef);
+
+      updateDoc(currentUserRef, {
+        name,
+        description,
+        location,
+        website,
+        // age,
+        cover_url: coverLink,
+      });
+
+      // Sinon mise à jour de toutes les données
+    } else {
+      // Références du storage
+      const profileImageRef = ref(
+        storage,
+        `images/profile/${imageSelected.name}`
+      );
+      const coverRef = ref(storage, `images/cover/${coverSelected.name}`);
+
+      // Upload de l'image de profil et de la cover dans le firebase storage
+      await uploadBytes(profileImageRef, imageSelected);
+      await uploadBytes(coverRef, coverSelected);
+
+      // On obtient les urls avec getDownloadUrl
+      const profileImageLink = await getDownloadURL(profileImageRef);
+      const coverLink = await getDownloadURL(coverRef);
+
+      updateDoc(currentUserRef, {
+        name,
+        description,
+        location,
+        website,
+        // age,
+        profile_image_url: profileImageLink,
+        cover_url: coverLink,
       });
     }
     // Retour à la page de profil
@@ -179,17 +240,99 @@ const EditProfileModal = () => {
                 </Box>
               </Box>
               {/* Images */}
+              {/* Section image de couverture */}
               <Box display="flex" justifyContent="center">
-                <Box maxWidth="590px" maxHeight="200px">
-                  <img
-                    className={classes.cover}
-                    src={images.w11}
-                    alt=""
-                    width="100%"
-                    height="100%"
-                  />
-                </Box>
+                {cover_url ? (
+                  <Box maxWidth="590px" maxHeight="200px">
+                    {coverFile ? (
+                      <img className={classes.cover} src={coverFile} alt="" />
+                    ) : (
+                      <img
+                        className={classes.cover}
+                        src={cover_url}
+                        alt=""
+                        width="100%"
+                        height="100%"
+                      />
+                    )}
+                    <Box>
+                      <IconButton
+                        size="large"
+                        className={classes.button__add_cover}
+                      >
+                        <label
+                          htmlFor="coverFiles"
+                          className={classes.button__add_cover}
+                        >
+                          <icons.AddAPhotoOutlinedIcon />
+                        </label>
+                        <input
+                          className={classes.button__add_cover}
+                          onChange={(e) => {
+                            console.log(
+                              "e.target.files image cover",
+                              e.target.files
+                            );
+                            return (
+                              setCoverSelected(e.target.files[0]),
+                              // Création de l'aperçu de l'image
+                              setCoverFile(
+                                URL.createObjectURL(e.target.files[0])
+                              )
+                            );
+                          }}
+                          id="coverFiles"
+                          style={{ cursor: "pointer", visibility: "hidden" }}
+                          type="file"
+                        />
+                      </IconButton>
+                    </Box>
+                  </Box>
+                ) : (
+                  <Box maxWidth="590px" maxHeight="200px">
+                    <img
+                      className={classes.cover}
+                      src={images.w11}
+                      alt=""
+                      width="100%"
+                      height="100%"
+                    />
+                    <Box>
+                      <IconButton
+                        size="large"
+                        className={classes.button__add_cover}
+                      >
+                        <label
+                          htmlFor="coverFiles"
+                          className={classes.button__add_cover}
+                        >
+                          <icons.AddAPhotoOutlinedIcon />
+                        </label>
+                        <input
+                          className={classes.button__add_cover}
+                          onChange={(e) => {
+                            console.log(
+                              "e.target.files default cover",
+                              e.target.files
+                            );
+                            return (
+                              setCoverSelected(e.target.files[0]),
+                              // Création de l'aperçu de l'image
+                              setCoverFile(
+                                URL.createObjectURL(e.target.files[0])
+                              )
+                            );
+                          }}
+                          id="coverFiles"
+                          style={{ cursor: "pointer", visibility: "hidden" }}
+                          type="file"
+                        />
+                      </IconButton>
+                    </Box>
+                  </Box>
+                )}
               </Box>
+              {/* Section image de profil */}
               <Box mb="3rem">
                 {profile_image_url ? (
                   <Box
@@ -208,11 +351,19 @@ const EditProfileModal = () => {
                     )}
                     <Box className={classes.image}>
                       <IconButton size="small">
-                        <label htmlFor="files" className={classes.image}>
+                        <label
+                          htmlFor="profilImageFiles"
+                          className={classes.image}
+                        >
                           <icons.AddAPhotoOutlinedIcon />
                         </label>
                         <input
                           onChange={(e) => {
+                            console.log(
+                              "e.target.files image profil",
+                              e.target.files
+                            );
+
                             return (
                               setImageSelected(e.target.files[0]),
                               // Création de l'aperçu de l'image
@@ -220,7 +371,7 @@ const EditProfileModal = () => {
                             );
                           }}
                           className={classes.image}
-                          id="files"
+                          id="profilImageFiles"
                           style={{ visibility: "hidden" }}
                           type="file"
                         />
@@ -238,13 +389,16 @@ const EditProfileModal = () => {
                   >
                     <Box className={classes.image}>
                       <IconButton size="small">
-                        <label htmlFor="files" className={classes.image}>
+                        <label
+                          htmlFor="profilImageFiles"
+                          className={classes.image}
+                        >
                           <icons.AddAPhotoOutlinedIcon />
                         </label>
                         <input
                           onChange={(e) => setImageSelected(e.target.files[0])}
                           className={classes.image}
-                          id="files"
+                          id="profilImageFiles"
                           style={{ visibility: "hidden" }}
                           type="file"
                         />
