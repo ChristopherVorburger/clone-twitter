@@ -12,7 +12,7 @@ import {
   Retweets,
   Likes,
 } from "./Tweet.Style";
-import Avatar from "./logo-tweet-test.jpeg";
+import { images } from "../../constants";
 
 // Ajout de la librarie date-fns pour faciliter la manipulation de dates
 import { zonedTimeToUtc } from "date-fns-tz";
@@ -31,7 +31,11 @@ export default function Tweet({ text, author_id, created_at }) {
 
   return (
     <TweetContainer>
-      <TweetAvatar src={matchedUser?.[0]?.profile_image_url} />
+      {matchedUser?.[0]?.profile_image_url ? (
+        <TweetAvatar src={matchedUser?.[0]?.profile_image_url} />
+      ) : (
+        <TweetAvatar src={images.user} />
+      )}
       <TweetContent>
         <div>
           <TweetAuthor>{matchedUser?.[0]?.name} </TweetAuthor>
