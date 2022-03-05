@@ -34,7 +34,10 @@ export default function Tweet({ text, author_id, created_at }) {
       {matchedUser?.[0]?.profile_image_url ? (
         <TweetAvatar src={matchedUser?.[0]?.profile_image_url} />
       ) : (
-        <TweetAvatar src={images.user} />
+        <TweetAvatar
+          style={{ border: "1px solid lightgrey" }}
+          src={images.user}
+        />
       )}
       <TweetContent>
         <div>
