@@ -78,11 +78,13 @@ const PreHome = () => {
                   m="4px 0"
                 >
                   <div className={classes.line} />
-                  <Typography textAlign="center">or</Typography>
+                  <Typography data-testid="or" textAlign="center">
+                    or
+                  </Typography>
                   <div className={classes.line} />
                 </Stack>
                 <Button
-                  data-testid="ClasicButtonSignup"
+                  data-testid="ClassicButtonSignup"
                   sx={{ marginBottom: "0.5rem" }}
                   className={classes.button}
                   variant="contained"

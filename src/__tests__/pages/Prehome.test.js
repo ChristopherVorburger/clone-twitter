@@ -1,23 +1,41 @@
 import Prehome from "../../pages/Prehome";
+import App from "../../App";
 
-import { render, screen } from "../test/ThemeAndRouter";
+import {
+  render,
+  screen,
+  waitForElementToBeRemoved,
+} from "../test/ThemeAndRouter";
+import userEvent from "@testing-library/user-event";
+import { setupServer } from "msw/node";
+import mockHandlers from "../test/mockHandler";
+
+const server = setupServer(...mockHandlers);
+
+beforeAll(() => {
+  server.listen();
+});
+
+afterAll(() => {
+  server.close();
+});
 
 test("Affichage des éléments (sauf bouttons) de la page pré-acceuil", () => {
   render(<Prehome />);
 
   const bacgroundImageElement = screen.queryByTitle(
-    "background with the twitter logo"
+    /background with the twitter logo/i
   );
   const twitterIconElement = screen.queryByTestId("TwitterIcon");
-  const happeningTitleElement = screen.queryByText("Happening now");
-  const joiningTitleElement = screen.queryByText("Join Twitter today.");
-  const orDividerElement = screen.queryByText("or");
+  const happeningTitleElement = screen.queryByText(/Happening now/i);
+  const joiningTitleElement = screen.queryByText(/Join Twitter today./i);
+  const orDividerElement = screen.queryByTestId("or");
   const PrivacyPolicyElement = screen.queryByText(
-    "By signing up, you agree to the Terms of Service and Privacy Policy, including Cookie Use."
+    /By signing up, you agree to the Terms of Service and Privacy Policy, including Cookie Use./i
   );
 
-  const alreadyAccountElement = screen.queryByText("Already have an account?");
-  const copyrightElement = screen.queryByText("© 2022 Twitter, Inc.");
+  const alreadyAccountElement = screen.queryByText(/Already have an account?/i);
+  const copyrightElement = screen.queryByText(/© 2022 Twitter, Inc./i);
 
   expect(bacgroundImageElement).toBeInTheDocument();
   expect(twitterIconElement).toBeInTheDocument();
@@ -33,8 +51,8 @@ test("Affichage boutton SignUp Google", () => {
   render(<Prehome />);
 
   const buttonElement = screen.queryByTestId("GoogleButton");
-  const imageElement = screen.queryByAltText("logo google");
-  const textElement = screen.queryByText("Sign up with Google");
+  const imageElement = screen.queryByAltText(/logo google/i);
+  const textElement = screen.queryByText(/Sign up with Google/i);
 
   expect(buttonElement).toBeInTheDocument();
   expect(imageElement).toBeInTheDocument();
@@ -44,35 +62,35 @@ test("Affichage boutton SignUp Google", () => {
 test("Affichage boutton SignUp Apple", () => {
   render(<Prehome />);
 
-  const buttonElement = screen.queryByTestId("AppleButton");
-  const imageElement = screen.queryByAltText("logo apple");
-  const textElement = screen.queryByText("Sign up with Apple");
+  const buttonElement = screen.queryByTestId(/AppleButton/i);
+  const imageElement = screen.queryByAltText(/logo apple/i);
+  const textElement = screen.queryByText(/Sign up with Apple/i);
 
   expect(buttonElement).toBeInTheDocument();
   expect(imageElement).toBeInTheDocument();
   expect(textElement).toBeInTheDocument();
 });
 
-test("Affichage et link boutton SignUp Phone Email", () => {
+test("Affichage et link boutton SignUp Phone Email", async () => {
   render(<Prehome />);
 
-  const buttonElement = screen.queryByTestId("ClasicButtonSignup");
-  const textElement = screen.queryByText("Sign up with phone or email");
-  const linkElement = screen.getByRole("link", {
-    name: /Sign up with phone or email/i,
-  });
+  const buttonElement = screen.getByTestId(/ClassicButtonSignup/i);
+  const textElement = screen.queryByText(/Sign up with phone or email/i);
 
   expect(buttonElement).toBeInTheDocument();
   expect(textElement).toBeInTheDocument();
-  expect(linkElement).toHaveBeenCalledWith({ to: "/signup" });
+
+  //manque partie link
 });
 
 test("Affichage et link boutton SignIn", () => {
   render(<Prehome />);
 
-  const buttonElement = screen.queryByTestId("SigninButton");
-  const textElement = screen.queryByText("Sign in");
+  const buttonElement = screen.queryByTestId(/SigninButton/i);
+  const textElement = screen.queryByText(/Sign in/i);
 
   expect(buttonElement).toBeInTheDocument();
   expect(textElement).toBeInTheDocument();
+
+  //manque partie link
 });

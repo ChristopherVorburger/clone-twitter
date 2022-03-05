@@ -1,6 +1,5 @@
 import * as React from "react";
 import ButtonAddTweet from "../../components/buttons/AddTweetButton/index";
-import { ThemeProvider } from "@mui/material/styles";
 
 import { render, screen } from "../test/ThemeOnly";
 
