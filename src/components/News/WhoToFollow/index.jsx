@@ -21,7 +21,7 @@ const WhoToFollow = ({ user }) => {
   const following = auth?.userData?.[0]?.following;
 
   // Récupération du tableau de follower de l'utilisateur ciblé
-  const follower = user?.follower;
+  const followers = user?.followers;
 
   // Référence à l'id de l'utilisateur connecté à mettre à jour
   const currentUserRef = doc(database, "users", auth?.authUser?.uid);
@@ -57,9 +57,9 @@ const WhoToFollow = ({ user }) => {
           console.log("ajout d'un premier following");
           // Si l'utilisateur ajouté n'a pas de follower, on crée un tableau avec son
           // premier follower
-          if (!follower) {
+          if (!followers) {
             updateDoc(followedUserRef, {
-              follower: [auth?.authUser?.uid],
+              followers: [auth?.authUser?.uid],
             })
               .then(() => {
                 console.log("ajout d'un premier follower");
@@ -70,7 +70,7 @@ const WhoToFollow = ({ user }) => {
             // Sinon, mise à jour du tableau follower de l'utilisateur ajouté
           } else {
             updateDoc(followedUserRef, {
-              follower: [...user?.follower, auth?.authUser?.uid],
+              followers: [...user?.followers, auth?.authUser?.uid],
             })
               .then(() => {
                 console.log("ajout d'un follower");
@@ -92,9 +92,9 @@ const WhoToFollow = ({ user }) => {
           console.log("ajout d'un following");
           // Si l'utilisateur ajouté n'a pas de follower, on crée un tableau avec son
           // premier follower
-          if (!follower) {
+          if (!followers) {
             updateDoc(followedUserRef, {
-              follower: [auth?.authUser?.uid],
+              followers: [auth?.authUser?.uid],
             })
               .then(() => {
                 console.log("ajout d'un premier follower");
@@ -105,7 +105,7 @@ const WhoToFollow = ({ user }) => {
             // Sinon, mise à jour du tableau follower de l'utilisateur ajouté
           } else {
             updateDoc(followedUserRef, {
-              follower: [...user?.follower, auth?.authUser?.uid],
+              followers: [...user?.followers, auth?.authUser?.uid],
             })
               .then(() => {
                 console.log("ajout d'un follower");

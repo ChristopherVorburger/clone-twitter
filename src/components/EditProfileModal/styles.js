@@ -27,6 +27,9 @@ export default makeStyles((theme) => ({
     height: "200px",
     opacity: 0.75,
   },
+  cover__container: {
+    backgroundColor: `${theme.palette.grey.main}!important`,
+  },
   avatar__container: {
     position: "relative",
   },

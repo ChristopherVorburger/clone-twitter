@@ -49,7 +49,6 @@ function SignUp() {
     } else if (username === "" || username.length > 100) {
       setErrorUserName(true);
     } else {
-      navigate("/home");
       auth
         .signUp(email, password)
         .then((cred) => {
@@ -77,6 +76,7 @@ function SignUp() {
             .then(() => {
               setName("");
               setUserName("");
+              navigate("/home");
             })
             .catch((err) => {
               console.log(err.message);

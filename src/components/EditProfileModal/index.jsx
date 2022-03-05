@@ -242,7 +242,11 @@ const EditProfileModal = () => {
               </Box>
               {/* Images */}
               {/* Section image de couverture */}
-              <Box display="flex" justifyContent="center">
+              <Box
+                display="flex"
+                justifyContent="center"
+                className={classes.cover__container}
+              >
                 {cover_url ? (
                   <Box maxWidth="590px" maxHeight="200px">
                     {coverFile ? (
