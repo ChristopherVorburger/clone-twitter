@@ -13,7 +13,7 @@ import {
 
 import ProfileButton from "../buttons/ProfileButton";
 
-import { icons } from "../../constants";
+import { icons, images } from "../../constants";
 
 import useStyles from "./styles";
 
@@ -71,11 +71,18 @@ const NewTweet = () => {
       sx={{
         width: "100%",
         maxWidth: "600px",
-        ml: "1.5rem",
+        ml: "1rem",
       }}
     >
       <Stack direction="row">
-        <ProfileButton />
+        <Box mr="1rem">
+          <img
+            className={classes.avatar}
+            style={{ border: "1px solid lightgrey" }}
+            src={images.user}
+            alt="user avatar"
+          />
+        </Box>
         <Stack alignItems="flex-start">
           <Box>
             <TextField

@@ -9,6 +9,7 @@ import { arrayRemove, doc, updateDoc } from "firebase/firestore";
 import { AuthContext } from "../../../context/authContext";
 
 import useStyles from "./styles";
+import { images } from "../../../constants";
 
 const WhoToFollow = ({ user }) => {
   const classes = useStyles();
@@ -138,12 +139,22 @@ const WhoToFollow = ({ user }) => {
       <Box display="flex" justifyContent="space-between">
         <Box display="flex" justifyContent="space-between">
           <Box mr="1rem">
-            <img
-              className={classes.avatar}
-              src={user?.profile_image_url}
-              alt={user?.name}
-              width="40px"
-            />
+            {user?.profile_image_url ? (
+              <img
+                className={classes.avatar}
+                src={user?.profile_image_url}
+                alt={user?.name}
+                width="40px"
+              />
+            ) : (
+              <img
+                className={classes.avatar}
+                style={{ border: "1px solid lightgrey" }}
+                src={images.user}
+                alt={user?.name}
+                width="40px"
+              />
+            )}
           </Box>
           <Box>
             <Box>
