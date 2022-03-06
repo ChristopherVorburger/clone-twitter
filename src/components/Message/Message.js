@@ -8,15 +8,9 @@ import 'firebase/compat/analytics';
 
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
+import { getFirebaseConfig } from '../../firebase-config';
 
-firebase.initializeApp({
-  apiKey: 'AIzaSyBTbjYAEsYyAy8M9_-aKibSFdh4B5eb6ic',
-  authDomain: 'clone-tw.firebaseapp.com',
-  projectId: 'clone-tw',
-  storageBucket: 'clone-tw.appspot.com',
-  messagingSenderId: '554791574832',
-  appId: '1:554791574832:web:fc60754c54cdf72f9b3cf5',
-});
+firebase.initializeApp(getFirebaseConfig());
 
 const auth = firebase.auth();
 const firestore = firebase.firestore();
@@ -30,6 +24,7 @@ function App() {
       <header>
         <h1>⚛️🔥💬</h1>
         <SignOut />
+        <AddNewChat />
       </header>
 
       <section>{user ? <ChatRoom /> : <SignIn />}</section>
@@ -58,10 +53,65 @@ function SignIn() {
 function SignOut() {
   return (
     auth.currentUser && (
-      <button className="sign-out" onClick={() => auth.signOut()}>
-        Sign Out
-      </button>
+      <>
+        <button className="sign-out" onClick={() => auth.signOut()}>
+          Sign Out
+        </button>
+      </>
     )
+  );
+}
+
+function AddNewChat() {
+  const usersRef = firestore.collection('users');
+  const query = usersRef.orderBy('name');
+  const [searchValue, setSearchValue] = useState('');
+  const [users] = useCollectionData(query, { idField: 'name' });
+  const [dataSearchedUsers, setDataSearchedUsers] = React.useState([]);
+
+  function handleTextChange(text) {
+    setDataSearchedUsers(setFilterUsers(text));
+  }
+
+  function setFilterUsers(searchText) {
+    return users.filter((user) => {
+      if (user.name.toLowerCase().includes(searchText.toLowerCase())) {
+        return true;
+      }
+
+      return false;
+    });
+  }
+
+  return (
+    <>
+      <SearchUserInput onTextChange={handleTextChange} />
+      <Resultat data={dataSearchedUsers} />
+    </>
+  );
+}
+
+function SearchUserInput({ onTextChange }) {
+  return (
+    <>
+      <input
+        placeholder="Search for people"
+        onChange={(e) => onTextChange(e.target.value)}
+      />
+      {/* <button disabled={!searchValue}>+</button> */}
+    </>
+  );
+}
+
+function Resultat({ data = [] }) {
+  return (
+    <div>
+      <ul>
+        {data.map((user) => (
+          <li>{user.name}</li>
+        ))}
+      </ul>
+    </div>
   );
 }
 
