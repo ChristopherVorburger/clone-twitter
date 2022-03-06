@@ -1,23 +1,27 @@
 import { makeStyles } from "@mui/styles";
 
+const drawerWidth = "250px";
+
 export default makeStyles((theme) => ({
-  leftNavbar: {
+  drawerRoot: {
+    width: drawerWidth,
     [theme.breakpoints.down("lg")]: {
-      marginLeft: "-780px!important",
+      width: "120px!important",
     },
     [theme.breakpoints.down("md")]: {
-      marginLeft: "-480px!important",
-    },
-  },
-  content: {
-    [theme.breakpoints.down("lg")]: {
-      marginLeft: "250px!important",
-    },
-    [theme.breakpoints.down("md")]: {
-      marginLeft: "150px!important",
+      width: "120px!important",
     },
     [theme.breakpoints.down("sm")]: {
-      marginLeft: "0px!important",
+      width: "0px!important",
+    },
+  },
+  drawerPaper: {
+    left: "auto!important",
+    borderRight: "none!important",
+  },
+  icons: {
+    [theme.breakpoints.down("lg")]: {
+      minWidth: "0px!important",
     },
   },
 }));

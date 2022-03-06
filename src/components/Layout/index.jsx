@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Box } from "@mui/material";
+import { Box, Drawer } from "@mui/material";
 
 import LeftNavbar from "../LeftNavbar";
 
@@ -10,12 +10,15 @@ const Layout = ({ children }) => {
   const classes = useStyles();
   return (
     <Box display="flex" justifyContent="center">
-      <Box className={classes.leftNavbar} position="fixed" ml="-950px">
-        <LeftNavbar />
+      <Box>
+        <Drawer
+          variant="permanent"
+          classes={{ root: classes.drawerRoot, paper: classes.drawerPaper }}
+        >
+          <LeftNavbar />
+        </Drawer>
       </Box>
-      <Box className={classes.content} ml="250px">
-        {children}
-      </Box>
+      <Box>{children}</Box>
     </Box>
   );
 };

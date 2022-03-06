@@ -1,6 +1,7 @@
 import * as React from "react";
 import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
+import AddTweetButton from "../buttons/AddTweetButton";
 
 import { icons } from "../../constants";
 
@@ -34,6 +35,7 @@ export default function LabelBottomNavigation() {
       value={value}
       onChange={handleChange}
     >
+      <AddTweetButton />
       {/* Loop through the 'iconsArray' array and use the render() function to display the component */}
       {iconsArray.map((icon, index) => {
         return (

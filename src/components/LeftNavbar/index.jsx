@@ -4,18 +4,20 @@ import {
   ListItemIcon,
   ListItemButton,
   ListItemText,
+  Typography,
+  Button,
 } from "@mui/material";
 
-import { icons } from "../../constants";
+import { icons, images } from "../../constants";
 
 import useStyles from "./styles";
-import ProfileButton from "../buttons/ProfileButton";
 import AddTweetButton from "../buttons/AddTweetButton";
 import { Link } from "react-router-dom";
 
 import { Box } from "@mui/system";
 
 import { AuthContext } from "../../context/authContext";
+import ClassicButton from "../buttons/ClassicButton";
 
 const LeftNavbar = () => {
   // Utilisation du hook useContext pour récupérer le contexte Auth
@@ -50,16 +52,16 @@ const LeftNavbar = () => {
           justifyContent="space-between"
           height="100vh"
         >
-          <Box display="flex" alignItems="flex-end" mr="1rem">
+          <Box>
             <List>
               <ListItemButton sx={{ borderRadius: "50px" }}>
                 <ListItemIcon
                   sx={{
+                    mb: "0.5rem",
                     display: "flex",
                     justifyContent: "center",
                     transform: "scale(1.2)",
                     color: "primary.main",
-                    minWidth: "20px",
                   }}
                 >
                   <icons.TwitterIcon data-testid="TwitterIcon" />
@@ -75,12 +77,12 @@ const LeftNavbar = () => {
                     sx={{ borderRadius: "50px" }}
                   >
                     <ListItemIcon
+                      className={classes.icons}
                       sx={{
                         mb: "0.5rem",
                         display: "flex",
                         justifyContent: "center",
                         transform: "scale(1.2)",
-                        minWidth: "20px",
                         color: "black.main",
                       }}
                     >
@@ -89,7 +91,6 @@ const LeftNavbar = () => {
                     <ListItemText
                       className={classes.icon__text}
                       sx={{
-                        ml: "1rem",
                         fontSize: "font.large",
                         color: "black.main",
                       }}
@@ -100,34 +101,57 @@ const LeftNavbar = () => {
                 );
               })}
               <ListItemButton
+                className={classes.add_tweet__button}
                 sx={{
-                  left: "0.5rem",
-                  bottom: "-8.5rem",
+                  right: "2.5rem",
+                  bottom: "-8rem",
                   backgroundColor: "transparent!important",
                 }}
               >
-                <ListItemIcon
-                  sx={{
-                    transform: "scale(1)",
-                  }}
-                >
+                <ListItemIcon>
                   <AddTweetButton />
+                </ListItemIcon>
+              </ListItemButton>
+              <ListItemButton>
+                <ListItemIcon className={classes.add_tweet__button_large}>
+                  <ClassicButton text={"Tweet"} />
                 </ListItemIcon>
               </ListItemButton>
             </List>
           </Box>
-          <Box mr="1rem">
-            <ListItemButton sx={{ backgroundColor: "white!important" }}>
-              <ListItemIcon
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  minWidth: "20px",
-                }}
+          <Box
+            className={classes.profile_section}
+            sx={{
+              borderRadius: "50px",
+              padding: "12px",
+            }}
+          >
+            <Box display="flex" justifyContent="center" alignItems="center">
+              <Box width="50px" height="50px" marginRight="0.5rem">
+                <img
+                  className={classes.profile_section__avatar_button}
+                  style={{ border: "1px solid lightgrey" }}
+                  src={images.user}
+                  alt="user avatar"
+                />
+              </Box>
+              <Box
+                className={classes.profile_section__avatar_texts}
+                flexGrow="1"
               >
-                <ProfileButton />
-              </ListItemIcon>
-            </ListItemButton>
+                <Typography fontSize="font.main" fontWeight="mainBold">
+                  {auth.userData?.[0]?.name}
+                </Typography>
+                <Typography fontSize="font.main" color="grey.main">
+                  @{auth.userData?.[0]?.username}
+                </Typography>
+              </Box>
+              <Box>
+                <Box className={classes.profile_section__icon_more}>
+                  {icons.MoreHorizIcon.type.render()}
+                </Box>
+              </Box>
+            </Box>
           </Box>
         </Box>
       </Box>
