@@ -64,12 +64,34 @@ function SignOut() {
 
 function AddNewChat() {
   const usersRef = firestore.collection('users');
+  const channelsRef = firestore.collection('channels');
+
   const query = usersRef.orderBy('name');
   const [searchValue, setSearchValue] = useState('');
   const [users] = useCollectionData(query, { idField: 'name' });
   const [dataSearchedUsers, setDataSearchedUsers] = React.useState([]);
 
+  const addNewChannel = async () => {
+    // e.preventDefault();
+
+    const { uid, name, photoURL } = auth.currentUser;
+    const createdAt = firebase.firestore.FieldValue.serverTimestamp();
+    const channel = await channelsRef.add({
+      name: searchValue,
+    });
+
+    const channelMessageRef = channel.collection('messages');
+    const messageChannel = await channelMessageRef.add({
+      createdAt: createdAt,
+      photoUrl: null,
+      senderId: uid,
+      senderName: 'toto',
+      text: 'test channel messge',
+    });
+  };
+
   function handleTextChange(text) {
+    setSearchValue(text);
     setDataSearchedUsers(setFilterUsers(text));
   }
 
@@ -85,20 +107,26 @@ function AddNewChat() {
 
   return (
     <>
-      <SearchUserInput onTextChange={handleTextChange} />
+      <SearchUserInput
+        onTextChange={handleTextChange}
+        onSubmit={addNewChannel}
+        searchText={searchValue}
+      />
       <Resultat data={dataSearchedUsers} />
     </>
   );
 }
 
-function SearchUserInput({ onTextChange }) {
+function SearchUserInput({ onTextChange, onSubmit, searchText }) {
   return (
     <>
       <input
         placeholder="Search for people"
         onChange={(e) => onTextChange(e.target.value)}
       />
-      {/* <button disabled={!searchValue}>+</button> */}
+      <button disabled={!searchText} onClick={(e) => onSubmit()}>
+        +
+      </button>
     </>
   );
 }
@@ -108,7 +136,9 @@ function Resultat({ data = [] }) {
     <div>
       <ul>
         {data.map((user) => (
-          <li>{user.name}</li>
+          <li key={user.id} onClick>
+            {user.name}
+          </li>
         ))}
       </ul>
     </div>
