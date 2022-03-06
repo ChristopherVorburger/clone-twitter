@@ -51,8 +51,6 @@ const Home = () => {
       {showModal && <ModalAddTweets />}
 
       <Box display="flex" justifyContent="center">
-        <LeftNavbar />
-
         <Box
           display="flex"
           flexDirection="column"
