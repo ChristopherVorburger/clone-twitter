@@ -76,6 +76,7 @@ const LeftNavbar = () => {
                   >
                     <ListItemIcon
                       sx={{
+                        mb: "0.5rem",
                         display: "flex",
                         justifyContent: "center",
                         transform: "scale(1.2)",
@@ -100,9 +101,9 @@ const LeftNavbar = () => {
               })}
               <ListItemButton
                 sx={{
-                  left: "1.5rem",
+                  left: "0.5rem",
                   bottom: "-8.5rem",
-                  backgroundColor: "white!important",
+                  backgroundColor: "transparent!important",
                 }}
               >
                 <ListItemIcon

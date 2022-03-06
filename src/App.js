@@ -10,6 +10,7 @@ import Profile from "./pages/Profile";
 import Followers from "./pages/Followers";
 import Following from "./pages/Following";
 import EditProfileModal from "./components/EditProfileModal";
+import Layout from "./components/Layout";
 
 export default function App() {
   // Création d'un thème pour changer la couleur principale de MUI
@@ -46,17 +47,19 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Routes>
-        <Route path="/" element={<Prehome />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/exemple" element={<Exemple />} />
-        <Route path="/:username" element={<Profile />} />
-        <Route path="/:username/followers" element={<Followers />} />
-        <Route path="/:username/following" element={<Following />} />
-        <Route path="/settings/profile" element={<EditProfileModal />} />
-      </Routes>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Prehome />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/exemple" element={<Exemple />} />
+          <Route path="/:username" element={<Profile />} />
+          <Route path="/:username/followers" element={<Followers />} />
+          <Route path="/:username/following" element={<Following />} />
+          <Route path="/settings/profile" element={<EditProfileModal />} />
+        </Routes>
+      </Layout>
     </ThemeProvider>
   );
 }
