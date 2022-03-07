@@ -9,7 +9,7 @@ import useStyles from "./styles";
 const Layout = ({ children }) => {
   const classes = useStyles();
   return (
-    <Box display="flex" justifyContent="center">
+    <Box className={classes.container} display="flex" justifyContent="center">
       <Box>
         <Drawer
           variant="permanent"

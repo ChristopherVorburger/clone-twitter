@@ -43,6 +43,7 @@ const LeftNavbar = () => {
     },
     { name: icons.MoreHorizIcon, path: "", text: "More" },
   ];
+
   return (
     <Box className={classes.container}>
       <Box>

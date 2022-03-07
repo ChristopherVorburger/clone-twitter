@@ -12,7 +12,6 @@ import {
 
 // Import composants React
 import Header from "../../components/Header";
-import LeftNavbar from "../../components/LeftNavbar";
 import News from "../../components/News";
 import BottomNavigation from "../../components/BottomNavigation";
 import Tweet from "../../components/Tweet/Tweet";
@@ -33,8 +32,6 @@ import { useFirestore } from "../../utils/useFirestore";
 
 // Import styles
 import useStyles from "./styles";
-import EditProfileModal from "../../components/EditProfileModal";
-import ProfileButton from "../../components/buttons/ProfileButton";
 
 // Liens pour la Nav Tab
 function LinkTab(props) {
@@ -91,7 +88,6 @@ const Profile = () => {
         display="flex"
         justifyContent="center"
       >
-        <LeftNavbar />
         <Box
           display="flex"
           flexDirection="column"

@@ -14,9 +14,13 @@ export default makeStyles((theme) => ({
     minWidth: "600px",
     maxWidth: "80vw",
     minHeight: "400px",
-    maxHeight: "90vh",
     borderRadius: "16px",
+    height: "98vh!important",
     overflowY: "scroll",
+    overflowX: "hidden",
+    [theme.breakpoints.down("md")]: {
+      minWidth: "350px",
+    },
   },
   button: {
     textTransform: "none!important",

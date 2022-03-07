@@ -1,15 +1,20 @@
 import { makeStyles } from "@mui/styles";
 
-const drawerWidth = "250px";
+const drawerWidth = "300px";
 
 export default makeStyles((theme) => ({
+  container: {
+    [theme.breakpoints.down("sm")]: {
+      display: "block!important",
+    },
+  },
   drawerRoot: {
     width: drawerWidth,
     [theme.breakpoints.down("lg")]: {
-      width: "120px!important",
+      width: "200px!important",
     },
     [theme.breakpoints.down("md")]: {
-      width: "120px!important",
+      width: "200px!important",
     },
     [theme.breakpoints.down("sm")]: {
       width: "0px!important",

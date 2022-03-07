@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Prehome from "./pages/Prehome";
 import SignUp from "./pages/SignUp/SingUp";
@@ -12,7 +12,11 @@ import Following from "./pages/Following";
 import EditProfileModal from "./components/EditProfileModal";
 import Layout from "./components/Layout";
 
+import { AuthContext } from "./context/authContext";
+
 export default function App() {
+  const auth = React.useContext(AuthContext);
+  console.log("auth", auth);
   // Création d'un thème pour changer la couleur principale de MUI
   let theme = createTheme({
     palette: {
@@ -47,19 +51,26 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Layout>
+      {!auth.authUser ? (
         <Routes>
           <Route path="/" element={<Prehome />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/exemple" element={<Exemple />} />
-          <Route path="/:username" element={<Profile />} />
-          <Route path="/:username/followers" element={<Followers />} />
-          <Route path="/:username/following" element={<Following />} />
-          <Route path="/settings/profile" element={<EditProfileModal />} />
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
-      </Layout>
+      ) : (
+        <Layout>
+          <Routes>
+            <Route path="/home" element={<Home />} />
+            <Route path="/exemple" element={<Exemple />} />
+            <Route path="/:username" element={<Profile />} />
+            <Route path="/:username/followers" element={<Followers />} />
+            <Route path="/:username/following" element={<Following />} />
+            <Route path="/settings/profile" element={<EditProfileModal />} />
+            <Route path="*" element={<Navigate to="/home" />} />
+          </Routes>
+        </Layout>
+      )}
     </ThemeProvider>
   );
 }
