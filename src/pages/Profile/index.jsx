@@ -112,8 +112,7 @@ const Profile = () => {
               />
             ) : (
               <img
-                className={classes.profile__cover}
-                src={images.w11}
+                className={classes.profile__cover_default}
                 alt=""
                 width="100%"
                 height="100%"
