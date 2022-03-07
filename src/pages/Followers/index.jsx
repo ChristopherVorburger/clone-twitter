@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import Header from "../../components/Header";
-import LeftNavbar from "../../components/LeftNavbar";
 import News from "../../components/News";
 
 // Import composants MUI
@@ -56,7 +55,6 @@ const Followers = () => {
 
   return (
     <Box display="flex" justifyContent="center">
-      <LeftNavbar />
       <Box
         display="flex"
         flexDirection="column"

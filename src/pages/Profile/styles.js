@@ -2,7 +2,7 @@ import { makeStyles } from "@mui/styles";
 
 export default makeStyles((theme) => ({
   profile__container: {
-    [theme.breakpoints.down("sm")]: {},
+    maxWidth: "100%",
   },
   profile__cover: {
     width: "590px",

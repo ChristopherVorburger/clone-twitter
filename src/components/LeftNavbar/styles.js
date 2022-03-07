@@ -2,6 +2,10 @@ import { makeStyles } from "@mui/styles";
 
 export default makeStyles((theme) => ({
   container: {
+    marginLeft: "2rem",
+    [theme.breakpoints.down("lg")]: {
+      marginLeft: "4rem",
+    },
     [theme.breakpoints.down("sm")]: {
       display: "none",
     },

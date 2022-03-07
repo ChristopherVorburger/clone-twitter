@@ -1,4 +1,5 @@
 import React from "react";
+import { Navigate } from "react-router-dom";
 import { Box, Button, Divider, TextField, Typography } from "@mui/material";
 
 // Import des fonctions du firestore
@@ -233,7 +234,9 @@ const Exemple = () => {
     // On utilise la fonction signUserOut du AuthContext
     auth
       .signUserOut()
-      .then(() => console.log("User signed out"))
+      .then(() => {
+        return console.log("User signed out"), Navigate("/");
+      })
       .catch((err) => {
         console.log(err.message);
       });

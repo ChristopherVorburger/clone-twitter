@@ -112,6 +112,7 @@ export default function Login() {
                 <TextField
                   type="password"
                   required
+                  autoFocus
                   fullWidth={true}
                   size="medium"
                   id="password"
@@ -190,6 +191,7 @@ export default function Login() {
                   id="outlined-basic"
                   label="Adresse mail"
                   variant="outlined"
+                  autoFocus
                   onChange={(e) => setEmail(e.target.value)}
                 />
                 <ButtonLogin

@@ -12,7 +12,6 @@ import {
 
 // Import composants React
 import Header from "../../components/Header";
-import LeftNavbar from "../../components/LeftNavbar";
 import News from "../../components/News";
 
 // import AuthContext
@@ -57,7 +56,6 @@ const Following = () => {
 
   return (
     <Box display="flex" justifyContent="center">
-      <LeftNavbar />
       <Box
         display="flex"
         flexDirection="column"
