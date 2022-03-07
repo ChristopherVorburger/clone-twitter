@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import { icons } from "../../constants";
+import { icons, images } from "../../constants";
 
 import useStyles from "./styles";
 
@@ -74,12 +74,21 @@ const NewTweet = () => {
     >
       <Stack direction="row">
         <Box mr="1rem">
-          <img
-            className={classes.avatar}
-            style={{ border: "1px solid lightgrey" }}
-            src={auth.userData?.[0]?.profile_image_url}
-            alt="user avatar"
-          />
+          {auth.userData?.[0]?.profile_image_url ? (
+            <img
+              className={classes.avatar}
+              style={{ border: "1px solid lightgrey" }}
+              src={auth.userData?.[0]?.profile_image_url}
+              alt="user avatar"
+            />
+          ) : (
+            <img
+              className={classes.avatar}
+              style={{ border: "1px solid lightgrey" }}
+              src={images.user}
+              alt="user avatar"
+            />
+          )}
         </Box>
         <Stack alignItems="flex-start">
           <Box>

@@ -23,12 +23,21 @@ const BottomAvatar = () => {
     >
       <Box display="flex" justifyContent="center" alignItems="center">
         <Box width="50px" height="50px" marginRight="0.5rem">
-          <img
-            className={classes.profile_section__avatar_button}
-            style={{ border: "1px solid lightgrey" }}
-            src={auth.userData?.[0]?.profile_image_url}
-            alt="user avatar"
-          />
+          {auth.userData?.[0]?.profile_image_url ? (
+            <img
+              className={classes.profile_section__avatar_button}
+              style={{ border: "1px solid lightgrey" }}
+              src={auth.userData?.[0]?.profile_image_url}
+              alt="user avatar"
+            />
+          ) : (
+            <img
+              className={classes.profile_section__avatar_button}
+              style={{ border: "1px solid lightgrey" }}
+              src={images.user}
+              alt="user avatar"
+            />
+          )}
         </Box>
         <Box className={classes.profile_section__avatar_texts} flexGrow="1">
           <Typography fontSize="font.main" fontWeight="mainBold">
