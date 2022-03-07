@@ -73,10 +73,10 @@ const News = () => {
         <Typography fontSize="font.large" fontWeight="800" p="1rem">
           Trends
         </Typography>
-        {topHeadlines?.slice(0, 4)?.map((movie, index) => {
+        {topHeadlines?.slice(0, 4)?.map((news, index) => {
           return (
             <Box key={index}>
-              <Trend movie={movie} index={index} />
+              <Trend news={news} index={index} />
             </Box>
           );
         })}
