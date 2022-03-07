@@ -15,20 +15,27 @@ const theme = createTheme({
 });
 
 export default makeStyles({
-  logo: {
-    marginLeft: "40% ",
-  },
   accountCreateTitle: {
+    fontSize: "23px !important",
     fontWeight: "bold !important",
-    fontSize: "23px !important ",
   },
-  switchPhoneEmail: {
-    fontSize: "15px !important",
-    color: "rgb(29, 155, 240)",
-    "&:hover": {
-      textDecoration: "underline",
-      cursor: "pointer",
+  allInput: {
+    paddingBottom: "20px",
+  },
+  background: {
+    [theme.breakpoints.up("desktop")]: {
+      backgroundColor: "#999999",
+      height: "100vh",
     },
+  },
+  birthday: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "15px",
+  },
+  birthdayContainer: {
+    display: "flex",
+    gap: "10px",
   },
   birthdayPasswordTitle: {
     fontSize: "15px !important",
@@ -38,39 +45,54 @@ export default makeStyles({
     fontSize: "15px !important",
     color: "rgb(83, 100, 113)",
   },
-  nextButton: {
-    backgroundColor: "#999999 !important",
-    textTransform: "none !important",
-    textDecoration: "none !important",
-    borderRadius: "50px !important",
-    fontWeight: "bold !important",
-    color: "white !important",
-    alignItems: "center !important",
-    margin: "0 auto !important",
+  close: {
+    position: "relative",
+    left: "-20px",
+  },
+  closeAndLogo: {
+    display: "flex",
+  },
+  form: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "20px",
+  },
+  logo: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
     width: "100%",
   },
-  box: {
+  modal: {
+    padding: "25px",
+    overflowY: "auto",
     [theme.breakpoints.up("desktop")]: {
-      width: "600px !important",
-      height: "850px !important",
+      backgroundColor: "#fff",
       borderRadius: "15px",
-      backgroundColor: "white",
-      margin: "0 !important",
+      width: "600px",
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      minHeight: "400px",
+      maxHeight: "100vh",
+      overflowY: "auto",
     },
   },
-  mainContainer: {
-    [theme.breakpoints.up("desktop")]: {
-      backgroundColor: "#999999",
-      height: "100vh",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-    },
+  nextButton: {
+    backgroundColor: "#999999 !important",
+    color: "white !important",
+    textTransform: "none !important",
+    borderRadius: "50px !important",
+    fontWeight: "bold !important",
+    width: "100%",
   },
-  signupContainer: {
-    [theme.breakpoints.up("desktop")]: {
-      width: "80% !important",
-      margin: "0 auto !important",
+  switchPhoneEmail: {
+    fontSize: "15px !important",
+    color: "rgb(29, 155, 240)",
+    "&:hover": {
+      textDecoration: "underline",
+      cursor: "pointer",
     },
   },
 });
