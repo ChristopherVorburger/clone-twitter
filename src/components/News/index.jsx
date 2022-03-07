@@ -41,7 +41,6 @@ const News = () => {
         "https://newsapi.org/v2/top-headlines?country=us&apiKey=d4b08c83bfe14672899774992fd01d3f"
       )
       .then((response) => {
-        console.log("response", response.data);
         setTopHeadlines(response.data.articles);
       })
       .catch((err) => console.log(err));

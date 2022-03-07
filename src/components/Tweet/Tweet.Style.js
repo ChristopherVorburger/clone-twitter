@@ -9,7 +9,7 @@ export const TweetContainer = styled.div`
   background-color: #fff;
   font-family: "Lato", sans-serif;
   border: 1px solid rgb(239, 243, 244);
-  padding: 15px 0;
+  padding: 0.5rem 0;
   color: #000;
   transition: background 0.2s ease;
   cursor: pointer;
@@ -58,6 +58,15 @@ export const TweetTxt = styled.p`
 export const TweetReactions = styled.div`
   display: flex;
   justify-content: space-between;
+`;
+
+export const TweetMore = styled.div`
+  border-radius: 50%;
+  padding: 0.4rem;
+  margin-right: 0.5rem;
+  &:hover {
+    background: #1d9bf01a;
+  }
 `;
 
 // export const Comments = styled.div`
