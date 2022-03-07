@@ -6,7 +6,7 @@ import { icons } from "../../../constants";
 import useStyles from "./styles";
 
 // Composant pour afficher une news dans les trends
-const Trend = ({ movie, index }) => {
+const Trend = ({ news, index }) => {
   const classes = useStyles();
 
   const randomNumber = Math.floor(Math.random() * 10000);
@@ -31,7 +31,7 @@ const Trend = ({ movie, index }) => {
           </Box>
           <Box>
             <Typography fontSize="font.main" fontWeight="mainBold">
-              {movie.title}
+              {news.title}
             </Typography>
           </Box>
           <Box>
