@@ -11,9 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import ProfileButton from "../buttons/ProfileButton";
-
-import { icons, images } from "../../constants";
+import { icons } from "../../constants";
 
 import useStyles from "./styles";
 
@@ -79,7 +77,7 @@ const NewTweet = () => {
           <img
             className={classes.avatar}
             style={{ border: "1px solid lightgrey" }}
-            src={images.user}
+            src={auth.userData?.[0]?.profile_image_url}
             alt="user avatar"
           />
         </Box>

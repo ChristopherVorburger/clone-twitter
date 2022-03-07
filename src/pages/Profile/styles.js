@@ -5,6 +5,9 @@ export default makeStyles((theme) => ({
     maxWidth: "100%",
   },
   profile__cover: {
+    [theme.breakpoints.down("sm")]: {
+      maxWidth: "100%",
+    },
     width: "590px",
     height: "200px",
     objectFit: "cover",
