@@ -55,4 +55,10 @@ export default makeStyles((theme) => ({
       display: "none!important",
     },
   },
+  list_item_button: {
+    "&:hover": {
+      backgroundColor: "transparent!important",
+      cursor: "default!important",
+    },
+  },
 }));

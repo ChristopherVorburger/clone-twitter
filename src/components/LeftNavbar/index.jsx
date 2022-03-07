@@ -18,6 +18,7 @@ import { Box } from "@mui/system";
 
 import { AuthContext } from "../../context/authContext";
 import ClassicButton from "../buttons/ClassicButton";
+import { useFirestore } from "../../utils/useFirestore";
 
 const LeftNavbar = () => {
   // Utilisation du hook useContext pour récupérer le contexte Auth
@@ -107,13 +108,14 @@ const LeftNavbar = () => {
                   right: "2.5rem",
                   bottom: "-8rem",
                   backgroundColor: "transparent!important",
+                  borderRadius: "50px",
                 }}
               >
                 <ListItemIcon>
                   <AddTweetButton />
                 </ListItemIcon>
               </ListItemButton>
-              <ListItemButton>
+              <ListItemButton className={classes.list_item_button}>
                 <ListItemIcon className={classes.add_tweet__button_large}>
                   <ClassicButton text={"Tweet"} />
                 </ListItemIcon>
