@@ -1,24 +1,6 @@
 import Prehome from "../../pages/Prehome";
-import App from "../../App";
 
-import {
-  render,
-  screen,
-  waitForElementToBeRemoved,
-} from "../test/ThemeAndRouter";
-import userEvent from "@testing-library/user-event";
-import { setupServer } from "msw/node";
-import mockHandlers from "../test/mockHandler";
-
-const server = setupServer(...mockHandlers);
-
-beforeAll(() => {
-  server.listen();
-});
-
-afterAll(() => {
-  server.close();
-});
+import { render, screen } from "../test/ThemeAndRouter";
 
 test("Affichage des éléments (sauf bouttons) de la page pré-acceuil", () => {
   render(<Prehome />);
