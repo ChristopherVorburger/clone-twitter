@@ -13,8 +13,11 @@ import { AuthContext } from "../../context/authContext";
 
 import { useFirestore } from "../../utils/useFirestore";
 
+import axios from "axios";
+
 const News = () => {
   const classes = useStyles();
+  const [topHeadlines, setTopHeadlines] = React.useState();
 
   // Utilisation du hook useContext pour récupérer le contexte Auth
   const auth = React.useContext(AuthContext);
@@ -30,6 +33,18 @@ const News = () => {
   const filterUnfollowUsers = unfollowUsers?.filter((user) => {
     return user?.id !== auth?.authUser?.uid;
   });
+
+  // Appel a l'API pour récupérer les dernières news des US
+  React.useEffect(() => {
+    axios
+      .get(
+        "https://newsapi.org/v2/top-headlines?country=us&apiKey=d4b08c83bfe14672899774992fd01d3f"
+      )
+      .then((response) => {
+        setTopHeadlines(response.data.articles);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <Box className={classes.container} m="1rem" maxWidth="350px">
@@ -50,45 +65,20 @@ const News = () => {
         placeholder="Search Twitter"
       />
       <Box
-        m="1rem auto"
+        m="2rem auto"
         backgroundColor="grey.background__trend"
         borderRadius="20px"
       >
-        <Typography fontSize="font.large" mb="1rem" fontWeight="800" p="1rem">
+        <Typography fontSize="font.large" fontWeight="800" p="1rem">
           Trends
         </Typography>
-        <Box>
-          <Trend
-            position="1"
-            category="Politics"
-            title="Poutine"
-            nbTweets="1000"
-          />
-        </Box>
-        <Box>
-          <Trend
-            position="2"
-            category="Politics"
-            title="Russie"
-            nbTweets="666"
-          />
-        </Box>
-        <Box>
-          <Trend
-            position="3"
-            category="Trending in France"
-            title="Il fait moche"
-            nbTweets="7564"
-          />
-        </Box>
-        <Box>
-          <Trend
-            position="4"
-            category="Cooking"
-            title="Choucroute"
-            nbTweets="5826"
-          />
-        </Box>
+        {topHeadlines?.slice(0, 4)?.map((news, index) => {
+          return (
+            <Box key={index}>
+              <Trend news={news} index={index} />
+            </Box>
+          );
+        })}
       </Box>
       <Box
         m="2rem auto"

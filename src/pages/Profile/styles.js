@@ -5,9 +5,20 @@ export default makeStyles((theme) => ({
     maxWidth: "100%",
   },
   profile__cover: {
+    [theme.breakpoints.down("sm")]: {
+      maxWidth: "100%",
+    },
     width: "590px",
     height: "200px",
     objectFit: "cover",
+  },
+  profile__cover_default: {
+    [theme.breakpoints.down("sm")]: {
+      maxWidth: "100%",
+    },
+    width: "590px",
+    height: "200px",
+    backgroundColor: theme.palette.grey.button,
   },
   profile__button: {
     borderRadius: "20px!important",

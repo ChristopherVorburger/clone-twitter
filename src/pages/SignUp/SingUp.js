@@ -4,14 +4,7 @@ import useStyles from "./Styles";
 import CloseButton from "../../components/CloseButton/CloseButton";
 import LogoTwitter from "../../components/TwitterLogo/TwitterLogo";
 import { selectMonth } from "./DataSelect";
-import {
-  Box,
-  Button,
-  MenuItem,
-  Stack,
-  Typography,
-  TextField,
-} from "@mui/material";
+import { Box, Button, MenuItem, Typography, TextField } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { doc, getFirestore, serverTimestamp, setDoc } from "firebase/firestore";
 import { AuthContext } from "../../context/authContext";
@@ -74,6 +67,7 @@ function SignUp() {
             cover_url: "",
           })
             .then(() => {
+              navigate("/home");
               setName("");
               setUserName("");
               navigate("/home");
@@ -135,7 +129,7 @@ function SignUp() {
   // Fonction qui gère les 3 selects de la date de naissance
   const MMDDYYYYInput = () => {
     return (
-      <Stack direction="row" marginTop="15px" spacing={2}>
+      <Box className={classes.birthdayContainer}>
         {/* Partie mois */}
         <Box width="48%">
           <TextField
@@ -193,139 +187,132 @@ function SignUp() {
             ))}
           </TextField>
         </Box>
-      </Stack>
+      </Box>
     );
   };
 
   return (
-    <div className={classes.mainContainer}>
-      <Stack className={classes.box} margin="0 auto" spacing={2.5} width="83%">
+    <Box className={classes.background}>
+      <Box className={classes.modal}>
         {/* Le logo et le boutton close */}
-        <Stack alignItems="center" direction="row">
-          <Link to="/">
-            <CloseButton />
-          </Link>
-          <Stack className={classes.logo}>
+        <Box className={classes.closeAndLogo}>
+          <Box className={classes.close}>
+            <Link to="/">
+              <CloseButton />
+            </Link>
+          </Box>
+          <Box className={classes.logo}>
             <LogoTwitter />
-          </Stack>
-        </Stack>
-        <form action="submit" onSubmit={signUp}>
-          <Stack
-            className={classes.signupContainer}
-            justifyContent="center"
-            spacing={2}
-            width="100%"
-          >
-            <Stack spacing={4}>
-              <Typography className={classes.accountCreateTitle}>
-                Créer votre compte
-              </Typography>
-              <Stack spacing={4}>
-                {/* Input des Nom et Prénom */}
-                <TextField
-                  autoFocus={true}
-                  error={errorName}
-                  fullWidth={true}
-                  helperText={
-                    errorName === true ? "Quel est votre nom ?" : null
-                  }
-                  label="Nom et Prénom"
-                  onChange={(e) => {
-                    setName(e.target.value);
-                  }}
-                  required
-                />
-                {/* Input UserName */}
-                <TextField
-                  error={errorUserName}
-                  fullWidth={true}
-                  helperText={
-                    errorUserName === true
-                      ? "Choisissez un nom d'utilisateur."
-                      : null
-                  }
-                  label="Nom d'utilisateur"
-                  onChange={(e) => {
-                    setUserName(e.target.value);
-                  }}
-                  required
-                />
-                {/* Ternaire qui gère l'affichage entre input phone et email */}
-                {switchPhoneEmail === "Email" ? (
-                  // Input Phone
-                  <TextField
-                    fullWidth={true}
-                    label="Phone"
-                    onChange={(e) => {
-                      setPhone(e.target.value);
-                    }}
-                    type="number"
-                  ></TextField>
-                ) : switchPhoneEmail === "Phone" ? (
-                  // Input Email
-                  <TextField
-                    fullWidth={true}
-                    label="Email"
-                    onChange={(e) => {
-                      setEmail(e.target.value);
-                    }}
-                    required
-                    type="email"
-                  ></TextField>
-                ) : null}
-              </Stack>
-              <SwitchPhoneEmail />
-              <Typography className={classes.birthdayPasswordTitle}>
-                Créer votre mot de passe
-              </Typography>
-              {/* Input Password */}
+          </Box>
+        </Box>
+        <form className={classes.form} action="submit" onSubmit={signUp}>
+          <Typography className={classes.accountCreateTitle}>
+            Créer votre compte
+          </Typography>
+          <Box>
+            {/* Input des Nom et Prénom */}
+            <Box className={classes.allInput}>
               <TextField
-                error={passwordConfirmation}
+                className={classes.allInput}
+                autoFocus={true}
+                error={errorName}
                 fullWidth={true}
-                helperText={
-                  passwordConfirmation
-                    ? "Votre mot de passe est trop cours"
-                    : null
-                }
-                label="Mot de passe"
+                helperText={errorName === true ? "Quel est votre nom ?" : null}
+                label="Nom et Prénom"
                 onChange={(e) => {
-                  setPassword(e.target.value);
-                  setPasswordConfirmation(e.target.value);
-                  e.target.value.length >= 6
-                    ? setPasswordConfirmation(false)
-                    : setPasswordConfirmation(true);
+                  setName(e.target.value);
                 }}
                 required
-                type="password"
               />
-              {/* Partie date de naissanse */}
-              <Stack>
-                <Typography className={classes.birthdayPasswordTitle}>
-                  Date de naissance
-                </Typography>
-                <Typography className={classes.birthdayText}>
-                  Cette information ne sera pas affichée publiquement. Confirmez
-                  votre âge, même si ce compte est pour une entreprise, un
-                  animal de compagnie ou autre chose.
-                </Typography>
-                <MMDDYYYYInput />
-              </Stack>
-              <Stack backgroundColor="white">
-                {/* <Link to={"/home"}> */}
-                <Button
-                  className={classes.nextButton}
-                  size="large"
-                  type="submit"
-                >
-                  Suivant
-                </Button>
-                {/* </Link> */}
-              </Stack>
-            </Stack>
-          </Stack>
+            </Box>
+            {/* Input UserName */}
+            <Box className={classes.allInput}>
+              <TextField
+                error={errorUserName}
+                fullWidth={true}
+                helperText={
+                  errorUserName === true
+                    ? "Choisissez un nom d'utilisateur."
+                    : null
+                }
+                label="Nom d'utilisateur"
+                onChange={(e) => {
+                  setUserName(e.target.value);
+                }}
+                required
+              />
+            </Box>
+            {/* Ternaire qui gère l'affichage entre input phone et email */}
+            {switchPhoneEmail === "Email" ? (
+              // Input Phone
+              <Box className={classes.allInput}>
+                <TextField
+                  fullWidth={true}
+                  label="Phone"
+                  onChange={(e) => {
+                    setPhone(e.target.value);
+                  }}
+                  type="number"
+                />
+              </Box>
+            ) : switchPhoneEmail === "Phone" ? (
+              // Input Email
+              <Box className={classes.allInput}>
+                <TextField
+                  fullWidth={true}
+                  label="Email"
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
+                  required
+                  type="email"
+                />
+              </Box>
+            ) : null}
+          </Box>
+          <SwitchPhoneEmail />
+          <Typography className={classes.birthdayPasswordTitle}>
+            Créer votre mot de passe
+          </Typography>
+          {/* Input Password */}
+          <TextField
+            error={passwordConfirmation}
+            fullWidth={true}
+            helperText={
+              passwordConfirmation ? "Votre mot de passe est trop cours" : null
+            }
+            label="Mot de passe"
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setPasswordConfirmation(e.target.value);
+              e.target.value.length >= 6
+                ? setPasswordConfirmation(false)
+                : setPasswordConfirmation(true);
+            }}
+            required
+            type="password"
+          />
+          {/* Partie date de naissanse */}
+          <Box className={classes.birthday}>
+            <Typography className={classes.birthdayPasswordTitle}>
+              Date de naissance
+            </Typography>
+            <Typography className={classes.birthdayText}>
+              Cette information ne sera pas affichée publiquement. Confirmez
+              votre âge, même si ce compte est pour une entreprise, un animal de
+              compagnie ou autre chose.
+            </Typography>
+            <MMDDYYYYInput />
+          </Box>
+          <Box>
+            <Button className={classes.nextButton} size="large" type="submit">
+              Suivant
+            </Button>
+          </Box>
         </form>
-      </Stack>
-    </div>
+      </Box>
+    </Box>
   );
 }
+
 export default SignUp;

@@ -5,7 +5,7 @@ import {
   ListItemButton,
   ListItemText,
   Typography,
-  Button,
+  ClickAwayListener,
 } from "@mui/material";
 
 import { icons, images } from "../../constants";
@@ -18,6 +18,8 @@ import { Box } from "@mui/system";
 
 import { AuthContext } from "../../context/authContext";
 import ClassicButton from "../buttons/ClassicButton";
+import SimpleDialog from "../SimpleDialog";
+import BottomAvatar from "./BottomAvatar";
 
 const LeftNavbar = () => {
   // Utilisation du hook useContext pour récupérer le contexte Auth
@@ -43,6 +45,16 @@ const LeftNavbar = () => {
     },
     { name: icons.MoreHorizIcon, path: "", text: "More" },
   ];
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClick = () => {
+    setOpen((prev) => !prev);
+  };
+
+  const handleClickAway = () => {
+    setOpen(false);
+  };
 
   return (
     <Box className={classes.container}>
@@ -107,53 +119,26 @@ const LeftNavbar = () => {
                   right: "2.5rem",
                   bottom: "-8rem",
                   backgroundColor: "transparent!important",
+                  borderRadius: "50px",
                 }}
               >
                 <ListItemIcon>
                   <AddTweetButton />
                 </ListItemIcon>
               </ListItemButton>
-              <ListItemButton>
+              <ListItemButton className={classes.list_item_button}>
                 <ListItemIcon className={classes.add_tweet__button_large}>
                   <ClassicButton text={"Tweet"} />
                 </ListItemIcon>
               </ListItemButton>
             </List>
           </Box>
-          <Box
-            className={classes.profile_section}
-            sx={{
-              borderRadius: "50px",
-              padding: "12px",
-            }}
-          >
-            <Box display="flex" justifyContent="center" alignItems="center">
-              <Box width="50px" height="50px" marginRight="0.5rem">
-                <img
-                  className={classes.profile_section__avatar_button}
-                  style={{ border: "1px solid lightgrey" }}
-                  src={images.user}
-                  alt="user avatar"
-                />
-              </Box>
-              <Box
-                className={classes.profile_section__avatar_texts}
-                flexGrow="1"
-              >
-                <Typography fontSize="font.main" fontWeight="mainBold">
-                  {auth.userData?.[0]?.name}
-                </Typography>
-                <Typography fontSize="font.main" color="grey.main">
-                  @{auth.userData?.[0]?.username}
-                </Typography>
-              </Box>
-              <Box>
-                <Box className={classes.profile_section__icon_more}>
-                  {icons.MoreHorizIcon.type.render()}
-                </Box>
-              </Box>
+          <ClickAwayListener onClickAway={handleClickAway}>
+            <Box onClick={handleClick}>
+              <BottomAvatar />
+              {open ? <SimpleDialog open={open} setOpen={setOpen} /> : null}
             </Box>
-          </Box>
+          </ClickAwayListener>
         </Box>
       </Box>
     </Box>
