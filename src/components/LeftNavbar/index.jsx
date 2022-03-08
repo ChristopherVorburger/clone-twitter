@@ -4,9 +4,11 @@ import {
   ListItemIcon,
   ListItemButton,
   ListItemText,
+  Typography,
+  ClickAwayListener,
 } from "@mui/material";
 
-import { icons } from "../../constants";
+import { icons, images } from "../../constants";
 
 import useStyles from "./styles";
 import AddTweetButton from "../buttons/AddTweetButton";
@@ -46,8 +48,12 @@ const LeftNavbar = () => {
 
   const [open, setOpen] = React.useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const handleClick = () => {
+    setOpen((prev) => !prev);
+  };
+
+  const handleClickAway = () => {
+    setOpen(false);
   };
 
   return (
@@ -127,10 +133,12 @@ const LeftNavbar = () => {
               </ListItemButton>
             </List>
           </Box>
-          <Box onClick={handleClickOpen}>
-            <BottomAvatar />
-          </Box>
-          <SimpleDialog open={open} setOpen={setOpen} />
+          <ClickAwayListener onClickAway={handleClickAway}>
+            <Box onClick={handleClick}>
+              <BottomAvatar />
+              {open ? <SimpleDialog open={open} setOpen={setOpen} /> : null}
+            </Box>
+          </ClickAwayListener>
         </Box>
       </Box>
     </Box>

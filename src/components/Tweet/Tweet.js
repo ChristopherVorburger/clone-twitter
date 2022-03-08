@@ -42,7 +42,7 @@ export default function Tweet({ text, author_id, created_at }) {
         />
       )}
       <TweetContent>
-        <Box display="flex" justifyContent="space-between">
+        <Box display="flex" justifyContent="space-between" alignItems="center">
           <Box>
             <TweetAuthor>{matchedUser?.[0]?.name} </TweetAuthor>
             <TweetPseudo>{`@${matchedUser?.[0]?.username}`}</TweetPseudo>

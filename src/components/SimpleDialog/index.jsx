@@ -28,7 +28,7 @@ function SimpleDialog(props) {
   };
 
   return (
-    <Dialog open={open}>
+    <Dialog disableScrollLock open={open}>
       <DialogTitle>
         <Box
           className={classes.dialog__section}
