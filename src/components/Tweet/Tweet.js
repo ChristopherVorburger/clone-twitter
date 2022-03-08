@@ -22,14 +22,28 @@ import { fr } from "date-fns/locale";
 
 // hooks
 import { useFirestore } from "../../utils/useFirestore";
-import { Box } from "@mui/material";
+import { Box, ClickAwayListener } from "@mui/material";
 
-export default function Tweet({ text, author_id, created_at }) {
+import TweetDialog from "./TweetDialog";
+
+export default function Tweet({ tweet }) {
+  const { id, text, author_id, created_at } = tweet;
   // Utilisation du hook perso useFirestore pour récupérer les users
   const users = useFirestore("users");
 
   //Recherche de l'id du user qui match avec l'author_id du tweet
   const matchedUser = users?.filter((user) => user?.id === author_id);
+
+  // State et fonctions pour la modale
+  const [open, setOpen] = React.useState(false);
+
+  const handleClick = () => {
+    setOpen((prev) => !prev);
+  };
+
+  const handleClickAway = () => {
+    setOpen(false);
+  };
 
   return (
     <TweetContainer>
@@ -42,7 +56,7 @@ export default function Tweet({ text, author_id, created_at }) {
         />
       )}
       <TweetContent>
-        <Box display="flex" justifyContent="space-between">
+        <Box display="flex" justifyContent="space-between" alignItems="center">
           <Box>
             <TweetAuthor>{matchedUser?.[0]?.name} </TweetAuthor>
             <TweetPseudo>{`@${matchedUser?.[0]?.username}`}</TweetPseudo>
@@ -62,7 +76,13 @@ export default function Tweet({ text, author_id, created_at }) {
             </TweetDate>
           </Box>
           <Box>
-            <TweetMore>{icons.MoreHorizIcon.type.render()}</TweetMore>
+            {/* ClickAwayListener écoute les cliques hors modale pour fermer la modale */}
+            <ClickAwayListener onClickAway={handleClickAway}>
+              <Box onClick={handleClick}>
+                <TweetMore>{icons.MoreHorizIcon.type.render()}</TweetMore>
+                {open ? <TweetDialog id={id} open={open} /> : null}
+              </Box>
+            </ClickAwayListener>
           </Box>
         </Box>
         <TweetTxt>{text}</TweetTxt>
