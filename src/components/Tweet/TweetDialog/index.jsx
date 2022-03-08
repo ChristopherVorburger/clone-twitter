@@ -18,9 +18,8 @@ import { AuthContext } from "../../../context/authContext";
 import { icons } from "../../../constants";
 
 // Fonction qui affiche lea actions possibles sur un tweet
-const TweetDialog = (props) => {
+const TweetDialog = ({ id, open }) => {
   const classes = useStyles();
-  const { id, open } = props;
   const auth = React.useContext(AuthContext);
 
   // fonction pour supprimer un tweet

@@ -261,12 +261,7 @@ const Profile = () => {
               {tweets ? (
                 <>
                   {filteredTweets.map((tweet) => (
-                    <Tweet
-                      key={tweet.id}
-                      text={tweet.text}
-                      author_id={tweet.author_id}
-                      created_at={tweet.created_at}
-                    />
+                    <Tweet key={tweet.id} tweet={tweet} />
                   ))}
                 </>
               ) : (
