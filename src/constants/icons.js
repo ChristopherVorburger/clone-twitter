@@ -20,6 +20,12 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import DateRangeOutlinedIcon from "@mui/icons-material/DateRangeOutlined";
 import CloseIcon from "@mui/icons-material/Close";
 import AddAPhotoOutlinedIcon from "@mui/icons-material/AddAPhotoOutlined";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import PushPinOutlinedIcon from "@mui/icons-material/PushPinOutlined";
+import PlaylistAddOutlinedIcon from "@mui/icons-material/PlaylistAddOutlined";
+import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
+import CodeOutlinedIcon from "@mui/icons-material/CodeOutlined";
+import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 
 const icons = {
   HomeSharpIcon,
@@ -44,6 +50,12 @@ const icons = {
   DateRangeOutlinedIcon,
   CloseIcon,
   AddAPhotoOutlinedIcon,
+  DeleteOutlineOutlinedIcon,
+  PushPinOutlinedIcon,
+  PlaylistAddOutlinedIcon,
+  ChatBubbleOutlineOutlinedIcon,
+  CodeOutlinedIcon,
+  BarChartOutlinedIcon,
 };
 
 export default icons;
