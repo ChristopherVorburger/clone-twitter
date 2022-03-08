@@ -1,6 +1,6 @@
 import * as React from "react";
 import LeftNavbar from "../../components/LeftNavbar/index";
-import { render, screen } from "../test/ThemeAndRouter";
+import { render, screen } from "../test-utils/ThemeAndRouter";
 
 test("Affichage des éléments de la barre de recherche de gauche", () => {
   render(<LeftNavbar />);

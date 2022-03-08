@@ -1,6 +1,6 @@
 import Prehome from "../../pages/Prehome";
 
-import { render, screen } from "../test/ThemeAndRouter";
+import { render, screen } from "../test-utils/ThemeAndRouter";
 
 test("Affichage des éléments (sauf bouttons) de la page pré-acceuil", () => {
   render(<Prehome />);

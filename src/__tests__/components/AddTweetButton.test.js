@@ -1,7 +1,7 @@
 import * as React from "react";
 import ButtonAddTweet from "../../components/buttons/AddTweetButton/index";
 
-import { render, screen } from "../test/ThemeOnly";
+import { render, screen } from "../test-utils/ThemeOnly";
 
 test("Affichage du bouton d'ajout de Tweet", () => {
   render(<ButtonAddTweet />);

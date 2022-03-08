@@ -143,7 +143,11 @@ function SignUp() {
           >
             {/* Remplissage du select Mois */}
             {selectMonth.map((item) => (
-              <MenuItem key={item.value} value={item.value}>
+              <MenuItem
+                data-testid="selectMonth"
+                key={item.value}
+                value={item.value}
+              >
                 {item.label}
               </MenuItem>
             ))}
@@ -179,7 +183,7 @@ function SignUp() {
             select
             value={year}
           >
-            {/* Remplissage du select Jour */}
+            {/* Remplissage du select Année */}
             {selectYear.map((item) => (
               <MenuItem key={item.value} value={item.value}>
                 {item.label}
