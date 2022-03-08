@@ -2,7 +2,7 @@ import React from "react";
 
 import { database } from "../../../firebase-config";
 
-import { doc, deleteDoc } from "firebase/firestore";
+import { doc, deleteDoc, updateDoc, arrayRemove } from "firebase/firestore";
 
 import {
   Dialog,
@@ -44,6 +44,17 @@ const TweetDialog = ({ id, open, author_id }) => {
       });
   };
 
+  // Référence à l'id de l'utilisateur connecté à mettre à jour
+  const currentUserRef = doc(database, "users", auth?.authUser?.uid);
+
+  // Fonction pour unfollow
+  const unfollowUser = () => {
+    // Suppression du following dans les datas de l'utilisateur connecté
+    updateDoc(currentUserRef, {
+      following: arrayRemove(author_id),
+    });
+  };
+
   const personalTweetIconsArray = [
     {
       name: icons.DeleteOutlineOutlinedIcon,
@@ -73,6 +84,7 @@ const TweetDialog = ({ id, open, author_id }) => {
     },
     {
       name: icons.PersonRemoveOutlinedIcon,
+      action: unfollowUser,
       path: "",
       text: `Unfollow @${matchedUser?.[0]?.username}`,
     },
