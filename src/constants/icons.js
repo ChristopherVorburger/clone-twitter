@@ -26,6 +26,11 @@ import PlaylistAddOutlinedIcon from "@mui/icons-material/PlaylistAddOutlined";
 import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
 import CodeOutlinedIcon from "@mui/icons-material/CodeOutlined";
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
+import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
+import PersonRemoveOutlinedIcon from "@mui/icons-material/PersonRemoveOutlined";
+import VolumeOffOutlinedIcon from "@mui/icons-material/VolumeOffOutlined";
+import BlockOutlinedIcon from "@mui/icons-material/BlockOutlined";
+import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
 
 const icons = {
   HomeSharpIcon,
@@ -56,6 +61,11 @@ const icons = {
   ChatBubbleOutlineOutlinedIcon,
   CodeOutlinedIcon,
   BarChartOutlinedIcon,
+  SentimentVeryDissatisfiedIcon,
+  PersonRemoveOutlinedIcon,
+  VolumeOffOutlinedIcon,
+  BlockOutlinedIcon,
+  FlagOutlinedIcon,
 };
 
 export default icons;

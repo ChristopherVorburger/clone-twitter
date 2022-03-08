@@ -45,6 +45,7 @@ const Home = () => {
       auth?.userData?.[0]?.following?.includes(tweet.author_id)
     );
   });
+  console.log(tweets);
 
   return (
     <>

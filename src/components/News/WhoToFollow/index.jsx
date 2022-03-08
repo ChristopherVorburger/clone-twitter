@@ -21,7 +21,7 @@ const WhoToFollow = ({ user }) => {
   // Récupération du tableau de following de l'utilisateur connecté
   const following = auth?.userData?.[0]?.following;
 
-  // Récupération du tableau de follower de l'utilisateur ciblé
+  // Récupération du tableau de followers de l'utilisateur ciblé
   const followers = user?.followers;
 
   // Référence à l'id de l'utilisateur connecté à mettre à jour
@@ -56,7 +56,7 @@ const WhoToFollow = ({ user }) => {
       })
         .then(() => {
           console.log("ajout d'un premier following");
-          // Si l'utilisateur ajouté n'a pas de follower, on crée un tableau avec son
+          // Si l'utilisateur ajouté n'a pas de followers, on crée un tableau avec son
           // premier follower
           if (!followers) {
             updateDoc(followedUserRef, {
@@ -68,7 +68,7 @@ const WhoToFollow = ({ user }) => {
               .catch((err) => {
                 console.log(err.massage);
               });
-            // Sinon, mise à jour du tableau follower de l'utilisateur ajouté
+            // Sinon, mise à jour du tableau followers de l'utilisateur ajouté
           } else {
             updateDoc(followedUserRef, {
               followers: [...user?.followers, auth?.authUser?.uid],
@@ -91,7 +91,7 @@ const WhoToFollow = ({ user }) => {
       })
         .then(() => {
           console.log("ajout d'un following");
-          // Si l'utilisateur ajouté n'a pas de follower, on crée un tableau avec son
+          // Si l'utilisateur ajouté n'a pas de followers, on crée un tableau avec son
           // premier follower
           if (!followers) {
             updateDoc(followedUserRef, {
@@ -103,7 +103,7 @@ const WhoToFollow = ({ user }) => {
               .catch((err) => {
                 console.log(err.massage);
               });
-            // Sinon, mise à jour du tableau follower de l'utilisateur ajouté
+            // Sinon, mise à jour du tableau followers de l'utilisateur ajouté
           } else {
             updateDoc(followedUserRef, {
               followers: [...user?.followers, auth?.authUser?.uid],
@@ -130,7 +130,7 @@ const WhoToFollow = ({ user }) => {
     });
     // Suppression du follower dans les datas de l'utilisateur supprimé
     updateDoc(followedUserRef, {
-      follower: arrayRemove(auth?.authUser?.uid),
+      followers: arrayRemove(auth?.authUser?.uid),
     });
   };
 
