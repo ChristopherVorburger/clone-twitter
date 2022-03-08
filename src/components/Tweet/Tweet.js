@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import {
   TweetContainer,
   TweetAvatar,
@@ -22,11 +22,22 @@ import ReplyAllIcon from "@mui/icons-material/ReplyAll";
 import { zonedTimeToUtc } from "date-fns-tz";
 import { formatDistance } from "date-fns";
 import { fr } from "date-fns/locale";
+import {
+  getFirestore,
+  collection,
+  onSnapshot,
+  addDoc,
+  deleteDoc,
+  doc,
+  serverTimestamp,
+  // getDoc,
+  updateDoc,
+  setDoc,
+} from "firebase/firestore";
 
 // hooks
 import { useFirestore } from "../../utils/useFirestore";
-import { ModalContext } from "../../context/modalContext";
-import { TweetModal } from "../ModalAddTweets/ModalAddTweets.Style";
+import { AuthContext } from "../../context/authContext";
 
 export default function Tweet({ text, author_id, created_at }) {
   // Utilisation du hook perso useFirestore pour récupérer les users
@@ -37,15 +48,22 @@ export default function Tweet({ text, author_id, created_at }) {
 
   //Gestion des commentaires du tweet
   const [reply, setReply] = useState(false);
+  const [content, setContent] = useState("");
+  const database = getFirestore();
+  const tweetsCollectionRef = collection(database, "tweets");
+  const payload = content;
 
-  const handleComment = () => {
-    console.log("click");
-    setReply(!reply);
+  const auth = useContext(AuthContext);
+
+  const handleComment = async (e) => {
+    e.preventDefault();
+
+    const data = await setDoc(doc, "tweets", )
   };
 
   return (
     <>
-      <TweetContainer >
+      <TweetContainer>
         {matchedUser?.[0]?.profile_image_url ? (
           <TweetAvatar src={matchedUser?.[0]?.profile_image_url} />
         ) : (
@@ -72,17 +90,17 @@ export default function Tweet({ text, author_id, created_at }) {
           </div>
           <TweetTxt>{text}</TweetTxt>
           <TweetReactions>
-            <Comments onClick={handleComment}>
+            <Comments onClick={() => setReply(!reply)}>
               <MessageIcon style={{ color: "#535471", width: "15px", height: "15px" }} />
-              <span>24</span>
+              <span>0</span>
             </Comments>
             <Retweets>
               <ReplyAllIcon style={{ color: "#535471", width: "15px", height: "15px" }} />
-              <span>30</span>
+              <span>0</span>
             </Retweets>
             <Likes>
               <FavoriteBorderIcon style={{ color: "#535471", width: "15px", height: "15px" }} />
-              <span>130</span>
+              <span>0</span>
             </Likes>
           </TweetReactions>
         </TweetContent>
@@ -100,9 +118,9 @@ export default function Tweet({ text, author_id, created_at }) {
               <p>
                 En réponse à <span>{`@${matchedUser?.[0]?.username}`}</span>
               </p>
-              <form className='answer-form'>
+              <form className='answer-form' onSubmit={handleComment}>
                 <label htmlFor='answer'>
-                  <input type='text' name='answer' id='answer' placeholder='Tweetez votre réponse.' />
+                  <input type='text' name='answer' id='answer' placeholder='Tweetez votre réponse.' onChange={(e) => setContent(e.target.value)} />
                 </label>
                 <button type='submit'>Répondre</button>
               </form>
