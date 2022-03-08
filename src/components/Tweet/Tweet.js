@@ -80,7 +80,9 @@ export default function Tweet({ tweet }) {
             <ClickAwayListener onClickAway={handleClickAway}>
               <Box onClick={handleClick}>
                 <TweetMore>{icons.MoreHorizIcon.type.render()}</TweetMore>
-                {open ? <TweetDialog id={id} open={open} /> : null}
+                {open ? (
+                  <TweetDialog id={id} open={open} author_id={author_id} />
+                ) : null}
               </Box>
             </ClickAwayListener>
           </Box>
