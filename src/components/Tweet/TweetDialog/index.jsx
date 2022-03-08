@@ -47,11 +47,18 @@ const TweetDialog = ({ id, open, author_id }) => {
   // Référence à l'id de l'utilisateur connecté à mettre à jour
   const currentUserRef = doc(database, "users", auth?.authUser?.uid);
 
+  // Référence à l'id de l'utilisateur ciblé à mettre à jour
+  const followedUserRef = doc(database, "users", author_id);
+
   // Fonction pour unfollow
   const unfollowUser = () => {
     // Suppression du following dans les datas de l'utilisateur connecté
     updateDoc(currentUserRef, {
       following: arrayRemove(author_id),
+    });
+    // Suppression du follower dans les datas de l'utilisateur supprimé
+    updateDoc(followedUserRef, {
+      followers: arrayRemove(auth?.authUser?.uid),
     });
   };
 
