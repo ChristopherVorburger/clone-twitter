@@ -52,6 +52,12 @@ const NewTweet = () => {
       // on utilise serverTimestamp() pour créer automatiquement la date de création du tweet
       created_at: serverTimestamp(),
       author_id: auth.authUser.uid,
+      public_metrics: {
+        retweet_count: 0,
+        reply_count: 0,
+        like_count: 0,
+        quote_count: 0,
+      },
     })
       .then(() => {
         // on nettoie l'input si ok

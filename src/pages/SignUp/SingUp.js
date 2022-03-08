@@ -29,7 +29,7 @@ function SignUp() {
   const [username, setUserName] = React.useState("");
   const [errorName, setErrorName] = React.useState(false);
   const [errorUserName, setErrorUserName] = React.useState(false);
-  const [phone, setPhone] = React.useState(0);
+  const [phone, setPhone] = React.useState("");
 
   // Fonction qui crée un user dans l'authentification et le firestore
   const signUp = (e) => {
@@ -67,7 +67,6 @@ function SignUp() {
             cover_url: "",
           })
             .then(() => {
-              navigate("/home");
               setName("");
               setUserName("");
               navigate("/home");
