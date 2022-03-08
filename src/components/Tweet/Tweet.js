@@ -75,10 +75,10 @@ export default function Tweet({ tweet }) {
   // On séléctionne les références dont on a besoin
   const selectedTweetRef = doc(database, "tweets", id);
 
-  // Récupération du nombres de réponses du tweet
-  const tweetResponsesNumber = tweet?.public_metrics?.reply_count;
+  // Récupération des valeurs des réactions publiques
+  const tweetPublicMetrics = tweet?.public_metrics;
 
-  // Fonction pour répondre à un tweet et mettre a jour le nombre de réponse du tweet en question
+  // Fonction pour répondre à un tweet et mettre a jour le nombre de réponses du tweet en question
   const handleReply = (e) => {
     e.preventDefault();
 
@@ -95,7 +95,8 @@ export default function Tweet({ tweet }) {
         // On met à jour le nombre de réponses ici
         updateDoc(selectedTweetRef, {
           public_metrics: {
-            reply_count: tweetResponsesNumber + 1,
+            ...tweetPublicMetrics,
+            reply_count: parseInt(tweetPublicMetrics.reply_count, 10) + 1,
           },
         })
           .then(() => {
@@ -110,6 +111,22 @@ export default function Tweet({ tweet }) {
       });
   };
   //
+
+  // Fonctions pour liker un tweet
+  const likeTweet = () => {
+    updateDoc(selectedTweetRef, {
+      public_metrics: {
+        ...tweetPublicMetrics,
+        like_count: parseInt(tweetPublicMetrics.like_count, 10) + 1,
+      },
+    })
+      .then(() => {
+        console.log("Update like_count done !");
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  };
 
   // State et fonctions pour la modale du bouton more
   const [open, setOpen] = useState(false);
@@ -178,11 +195,11 @@ export default function Tweet({ tweet }) {
             />
             <span>0</span>
           </Retweets>
-          <Likes>
+          <Likes onClick={likeTweet}>
             <FavoriteBorderIcon
               style={{ color: "#535471", width: "15px", height: "15px" }}
             />
-            <span>0</span>
+            <span>{tweet?.public_metrics?.like_count}</span>
           </Likes>
           <Share>
             <IosShareOutlinedIcon
