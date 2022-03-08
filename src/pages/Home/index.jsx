@@ -25,6 +25,7 @@ import useStyles from "./styles";
 import { icons } from "../../constants";
 import ModalAddTweets from "../../components/ModalAddTweets/ModalAddTweets";
 import { ModalContext } from "../../context/modalContext";
+import ModalReplyTweet from "../../components/ModalReplyTweet/ModalReplyTweet";
 
 const Home = () => {
   const classes = useStyles();
@@ -49,7 +50,7 @@ const Home = () => {
 
   return (
     <>
-      {showModal && <ModalAddTweets />}
+      {showModal && <ModalReplyTweet />}
 
       <Box display="flex" justifyContent="center">
         <Box

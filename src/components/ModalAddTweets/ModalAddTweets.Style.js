@@ -12,9 +12,9 @@ export const TweetModalContainer = styled.div`
 `;
 
 export const TweetModal = styled.div`
-  display: grid;
+  /* display: grid;
   grid-template-columns: max-content 1fr;
-  grid-template-rows: 1fr 40px;
+  grid-template-rows: 1fr 40px; */
   align-items: flex-start;
   gap: 12px;
   background-color: #fff;
