@@ -5,13 +5,11 @@ import { database } from "../../../firebase-config";
 import { doc, deleteDoc } from "firebase/firestore";
 
 import {
-  Box,
   Dialog,
   List,
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Typography,
 } from "@mui/material";
 
 import useStyles from "./styles";
@@ -19,22 +17,20 @@ import useStyles from "./styles";
 import { AuthContext } from "../../../context/authContext";
 import { icons } from "../../../constants";
 
+// Fonction qui affiche lea actions possibles sur un tweet
 const TweetDialog = (props) => {
-  const { id, open, setOpen } = props;
   const classes = useStyles();
+  const { id, open } = props;
   const auth = React.useContext(AuthContext);
 
   // fonction pour supprimer un tweet
   const deleteTweet = (e) => {
     e.preventDefault();
 
-    // Ici on a besoin de l'id du tweet pour savoir lequel supprimer
-    // Donc pour l'instant on le recupère dans les logs ou dans firebase
     const docRef = doc(database, "tweets", id);
 
     deleteDoc(docRef)
       .then(() => {
-        // on nettoie l'input si ok
         console.log("Delete tweet done");
       })
       .catch((err) => {

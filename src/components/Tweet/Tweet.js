@@ -34,6 +34,7 @@ export default function Tweet({ tweet }) {
   //Recherche de l'id du user qui match avec l'author_id du tweet
   const matchedUser = users?.filter((user) => user?.id === author_id);
 
+  // State et fonctions pour la modale
   const [open, setOpen] = React.useState(false);
 
   const handleClick = () => {
@@ -75,12 +76,11 @@ export default function Tweet({ tweet }) {
             </TweetDate>
           </Box>
           <Box>
+            {/* ClickAwayListener écoute les cliques hors modale pour fermer la modale */}
             <ClickAwayListener onClickAway={handleClickAway}>
               <Box onClick={handleClick}>
                 <TweetMore>{icons.MoreHorizIcon.type.render()}</TweetMore>
-                {open ? (
-                  <TweetDialog id={id} open={open} setOpen={setOpen} />
-                ) : null}
+                {open ? <TweetDialog id={id} open={open} /> : null}
               </Box>
             </ClickAwayListener>
           </Box>
