@@ -313,4 +313,5 @@ function SignUp() {
     </Box>
   );
 }
+
 export default SignUp;
