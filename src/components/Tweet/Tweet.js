@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import {
   TweetContainer,
   TweetAvatar,
@@ -22,24 +22,13 @@ import ReplyAllIcon from "@mui/icons-material/ReplyAll";
 import { zonedTimeToUtc } from "date-fns-tz";
 import { formatDistance } from "date-fns";
 import { fr } from "date-fns/locale";
-import {
-  getFirestore,
-  collection,
-  onSnapshot,
-  addDoc,
-  deleteDoc,
-  doc,
-  serverTimestamp,
-  // getDoc,
-  updateDoc,
-  setDoc,
-} from "firebase/firestore";
+import { getFirestore, doc, serverTimestamp, updateDoc } from "firebase/firestore";
 
 // hooks
 import { useFirestore } from "../../utils/useFirestore";
 import { AuthContext } from "../../context/authContext";
 
-export default function Tweet({ text, author_id, created_at }) {
+export default function Tweet({ tweetID, text, author_id, created_at }) {
   // Utilisation du hook perso useFirestore pour récupérer les users
   const users = useFirestore("users");
 
@@ -50,16 +39,46 @@ export default function Tweet({ text, author_id, created_at }) {
   const [reply, setReply] = useState(false);
   const [content, setContent] = useState("");
   const database = getFirestore();
-  const tweetsCollectionRef = collection(database, "tweets");
-  const payload = content;
-
   const auth = useContext(AuthContext);
+  const tweetsRef = doc(database, "tweets", tweetID);
 
   const handleComment = async (e) => {
     e.preventDefault();
 
-    const data = await setDoc(doc, "tweets", )
+    await updateDoc(tweetsRef, {
+      response: [
+        {
+          author_id: auth.authUser.uid,
+          text: content,
+          /*servertimestamp ne fonction pas probleme a resoudre*/
+        },
+      ],
+    });
+
+    setReply(false);
   };
+
+  //Gestion du compteur de réponse sur un tweet
+  const tweets = useFirestore("tweets");
+  const [tweetFilter, setTweetFilter] = useState([]);
+
+  const getLengthResponse = async () => {
+    const dataTweets = await tweets;
+
+    await dataTweets.map((tweet) => {
+      const filterTweet = dataTweets.filter((tweet) => tweet.id === tweetID);
+      setTweetFilter([
+        {
+          ...tweetFilter,
+          filterTweet,
+        },
+      ]);
+    });
+  };
+
+  useEffect(() => {
+    getLengthResponse();
+  }, [tweets]);
 
   return (
     <>
