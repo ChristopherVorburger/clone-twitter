@@ -38,7 +38,7 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/home" element={<Home />} />
         <Route path="/exemple" element={<Exemple />} />
-        <Route path="/message" element={<Message />} />
+        <Route path="/messages" element={<Message />} />
       </Routes>
     </ThemeProvider>
   );
