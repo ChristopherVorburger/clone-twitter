@@ -41,6 +41,7 @@ import {
   collection,
   updateDoc,
   doc,
+  arrayRemove,
 } from "firebase/firestore";
 
 // hooks
@@ -75,9 +76,6 @@ export default function Tweet({ tweet }) {
   // On séléctionne les références dont on a besoin
   const selectedTweetRef = doc(database, "tweets", id);
 
-  // Récupération des valeurs des réactions publiques
-  const tweetPublicMetrics = tweet?.public_metrics;
-
   // Fonction pour répondre à un tweet et mettre a jour le nombre de réponses du tweet en question
   const handleReply = (e) => {
     e.preventDefault();
@@ -95,8 +93,8 @@ export default function Tweet({ tweet }) {
         // On met à jour le nombre de réponses ici
         updateDoc(selectedTweetRef, {
           public_metrics: {
-            ...tweetPublicMetrics,
-            reply_count: parseInt(tweetPublicMetrics.reply_count, 10) + 1,
+            ...tweet?.public_metrics,
+            reply_count: parseInt(tweet?.public_metrics?.reply_count, 10) + 1,
           },
         })
           .then(() => {
@@ -114,18 +112,39 @@ export default function Tweet({ tweet }) {
 
   // Fonctions pour liker un tweet
   const likeTweet = () => {
-    updateDoc(selectedTweetRef, {
-      public_metrics: {
-        ...tweetPublicMetrics,
-        like_count: parseInt(tweetPublicMetrics.like_count, 10) + 1,
-      },
-    })
-      .then(() => {
-        console.log("Update like_count done !");
+    // Si le tableau de likers du tweet contient déjà l'id du user connecté
+    if (tweet?.likers.includes(auth.userData?.[0]?.id)) {
+      // Suppression du user et -1 pour le like_counter
+      updateDoc(selectedTweetRef, {
+        likers: arrayRemove(auth.userData?.[0]?.id),
+        public_metrics: {
+          ...tweet?.public_metrics,
+          like_count: parseInt(tweet?.public_metrics?.like_count, 10) - 1,
+        },
       })
-      .catch((err) => {
-        console.log(err.message);
-      });
+        .then(() => {
+          console.log("Update like_count -1 done !");
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+      // Sinon
+    } else {
+      // Ajout du user et +1 pour le like_counter
+      updateDoc(selectedTweetRef, {
+        likers: [...tweet?.likers, auth.userData?.[0]?.id],
+        public_metrics: {
+          ...tweet?.public_metrics,
+          like_count: parseInt(tweet?.public_metrics?.like_count, 10) + 1,
+        },
+      })
+        .then(() => {
+          console.log("Update like_count +1 done !");
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+    }
   };
 
   // State et fonctions pour la modale du bouton more
@@ -195,12 +214,22 @@ export default function Tweet({ tweet }) {
             />
             <span>0</span>
           </Retweets>
-          <Likes onClick={likeTweet}>
-            <FavoriteBorderIcon
-              style={{ color: "#535471", width: "15px", height: "15px" }}
-            />
-            <span>{tweet?.public_metrics?.like_count}</span>
-          </Likes>
+          {/* Si l'utilisateur connecté like le tweet, le coeur est rouge */}
+          {tweet?.likers?.includes(auth.userData?.[0]?.id) ? (
+            <Likes onClick={likeTweet}>
+              <icons.FavoriteIcon
+                style={{ color: "#e11616de", width: "15px", height: "15px" }}
+              />
+              <span>{tweet?.public_metrics?.like_count}</span>
+            </Likes>
+          ) : (
+            <Likes onClick={likeTweet}>
+              <FavoriteBorderIcon
+                style={{ color: "#535471", width: "15px", height: "15px" }}
+              />
+              <span>{tweet?.public_metrics?.like_count}</span>
+            </Likes>
+          )}
           <Share>
             <IosShareOutlinedIcon
               style={{ color: "#535471", width: "15px", height: "15px" }}

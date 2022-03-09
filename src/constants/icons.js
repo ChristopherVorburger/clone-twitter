@@ -31,6 +31,7 @@ import PersonRemoveOutlinedIcon from "@mui/icons-material/PersonRemoveOutlined";
 import VolumeOffOutlinedIcon from "@mui/icons-material/VolumeOffOutlined";
 import BlockOutlinedIcon from "@mui/icons-material/BlockOutlined";
 import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 const icons = {
   HomeSharpIcon,
@@ -66,6 +67,7 @@ const icons = {
   VolumeOffOutlinedIcon,
   BlockOutlinedIcon,
   FlagOutlinedIcon,
+  FavoriteIcon,
 };
 
 export default icons;
