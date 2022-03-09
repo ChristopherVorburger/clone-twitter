@@ -219,13 +219,13 @@ export default function Tweet({ tweet }) {
         <TweetReactions>
           <Comments onClick={() => setOpenReply(!openReply)}>
             <MessageIcon
-              style={{ color: "#535471", width: "15px", height: "15px" }}
+              style={{ color: "#535471", width: "20px", height: "20px" }}
             />
             <span>{tweet?.public_metrics?.reply_count}</span>
           </Comments>
           <Retweets>
             <ReplyAllIcon
-              style={{ color: "#535471", width: "15px", height: "15px" }}
+              style={{ color: "#535471", width: "20px", height: "20px" }}
             />
             <span>0</span>
           </Retweets>
@@ -233,21 +233,21 @@ export default function Tweet({ tweet }) {
           {tweet?.likers?.includes(auth.userData?.[0]?.id) ? (
             <Likes onClick={likeTweet}>
               <icons.FavoriteIcon
-                style={{ color: "#e11616de", width: "15px", height: "15px" }}
+                style={{ color: "#e11616de", width: "20px", height: "20px" }}
               />
               <span>{tweet?.public_metrics?.like_count}</span>
             </Likes>
           ) : (
             <Likes onClick={likeTweet}>
               <FavoriteBorderIcon
-                style={{ color: "#535471", width: "15px", height: "15px" }}
+                style={{ color: "#535471", width: "20px", height: "20px" }}
               />
               <span>{tweet?.public_metrics?.like_count}</span>
             </Likes>
           )}
           <Share>
             <IosShareOutlinedIcon
-              style={{ color: "#535471", width: "15px", height: "15px" }}
+              style={{ color: "#535471", width: "20px", height: "20px" }}
             />
             <span>0</span>
           </Share>
