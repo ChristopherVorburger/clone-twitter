@@ -60,7 +60,7 @@ test("Affichage des input et des data pour date de naissance", () => {
   );
 
   //je recup ma boucle dans le signup pour refaire mes data
-  // attention a mettre pareil dans les values surtout pour '' ou "", on recois une string comme ça donc a ne pas test en number avec i mais `${i}`
+  // attention a mettre pareil dans les values, on recois une string comme ça donc a ne pas test en number avec i mais `${i}`
   const selectDay = [];
   for (let i = 1; i < 32; i++) {
     selectDay.push({ value: `${i}`, label: `${i}` });
