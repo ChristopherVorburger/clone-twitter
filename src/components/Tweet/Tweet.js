@@ -249,7 +249,6 @@ export default function Tweet({ tweet }) {
             <IosShareOutlinedIcon
               style={{ color: "#535471", width: "20px", height: "20px" }}
             />
-            <span>0</span>
           </Share>
         </TweetReactions>
         {openReply && (

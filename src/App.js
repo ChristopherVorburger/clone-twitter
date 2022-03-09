@@ -11,6 +11,7 @@ import Followers from "./pages/Followers";
 import Following from "./pages/Following";
 import EditProfileModal from "./components/EditProfileModal";
 import Layout from "./components/Layout";
+import Bookmarks from "./pages/Bookmarks";
 
 import { AuthContext } from "./context/authContext";
 
@@ -37,6 +38,7 @@ export default function App() {
         main: "#ffffff",
       },
     },
+    test: 31,
     typography: {
       font: {
         small: 13,
@@ -67,6 +69,7 @@ export default function App() {
             <Route path="/:username/followers" element={<Followers />} />
             <Route path="/:username/following" element={<Following />} />
             <Route path="/settings/profile" element={<EditProfileModal />} />
+            <Route path="/bookmarks" element={<Bookmarks />} />
             <Route path="*" element={<Navigate to="/home" />} />
           </Routes>
         </Layout>
