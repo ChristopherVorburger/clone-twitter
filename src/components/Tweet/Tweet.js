@@ -113,7 +113,7 @@ export default function Tweet({ tweet }) {
   // Fonctions pour liker un tweet
   const likeTweet = () => {
     // Si le tableau de likers du tweet contient déjà l'id du user connecté
-    if (tweet?.likers.includes(auth.userData?.[0]?.id)) {
+    if (tweet?.likers?.includes(auth.userData?.[0]?.id)) {
       // Suppression du user et -1 pour le like_counter
       updateDoc(selectedTweetRef, {
         likers: arrayRemove(auth.userData?.[0]?.id),
@@ -129,8 +129,23 @@ export default function Tweet({ tweet }) {
           console.log(err.message);
         });
       // Sinon
+    } else if (!tweet?.likers) {
+      // Si le tweet n'a pas de likers, ajout d'un premier liker et + 1 au compteur
+      updateDoc(selectedTweetRef, {
+        likers: [auth.userData?.[0]?.id],
+        public_metrics: {
+          ...tweet?.public_metrics,
+          like_count: parseInt(tweet?.public_metrics?.like_count, 10) + 1,
+        },
+      })
+        .then(() => {
+          console.log("Update like_count +1 done !");
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
     } else {
-      // Ajout du user et +1 pour le like_counter
+      // Sinon ajout du user et +1 pour le like_counter
       updateDoc(selectedTweetRef, {
         likers: [...tweet?.likers, auth.userData?.[0]?.id],
         public_metrics: {
