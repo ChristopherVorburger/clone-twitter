@@ -8,7 +8,7 @@ test("Affichage des éléments (sauf bouttons) de la page pré-acceuil", () => {
   const bacgroundImageElement = screen.queryByTitle(
     /background with the twitter logo/i
   );
-  const twitterIconElement = screen.queryByTestId("TwitterIcon");
+  const twitterIconElement = screen.queryByTestId(/twitterIcon/i);
   const happeningTitleElement = screen.queryByText(/Happening now/i);
   const joiningTitleElement = screen.queryByText(/Join Twitter today./i);
   const orDividerElement = screen.queryByTestId("or");
@@ -32,7 +32,7 @@ test("Affichage des éléments (sauf bouttons) de la page pré-acceuil", () => {
 test("Affichage boutton SignUp Google", () => {
   render(<Prehome />);
 
-  const buttonElement = screen.queryByTestId("GoogleButton");
+  const buttonElement = screen.queryByTestId(/GoogleButton/i);
   const imageElement = screen.queryByAltText(/logo google/i);
   const textElement = screen.queryByText(/Sign up with Google/i);
 

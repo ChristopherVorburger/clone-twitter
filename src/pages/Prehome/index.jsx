@@ -17,7 +17,7 @@ const PreHome = () => {
           <Container className={classes.container} maxWidth="md">
             <Stack direction="column" justifyContent="center">
               <TwitterIcon
-                data-testid="TwitterIcon"
+                data-testid="twitterIcon"
                 className={classes.icon__twitter}
                 color="primary"
               />

@@ -202,14 +202,19 @@ function SignUp() {
         <Box className={classes.closeAndLogo}>
           <Box className={classes.close}>
             <Link to="/">
-              <CloseButton />
+              <CloseButton data-testid="closeButton" />
             </Link>
           </Box>
-          <Box className={classes.logo}>
+          <Box className={classes.logo} data-testid="logoTwitter">
             <LogoTwitter />
           </Box>
         </Box>
-        <form className={classes.form} action="submit" onSubmit={signUp}>
+        <form
+          action="submit"
+          className={classes.form}
+          data-testid="formSubmit"
+          onSubmit={signUp}
+        >
           <Typography className={classes.accountCreateTitle}>
             Créer votre compte
           </Typography>
@@ -309,7 +314,12 @@ function SignUp() {
             <MMDDYYYYInput />
           </Box>
           <Box>
-            <Button className={classes.nextButton} size="large" type="submit">
+            <Button
+              className={classes.nextButton}
+              data-testid="nextButton"
+              size="large"
+              type="submit"
+            >
               Suivant
             </Button>
           </Box>
