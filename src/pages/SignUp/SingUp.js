@@ -65,6 +65,7 @@ function SignUp() {
             following: [],
             profile_image_url: "",
             cover_url: "",
+            bookmarks: []
           })
             .then(() => {
               setName("");

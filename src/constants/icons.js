@@ -32,6 +32,9 @@ import VolumeOffOutlinedIcon from "@mui/icons-material/VolumeOffOutlined";
 import BlockOutlinedIcon from "@mui/icons-material/BlockOutlined";
 import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
+import BookmarkRemoveOutlinedIcon from "@mui/icons-material/BookmarkRemoveOutlined";
+import InsertLinkOutlinedIcon from "@mui/icons-material/InsertLinkOutlined";
 
 const icons = {
   HomeSharpIcon,
@@ -68,6 +71,9 @@ const icons = {
   BlockOutlinedIcon,
   FlagOutlinedIcon,
   FavoriteIcon,
+  BookmarkAddOutlinedIcon,
+  BookmarkRemoveOutlinedIcon,
+  InsertLinkOutlinedIcon,
 };
 
 export default icons;
