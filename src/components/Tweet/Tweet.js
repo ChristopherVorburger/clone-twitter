@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 
 import {
   TweetContainer,
@@ -50,6 +50,7 @@ import { AuthContext } from "../../context/authContext";
 
 // Composants React
 import TweetDialog from "./TweetDialog";
+import ShareDialog from "./ShareDialog";
 
 // Fonction pour afficher un tweet
 export default function Tweet({ tweet }) {
@@ -163,15 +164,27 @@ export default function Tweet({ tweet }) {
   };
 
   // State et fonctions pour la modale du bouton more
-  const [open, setOpen] = useState(false);
+  const [openMore, setOpenMore] = useState(false);
 
-  const handleClick = () => {
-    setOpen((prev) => !prev);
+  const handleClickMore = () => {
+    setOpenMore((prev) => !prev);
   };
 
-  const handleClickAway = () => {
-    setOpen(false);
+  const handleClickAwayMore = () => {
+    setOpenMore(false);
   };
+
+  // State et fonctions pour la modale du bouton share
+  const [openShare, setOpenShare] = useState(false);
+
+  const handleClickShare = () => {
+    setOpenShare((prev) => !prev);
+  };
+
+  const handleClickAwayShare = () => {
+    setOpenShare(false);
+  };
+
   return (
     <TweetContainer>
       {matchedUser?.[0]?.profile_image_url ? (
@@ -191,7 +204,7 @@ export default function Tweet({ tweet }) {
             <TweetDate>
               {/* calcul de la date du tweet avec la librairie date-fns
                 formateDistance permet de calculer l'interval entre deux dates
-                On soustrait donc la date du tweet formatée à la date actuelle de cette manière */}
+              On soustrait donc la date du tweet formatée à la date actuelle de cette manière */}
               {!created_at
                 ? null
                 : formatDistance(
@@ -205,11 +218,11 @@ export default function Tweet({ tweet }) {
           </Box>
           <Box>
             {/* ClickAwayListener écoute les cliques hors modale pour fermer la modale */}
-            <ClickAwayListener onClickAway={handleClickAway}>
-              <Box onClick={handleClick}>
+            <ClickAwayListener onClickAway={handleClickAwayMore}>
+              <Box onClick={handleClickMore}>
                 <TweetMore>{icons.MoreHorizIcon.type.render()}</TweetMore>
-                {open ? (
-                  <TweetDialog id={id} open={open} author_id={author_id} />
+                {openMore ? (
+                  <TweetDialog id={id} open={openMore} author_id={author_id} />
                 ) : null}
               </Box>
             </ClickAwayListener>
@@ -246,10 +259,15 @@ export default function Tweet({ tweet }) {
             </Likes>
           )}
           <Share>
-            <IosShareOutlinedIcon
-              style={{ color: "#535471", width: "20px", height: "20px" }}
-            />
-            <span>0</span>
+            {/* ClickAwayListener écoute les cliques hors modale pour fermer la modale */}
+            <ClickAwayListener onClickAway={handleClickAwayShare}>
+              <Box onClick={handleClickShare}>
+                <IosShareOutlinedIcon
+                  style={{ color: "#535471", width: "20px", height: "20px" }}
+                />
+                {openShare ? <ShareDialog id={id} open={openShare} /> : null}
+              </Box>
+            </ClickAwayListener>
           </Share>
         </TweetReactions>
         {openReply && (

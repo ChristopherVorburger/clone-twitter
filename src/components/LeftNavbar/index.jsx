@@ -4,11 +4,10 @@ import {
   ListItemIcon,
   ListItemButton,
   ListItemText,
-  Typography,
   ClickAwayListener,
 } from "@mui/material";
 
-import { icons, images } from "../../constants";
+import { icons } from "../../constants";
 
 import useStyles from "./styles";
 import AddTweetButton from "../buttons/AddTweetButton";
