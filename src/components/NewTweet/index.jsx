@@ -58,6 +58,7 @@ const NewTweet = () => {
         like_count: 0,
         quote_count: 0,
       },
+      likers: [],
     })
       .then(() => {
         // on nettoie l'input si ok

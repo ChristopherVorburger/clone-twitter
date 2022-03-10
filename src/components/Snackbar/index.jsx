@@ -17,7 +17,6 @@ export default function SnackbarBookmark({
     setOpenBookmarkSnackbar(false);
   };
 
-  console.log("message", message);
   // Fonction pour rediriger vers la page bookmarks via le texte de la snackbar
   const action = (
     <React.Fragment>

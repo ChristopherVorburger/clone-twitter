@@ -11,6 +11,8 @@ import { icons } from "../../constants";
 
 import { AuthContext } from "../../context/authContext";
 
+import { useFirestoreWithQueryAndWhere } from "../../utils/useFirestoreWithQueryAndWhere";
+
 import useStyles from "./styles";
 
 // Liens pour la Nav Tab
@@ -29,6 +31,17 @@ const Notifications = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  // Utilisation du hook perso useFirestoreWithQuery pour récupérer uniquement les tweets
+  // de l'utilisateur connecté dans l'ordre de publication
+  const tweets = useFirestoreWithQueryAndWhere(
+    "tweets",
+    "author_id",
+    `${auth.userData?.[0]?.id}`
+  );
+
+  console.log("tweets triés", tweets);
+
   return (
     <Box display="flex">
       <Box borderLeft="1px solid #eff3f4" borderRight="1px solid #eff3f4">
