@@ -12,6 +12,7 @@ import Following from "./pages/Following";
 import EditProfileModal from "./components/EditProfileModal";
 import Layout from "./components/Layout";
 import Bookmarks from "./pages/Bookmarks";
+import Notifications from "./pages/Notifications";
 
 import { AuthContext } from "./context/authContext";
 import { SnackbarsContextProvider } from "./context/snackbarsContext";
@@ -71,6 +72,7 @@ export default function App() {
               <Route path="/:username/following" element={<Following />} />
               <Route path="/settings/profile" element={<EditProfileModal />} />
               <Route path="/bookmarks" element={<Bookmarks />} />
+              <Route path="/notifications" element={<Notifications />} />
               <Route path="*" element={<Navigate to="/home" />} />
             </Routes>
           </SnackbarsContextProvider>
