@@ -29,7 +29,6 @@ const ShareDialog = ({ id, open }) => {
   const addBookmark = (e) => {
     e.preventDefault();
     snackbar.setMessageBookmarkSnackbar("");
-    snackbar.setMessageActionBookmarkSnackbar("");
 
     // Si l'utilisateur n'a pas de bookmarks on lui ajoute un nouveau tableau bookmarks avec le premier
     if (!auth.userData?.[0]?.bookmarks) {
@@ -39,7 +38,6 @@ const ShareDialog = ({ id, open }) => {
         // Puis on affiche la snackbar en mettant à jour les states
         .then(() => {
           snackbar.setMessageBookmarkSnackbar("Tweet added to your Bookmarks");
-          snackbar.setMessageActionBookmarkSnackbar("View");
           snackbar.setOpenBookmarkSnackbar(true);
           console.log("Add first bookmark done");
         })
@@ -54,7 +52,6 @@ const ShareDialog = ({ id, open }) => {
         // Puis on affiche la snackbar en mettant à jour les states
         .then(() => {
           snackbar.setMessageBookmarkSnackbar("Tweet added to your Bookmarks");
-          snackbar.setMessageActionBookmarkSnackbar("View");
           snackbar.setOpenBookmarkSnackbar(true);
           console.log("Add to bookmarks done");
         })
@@ -68,7 +65,6 @@ const ShareDialog = ({ id, open }) => {
   const removeBookmark = (e) => {
     e.preventDefault();
     snackbar.setMessageBookmarkSnackbar("");
-    snackbar.setMessageActionBookmarkSnackbar("");
 
     updateDoc(userRef, {
       bookmarks: arrayRemove(id),
@@ -124,7 +120,7 @@ const ShareDialog = ({ id, open }) => {
     <Dialog disableScrollLock open={open}>
       <List>
         {/* Si le tweet est dans les bookmarks on affiche ceci */}
-        {auth.userData?.[0]?.bookmarks.includes(id)
+        {auth.userData?.[0]?.bookmarks?.includes(id)
           ? removeBookmarksIconsArray.map((icon, index) => {
               return (
                 // icon.action est une référence à la fonction à executer lors du clique

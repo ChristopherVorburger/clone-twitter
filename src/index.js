@@ -7,16 +7,13 @@ import App from "./App";
 import "./index.css";
 import { AuthContextProvider } from "./context/authContext";
 import { ModalContextProvider } from "./context/modalContext";
-import { SnackbarsContextProvider } from "./context/snackbarsContext";
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
       <AuthContextProvider>
         <ModalContextProvider>
-          <SnackbarsContextProvider>
-            <App />
-          </SnackbarsContextProvider>
+          <App />
         </ModalContextProvider>
       </AuthContextProvider>
     </Router>

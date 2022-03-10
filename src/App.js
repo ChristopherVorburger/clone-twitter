@@ -14,6 +14,7 @@ import Layout from "./components/Layout";
 import Bookmarks from "./pages/Bookmarks";
 
 import { AuthContext } from "./context/authContext";
+import { SnackbarsContextProvider } from "./context/snackbarsContext";
 
 export default function App() {
   const auth = React.useContext(AuthContext);
@@ -38,7 +39,6 @@ export default function App() {
         main: "#ffffff",
       },
     },
-    test: 31,
     typography: {
       font: {
         small: 13,
@@ -62,16 +62,18 @@ export default function App() {
         </Routes>
       ) : (
         <Layout>
-          <Routes>
-            <Route path="/home" element={<Home />} />
-            <Route path="/exemple" element={<Exemple />} />
-            <Route path="/:username" element={<Profile />} />
-            <Route path="/:username/followers" element={<Followers />} />
-            <Route path="/:username/following" element={<Following />} />
-            <Route path="/settings/profile" element={<EditProfileModal />} />
-            <Route path="/bookmarks" element={<Bookmarks />} />
-            <Route path="*" element={<Navigate to="/home" />} />
-          </Routes>
+          <SnackbarsContextProvider>
+            <Routes>
+              <Route path="/home" element={<Home />} />
+              <Route path="/exemple" element={<Exemple />} />
+              <Route path="/:username" element={<Profile />} />
+              <Route path="/:username/followers" element={<Followers />} />
+              <Route path="/:username/following" element={<Following />} />
+              <Route path="/settings/profile" element={<EditProfileModal />} />
+              <Route path="/bookmarks" element={<Bookmarks />} />
+              <Route path="*" element={<Navigate to="/home" />} />
+            </Routes>
+          </SnackbarsContextProvider>
         </Layout>
       )}
     </ThemeProvider>
