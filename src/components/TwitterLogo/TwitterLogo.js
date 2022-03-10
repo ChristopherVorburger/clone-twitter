@@ -3,7 +3,9 @@ import useStyles from "./Styles";
 
 function LogoTwitter() {
   const classes = useStyles();
-  return <TwitterIcon className={classes.logoSignUp} />;
+  return (
+    <TwitterIcon data-testid="TwitterLogo" className={classes.logoSignUp} />
+  );
 }
 
 export default LogoTwitter;

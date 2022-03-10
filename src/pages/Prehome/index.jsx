@@ -16,23 +16,28 @@ const PreHome = () => {
         <Box p={2} className={classes.box__text}>
           <Container className={classes.container} maxWidth="md">
             <Stack direction="column" justifyContent="center">
-              <TwitterIcon className={classes.icon__twitter} color="primary" />
+              <TwitterIcon
+                data-testid="TwitterIcon"
+                className={classes.icon__twitter}
+                color="primary"
+              />
               <Typography
                 className={classes.title}
                 fontSize="44px"
-                fontWeight="bold"
+                fontWeight="mainBold"
               >
                 Happening now
               </Typography>
               <Typography
                 className={classes.subtitle}
                 fontSize="23px"
-                fontWeight="bold"
+                fontWeight="mainBold"
               >
                 Join Twitter today.
               </Typography>
               <Stack width="300px" maxWidth="380px">
                 <Button
+                  data-testid="GoogleButton"
                   sx={{ marginBottom: "0.5rem" }}
                   className={classes.button}
                   variant="outlined"
@@ -47,7 +52,11 @@ const PreHome = () => {
                     Sign up with Google
                   </Typography>
                 </Button>
-                <Button className={classes.button} variant="outlined">
+                <Button
+                  data-testid="AppleButton"
+                  className={classes.button}
+                  variant="outlined"
+                >
                   <img
                     className={classes.button__logo}
                     src={images.logoApple}
@@ -55,9 +64,9 @@ const PreHome = () => {
                     alt="logo apple"
                   />
                   <Typography
-                    fontSize="15px"
+                    fontSize="font.main"
                     color="black.main"
-                    fontWeight="bold"
+                    fontWeight="mainBold"
                   >
                     Sign up with Apple
                   </Typography>
@@ -69,10 +78,13 @@ const PreHome = () => {
                   m="4px 0"
                 >
                   <div className={classes.line} />
-                  <Typography textAlign="center">or</Typography>
+                  <Typography data-testid="or" textAlign="center">
+                    or
+                  </Typography>
                   <div className={classes.line} />
                 </Stack>
                 <Button
+                  data-testid="ClassicButtonSignup"
                   sx={{ marginBottom: "0.5rem" }}
                   className={classes.button}
                   variant="contained"
@@ -82,7 +94,8 @@ const PreHome = () => {
                     sx={{ textDecoration: "none" }}
                     component={Link}
                     to="/signup"
-                    fontWeight="bold"
+                    fontWeight="mainBold"
+                    role="link"
                   >
                     Sign up with phone or email
                   </Typography>
@@ -94,18 +107,19 @@ const PreHome = () => {
                 <Typography
                   mt="2.5rem"
                   mb="1rem"
-                  fontWeight="bold"
+                  fontWeight="mainBold"
                   gutterBottom
                 >
                   Already have an account?
                 </Typography>
                 <Button
+                  data-testid="SigninButton"
                   component={Link}
                   to="/login"
                   className={classes.button}
                   variant="outlined"
                 >
-                  <Typography fontWeight="bold">Sign in</Typography>
+                  <Typography fontWeight="mainBold">Sign in</Typography>
                 </Button>
               </Stack>
             </Stack>

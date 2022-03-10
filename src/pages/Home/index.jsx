@@ -1,62 +1,77 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext } from "react";
+
+// components
 import Header from "../../components/Header";
 import BottomNavigation from "../../components/BottomNavigation";
-import useStyles from "./styles";
 import LeftNavbar from "../../components/LeftNavbar";
 import Welcome from "../../components/Welcome";
-import NewTweet from "../../components/NewTweet";
-import { Box, Divider, Stack } from "@mui/material";
 import News from "../../components/News";
+import NewTweet from "../../components/NewTweet";
 import Tweet from "../../components/Tweet/Tweet";
-import { useFirestore } from "../../utils/useFirestore";
-import { TwentyThreeMpOutlined } from "@mui/icons-material";
+
+// components MUI
 import CircularProgress from "@mui/material/CircularProgress";
+import { Box, Divider } from "@mui/material";
+
+// hooks
+import { useFirestoreWithQuery } from "../../utils/useFirestoreWithQuery";
+
+// Import du context Auth
+import { AuthContext } from "../../context/authContext";
+
+import useStyles from "./styles";
+
+//Import des icones
+import { icons } from "../../constants";
+import ModalAddTweets from "../../components/ModalAddTweets/ModalAddTweets";
+import { ModalContext } from "../../context/modalContext";
+import ModalReplyTweet from "../../components/ModalReplyTweet/ModalReplyTweet";
 
 const Home = () => {
   const classes = useStyles();
-  const tweets = useFirestore("tweets");
+  const { showModal } = useContext(ModalContext);
+  // Utilisation du hook useContext pour récupérer le contexte Auth
+  const auth = React.useContext(AuthContext);
 
-  // state to set dimension of the screen
-  const [screenSize, getDimension] = useState({
-    dynamicWidth: window.innerWidth,
-    dynamicHeight: window.innerHeight,
+  // Utilisation du hook perso useFirestoreWithQuery pour récupérer les tweets dans l'ordre de publication
+  const tweets = useFirestoreWithQuery("tweets");
+
+  // On filtre les tweets à afficher
+  // Ici en l'occurrence ceux qui ont le même author_id que la personne connectée
+  // Ici en l'occurrence ceux qui ont le même author_id que l'utilisateur connecté
+  // et aussi ceux que l'utilisateur connecté a comme following
+  const filteredTweets = tweets?.filter((tweet) => {
+    return (
+      tweet?.author_id === auth?.authUser?.uid ||
+      auth?.userData?.[0]?.following?.includes(tweet.author_id)
+    );
   });
+  console.log(tweets);
 
-  // function to set the dimension
-  const setDimension = () => {
-    getDimension({
-      dynamicWidth: window.innerWidth,
-      dynamicHeight: window.innerHeight,
-    });
-  };
-
-  // useEffect to watch the resizing of the screen
-  useEffect(() => {
-    window.addEventListener("resize", setDimension);
-
-    return () => {
-      window.removeEventListener("resize", setDimension);
-    };
-  }, [screenSize]);
-
-  // assign a value to the width of the drawer
-  const drawerWidth = screenSize.dynamicWidth < 600 ? 0 : 88;
-
-  //gestion affichage des tweets à l'aide du hooks personalisé et éutilisable : "useFirestore"
-  console.log(tweets, "depuis home");
   return (
     <>
-      <Stack direction='row'>
-        <LeftNavbar drawerWidth={drawerWidth} />
-        <Box display='flex' flexDirection='column' borderLeft='1px solid #eff3f4' borderRight='1px solid #eff3f4'>
-          <Header drawerWidth={drawerWidth} />
-          <NewTweet drawerWidth={drawerWidth} />
+      {showModal && <ModalReplyTweet />}
+
+      <Box display="flex" justifyContent="center">
+        <Box
+          display="flex"
+          flexDirection="column"
+          borderLeft="1px solid #eff3f4"
+          borderRight="1px solid #eff3f4"
+        >
+          <Header title="Home" iconsRight={icons.AutoAwesomeSharpIcon} />
+
+          <NewTweet />
           <Divider sx={{ borderColor: "background__input" }} />
-          {/* <Welcome /> */}
+          {/* Si le tableau filtré est vide, autrement dit si l'utilisateur n'a pas de followings
+           et qu'il n'a aucun tweets, on affiche le composant welcome */}
+          {filteredTweets?.length === 0 ? <Welcome /> : null}
+          {/* Sinon, */}
+          {/* On map sur le tableau filtré */}
           {tweets ? (
             <>
-              {tweets.map((tweet) => (
-                <Tweet key={tweet.id} text={tweet.text} />
+              {filteredTweets.map((tweet) => (
+                <Tweet key={tweet?.id} tweet={tweet} />
               ))}
             </>
           ) : (
@@ -64,7 +79,7 @@ const Home = () => {
           )}
         </Box>
         <News />
-      </Stack>
+      </Box>
       <BottomNavigation />
     </>
   );

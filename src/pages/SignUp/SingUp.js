@@ -1,52 +1,91 @@
-import React, { useState, useEffect } from "react";
+// Tous les import que j'ai besoin
+import React from "react";
 import useStyles from "./Styles";
 import CloseButton from "../../components/CloseButton/CloseButton";
 import LogoTwitter from "../../components/TwitterLogo/TwitterLogo";
-import { Typography, Button, TextField, Box, Stack } from "@mui/material";
-import MenuItem from "@mui/material/MenuItem";
 import { selectMonth } from "./DataSelect";
-import { Link } from "react-router-dom";
-import { db } from "../../firebase-config";
-import { collection, getDocs, addDoc } from "firebase/firestore";
+import { Box, Button, MenuItem, Typography, TextField } from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
+import { doc, getFirestore, serverTimestamp, setDoc } from "firebase/firestore";
+import { AuthContext } from "../../context/authContext";
 
+// Firestore
+const database = getFirestore();
+
+// Fonction principale SignUp
 function SignUp() {
+  // Const générales
   const classes = useStyles();
+  const auth = React.useContext(AuthContext);
+  const navigate = useNavigate();
 
-  const [newName, setNewName] = React.useState("");
-  const [newEmail, setNewEmail] = React.useState("");
-  const [newPhone, setNewPhone] = React.useState("");
-  const [newPassword, setNewPassword] = React.useState("");
-  const [newMonth, setNewMonth] = React.useState("");
-  const [newDay, setNewDay] = React.useState(0);
-  const [newYear, setNewYear] = React.useState(0);
+  // State authentification
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [passwordConfirmation, setPasswordConfirmation] = React.useState(false);
 
-  const [users, setUsers] = useState([]);
-  const usersCollectionRef = collection(db, "users");
+  // State firestore
+  const [name, setName] = React.useState("");
+  const [username, setUserName] = React.useState("");
+  const [errorName, setErrorName] = React.useState(false);
+  const [errorUserName, setErrorUserName] = React.useState(false);
+  const [phone, setPhone] = React.useState("");
 
-  const createUser = async () => {
-    await addDoc(usersCollectionRef, {
-      newName,
-      newEmail,
-      newPhone,
-    });
+  // Fonction qui crée un user dans l'authentification et le firestore
+  const signUp = (e) => {
+    e.preventDefault();
+    setErrorName(false);
+    setErrorUserName(false);
+
+    if (name === "" || name.lenght > 100) {
+      setErrorName(true);
+    } else if (username === "" || username.length > 100) {
+      setErrorUserName(true);
+    } else {
+      auth
+        .signUp(email, password)
+        .then((cred) => {
+          setEmail("");
+          setPassword("");
+          const userRef = doc(database, "users", cred.user.uid);
+          setDoc(userRef, {
+            name,
+            username,
+            created_at: serverTimestamp(),
+            phone,
+            age: {
+              month,
+              day,
+              year,
+            },
+            description: "",
+            location: "",
+            website: "",
+            followers: [],
+            following: [],
+            profile_image_url: "",
+            cover_url: "",
+            bookmarks: []
+          })
+            .then(() => {
+              setName("");
+              setUserName("");
+              navigate("/home");
+            })
+            .catch((err) => {
+              console.log(err.message);
+            });
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+    }
   };
 
-  useEffect(() => {
-    const getUsers = async () => {
-      const data = await getDocs(usersCollectionRef);
-      setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-    };
+  // Fonction qui réalise le switch entre phone et email lors du click
+  const [switchPhoneEmail, setSwitchPhoneEmail] = React.useState("Phone");
 
-    getUsers();
-  }, []);
-
-  const [switchPhoneEmail, setSwitchPhoneEmail] = React.useState("Email");
-  const [errorName, setErrorName] = React.useState(false);
-  const [errorPhone, setErrorPhone] = React.useState(false);
-  const [errorEmail, setErrorEmail] = React.useState(false);
-  const [passwordIsOk, setPasswordIsOk] = React.useState(false);
-
-  function SwitchPhoneEmail() {
+  const SwitchPhoneEmail = () => {
     let switchRender;
 
     if (switchPhoneEmail === "Phone") {
@@ -70,60 +109,58 @@ function SignUp() {
         </Typography>
       );
     }
-
     return <>{switchRender}</>;
-  }
+  };
 
+  // State et boucle qui gèrent les select de la date de naissance
   const [month, setMonth] = React.useState("");
   const [day, setDay] = React.useState("");
+  const [year, setYear] = React.useState("");
+
   const selectDay = [];
   for (let i = 1; i < 32; i++) {
     selectDay.push({ value: `${i}`, label: `${i}` });
   }
-  const [year, setYear] = React.useState("");
   const selectYear = [];
   for (let i = 2022; i > 1901; i--) {
     selectYear.push({ value: `${i}`, label: `${i}` });
   }
 
-  function MMDDYYYYInput() {
+  // Fonction qui gère les 3 selects de la date de naissance
+  const MMDDYYYYInput = () => {
     return (
-      <Stack direction="row" marginTop="15px" spacing={2}>
-        <Box component="form" width="48%">
+      <Box className={classes.birthdayContainer}>
+        {/* Partie mois */}
+        <Box width="48%">
           <TextField
-            select
-            label="Mois"
-            value={month}
-            onChange={(e) => {
-              setMonth(e.target.value);
-              setNewMonth(e.target.value);
-            }}
             fullWidth={true}
-            InputLabelProps={{
-              shrink: true,
-            }}
+            InputLabelProps={{ shrink: true }}
+            label="Mois"
+            onChange={(e) => setMonth(e.target.value)}
+            required
+            select
+            value={month}
           >
-            {selectMonth.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
+            {/* Remplissage du select Mois */}
+            {selectMonth.map((item) => (
+              <MenuItem key={item.value} value={item.value}>
+                {item.label}
               </MenuItem>
             ))}
           </TextField>
         </Box>
-        <Box component="form" width="22%">
+        {/* Partie Jour */}
+        <Box width="22%">
           <TextField
-            select
-            label="Jour"
-            value={day}
-            onChange={(e) => {
-              setDay(e.target.value);
-              setNewDay(e.target.value);
-            }}
             fullWidth={true}
-            InputLabelProps={{
-              shrink: true,
-            }}
+            InputLabelProps={{ shrink: true }}
+            label="Jour"
+            onChange={(e) => setDay(e.target.value)}
+            required
+            select
+            value={day}
           >
+            {/* Remplissage du select Jour */}
             {selectDay.map((item) => (
               <MenuItem key={item.value} value={item.value}>
                 {item.label}
@@ -131,149 +168,132 @@ function SignUp() {
             ))}
           </TextField>
         </Box>
-        <Box component="form" width="30%">
+        {/* Partie Année */}
+        <Box width="30%">
           <TextField
-            select
-            label="Année"
-            value={year}
-            onChange={(e) => {
-              setYear(e.target.value);
-              setNewYear(e.target.value);
-            }}
             fullWidth={true}
-            InputLabelProps={{
-              shrink: true,
-            }}
+            InputLabelProps={{ shrink: true }}
+            label="Année"
+            onChange={(e) => setYear(e.target.value)}
+            required
+            select
+            value={year}
           >
-            {selectYear.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
+            {/* Remplissage du select Jour */}
+            {selectYear.map((item) => (
+              <MenuItem key={item.value} value={item.value}>
+                {item.label}
               </MenuItem>
             ))}
           </TextField>
         </Box>
-      </Stack>
+      </Box>
     );
-  }
+  };
 
   return (
-    <div className={classes.mainContainer}>
-      <Stack
-        className={classes.box}
-        heigth="100vh"
-        width="83%"
-        margin="0 auto"
-        spacing={2.5}
-      >
-        <Stack direction="row" alignItems="center">
-          <Link to="/">
-            <CloseButton />
-          </Link>
-          <Stack className={classes.logo}>
+    <Box className={classes.background}>
+      <Box className={classes.modal}>
+        {/* Le logo et le boutton close */}
+        <Box className={classes.closeAndLogo}>
+          <Box className={classes.close}>
+            <Link to="/">
+              <CloseButton />
+            </Link>
+          </Box>
+          <Box className={classes.logo}>
             <LogoTwitter />
-          </Stack>
-        </Stack>
-        <Stack
-          className={classes.signupContainer}
-          width="100%"
-          justifyContent="center"
-          spacing={2}
-        >
-          <Stack spacing={4}>
-            <Typography className={classes.accountCreateTitle}>
-              Créer votre compte
-            </Typography>
-            <Stack spacing={4}>
-              <Box component="form">
+          </Box>
+        </Box>
+        <form className={classes.form} action="submit" onSubmit={signUp}>
+          <Typography className={classes.accountCreateTitle}>
+            Créer votre compte
+          </Typography>
+          <Box>
+            {/* Input des Nom et Prénom */}
+            <Box className={classes.allInput}>
+              <TextField
+                className={classes.allInput}
+                autoFocus={true}
+                error={errorName}
+                fullWidth={true}
+                helperText={errorName === true ? "Quel est votre nom ?" : null}
+                label="Nom et Prénom"
+                onChange={(e) => {
+                  setName(e.target.value);
+                }}
+                required
+              />
+            </Box>
+            {/* Input UserName */}
+            <Box className={classes.allInput}>
+              <TextField
+                error={errorUserName}
+                fullWidth={true}
+                helperText={
+                  errorUserName === true
+                    ? "Choisissez un nom d'utilisateur."
+                    : null
+                }
+                label="Nom d'utilisateur"
+                onChange={(e) => {
+                  setUserName(e.target.value);
+                }}
+                required
+              />
+            </Box>
+            {/* Ternaire qui gère l'affichage entre input phone et email */}
+            {switchPhoneEmail === "Email" ? (
+              // Input Phone
+              <Box className={classes.allInput}>
                 <TextField
-                  type="text"
-                  variant="outlined"
-                  label="Nom et prénom"
                   fullWidth={true}
-                  autoFocus={true}
+                  label="Phone"
                   onChange={(e) => {
-                    e.target.value.length >= 2
-                      ? setErrorName(false)
-                      : setErrorName(true);
-                    setNewName(e.target.value);
+                    setPhone(e.target.value);
                   }}
-                  error={errorName}
-                  helperText={
-                    errorName === true ? "Quel est votre nom ?" : null
-                  }
+                  type="number"
                 />
               </Box>
-              {switchPhoneEmail === "Phone" ? (
-                <Box component="form">
-                  <TextField
-                    type="text"
-                    variant="outlined"
-                    label="Email"
-                    fullWidth={true}
-                    onChange={(e) => {
-                      e.target.value.includes("@") &&
-                      e.target.value.includes(".")
-                        ? setErrorEmail(false)
-                        : setErrorEmail(true);
-                      setNewEmail(e.target.value);
-                    }}
-                    error={errorEmail}
-                    helperText={
-                      errorEmail === true
-                        ? "Veuillez entrer un email valide."
-                        : null
-                    }
-                  />
-                </Box>
-              ) : switchPhoneEmail === "Email" ? (
-                <Box component="form">
-                  <TextField
-                    type="number"
-                    variant="outlined"
-                    label="Téléphone"
-                    fullWidth={true}
-                    onChange={(e) => {
-                      e.target.value.length >= 10
-                        ? setErrorPhone(false)
-                        : setErrorPhone(true);
-                      setNewPhone(e.target.value);
-                    }}
-                    error={errorPhone}
-                    helperText={
-                      errorPhone === true
-                        ? "Veuillez entrer un numéro de téléphone valide."
-                        : null
-                    }
-                  />
-                </Box>
-              ) : null}
-            </Stack>
-            <SwitchPhoneEmail />
-          </Stack>
+            ) : switchPhoneEmail === "Phone" ? (
+              // Input Email
+              <Box className={classes.allInput}>
+                <TextField
+                  fullWidth={true}
+                  label="Email"
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
+                  required
+                  type="email"
+                />
+              </Box>
+            ) : null}
+          </Box>
+          <SwitchPhoneEmail />
           <Typography className={classes.birthdayPasswordTitle}>
             Créer votre mot de passe
           </Typography>
-          <Box component="form">
-            <TextField
-              type="password"
-              variant="outlined"
-              label="Mot de passe"
-              fullWidth={true}
-              onChange={(e) => {
-                e.target.value.length >= 6
-                  ? setPasswordIsOk(false)
-                  : setPasswordIsOk(true);
-                setNewPassword(e.target.value);
-              }}
-              error={passwordIsOk}
-              helperText={
-                passwordIsOk === true
-                  ? "Votre mot de passe est trop cour"
-                  : null
-              }
-            />
-          </Box>
-          <Stack>
+          {/* Input Password */}
+          <TextField
+            error={passwordConfirmation}
+            fullWidth={true}
+            helperText={
+              passwordConfirmation ? "Votre mot de passe est trop cours" : null
+            }
+            label="Mot de passe"
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setPasswordConfirmation(e.target.value);
+              e.target.value.length >= 6
+                ? setPasswordConfirmation(false)
+                : setPasswordConfirmation(true);
+            }}
+            required
+            type="password"
+          />
+          {/* Partie date de naissanse */}
+          <Box className={classes.birthday}>
             <Typography className={classes.birthdayPasswordTitle}>
               Date de naissance
             </Typography>
@@ -283,21 +303,15 @@ function SignUp() {
               compagnie ou autre chose.
             </Typography>
             <MMDDYYYYInput />
-          </Stack>
-          <Stack backgroundColor="white">
-            {/* <Link to={"/home"}> */}
-            <Button
-              className={classes.nextButton}
-              size="large"
-              onClick={createUser}
-            >
+          </Box>
+          <Box>
+            <Button className={classes.nextButton} size="large" type="submit">
               Suivant
             </Button>
-            {/* </Link> */}
-          </Stack>
-        </Stack>
-      </Stack>
-    </div>
+          </Box>
+        </form>
+      </Box>
+    </Box>
   );
 }
 

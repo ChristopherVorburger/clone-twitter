@@ -1,4 +1,5 @@
-import React from "react";
+import { useState, useContext } from "react";
+
 import {
   Box,
   Button,
@@ -9,13 +10,23 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import ProfileButton from "../buttons/ProfileButton";
 
-import { icons } from "../../constants";
+import { icons, images } from "../../constants";
 
 import useStyles from "./styles";
 
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  serverTimestamp,
+} from "firebase/firestore";
+
+import { AuthContext } from "../../context/authContext";
+
 const NewTweet = () => {
+  const [text, setText] = useState("");
+  const auth = useContext(AuthContext);
   const classes = useStyles();
 
   const iconsArray = [
@@ -26,31 +37,82 @@ const NewTweet = () => {
     { name: icons.CalendarTodayOutlinedIcon, path: "/" },
     { name: icons.FmdGoodOutlinedIcon, path: "/" },
   ];
+
+  // Initialisation de firestore
+  const database = getFirestore();
+
+  // Référence des collections
+  const tweetsCollectionRef = collection(database, "tweets");
+
+  const addTweet = (e) => {
+    e.preventDefault();
+
+    addDoc(tweetsCollectionRef, {
+      text,
+      // on utilise serverTimestamp() pour créer automatiquement la date de création du tweet
+      created_at: serverTimestamp(),
+      author_id: auth.authUser.uid,
+      public_metrics: {
+        retweet_count: 0,
+        reply_count: 0,
+        like_count: 0,
+        quote_count: 0,
+      },
+    })
+      .then(() => {
+        // on nettoie l'input si ok
+        setText("");
+        console.log("Tweet created !");
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  };
+  console.log(text);
   return (
     <Box
       className={classes.new_tweet}
       sx={{
         width: "100%",
         maxWidth: "600px",
-        ml: "1.5rem",
+        ml: "1rem",
       }}
     >
       <Stack direction="row">
-        <ProfileButton />
+        <Box mr="1rem">
+          {auth.userData?.[0]?.profile_image_url ? (
+            <img
+              className={classes.avatar}
+              style={{ border: "1px solid lightgrey" }}
+              src={auth.userData?.[0]?.profile_image_url}
+              alt="user avatar"
+            />
+          ) : (
+            <img
+              className={classes.avatar}
+              style={{ border: "1px solid lightgrey" }}
+              src={images.user}
+              alt="user avatar"
+            />
+          )}
+        </Box>
         <Stack alignItems="flex-start">
           <Box>
             <TextField
+              value={text}
+              autoComplete="off"
               sx={{
                 border: "none!important",
                 "& .MuiOutlinedInput-notchedOutline": {
                   borderStyle: "none",
                 },
                 "& .MuiOutlinedInput-input": {
-                  fontSize: "1.3rem!important",
+                  fontSize: "font.large",
                   padding: "16.5px 0!important",
                 },
               }}
               placeholder="What's happening?"
+              onChange={(e) => setText(e.target.value)}
             />
           </Box>
           <Box>
@@ -65,8 +127,8 @@ const NewTweet = () => {
               <icons.PublicOutlinedIcon />
               <Typography
                 sx={{
-                  fontWeight: "bold",
-                  fontSize: "12px",
+                  fontWeight: "mainBold",
+                  fontSize: "font.small",
                 }}
               >
                 Everyone can reply
@@ -119,13 +181,13 @@ const NewTweet = () => {
                   textTransform: "none",
                   borderRadius: "50px",
                   backgroundColor: "primary.main",
-                  fontWeight: "bold",
                   width: "80px",
                 }}
               >
                 <Typography
+                  onClick={addTweet}
                   sx={{
-                    fontWeight: "bold",
+                    fontWeight: "mainBold",
                     color: "white.main",
                   }}
                 >

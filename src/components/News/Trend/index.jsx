@@ -5,53 +5,41 @@ import { Box } from "@mui/system";
 import { icons } from "../../../constants";
 import useStyles from "./styles";
 
-const Trend = ({ position, category, title, nbTweets }) => {
+// Composant pour afficher une news dans les trends
+const Trend = ({ news, index }) => {
   const classes = useStyles();
+
+  const randomNumber = Math.floor(Math.random() * 10000);
+
   return (
     <Box className={classes.container} p="1rem">
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        height="1.2rem"
-      >
-        <Box display="flex">
-          <Typography fontSize="13px" color="grey.main" mr="0.2rem">
-            {position}
-          </Typography>
-          <Typography fontSize="13px" color="grey.main">
-            ·
-          </Typography>
-          {category?.includes("Trending") ? (
-            <Typography fontSize="13px" color="grey.main" m="0 0.2rem">
-              {category}
-            </Typography>
-          ) : (
-            <>
-              <Typography fontSize="13px" color="grey.main" m="0 0.2rem">
-                {category}
-              </Typography>
-              <Typography fontSize="13px" color="grey.main">
-                · Trending
-              </Typography>
-            </>
-          )}
-        </Box>
+      <Box display="flex" justifyContent="space-between" flexDirection="column">
         <Box>
-          <IconButton>
-            <icons.MoreHorizIcon />
-          </IconButton>
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Typography fontSize="font.small" color="grey.main" mr="0.2rem">
+              {index + 1} · Trending in USA
+            </Typography>
+            <Box>
+              <IconButton>
+                <icons.MoreHorizIcon />
+              </IconButton>
+            </Box>
+          </Box>
+          <Box>
+            <Typography fontSize="font.main" fontWeight="mainBold">
+              {news.title}
+            </Typography>
+          </Box>
+          <Box>
+            <Typography fontSize="font.small" color="#536471">
+              {randomNumber} Tweets
+            </Typography>
+          </Box>
         </Box>
-      </Box>
-      <Box>
-        <Typography fontSize="15px" fontWeight="bold">
-          {title}
-        </Typography>
-      </Box>
-      <Box>
-        <Typography fontSize="13px" color="#536471">
-          {nbTweets} Tweets
-        </Typography>
       </Box>
     </Box>
   );

@@ -5,14 +5,13 @@ import { Box, Button, Container, Typography } from "@mui/material";
 
 import useStyles from "./styles";
 
-const Welcome = ({ drawerWidth }) => {
+const Welcome = () => {
   const classes = useStyles();
   return (
     <Box
       sx={{
-        width: `calc(100% - ${drawerWidth}px)`,
+        width: "100%",
         maxWidth: "600px",
-        ml: `${drawerWidth}px`,
       }}
       height="100vh"
     >
@@ -23,17 +22,12 @@ const Welcome = ({ drawerWidth }) => {
         <Typography
           className={classes.welcome__title}
           mb="0.5rem"
-          fontWeight="bold"
+          fontWeight="mainBold"
           fontSize="29px"
         >
           Welcome to Twitter!
         </Typography>
-        <Typography
-          mb="27px"
-          fontWeight="light"
-          fontSize="14px"
-          color="grey.darker"
-        >
+        <Typography mb="27px" fontSize="font.main">
           This is the best place to see what’s happening in your world. Find
           some people and topics to follow now.
         </Typography>
@@ -42,7 +36,7 @@ const Welcome = ({ drawerWidth }) => {
           className={classes.button}
           sx={{ display: "flex" }}
         >
-          <Typography fontWeight="bold">Let's go!</Typography>
+          <Typography fontWeight="mainBold">Let's go!</Typography>
         </Button>
       </Container>
       <Box className={classes.button__add_tweet}>

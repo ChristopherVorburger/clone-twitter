@@ -4,18 +4,26 @@ import {
   ListItemIcon,
   ListItemButton,
   ListItemText,
+  ClickAwayListener,
 } from "@mui/material";
 
 import { icons } from "../../constants";
 
 import useStyles from "./styles";
-import ProfileButton from "../buttons/ProfileButton";
 import AddTweetButton from "../buttons/AddTweetButton";
 import { Link } from "react-router-dom";
 
 import { Box } from "@mui/system";
 
-const LeftNavbar = ({ drawerWidth }) => {
+import { AuthContext } from "../../context/authContext";
+import ClassicButton from "../buttons/ClassicButton";
+import SimpleDialog from "../SimpleDialog";
+import BottomAvatar from "./BottomAvatar";
+
+const LeftNavbar = () => {
+  // Utilisation du hook useContext pour récupérer le contexte Auth
+  const auth = React.useContext(AuthContext);
+
   const classes = useStyles();
 
   const iconsArray = [
@@ -29,32 +37,46 @@ const LeftNavbar = ({ drawerWidth }) => {
     { name: icons.EmailOutlinedIcon, path: "/messages", text: "Messages" },
     { name: icons.BookmarkBorderIcon, path: "/bookmarks", text: "Bookmarks" },
     { name: icons.FeaturedPlayListOutlinedIcon, path: "/", text: "Lists" },
-    { name: icons.PersonOutlineOutlinedIcon, path: "/", text: "Profile" },
+    {
+      name: icons.PersonOutlineOutlinedIcon,
+      path: `/${auth?.userData?.[0]?.username}`,
+      text: "Profile",
+    },
     { name: icons.MoreHorizIcon, path: "", text: "More" },
   ];
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClick = () => {
+    setOpen((prev) => !prev);
+  };
+
+  const handleClickAway = () => {
+    setOpen(false);
+  };
+
   return (
     <Box className={classes.container}>
-      <Box className={classes.drawer}>
+      <Box>
         <Box
           display="flex"
           flexDirection="column"
           justifyContent="space-between"
           height="100vh"
         >
-          <Box display="flex" alignItems="flex-end" mr="1rem">
+          <Box>
             <List>
               <ListItemButton sx={{ borderRadius: "50px" }}>
                 <ListItemIcon
                   sx={{
+                    mb: "0.5rem",
                     display: "flex",
                     justifyContent: "center",
                     transform: "scale(1.2)",
                     color: "primary.main",
-                    margin: "0.5rem",
-                    minWidth: "20px",
                   }}
                 >
-                  <icons.TwitterIcon />
+                  <icons.TwitterIcon data-testid="TwitterIcon" />
                 </ListItemIcon>
               </ListItemButton>
               {/* Loop through the 'iconsArray' array and use the render() function to display the component */}
@@ -67,19 +89,23 @@ const LeftNavbar = ({ drawerWidth }) => {
                     sx={{ borderRadius: "50px" }}
                   >
                     <ListItemIcon
+                      className={classes.icons}
                       sx={{
+                        mb: "0.5rem",
                         display: "flex",
                         justifyContent: "center",
                         transform: "scale(1.2)",
-                        m: "0.5rem",
-                        minWidth: "20px",
+                        color: "black.main",
                       }}
                     >
                       {icon.name.type.render()}
                     </ListItemIcon>
                     <ListItemText
                       className={classes.icon__text}
-                      sx={{ ml: "1rem" }}
+                      sx={{
+                        fontSize: "font.large",
+                        color: "black.main",
+                      }}
                     >
                       {icon.text}
                     </ListItemText>
@@ -87,35 +113,31 @@ const LeftNavbar = ({ drawerWidth }) => {
                 );
               })}
               <ListItemButton
+                className={classes.add_tweet__button}
                 sx={{
-                  left: "1.5rem",
-                  bottom: "-8.5rem",
-                  backgroundColor: "white!important",
+                  right: "2.5rem",
+                  bottom: "-8rem",
+                  backgroundColor: "transparent!important",
+                  borderRadius: "50px",
                 }}
               >
-                <ListItemIcon
-                  sx={{
-                    transform: "scale(1)",
-                  }}
-                >
+                <ListItemIcon>
                   <AddTweetButton />
+                </ListItemIcon>
+              </ListItemButton>
+              <ListItemButton className={classes.list_item_button}>
+                <ListItemIcon className={classes.add_tweet__button_large}>
+                  <ClassicButton text={"Tweet"} />
                 </ListItemIcon>
               </ListItemButton>
             </List>
           </Box>
-          <Box mr="1rem">
-            <ListItemButton sx={{ backgroundColor: "white!important" }}>
-              <ListItemIcon
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  minWidth: "20px",
-                }}
-              >
-                <ProfileButton />
-              </ListItemIcon>
-            </ListItemButton>
-          </Box>
+          <ClickAwayListener onClickAway={handleClickAway}>
+            <Box onClick={handleClick}>
+              <BottomAvatar />
+              {open ? <SimpleDialog open={open} setOpen={setOpen} /> : null}
+            </Box>
+          </ClickAwayListener>
         </Box>
       </Box>
     </Box>

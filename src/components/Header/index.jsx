@@ -1,40 +1,66 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 import { AppBar, Box, IconButton, Toolbar, Typography } from "@mui/material";
 
-import useStyles from "./styles";
-
-import { icons } from "../../constants";
-
 import ProfileButton from "../buttons/ProfileButton";
 
-const Header = () => {
+import useStyles from "./styles";
+
+const Header = ({ iconsLeft, iconsRight, subtitle, title }) => {
   const classes = useStyles();
+  const navigate = useNavigate();
 
   return (
-    <Box>
+    <Box className={classes.header__container}>
       <AppBar color="inherit" position="static" elevation={0}>
         <Toolbar>
-          <Box className={classes.header__button_profile}>
-            <ProfileButton />
-          </Box>
-          <Typography
-            fontSize="1rem"
-            fontWeight="bold"
-            component="div"
-            sx={{ flexGrow: 1 }}
-          >
-            Home
-          </Typography>
-
-          <IconButton sx={{ padding: "1rem" }} aria-label="menu">
-            <icons.AutoAwesomeSharpIcon
+          {/* TODO: Optimiser cet affichage dynamique */}
+          <>
+            {title === "Home" ? (
+              <Box className={classes.header__button_profile}>
+                <ProfileButton />
+              </Box>
+            ) : null}
+          </>
+          <Box>
+            <IconButton
               sx={{
+                padding: "1rem",
                 color: "black.main",
-                transform: "rotate(180deg)",
               }}
-            />
-          </IconButton>
+              aria-label="menu"
+              onClick={() => navigate(-1)}
+            >
+              {iconsLeft?.type?.render()}
+            </IconButton>
+          </Box>
+          <Box
+            width="100%"
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Box>
+              <Typography fontSize="font.large" fontWeight="mainBold">
+                {title}
+              </Typography>
+              <Typography fontSize="font.small" color="grey.main">
+                {subtitle}
+              </Typography>
+            </Box>
+            <Box>
+              <IconButton
+                sx={{
+                  color: "black.main",
+                  transform: "rotate(180deg)",
+                }}
+                aria-label="menu"
+              >
+                {iconsRight?.type?.render()}
+              </IconButton>
+            </Box>
+          </Box>
         </Toolbar>
       </AppBar>
     </Box>

@@ -16,6 +16,25 @@ import SentimentSatisfiedAltOutlinedIcon from "@mui/icons-material/SentimentSati
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import FmdGoodOutlinedIcon from "@mui/icons-material/FmdGoodOutlined";
 import PublicOutlinedIcon from "@mui/icons-material/PublicOutlined";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import DateRangeOutlinedIcon from "@mui/icons-material/DateRangeOutlined";
+import CloseIcon from "@mui/icons-material/Close";
+import AddAPhotoOutlinedIcon from "@mui/icons-material/AddAPhotoOutlined";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import PushPinOutlinedIcon from "@mui/icons-material/PushPinOutlined";
+import PlaylistAddOutlinedIcon from "@mui/icons-material/PlaylistAddOutlined";
+import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
+import CodeOutlinedIcon from "@mui/icons-material/CodeOutlined";
+import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
+import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
+import PersonRemoveOutlinedIcon from "@mui/icons-material/PersonRemoveOutlined";
+import VolumeOffOutlinedIcon from "@mui/icons-material/VolumeOffOutlined";
+import BlockOutlinedIcon from "@mui/icons-material/BlockOutlined";
+import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
+import BookmarkRemoveOutlinedIcon from "@mui/icons-material/BookmarkRemoveOutlined";
+import InsertLinkOutlinedIcon from "@mui/icons-material/InsertLinkOutlined";
 
 const icons = {
   HomeSharpIcon,
@@ -36,6 +55,25 @@ const icons = {
   CalendarTodayOutlinedIcon,
   FmdGoodOutlinedIcon,
   PublicOutlinedIcon,
+  ArrowBackIcon,
+  DateRangeOutlinedIcon,
+  CloseIcon,
+  AddAPhotoOutlinedIcon,
+  DeleteOutlineOutlinedIcon,
+  PushPinOutlinedIcon,
+  PlaylistAddOutlinedIcon,
+  ChatBubbleOutlineOutlinedIcon,
+  CodeOutlinedIcon,
+  BarChartOutlinedIcon,
+  SentimentVeryDissatisfiedIcon,
+  PersonRemoveOutlinedIcon,
+  VolumeOffOutlinedIcon,
+  BlockOutlinedIcon,
+  FlagOutlinedIcon,
+  FavoriteIcon,
+  BookmarkAddOutlinedIcon,
+  BookmarkRemoveOutlinedIcon,
+  InsertLinkOutlinedIcon,
 };
 
 export default icons;
