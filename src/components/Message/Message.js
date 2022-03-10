@@ -131,74 +131,36 @@ export default function Messages() {
   }, []);
 
   return (
-    <>
-      <div className="classes.container">
-        <Stack direction="row">
-          {/* <LeftNavbar drawerWidth={drawerWidth} /> */}
-          <Box
-            display="flex"
-            flexDirection="column"
-            borderLeft="1px solid #eff3f4"
-            borderRight="1px solid #eff3f4"
-            sx={{
-              width: 400,
+    <Box display="flex" height="100%">
+      <Box borderLeft="1px solid #eff3f4" borderRight="1px solid #eff3f4">
+        <ListeChannels
+          channels={channels}
+          handleClick={(idChannels) => handleDisplayChannelMessage(idChannels)}
+        />
+      </Box>
 
-              '&:hover': {
-                opacity: [0.9, 0.8, 0.7],
-              },
-            }}
-          >
-            <Container maxWidth="md">
-              <Stack display="flex" flexDirection="row" spacing={1} md={4}>
-                <Typography variant="span">Messages</Typography>
-                <AddCommentIcon />
-              </Stack>
-              <Divider sx={{ borderColor: 'background__input' }} />
-              <Stack display="flex" flexDirection="row">
-                <ListeChannels
-                  channels={channels}
-                  handleClick={(idChannels) =>
-                    handleDisplayChannelMessage(idChannels)
-                  }
-                />
-              </Stack>
-            </Container>
-          </Box>
-          <Box
-            display="flex"
-            flexDirection="column"
-            borderLeft="1px solid #eff3f4"
-            borderRight="1px solid #eff3f4"
-            sx={{
-              // width: 400,
-              height: 50,
-              // '&:hover': {
-              //   opacity: [0.9, 0.8, 0.7],
-              // },
-            }}
-            style={{ paddingRight: '0.25em', paddingLeft: '0.25em' }}
-          >
-            <Message messages={messages} />
+      <Box borderLeft="1px solid #eff3f4" borderRight="1px solid #eff3f4">
+        <Box>
+          <Message messages={messages} />
+        </Box>
+        <Box justifyContent={'flex-end'}>
+          <Divider sx={{ borderColor: 'background__input' }} />
+          {/* <Stack
+            // display="flex"
+            flexDirection="row"
+            // spacing={1}
+            // md={4}
+            // justify="flex-end"
+          > */}
+          <TextField ref={messageToAdd} />
 
-            <Divider sx={{ borderColor: 'background__input' }} />
-            <Stack
-              display="flex"
-              flexDirection="row"
-              spacing={1}
-              md={4}
-              justify="flex-end"
-            >
-              <TextField ref={messageToAdd} />
-
-              <Button variant="contained" onClick={() => handleAddNewMessage()}>
-                Add message
-              </Button>
-            </Stack>
-          </Box>
-        </Stack>
-        <BottomNavigation />
-      </div>
-    </>
+          <Button variant="contained" onClick={() => handleAddNewMessage()}>
+            Add message
+          </Button>
+          {/* </Stack> */}
+        </Box>
+      </Box>
+    </Box>
   );
 }
 
