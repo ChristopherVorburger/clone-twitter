@@ -16,6 +16,7 @@ import Notifications from "./pages/Notifications";
 
 import { AuthContext } from "./context/authContext";
 import { SnackbarsContextProvider } from "./context/snackbarsContext";
+import Mentions from "./pages/Mentions";
 
 export default function App() {
   const auth = React.useContext(AuthContext);
@@ -73,6 +74,7 @@ export default function App() {
               <Route path="/settings/profile" element={<EditProfileModal />} />
               <Route path="/bookmarks" element={<Bookmarks />} />
               <Route path="/notifications" element={<Notifications />} />
+              <Route path="/notifications/mentions" element={<Mentions />} />
               <Route path="*" element={<Navigate to="/home" />} />
             </Routes>
           </SnackbarsContextProvider>

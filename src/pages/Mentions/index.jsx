@@ -18,12 +18,12 @@ function LinkTab(props) {
   return <Tab component={Link} {...props} />;
 }
 
-const Notifications = () => {
+const Mentions = () => {
   const classes = useStyles();
   const auth = React.useContext(AuthContext);
 
   // State pour la nav tab
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = React.useState(1);
 
   // Fonction de la nav tab
   const handleChange = (event, newValue) => {
@@ -64,4 +64,4 @@ const Notifications = () => {
   );
 };
 
-export default Notifications;
+export default Mentions;
