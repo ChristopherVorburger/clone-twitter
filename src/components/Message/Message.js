@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
@@ -29,6 +29,8 @@ import {
   Tab,
   TabContentPanel,
   Alert,
+  TextField,
+  Button,
 } from '@mui/material';
 import useStyles from './styles';
 
@@ -77,6 +79,7 @@ export default function Messages() {
 
   const [channels, setChannels] = useState([]);
   const [messages, setMessages] = useState([]);
+  const [channelSelected, setChannelSelected] = useState('');
   console.log('userid => ' + auth.currentUser.uid);
 
   function getChannesls() {
@@ -105,7 +108,22 @@ export default function Messages() {
 
   function handleDisplayChannelMessage(idChannels) {
     console.log('id channels => ' + idChannels);
+    setChannelSelected(idChannels);
     getMessages(idChannels);
+  }
+
+  const messageToAdd = useRef('');
+  function handleAddNewMessage() {
+    const userId = auth.currentUser.uid;
+    const createdAt = firebase.firestore.FieldValue.serverTimestamp();
+    const messageChannel = messagesRef.add({
+      channels_id: channelSelected,
+      created_at: createdAt,
+      photoUrl: null,
+      sender_id: userId,
+      senderName: '',
+      text: messageToAdd.current,
+    });
   }
 
   useEffect(() => {
@@ -116,7 +134,7 @@ export default function Messages() {
     <>
       <div className="classes.container">
         <Stack direction="row">
-          <LeftNavbar drawerWidth={drawerWidth} />
+          {/* <LeftNavbar drawerWidth={drawerWidth} /> */}
           <Box
             display="flex"
             flexDirection="column"
@@ -137,12 +155,12 @@ export default function Messages() {
               </Stack>
               <Divider sx={{ borderColor: 'background__input' }} />
               <Stack display="flex" flexDirection="row">
-                {/* <ListeChannels
+                <ListeChannels
                   channels={channels}
                   handleClick={(idChannels) =>
                     handleDisplayChannelMessage(idChannels)
                   }
-                /> */}
+                />
               </Stack>
             </Container>
           </Box>
@@ -153,13 +171,29 @@ export default function Messages() {
             borderRight="1px solid #eff3f4"
             sx={{
               // width: 400,
-
-              '&:hover': {
-                opacity: [0.9, 0.8, 0.7],
-              },
+              height: 50,
+              // '&:hover': {
+              //   opacity: [0.9, 0.8, 0.7],
+              // },
             }}
+            style={{ paddingRight: '0.25em', paddingLeft: '0.25em' }}
           >
             <Message messages={messages} />
+
+            <Divider sx={{ borderColor: 'background__input' }} />
+            <Stack
+              display="flex"
+              flexDirection="row"
+              spacing={1}
+              md={4}
+              justify="flex-end"
+            >
+              <TextField ref={messageToAdd} />
+
+              <Button variant="contained" onClick={() => handleAddNewMessage()}>
+                Add message
+              </Button>
+            </Stack>
           </Box>
         </Stack>
         <BottomNavigation />
@@ -170,19 +204,19 @@ export default function Messages() {
 
 function ListeChannels({ channels, handleClick }) {
   if (channels) {
-    console.log('channels => ');
-    console.log(channels);
-    console.log('channel id => ' + channels.id);
+    // console.log('channels => ');
+    // console.log(channels);
+    // console.log('channel id => ' + channels.id);
 
     return (
-      <Grid container spacing={4}>
+      <Grid container>
         {channels.map((channel, index) => (
           <Grid item key={index} xs={12}>
-            <CardContent onClick={() => handleClick(channel.id)}>
-              <ListItemButton>
+            <ListItemButton>
+              <CardContent onClick={() => handleClick(channel.id)}>
                 <Typography variant="h6">Channels</Typography>
-              </ListItemButton>
-            </CardContent>
+              </CardContent>
+            </ListItemButton>
           </Grid>
         ))}
       </Grid>
@@ -196,19 +230,42 @@ function Message({ messages = [] }) {
   if (messages && messages.length > 0) {
     console.log('messages =>');
     console.log(messages);
+
     return (
-      <Grid container spacing={4}>
+      <Grid container>
         {messages.map((message, index) => (
-          <Grid item key={index} xs={12}>
-            <CardContent>
-              <Typography variant="h6">User name to display</Typography>
-              <Typography variant="h6">{message.text}</Typography>
-            </CardContent>
+          <Grid
+            item
+            key={index}
+            xs={12}
+            style={{
+              marginBottom: '0.2em',
+              paddingTop: '0.3em',
+              paddingBottom: '0.3em',
+              textAlign:
+                message.sender_id == auth.currentUser.uid ? 'right' : 'left',
+            }}
+          >
+            <Typography
+              variant="span"
+              style={{
+                backgroundColor:
+                  message.sender_id == auth.currentUser.uid
+                    ? '#1d9bf0'
+                    : '#ECE7E7',
+                padding: '0.5em',
+                borderRadius: '25px',
+                paddingTop: '0.20em',
+                paddingBottom: '0.20em',
+              }}
+            >
+              {message.text}
+            </Typography>
           </Grid>
         ))}
       </Grid>
     );
   } else {
-    return <Typography variant="h6">Pas de messages!</Typography>;
+    return <Typography variant="h6">Pas de messages sélectionné!</Typography>;
   }
 }
