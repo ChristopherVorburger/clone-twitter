@@ -184,6 +184,7 @@ export default function Tweet({ tweet }) {
   const handleClickAwayShare = () => {
     setOpenShare(false);
   };
+
   return (
     <TweetContainer>
       {matchedUser?.[0]?.profile_image_url ? (
@@ -203,7 +204,7 @@ export default function Tweet({ tweet }) {
             <TweetDate>
               {/* calcul de la date du tweet avec la librairie date-fns
                 formateDistance permet de calculer l'interval entre deux dates
-                On soustrait donc la date du tweet formatée à la date actuelle de cette manière */}
+              On soustrait donc la date du tweet formatée à la date actuelle de cette manière */}
               {!created_at
                 ? null
                 : formatDistance(

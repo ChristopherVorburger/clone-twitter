@@ -13,11 +13,14 @@ import {
 } from "@mui/material";
 
 import { AuthContext } from "../../../context/authContext";
+import { SnackbarsContext } from "../../../context/snackbarsContext";
+
 import { icons } from "../../../constants";
 
-// Fonction qui affiche lea actions possibles sur un tweet
-const TweetDialog = ({ id, open }) => {
+// Fonction qui affiche les actions possibles au clique sur le bouton share
+const ShareDialog = ({ id, open }) => {
   const auth = React.useContext(AuthContext);
+  const snackbar = React.useContext(SnackbarsContext);
 
   // Référence du user à mettre à jour
   const userRef = doc(database, "users", auth.userData?.[0]?.id);
@@ -25,13 +28,19 @@ const TweetDialog = ({ id, open }) => {
   // fonction pour ajouter un bookmark
   const addBookmark = (e) => {
     e.preventDefault();
+    snackbar.setMessageBookmarkSnackbar("");
+    snackbar.setMessageActionBookmarkSnackbar("");
 
     // Si l'utilisateur n'a pas de bookmarks on lui ajoute un nouveau tableau bookmarks avec le premier
     if (!auth.userData?.[0]?.bookmarks) {
       updateDoc(userRef, {
         bookmarks: [id],
       })
+        // Puis on affiche la snackbar en mettant à jour les states
         .then(() => {
+          snackbar.setMessageBookmarkSnackbar("Tweet added to your Bookmarks");
+          snackbar.setMessageActionBookmarkSnackbar("View");
+          snackbar.setOpenBookmarkSnackbar(true);
           console.log("Add first bookmark done");
         })
         .catch((err) => {
@@ -42,7 +51,11 @@ const TweetDialog = ({ id, open }) => {
       updateDoc(userRef, {
         bookmarks: [...auth.userData?.[0]?.bookmarks, id],
       })
+        // Puis on affiche la snackbar en mettant à jour les states
         .then(() => {
+          snackbar.setMessageBookmarkSnackbar("Tweet added to your Bookmarks");
+          snackbar.setMessageActionBookmarkSnackbar("View");
+          snackbar.setOpenBookmarkSnackbar(true);
           console.log("Add to bookmarks done");
         })
         .catch((err) => {
@@ -54,11 +67,18 @@ const TweetDialog = ({ id, open }) => {
   // fonction pour supprimer un bookmark
   const removeBookmark = (e) => {
     e.preventDefault();
+    snackbar.setMessageBookmarkSnackbar("");
+    snackbar.setMessageActionBookmarkSnackbar("");
 
     updateDoc(userRef, {
       bookmarks: arrayRemove(id),
     })
+      // Puis on affiche la snackbar en mettant à jour les states
       .then(() => {
+        snackbar.setMessageBookmarkSnackbar(
+          "Tweet removed from your Bookmarks"
+        );
+        snackbar.setOpenBookmarkSnackbar(true);
         console.log("Remove from bookmarks done");
       })
       .catch((err) => {
@@ -66,6 +86,7 @@ const TweetDialog = ({ id, open }) => {
       });
   };
 
+  // Tableau d'icones sur un tweet non bookmarqué
   const addBookmarksIconsArray = [
     {
       name: icons.EmailOutlinedIcon,
@@ -82,6 +103,7 @@ const TweetDialog = ({ id, open }) => {
     },
   ];
 
+  // Tableau d'icones sur un tweet déjà bookmarqué
   const removeBookmarksIconsArray = [
     {
       name: icons.EmailOutlinedIcon,
@@ -101,17 +123,21 @@ const TweetDialog = ({ id, open }) => {
   return (
     <Dialog disableScrollLock open={open}>
       <List>
+        {/* Si le tweet est dans les bookmarks on affiche ceci */}
         {auth.userData?.[0]?.bookmarks.includes(id)
           ? removeBookmarksIconsArray.map((icon, index) => {
               return (
+                // icon.action est une référence à la fonction à executer lors du clique
                 <ListItemButton key={index} onClick={icon.action}>
                   <ListItemIcon>{icon.name.type.render()}</ListItemIcon>
                   <ListItemText> {icon.text}</ListItemText>
                 </ListItemButton>
               );
             })
-          : addBookmarksIconsArray.map((icon, index) => {
+          : // Sinon on affiche cela
+            addBookmarksIconsArray.map((icon, index) => {
               return (
+                // icon.action est une référence à la fonction à executer lors du clique
                 <ListItemButton key={index} onClick={icon.action}>
                   <ListItemIcon>{icon.name.type.render()}</ListItemIcon>
                   <ListItemText> {icon.text}</ListItemText>
@@ -123,4 +149,4 @@ const TweetDialog = ({ id, open }) => {
   );
 };
 
-export default TweetDialog;
+export default ShareDialog;

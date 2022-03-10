@@ -25,8 +25,6 @@ const Bookmarks = () => {
     return auth?.userData?.[0]?.bookmarks?.includes(tweet?.id);
   });
 
-  console.log("tweet bookmarkés", filteredTweets);
-
   return (
     <Box display="flex">
       <Box
@@ -40,6 +38,7 @@ const Bookmarks = () => {
           iconsRight={icons.MoreHorizIcon}
         />
         <Box display="flex" flexDirection="column" justifyContent="center">
+          {/* Si l'utilisateur n'a pas de bookmark on affiche ceci */}
           {auth.userData?.[0]?.bookmarks.length === 0 ? (
             <Box maxWidth="400px" m="2rem auto" p="0 2rem">
               <Box m="1rem 0 36px 0">
@@ -55,6 +54,7 @@ const Bookmarks = () => {
             </Box>
           ) : (
             <Box width="100%">
+              {/* Sinon on affiche les bookmarks */}
               {tweets ? (
                 <>
                   {filteredTweets.map((tweet) => (
