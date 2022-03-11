@@ -1,33 +1,9 @@
-import React, { useEffect, useState } from "react";
 import { TweetAvatar, TweetAuthor, TweetPseudo } from "../Tweet/Tweet.Style";
 import { TweetLargeWrapper, TweetLargeContainer, TweetLargeContent } from "./TweetLarge.Style";
-import { doc, getDoc } from "firebase/firestore";
-import { database } from "../../firebase-config";
 import Skeleton from "@mui/material/Skeleton";
 import { images } from "../../constants";
-import { TwentyZeroMpSharp } from "@mui/icons-material";
 
-export default function TweetLarge({ state }) {
-  const [dataUser, setDataUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  //Fonction qui permet de récupérer les donnés concerant l'auteur du tweet séléctioné
-  const getUser = async () => {
-    const docRef = doc(database, "users", state.state.author_id);
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-      setDataUser(docSnap.data());
-      setIsLoading(false);
-    } else {
-      console.log("No such document è");
-    }
-  };
-
-  useEffect(() => {
-    getUser();
-  }, []);
-
+export default function TweetLarge({ state, dataUser, isLoading }) {
   console.log(dataUser);
   return (
     <TweetLargeWrapper>

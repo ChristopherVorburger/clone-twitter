@@ -16,6 +16,7 @@ import Bookmarks from "./pages/Bookmarks";
 import { AuthContext } from "./context/authContext";
 import { SnackbarsContextProvider } from "./context/snackbarsContext";
 import TweetPage from "./pages/Tweet/TweetPage";
+import ScrollToTop from "./components/ScrollToTop";
 
 export default function App() {
   const auth = React.useContext(AuthContext);
@@ -54,6 +55,8 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
+      {/* ScrollToTop permet de revenir en haut de la page quand on clique sur un Link */}
+      <ScrollToTop />
       {!auth.authUser ? (
         <Routes>
           <Route path='/' element={<Prehome />} />
