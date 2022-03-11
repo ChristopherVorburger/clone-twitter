@@ -41,7 +41,6 @@ export default function TweetPage() {
   };
 
   //Fonction qui permet de récupérer les réponses du tweet
-
   const getTweetReply = (index) => {
     const repliesRef = collection(database, "replies");
     const q = query(repliesRef, where("tweet_id", "==", index), orderBy("created_at", "desc"));
@@ -64,7 +63,7 @@ export default function TweetPage() {
             <TweetLarge state={state} dataUser={dataUser} isLoading={isLoading} />
             <TweetInput />
             {dataResponsesTweet.map((dataResponseTweet) => (
-              <TweetReply key={dataResponseTweet.id} dataResponseTweet={dataResponseTweet} dataUser={dataUser} isLoading={isLoading} res />
+              <TweetReply key={dataResponseTweet.id} dataResponseTweet={dataResponseTweet} dataUser={dataUser} isLoading={isLoading} />
             ))}
           </TweetPageWrapper>
         </Box>
