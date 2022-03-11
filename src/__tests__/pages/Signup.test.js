@@ -1,7 +1,7 @@
 import SignUp from "../../pages/SignUp/SingUp";
 import { selectMonth } from "../../pages/SignUp/DataSelect";
 import userEvent from "@testing-library/user-event";
-import { faker } from "@faker-js/faker";
+// import { faker } from "@faker-js/faker";
 
 import { render, screen } from "../test-utils/ThemeAndRouter";
 
