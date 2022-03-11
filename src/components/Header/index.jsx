@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { AppBar, Box, IconButton, Toolbar, Typography } from "@mui/material";
 
@@ -7,7 +7,7 @@ import ProfileButton from "../buttons/ProfileButton";
 
 import useStyles from "./styles";
 
-// Attention iconsRight est un tableau
+// Attention iconsRight est un tableau pour pouvoir faire des tableaux d'objet et ainsi ajouter les chemins d'url ou des fonctions à exécuter au clique
 const Header = ({ iconsLeft, iconsRight, subtitle, title }) => {
   const classes = useStyles();
   const navigate = useNavigate();
@@ -52,17 +52,30 @@ const Header = ({ iconsLeft, iconsRight, subtitle, title }) => {
             </Box>
             <Box>
               {iconsRight?.map((icon) => {
-                return (
+                // Si un lien est affilié on renvoi un composant Link
+                return icon?.path ? (
                   <IconButton
-                    key={icon.type.render.displayName}
+                    key={icon.name.type.render.displayName}
                     sx={{
                       color: "black.main",
-
+                      transform: "rotate(180deg)",
+                    }}
+                    aria-label="menu"
+                    component={Link}
+                    to={icon?.path}
+                  >
+                    {icon?.name?.type?.render()}
+                  </IconButton>
+                ) : (
+                  <IconButton
+                    key={icon.name.type.render.displayName}
+                    sx={{
+                      color: "black.main",
                       transform: "rotate(180deg)",
                     }}
                     aria-label="menu"
                   >
-                    {icon?.type?.render()}
+                    {icon?.name?.type?.render()}
                   </IconButton>
                 );
               })}

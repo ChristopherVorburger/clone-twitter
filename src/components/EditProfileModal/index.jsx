@@ -42,7 +42,6 @@ const EditProfileModal = () => {
 
   // States pour la modale
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const [nameError, setNameError] = useState(false);

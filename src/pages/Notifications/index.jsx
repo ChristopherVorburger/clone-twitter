@@ -56,13 +56,12 @@ const Notifications = () => {
     }
   });
 
+  const iconsArray = [{ name: icons.SettingsOutlinedIcon }];
+
   return (
     <Box display="flex">
       <Box borderLeft="1px solid #eff3f4" borderRight="1px solid #eff3f4">
-        <Header
-          title="Notifications"
-          iconsRight={[icons.SettingsOutlinedIcon]}
-        />
+        <Header title="Notifications" iconsRight={iconsArray} />
         {/* Nav Tab */}
         <Box>
           <Box
