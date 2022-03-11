@@ -25,7 +25,6 @@ export function SnackbarsContextProvider(props) {
       }}>
       <SnackbarBookmark
         message={messageBookmarkSnackbar}
-        messageAction={messageActionBookmarkSnackbar}
         openBookmarkSnackbar={openBookmarkSnackbar}
         setOpenBookmarkSnackbar={setOpenBookmarkSnackbar}
       />

@@ -13,6 +13,7 @@ export default makeStyles((theme) => ({
     borderRadius: "50%",
     objectFit: "cover",
     objectPosition: "center",
+    border: "1px solid lightgrey",
   },
   dialog__avatar_texts: {
     [theme.breakpoints.down("lg")]: {

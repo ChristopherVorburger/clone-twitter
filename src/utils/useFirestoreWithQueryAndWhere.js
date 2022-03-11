@@ -28,4 +28,4 @@ export function useFirestoreWithQueryAndWhere(ref, fieldName, searchParam) {
   }, [ref]);
 
   return data;
-}
+

@@ -12,11 +12,13 @@ import Following from "./pages/Following";
 import EditProfileModal from "./components/EditProfileModal";
 import Layout from "./components/Layout";
 import Bookmarks from "./pages/Bookmarks";
+import Notifications from "./pages/Notifications";
 
 import { AuthContext } from "./context/authContext";
 import { SnackbarsContextProvider } from "./context/snackbarsContext";
 import TweetPage from "./pages/Tweet/TweetPage";
 import ScrollToTop from "./components/ScrollToTop";
+import Mentions from "./pages/Mentions";
 
 export default function App() {
   const auth = React.useContext(AuthContext);
@@ -77,6 +79,16 @@ export default function App() {
               <Route path='/bookmarks' element={<Bookmarks />} />
               <Route path='/status/:id' element={<TweetPage />} />
               <Route path='*' element={<Navigate to='/home' />} />
+              <Route path="/home" element={<Home />} />
+              <Route path="/exemple" element={<Exemple />} />
+              <Route path="/:username" element={<Profile />} />
+              <Route path="/:username/followers" element={<Followers />} />
+              <Route path="/:username/following" element={<Following />} />
+              <Route path="/settings/profile" element={<EditProfileModal />} />
+              <Route path="/bookmarks" element={<Bookmarks />} />
+              <Route path="/notifications" element={<Notifications />} />
+              <Route path="/notifications/mentions" element={<Mentions />} />
+              <Route path="*" element={<Navigate to="/home" />} />
             </Routes>
           </SnackbarsContextProvider>
         </Layout>

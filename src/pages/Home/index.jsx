@@ -64,7 +64,7 @@ const Home = () => {
               ))}
             </>
           ) : (
-            <CircularProgress />
+            <CircularProgress sx={{ margin: "auto" }} />
           )}
         </Box>
         <News />

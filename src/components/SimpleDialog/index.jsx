@@ -7,6 +7,8 @@ import { Box, Typography } from "@mui/material";
 
 import useStyles from "./styles";
 
+import { images } from "../../constants";
+
 import { AuthContext } from "../../context/authContext";
 
 function SimpleDialog(props) {
@@ -37,12 +39,19 @@ function SimpleDialog(props) {
           alignItems="center"
         >
           <Box width="50px" height="50px" marginRight="0.5rem">
-            <img
-              className={classes.dialog__avatar_button}
-              style={{ border: "1px solid lightgrey" }}
-              src={auth.userData?.[0]?.profile_image_url}
-              alt="user avatar"
-            />
+            {auth.userData?.[0]?.profile_image_url ? (
+              <img
+                className={classes.dialog__avatar_button}
+                src={auth.userData?.[0]?.profile_image_url}
+                alt="user avatar default"
+              />
+            ) : (
+              <img
+                className={classes.dialog__avatar_button}
+                src={images.user}
+                alt="user avatar default"
+              />
+            )}
           </Box>
           <Box className={classes.dialog__avatar_texts} flexGrow="1">
             <Typography fontSize="font.main" fontWeight="mainBold">
