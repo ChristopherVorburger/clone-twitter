@@ -3,11 +3,7 @@ import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
 import { useNavigate } from "react-router-dom";
 
-export default function SnackbarBookmark({
-  message,
-  openBookmarkSnackbar,
-  setOpenBookmarkSnackbar,
-}) {
+export default function SnackbarBookmark({ message, openBookmarkSnackbar, setOpenBookmarkSnackbar }) {
   const navigate = useNavigate();
 
   const handleClose = (event, reason) => {
@@ -21,11 +17,7 @@ export default function SnackbarBookmark({
   const action = (
     <React.Fragment>
       {message === "Tweet added to your Bookmarks" ? (
-        <Button
-          color="secondary"
-          size="small"
-          onClick={() => navigate("/bookmarks")}
-        >
+        <Button color='secondary' size='small' onClick={() => navigate("/bookmarks")}>
           View
         </Button>
       ) : null}
