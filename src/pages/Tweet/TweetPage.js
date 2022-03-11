@@ -9,12 +9,21 @@ import TweetLarge from "../../components/TweetLarge/TweetLarge";
 import TweetInput from "../../components/TweetInput/TweetInput";
 import { doc, getDoc } from "firebase/firestore";
 import { database } from "../../firebase-config";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import TweetReply from "../../components/TweetReply/TweetReply";
+import { collection, query, where, onSnapshot, orderBy } from "firebase/firestore";
 
 export default function TweetPage() {
   const [dataUser, setDataUser] = useState(null);
+  const [dataResponsesTweet, setDataResponsesTweet] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  //Gestion idTweet qui est récupérer depuis l'URL
+  const { id: tweetID } = useParams();
+  const promise = new Promise((resolve, reject) => {
+    resolve(tweetID);
+    reject("erreur : tweetID ");
+  });
 
   const { state } = useLocation();
 
@@ -31,15 +40,21 @@ export default function TweetPage() {
     }
   };
 
-  //Fonction qui permet de récupérer les réponse du tweet 
-  const getTweetReply = async () => {
-    
-  }
+  //Fonction qui permet de récupérer les réponses du tweet
+
+  const getTweetReply = (index) => {
+    const repliesRef = collection(database, "replies");
+    const q = query(repliesRef, where("tweet_id", "==", index), orderBy("created_at", "desc"));
+    onSnapshot(q, (snapshot) => {
+      setDataResponsesTweet(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    });
+  };
+
   useEffect(() => {
     getUser();
+    promise.then((index) => getTweetReply(index));
   }, []);
 
-  console.log(state);
   return (
     <>
       <Box display='flex' justifyContent='center'>
@@ -48,7 +63,9 @@ export default function TweetPage() {
           <TweetPageWrapper>
             <TweetLarge state={state} dataUser={dataUser} isLoading={isLoading} />
             <TweetInput />
-            <TweetReply dataUser={dataUser} isLoading={isLoading} />
+            {dataResponsesTweet.map((dataResponseTweet) => (
+              <TweetReply key={dataResponseTweet.id} dataResponseTweet={dataResponseTweet} dataUser={dataUser} isLoading={isLoading} res />
+            ))}
           </TweetPageWrapper>
         </Box>
         <News />

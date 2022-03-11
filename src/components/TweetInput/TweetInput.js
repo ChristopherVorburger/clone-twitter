@@ -21,13 +21,15 @@ export default function TweetInput() {
       text,
       tweet_id: id,
     });
+
+    setText("");
   };
 
   return (
     <TweetInputContainer>
       <TweetAvatar src={auth.userData?.[0]?.profile_image_url} alt='image de profil user' />
       <Form onSubmit={handleSubmit}>
-        <Input placeholder='Tweetez votre réponse' type='text' onChange={(e) => setText(e.target.value)} />
+        <Input placeholder='Tweetez votre réponse' type='text' onChange={(e) => setText(e.target.value)} value={text} />
         <ButtonSubmit type='submit' disabled={text === "" ? true : false}>
           Répondre
         </ButtonSubmit>
