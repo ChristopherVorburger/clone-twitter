@@ -15,10 +15,11 @@ import Bookmarks from "./pages/Bookmarks";
 
 import { AuthContext } from "./context/authContext";
 import { SnackbarsContextProvider } from "./context/snackbarsContext";
+import TweetPage from "./pages/Tweet/TweetPage";
 
 export default function App() {
   const auth = React.useContext(AuthContext);
-  console.log("auth", auth);
+
   // Création d'un thème pour changer la couleur principale de MUI
   let theme = createTheme({
     palette: {
@@ -55,23 +56,24 @@ export default function App() {
     <ThemeProvider theme={theme}>
       {!auth.authUser ? (
         <Routes>
-          <Route path="/" element={<Prehome />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="*" element={<Navigate to="/" />} />
+          <Route path='/' element={<Prehome />} />
+          <Route path='/signup' element={<SignUp />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='*' element={<Navigate to='/' />} />
         </Routes>
       ) : (
         <Layout>
           <SnackbarsContextProvider>
             <Routes>
-              <Route path="/home" element={<Home />} />
-              <Route path="/exemple" element={<Exemple />} />
-              <Route path="/:username" element={<Profile />} />
-              <Route path="/:username/followers" element={<Followers />} />
-              <Route path="/:username/following" element={<Following />} />
-              <Route path="/settings/profile" element={<EditProfileModal />} />
-              <Route path="/bookmarks" element={<Bookmarks />} />
-              <Route path="*" element={<Navigate to="/home" />} />
+              <Route path='/home' element={<Home />} />
+              <Route path='/exemple' element={<Exemple />} />
+              <Route path='/:username' element={<Profile />} />
+              <Route path='/:username/followers' element={<Followers />} />
+              <Route path='/:username/following' element={<Following />} />
+              <Route path='/settings/profile' element={<EditProfileModal />} />
+              <Route path='/bookmarks' element={<Bookmarks />} />
+              <Route path='/status/:pseudo' element={<TweetPage />} />
+              <Route path='*' element={<Navigate to='/home' />} />
             </Routes>
           </SnackbarsContextProvider>
         </Layout>

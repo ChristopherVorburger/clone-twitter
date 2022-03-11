@@ -25,6 +25,7 @@ export const TweetAvatar = styled.img`
   object-fit: cover;
   object-position: center;
   margin-left: 1rem;
+  flex-shrink: 0;
 `;
 
 export const TweetContent = styled.div`
@@ -81,8 +82,6 @@ export const TweetMore = styled.div`
   }
 `;
 
-export const Comments = styled.div``;
-
 export const Retweets = styled.div``;
 
 export const Likes = styled.div``;
@@ -101,39 +100,38 @@ export const TweetReply = styled.div`
     margin-top: 18px;
   }
 `;
-// export const Comments = styled.div`
+export const Comments = styled.div`
+  .content {
+    padding: 20px 20px 20px 0;
 
-//   content {
-//     padding: 20px 20px 20px 0;
+    span {
+      color: #1c9cef;
+    }
+  }
 
-//     span {
-//       color: #1c9cef;
-//     }
-//   }
+  input {
+    background-color: transparent;
+    border: 0;
+    font-size: 17px;
+    margin: 15px 0;
+    width: 100%;
+    &::placeholder {
+      color: #536471;
+    }
 
-//   input {
-//     background-color: transparent;
-//     border: 0;
-//     font-size: 17px;
-//     margin: 15px 0;
-//     width: 100%;
-//     &::placeholder {
-//       color: #536471;
-//     }
+    &:focus {
+      outline: 0;
+    }
+  }
 
-//     &:focus {
-//       outline: 0;
-//     }
-//   }
-
-//   button {
-//     display: block;
-//     padding: 10px 15px;
-//     background-color: rgb(29, 155, 240);
-//     color: white;
-//     border-radius: 25px;
-//     border: 0;
-//     margin-left: auto;
-//     cursor: pointer;
-//   }
-// `;
+  button {
+    display: block;
+    padding: 10px 15px;
+    background-color: rgb(29, 155, 240);
+    color: white;
+    border-radius: 25px;
+    border: 0;
+    margin-left: auto;
+    cursor: pointer;
+  }
+`;

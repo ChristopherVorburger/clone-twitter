@@ -35,14 +35,7 @@ import { fr } from "date-fns/locale";
 
 // fonctions firebase
 import { database } from "../../firebase-config";
-import {
-  serverTimestamp,
-  addDoc,
-  collection,
-  updateDoc,
-  doc,
-  arrayRemove,
-} from "firebase/firestore";
+import { serverTimestamp, addDoc, collection, updateDoc, doc, arrayRemove } from "firebase/firestore";
 
 // hooks
 import { useFirestore } from "../../utils/useFirestore";
@@ -186,18 +179,15 @@ export default function Tweet({ tweet }) {
   };
 
   return (
-    <TweetContainer>
+    <TweetContainer onClick={() => console.log("ok")}>
       {matchedUser?.[0]?.profile_image_url ? (
         <TweetAvatar src={matchedUser?.[0]?.profile_image_url} />
       ) : (
-        <TweetAvatar
-          style={{ border: "1px solid lightgrey" }}
-          src={images.user}
-        />
+        <TweetAvatar style={{ border: "1px solid lightgrey" }} src={images.user} />
       )}
 
       <TweetContent>
-        <Box display="flex" justifyContent="space-between" alignItems="center">
+        <Box display='flex' justifyContent='space-between' alignItems='center'>
           <Box>
             <TweetAuthor>{matchedUser?.[0]?.name} </TweetAuthor>
             <TweetPseudo>{`@${matchedUser?.[0]?.username}`}</TweetPseudo>
@@ -221,9 +211,7 @@ export default function Tweet({ tweet }) {
             <ClickAwayListener onClickAway={handleClickAwayMore}>
               <Box onClick={handleClickMore}>
                 <TweetMore>{icons.MoreHorizIcon.type.render()}</TweetMore>
-                {openMore ? (
-                  <TweetDialog id={id} open={openMore} author_id={author_id} />
-                ) : null}
+                {openMore ? <TweetDialog id={id} open={openMore} author_id={author_id} /> : null}
               </Box>
             </ClickAwayListener>
           </Box>
@@ -231,30 +219,22 @@ export default function Tweet({ tweet }) {
         <TweetTxt>{text}</TweetTxt>
         <TweetReactions>
           <Comments onClick={() => setOpenReply(!openReply)}>
-            <MessageIcon
-              style={{ color: "#535471", width: "20px", height: "20px" }}
-            />
+            <MessageIcon style={{ color: "#535471", width: "20px", height: "20px" }} />
             <span>{tweet?.public_metrics?.reply_count}</span>
           </Comments>
           <Retweets>
-            <ReplyAllIcon
-              style={{ color: "#535471", width: "20px", height: "20px" }}
-            />
+            <ReplyAllIcon style={{ color: "#535471", width: "20px", height: "20px" }} />
             <span>0</span>
           </Retweets>
           {/* Si l'utilisateur connecté like le tweet, le coeur est rouge */}
           {tweet?.likers?.includes(auth.userData?.[0]?.id) ? (
             <Likes onClick={likeTweet}>
-              <icons.FavoriteIcon
-                style={{ color: "#e11616de", width: "20px", height: "20px" }}
-              />
+              <icons.FavoriteIcon style={{ color: "#e11616de", width: "20px", height: "20px" }} />
               <span>{tweet?.public_metrics?.like_count}</span>
             </Likes>
           ) : (
             <Likes onClick={likeTweet}>
-              <FavoriteBorderIcon
-                style={{ color: "#535471", width: "20px", height: "20px" }}
-              />
+              <FavoriteBorderIcon style={{ color: "#535471", width: "20px", height: "20px" }} />
               <span>{tweet?.public_metrics?.like_count}</span>
             </Likes>
           )}
@@ -262,15 +242,13 @@ export default function Tweet({ tweet }) {
             {/* ClickAwayListener écoute les cliques hors modale pour fermer la modale */}
             <ClickAwayListener onClickAway={handleClickAwayShare}>
               <Box onClick={handleClickShare}>
-                <IosShareOutlinedIcon
-                  style={{ color: "#535471", width: "20px", height: "20px" }}
-                />
+                <IosShareOutlinedIcon style={{ color: "#535471", width: "20px", height: "20px" }} />
                 {openShare ? <ShareDialog id={id} open={openShare} /> : null}
               </Box>
             </ClickAwayListener>
           </Share>
         </TweetReactions>
-        {openReply && (
+        {/* {openReply && (
           <TweetReply>
             <Box className="container-avatar">
               {matchedUser?.[0]?.profile_image_url ? (
@@ -300,7 +278,7 @@ export default function Tweet({ tweet }) {
               </form>
             </Box>
           </TweetReply>
-        )}
+        )} */}
       </TweetContent>
     </TweetContainer>
   );
