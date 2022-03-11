@@ -1,26 +1,62 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { TweetAvatar, TweetAuthor, TweetPseudo } from "../Tweet/Tweet.Style";
 import { TweetLargeWrapper, TweetLargeContainer, TweetLargeContent } from "./TweetLarge.Style";
+import { doc, getDoc } from "firebase/firestore";
+import { database } from "../../firebase-config";
+import Skeleton from "@mui/material/Skeleton";
+import { images } from "../../constants";
+import { TwentyZeroMpSharp } from "@mui/icons-material";
 
-export default function TweetLarge() {
+export default function TweetLarge({ state }) {
+  const [dataUser, setDataUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  //Fonction qui permet de récupérer les donnés concerant l'auteur du tweet séléctioné
+  const getUser = async () => {
+    const docRef = doc(database, "users", state.state.author_id);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      setDataUser(docSnap.data());
+      setIsLoading(false);
+    } else {
+      console.log("No such document è");
+    }
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  console.log(dataUser);
   return (
     <TweetLargeWrapper>
       <TweetLargeContainer>
         <div className='row-1'>
-          <TweetAvatar
-            style={{ margin: 0 }}
-            src='https://images.unsplash.com/photo-1646935234495-14335f7e6629?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80'
-          />
-          <div class='author'>
-            <TweetAuthor>Cerfia </TweetAuthor>
-            <TweetPseudo style={{ margin: "5px 0" }}>@CerfiaFR</TweetPseudo>
+          {isLoading ? (
+            <Skeleton variant='circular' width={50} height={50} />
+          ) : dataUser.profile_image_url === "" ? (
+            <TweetAvatar style={{ border: "1px solid lightgrey", margin: 0 }} src={images.user} alt='image de profil user' />
+          ) : (
+            <TweetAvatar src={dataUser.profile_image_url} alt='image de profil user' />
+          )}
+
+          <div className='author'>
+            {isLoading ? (
+              <>
+                <Skeleton variant='text' width='100px' />
+                <Skeleton variant='text' width='150px' />
+              </>
+            ) : (
+              <>
+                <TweetAuthor>{dataUser.name}</TweetAuthor>
+                <TweetPseudo style={{ margin: "5px 0" }}>@{dataUser.username}</TweetPseudo>
+              </>
+            )}
           </div>
         </div>
         <div className='row-2'>
-          <TweetLargeContent>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Illum, soluta veniam. Reiciendis voluptatum deserunt earum in totam nihil
-            debitis ab tenetur, saepe quia dignissimos suscipit, vero dolorem velit iusto tempore!
-          </TweetLargeContent>
+          <TweetLargeContent>{state.state.text}</TweetLargeContent>
         </div>
       </TweetLargeContainer>
     </TweetLargeWrapper>

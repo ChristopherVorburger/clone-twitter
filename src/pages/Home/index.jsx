@@ -29,7 +29,6 @@ import ModalReplyTweet from "../../components/ModalReplyTweet/ModalReplyTweet";
 
 const Home = () => {
   const classes = useStyles();
-  const { showModal } = useContext(ModalContext);
   // Utilisation du hook useContext pour récupérer le contexte Auth
   const auth = React.useContext(AuthContext);
 

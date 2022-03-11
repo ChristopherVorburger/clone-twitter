@@ -1,4 +1,9 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
+
+export const TweetLink = styled(Link)`
+  text-decoration: none;
+`;
 
 export const TweetContainer = styled.div`
   display: grid;
