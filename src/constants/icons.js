@@ -35,6 +35,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
 import BookmarkRemoveOutlinedIcon from "@mui/icons-material/BookmarkRemoveOutlined";
 import InsertLinkOutlinedIcon from "@mui/icons-material/InsertLinkOutlined";
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 
 const icons = {
   HomeSharpIcon,
@@ -74,6 +75,7 @@ const icons = {
   BookmarkAddOutlinedIcon,
   BookmarkRemoveOutlinedIcon,
   InsertLinkOutlinedIcon,
+  SettingsOutlinedIcon,
 };
 
 export default icons;
