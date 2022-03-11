@@ -13,9 +13,6 @@ export function useFirestoreWithQueryAndWhere(ref, fieldName, searchParam) {
   const [data, setData] = useState();
   const collectionRef = collection(database, ref);
   // Filtre par date de la collection retournée grâce aux fonctions query et orderBy
-  console.log("refe", ref);
-  console.log(fieldName);
-  console.log(searchParam);
   const q = query(
     collectionRef,
     // Tri des données avec la méthode "where"

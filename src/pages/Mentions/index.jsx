@@ -12,6 +12,7 @@ import { icons } from "../../constants";
 import { AuthContext } from "../../context/authContext";
 
 import useStyles from "./styles";
+import NoContent from "../../components/NoContent";
 
 // Liens pour la Nav Tab
 function LinkTab(props) {
@@ -54,6 +55,13 @@ const Mentions = () => {
                 label="Mentions"
               />
             </Tabs>
+          </Box>
+          <Box>
+            {/* Si pas de tweets avec likers */}
+            <NoContent
+              title="Nothing to see here — yet"
+              subtitle="When someone mentions you, you’ll find it here."
+            />
           </Box>
         </Box>
       </Box>
