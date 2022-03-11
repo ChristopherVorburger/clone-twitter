@@ -75,7 +75,7 @@ export default function App() {
               <Route path='/:username/following' element={<Following />} />
               <Route path='/settings/profile' element={<EditProfileModal />} />
               <Route path='/bookmarks' element={<Bookmarks />} />
-              <Route path='/status/:pseudo' element={<TweetPage />} />
+              <Route path='/status/:id' element={<TweetPage />} />
               <Route path='*' element={<Navigate to='/home' />} />
             </Routes>
           </SnackbarsContextProvider>

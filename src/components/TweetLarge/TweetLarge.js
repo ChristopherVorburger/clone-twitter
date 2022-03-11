@@ -4,7 +4,6 @@ import Skeleton from "@mui/material/Skeleton";
 import { images } from "../../constants";
 
 export default function TweetLarge({ state, dataUser, isLoading }) {
-  console.log(dataUser);
   return (
     <TweetLargeWrapper>
       <TweetLargeContainer>

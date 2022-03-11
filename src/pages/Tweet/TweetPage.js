@@ -27,14 +27,19 @@ export default function TweetPage() {
       setDataUser(docSnap.data());
       setIsLoading(false);
     } else {
-      console.log("No such document è");
+      console.log("No such document !");
     }
   };
 
+  //Fonction qui permet de récupérer les réponse du tweet 
+  const getTweetReply = async () => {
+    
+  }
   useEffect(() => {
     getUser();
   }, []);
 
+  console.log(state);
   return (
     <>
       <Box display='flex' justifyContent='center'>
@@ -42,13 +47,8 @@ export default function TweetPage() {
           <Header title='Home' iconsRight={icons.AutoAwesomeSharpIcon} />
           <TweetPageWrapper>
             <TweetLarge state={state} dataUser={dataUser} isLoading={isLoading} />
-            <TweetInput dataUser={dataUser} isLoading={isLoading} />
-            <TweetReply />
-            <TweetReply />
-            <TweetReply />
-            <TweetReply />
-            <TweetReply />
-            <TweetReply />
+            <TweetInput />
+            <TweetReply dataUser={dataUser} isLoading={isLoading} />
           </TweetPageWrapper>
         </Box>
         <News />
