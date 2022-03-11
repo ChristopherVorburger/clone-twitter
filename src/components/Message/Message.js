@@ -12,6 +12,7 @@ import Header from '../../components/Header';
 import CircularProgress from '@mui/material/CircularProgress';
 import BottomNavigation from '../../components/BottomNavigation';
 import AddCommentIcon from '@mui/icons-material/AddComment';
+import Icons from '../../constants/icons';
 
 import {
   CardContent,
@@ -80,6 +81,9 @@ export default function Messages() {
   const [channels, setChannels] = useState([]);
   const [messages, setMessages] = useState([]);
   const [channelSelected, setChannelSelected] = useState('');
+  const [formValue, setFormValue] = useState('');
+
+  const dummy = useRef();
   console.log('userid => ' + auth.currentUser.uid);
 
   function getChannesls() {
@@ -112,18 +116,32 @@ export default function Messages() {
     getMessages(idChannels);
   }
 
-  const messageToAdd = useRef('');
   function handleAddNewMessage() {
     const userId = auth.currentUser.uid;
-    const createdAt = firebase.firestore.FieldValue.serverTimestamp();
+    const todayDate = firebase.firestore.FieldValue.serverTimestamp();
     const messageChannel = messagesRef.add({
       channels_id: channelSelected,
-      created_at: createdAt,
+      created_at: todayDate,
       photoUrl: null,
       sender_id: userId,
       senderName: '',
-      text: messageToAdd.current,
+      text: formValue,
     });
+
+    setFormValue('');
+  }
+
+  function handleAddNewChannel() {
+    const userId = auth.currentUser.uid;
+    const todayDate = firebase.firestore.FieldValue.serverTimestamp();
+    const messageChannel = channelsRef.add({
+      created_at: todayDate,
+      updated_at: todayDate,
+      photoUrl: null,
+      users: [userId, '5UlF2GKEfIW0b3MSi1YrRXb29rA2'],
+    });
+
+    setFormValue('');
   }
 
   useEffect(() => {
@@ -131,36 +149,56 @@ export default function Messages() {
   }, []);
 
   return (
-    <Box display="flex" height="100%">
-      <Box borderLeft="1px solid #eff3f4" borderRight="1px solid #eff3f4">
-        <ListeChannels
-          channels={channels}
-          handleClick={(idChannels) => handleDisplayChannelMessage(idChannels)}
-        />
-      </Box>
-
-      <Box borderLeft="1px solid #eff3f4" borderRight="1px solid #eff3f4">
-        <Box>
-          <Message messages={messages} />
+    <>
+      <Box display="flex">
+        <Box
+          borderLeft="1px solid #eff3f4"
+          borderRight="1px solid #eff3f4"
+          maxWidth="25em"
+        >
+          <Box display="flex" flexDirection="row">
+            <Box>
+              <Typography variant="span">Messages</Typography>
+            </Box>
+            <Box
+              justifyContent="flex-end"
+              onClick={() => handleAddNewChannel()}
+            >
+              <Icons.AddCommentIcon />
+            </Box>
+          </Box>
+          <Box>
+            <ListeChannels
+              channels={channels}
+              handleClick={(idChannels) =>
+                handleDisplayChannelMessage(idChannels)
+              }
+            />
+          </Box>
         </Box>
-        <Box justifyContent={'flex-end'}>
-          <Divider sx={{ borderColor: 'background__input' }} />
-          {/* <Stack
-            // display="flex"
-            flexDirection="row"
-            // spacing={1}
-            // md={4}
-            // justify="flex-end"
-          > */}
-          <TextField ref={messageToAdd} />
 
-          <Button variant="contained" onClick={() => handleAddNewMessage()}>
-            Add message
-          </Button>
-          {/* </Stack> */}
+        <Box flexDirection="column" height="500px">
+          <Box flexGrow={1} minHeight="100px">
+            <Typography variant="h6">Header</Typography>
+          </Box>
+          <Box flexGrow={1} minHeight="50em">
+            <Message messages={messages} />
+          </Box>
+          <Box minHeight="50px">
+            <Divider sx={{ borderColor: 'background__input' }} />
+            <TextField
+              borderRadius="25px"
+              value={formValue}
+              onChange={(e) => setFormValue(e.target.value)}
+            />
+            <Button disabled={!formValue} onClick={() => handleAddNewMessage()}>
+              <Icons.SendIcon variant="text" border="none" />
+            </Button>
+          </Box>
         </Box>
       </Box>
-    </Box>
+      <span ref={dummy}></span>
+    </>
   );
 }
 
