@@ -59,7 +59,10 @@ const Notifications = () => {
   return (
     <Box display="flex">
       <Box borderLeft="1px solid #eff3f4" borderRight="1px solid #eff3f4">
-        <Header title="Notifications" iconsRight={icons.SettingsOutlinedIcon} />
+        <Header
+          title="Notifications"
+          iconsRight={[icons.SettingsOutlinedIcon]}
+        />
         {/* Nav Tab */}
         <Box>
           <Box
@@ -70,13 +73,7 @@ const Notifications = () => {
             textTransform="none"
             borderBottom="1px solid #eff3f4"
           >
-            <Tabs
-              display="flex"
-              justifyContent="space-between"
-              value={value}
-              onChange={handleChange}
-              aria-label="nav tabs"
-            >
+            <Tabs value={value} onChange={handleChange} aria-label="nav tabs">
               <LinkTab
                 className={classes.notifications__link_nav}
                 to={"/notifications"}

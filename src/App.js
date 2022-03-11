@@ -17,6 +17,7 @@ import Notifications from "./pages/Notifications";
 import { AuthContext } from "./context/authContext";
 import { SnackbarsContextProvider } from "./context/snackbarsContext";
 import Mentions from "./pages/Mentions";
+import Lists from "./pages/Lists";
 
 export default function App() {
   const auth = React.useContext(AuthContext);
@@ -69,6 +70,7 @@ export default function App() {
               <Route path="/home" element={<Home />} />
               <Route path="/exemple" element={<Exemple />} />
               <Route path="/:username" element={<Profile />} />
+              <Route path="/:username/lists" element={<Lists />} />
               <Route path="/:username/followers" element={<Followers />} />
               <Route path="/:username/following" element={<Following />} />
               <Route path="/settings/profile" element={<EditProfileModal />} />

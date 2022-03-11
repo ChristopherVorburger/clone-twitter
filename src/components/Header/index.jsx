@@ -7,6 +7,7 @@ import ProfileButton from "../buttons/ProfileButton";
 
 import useStyles from "./styles";
 
+// Attention iconsRight est un tableau
 const Header = ({ iconsLeft, iconsRight, subtitle, title }) => {
   const classes = useStyles();
   const navigate = useNavigate();
@@ -50,15 +51,21 @@ const Header = ({ iconsLeft, iconsRight, subtitle, title }) => {
               </Typography>
             </Box>
             <Box>
-              <IconButton
-                sx={{
-                  color: "black.main",
-                  transform: "rotate(180deg)",
-                }}
-                aria-label="menu"
-              >
-                {iconsRight?.type?.render()}
-              </IconButton>
+              {iconsRight?.map((icon) => {
+                return (
+                  <IconButton
+                    key={icon.type.render.displayName}
+                    sx={{
+                      color: "black.main",
+
+                      transform: "rotate(180deg)",
+                    }}
+                    aria-label="menu"
+                  >
+                    {icon?.type?.render()}
+                  </IconButton>
+                );
+              })}
             </Box>
           </Box>
         </Toolbar>

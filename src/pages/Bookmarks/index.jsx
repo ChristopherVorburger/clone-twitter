@@ -35,7 +35,7 @@ const Bookmarks = () => {
         <Header
           title="Bookmarks"
           subtitle={`@${auth.userData?.[0]?.username}`}
-          iconsRight={icons.MoreHorizIcon}
+          iconsRight={[icons.MoreHorizIcon]}
         />
         <Box display="flex" flexDirection="column" justifyContent="center">
           {/* Si l'utilisateur n'a pas de bookmark on affiche ceci */}
