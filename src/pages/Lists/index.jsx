@@ -31,7 +31,7 @@ const Lists = () => {
 
   console.log(
     "listes des lists",
-    lists.map((list) => list.id)
+    lists?.map((list) => list.id)
   );
 
   const users = useFirestore("users");

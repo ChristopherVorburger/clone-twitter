@@ -5,12 +5,14 @@ import { Button, Typography } from "@mui/material";
 
 import { images } from "../../../constants";
 
-import { AuthContext } from "../../../context/authContext";
+import { arrayRemove, doc, updateDoc } from "firebase/firestore";
+import { database } from "../../../firebase-config";
 
-import { useFirestore } from "../../../utils/useFirestore";
+import { AuthContext } from "../../../context/authContext";
 
 import useStyles from "./styles";
 
+// Composant pour afficher une list
 const List = ({ list, author }) => {
   const classes = useStyles();
   const [textButton, setTextButton] = React.useState("Following");
@@ -18,9 +20,53 @@ const List = ({ list, author }) => {
   // Utilisation du hook useContext pour récupérer le contexte Auth
   const auth = React.useContext(AuthContext);
 
+  // Récupération du tableau de following de l'utilisateur connecté
+  const listsCurrentUser = auth?.userData?.[0]?.lists;
+
+  // Référence à l'id de l'utilisateur connecté à mettre à jour
+  const currentUserRef = doc(database, "users", auth?.authUser?.uid);
+
+  const followList = (e) => {
+    e.preventDefault();
+
+    // Si l'utilisateur connecté n'a pas de liste,
+    // on ajoute la première dans le tableau lists
+    if (!listsCurrentUser) {
+      updateDoc(currentUserRef, {
+        ...auth.userData?.[0],
+        lists: [list?.id],
+      })
+        .then(() => {
+          console.log("First list created");
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+    } else {
+      updateDoc(currentUserRef, {
+        ...auth.userData?.[0],
+        lists: [...auth.userData?.[0]?.lists, list?.id],
+      })
+        .then(() => {
+          console.log("List created");
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+    }
+  };
+
+  // Fonction pour unfollow
+  const unfollowUser = () => {
+    // Suppression du following dans les datas de l'utilisateur connecté
+    updateDoc(currentUserRef, {
+      lists: arrayRemove(list?.id),
+    });
+  };
+
   return (
-    <Box p="12px 1rem">
-      <Box display="flex" justifyContent="space-between">
+    <Box className={classes.container} p="12px 1rem">
+      <Box display="flex" justifyContent="space-between" alignItems="center">
         <Box display="flex">
           <Box pr="1rem">
             <img src={images.user} alt="" width={"50px"} />
@@ -62,7 +108,7 @@ const List = ({ list, author }) => {
                   textTransform: "none",
                   minWidth: "6rem",
                 }}
-                onClick={() => {}}
+                onClick={unfollowUser}
               >
                 {textButton}
               </Button>
@@ -76,7 +122,7 @@ const List = ({ list, author }) => {
                   backgroundColor: "black.main",
                   borderRadius: "50px",
                 }}
-                onClick={() => {}}
+                onClick={followList}
               >
                 Follow
               </Button>
