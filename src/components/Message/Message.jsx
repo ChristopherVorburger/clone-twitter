@@ -274,7 +274,7 @@ function ListeChannels({ channels, handleDiplayMessages }) {
           <Box key={index}>
             <ChannelItem
               user={getUser(
-                channel?.users[0] == auth.currentUser.id
+                channel?.users[0] == auth.currentUser.uid
                   ? channel?.users[1]
                   : channel?.users[0]
               )}
