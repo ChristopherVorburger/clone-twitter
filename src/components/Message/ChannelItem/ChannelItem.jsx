@@ -56,7 +56,12 @@ export default function ChannelItem({ user, handleClick, channelID }) {
           <img
             className={classes.profile_section__avatar_button}
             style={{ border: '1px solid lightgrey' }}
-            src={userToDisplay?.profile_image_url ?? images.user}
+            src={
+              userToDisplay?.profile_image_url &&
+              userToDisplay?.profile_image_url != ''
+                ? userToDisplay?.profile_image_url
+                : images.user
+            }
             alt="user avatar"
           />
         </Box>
