@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button, TextField, Typography } from '@mui/material';
+import { Button, Divider, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 
 import { icons, images } from '../../../constants';
@@ -19,38 +19,47 @@ const ChannelAddMessage = ({
 
   const classes = useStyles();
   return (
-    <Box
-      sx={{
-        // borderRadius: '50px',
-        padding: '12px',
-      }}
-    >
+    <>
+      <Divider sx={{ borderColor: 'background__input' }} />
       <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        width="100%"
+        sx={{
+          // borderRadius: '50px',
+          padding: '12px',
+        }}
       >
-        <Box height="50px">
-          <TextField
-            sx={{
-              borderRadius: '50px',
-              // padding: '12px',
-            }}
-            onChange={(e) => setNewMessage(e.target.value)}
-            value={newMessage}
-          />
-        </Box>
-        <Box>
-          <Button
-            className={classes.profile_section__icon_more}
-            onClick={() => handleAddNewMessage(newMessage)}
-          >
-            <icons.SendIcon disable={(!newMessage).toString()} />
-          </Button>
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          width="100%"
+        >
+          <Box height="50px" flexGrow={1}>
+            <TextField
+              sx={{
+                borderRadius: '50px',
+                padding: '0.5em',
+                width: '100%',
+                // height: '0.2',
+              }}
+              onChange={(e) => setNewMessage(e.target.value)}
+              value={newMessage}
+            />
+          </Box>
+          <Box>
+            <Button
+              className={classes.profile_section__icon_more}
+              onClick={() => handleAddNewMessage(newMessage)}
+              sx={{
+                paddingRight: '1.5em',
+              }}
+              variant="text"
+            >
+              <icons.SendIcon disabled={(!newMessage).toString()} />
+            </Button>
+          </Box>
         </Box>
       </Box>
-    </Box>
+    </>
   );
 };
 
