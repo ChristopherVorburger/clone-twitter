@@ -10,6 +10,7 @@ import Profile from './pages/Profile';
 import Followers from './pages/Followers';
 import Following from './pages/Following';
 import EditProfileModal from './components/EditProfileModal';
+import ChannelSearchUser from './components/Message/ChannelSearchUser/ChannelSearchUser';
 import Layout from './components/Layout';
 import Bookmarks from './pages/Bookmarks';
 import Message from './components/Message/Message';
@@ -71,6 +72,7 @@ export default function App() {
               <Route path="/:username/followers" element={<Followers />} />
               <Route path="/:username/following" element={<Following />} />
               <Route path="/settings/profile" element={<EditProfileModal />} />
+              <Route path="/searchUser" element={<ChannelSearchUser />} />
               <Route path="/bookmarks" element={<Bookmarks />} />
               <Route path="/messages" element={<Message />} />
               <Route path="*" element={<Navigate to="/home" />} />

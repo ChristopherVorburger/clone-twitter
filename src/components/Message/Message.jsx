@@ -50,9 +50,10 @@ import ChannelAddMessage from './ChannelAddMessage/ChannelAddMessage';
 import ClassicButton from '../buttons/ClassicButton';
 import BottomAvatar from '../LeftNavbar/BottomAvatar';
 import SimpleDialog from '../SimpleDialog';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { images } from '../../constants';
 import { useFirestore } from '../../utils/useFirestore';
+import ChannelSearchUser from './ChannelSearchUser/ChannelSearchUser';
 
 firebase.initializeApp(getFirebaseConfig());
 
@@ -103,6 +104,7 @@ export default function Messages() {
   const [messages, setMessages] = useState([]);
   const [channelSelected, setChannelSelected] = useState('');
   const [newMessage, setNewMessage] = useState('');
+  const navigate = useNavigate();
 
   const dummy = useRef();
   // console.log('userid => ' + auth.currentUser.uid);
@@ -219,7 +221,13 @@ export default function Messages() {
             </Box>
 
             <Box style={{ padding: '1.2em' }}>
-              <Icons.AddCommentIcon />
+              <Button
+                variant="outlined"
+                onClick={() => navigate('/searchUser')}
+                className={classes.profile__button}
+              >
+                <Icons.AddCommentIcon />
+              </Button>
             </Box>
           </Box>
 
