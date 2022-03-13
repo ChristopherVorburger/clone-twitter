@@ -46,7 +46,6 @@ export default function ChannelItem({ user, handleClick, channelID }) {
     <Box
       className={classes.profile_section}
       sx={{
-        borderRadius: '50px',
         padding: '12px',
       }}
       onClick={() => handleClick(channelID)}
