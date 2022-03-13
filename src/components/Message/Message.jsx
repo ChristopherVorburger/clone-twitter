@@ -207,17 +207,25 @@ export default function Messages() {
           flexDirection="column"
           borderLeft="1px solid #eff3f4"
           borderRight="1px solid #eff3f4"
-          maxWidth="300px"
+          width="100%"
         >
-          <Box>
-            {/* Entête */}
-            <Header
-              title="Messages"
-              // iconsRight={Icons.AutoAwesomeSharpIcon}
-            />
+          {/* Entête */}
+          <Box display="flex" flexDirection="row">
+            <Box>
+              <Header
+                title="Messages"
+                // iconsRight={Icons.AutoAwesomeSharpIcon}
+              />
+            </Box>
 
+            <Box style={{ padding: '1.2em' }}>
+              <Icons.AddCommentIcon />
+            </Box>
+          </Box>
+
+          <Box>
             {/* Champ de text de recherche */}
-            <TextField />
+            {/* <TextField /> */}
             <Divider sx={{ borderColor: 'background__input' }} />
           </Box>
 
