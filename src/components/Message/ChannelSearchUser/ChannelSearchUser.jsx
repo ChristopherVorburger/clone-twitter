@@ -245,17 +245,16 @@ const ChannelSearchUser = () => {
               <Box className={classes.field}>
                 {users ? (
                   <Autocomplete
-                    multiple
+                    // multiple
                     id="tags-outlined"
                     options={users}
                     getOptionLabel={(option) => option.name}
-                    //   defaultValue={[top100Films[13]]}
                     renderOption={(props, option, { selected }) => (
                       <Box
+                        {...props}
                         key={option.id}
                         className={classes.profile_section}
                         sx={{
-                          //   borderRadius: '50px',
                           padding: '12px',
                         }}
                       >
