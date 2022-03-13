@@ -46,13 +46,13 @@ const Notifications = () => {
   const tweetsWithLikers = sortedTweets?.filter((sortedTweet) => {
     // Si il y a seulement l'utilisateur connecté dans les likers, on return null
     if (
-      sortedTweet.likers.length === 1 &&
-      sortedTweet.likers[0] === auth.userData[0].id
+      sortedTweet?.likers?.length === 1 &&
+      sortedTweet?.likers[0] === auth.userData[0]?.id
     ) {
       return null;
       // Sinon on prend en compte le tweet
     } else {
-      return sortedTweet.likers.length > 0;
+      return sortedTweet?.likers?.length > 0;
     }
   });
 

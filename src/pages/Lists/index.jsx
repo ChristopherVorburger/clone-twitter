@@ -13,6 +13,7 @@ import { icons } from "../../constants";
 import { Typography } from "@mui/material";
 import List from "./List";
 import { useFirestore } from "../../utils/useFirestore";
+import UserList from "./UserList";
 
 const Lists = () => {
   const { username } = useParams();
@@ -29,14 +30,25 @@ const Lists = () => {
 
   const lists = useFirestore("lists");
 
-  console.log(
-    "listes des lists",
-    lists?.map((list) => list.id)
-  );
+  console.log("listes des lists", lists);
 
   const users = useFirestore("users");
 
   console.log("liste users", users);
+
+  // Recherche des listes non suivies
+  const unfollowedLists = lists?.filter((list) => {
+    if (!auth.userData?.[0]?.lists?.includes(list.id)) return list;
+  });
+
+  // Recherche des listes de l'utilisateur qui matchent avec les listes
+  const matchedLists = lists?.filter((list) => {
+    if (auth.userData?.[0]?.lists.includes(list.id)) return list;
+  });
+
+  const userLists = auth.userData?.[0]?.lists;
+
+  console.log("listes du user co", matchedLists);
 
   return (
     <Box display="flex">
@@ -69,12 +81,12 @@ const Lists = () => {
           >
             Discover new Lists
           </Typography>
-          {lists?.slice(0, 3)?.map((list) => {
+          {unfollowedLists?.slice(0, 3)?.map((list) => {
             const author = users?.filter(
               (user) => user?.id === list?.author_id
             );
             console.log("user qui match ", author);
-            return <List list={list} author={author} />;
+            return <List key={list?.id} list={list} author={author} />;
           })}
         </Box>
         <Box>
@@ -85,6 +97,13 @@ const Lists = () => {
           >
             Your Lists
           </Typography>
+          {matchedLists?.map((list) => {
+            const author = users?.filter(
+              (user) => user?.id === list?.author_id
+            );
+            console.log("listes suivies du user", list);
+            return <UserList key={list?.id} list={list} author={author} />;
+          })}
         </Box>
       </Box>
       <Box>
