@@ -2,7 +2,6 @@ import * as React from "react";
 import { render as renderReactTestingLib } from "@testing-library/react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { AuthContextProvider } from "../../context/authContext";
 
 const theme = createTheme({
   palette: {
@@ -29,13 +28,11 @@ const theme = createTheme({
 function render(ui, { path = "/", ...options } = {}) {
   const Wrapper = ({ children }) => (
     <Router>
-      <AuthContextProvider>
-        <ThemeProvider theme={theme}>
-          <Routes>
-            <Route path={path} element={children} />
-          </Routes>
-        </ThemeProvider>
-      </AuthContextProvider>
+      <ThemeProvider theme={theme}>
+        <Routes>
+          <Route path={path} element={children} />
+        </Routes>
+      </ThemeProvider>
     </Router>
   );
   return renderReactTestingLib(ui, { wrapper: Wrapper, ...options });
