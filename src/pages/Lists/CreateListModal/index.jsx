@@ -82,15 +82,17 @@ const CreateListModal = () => {
   const listsCurrentUser = auth.userData?.[0]?.lists;
 
   // Tableau d'image de cover par défaut
-  const defaultCoverImages = [
-    images.cover1,
-    images.cover2,
-    images.cover3,
-    images.cover4,
-    images.cover5,
-    images.cover6,
-    images.cover7,
+  const defaultCoverNames = [
+    "default-cover-1.png",
+    "default-cover-2.png",
+    "default-cover-3.png",
+    "default-cover-4.png",
+    "default-cover-5.png",
+    "default-cover-6.png",
+    "default-cover-7.png",
   ];
+
+  console.log("storage", storage);
 
   // Fonction pour créer une liste
   const handleSubmit = async (e) => {
@@ -99,6 +101,20 @@ const CreateListModal = () => {
     // Si il n'y a pas de cover et que l'utilisateur connecté n'a pas encore de liste de liste,
     // création du tableau lists dans userData et création de la première liste sans cover
     if (coverSelected.name === undefined && !listsCurrentUser) {
+      // Références du storage
+      const defaultCoversRef = ref(
+        storage,
+
+        `images/defaultCover/${
+          defaultCoverNames[
+            Math.floor(Math.random() * defaultCoverNames.length)
+          ]
+        }`
+      );
+
+      // On obtient les urls avec getDownloadUrl
+      const coverLink = await getDownloadURL(defaultCoversRef);
+
       addDoc(listsCollection, {
         author_id: auth.userData?.[0]?.id,
         name,
@@ -106,10 +122,7 @@ const CreateListModal = () => {
         private_list,
         members: [],
         followers: [],
-        cover_url:
-          defaultCoverImages[
-            Math.floor(Math.random() * defaultCoverImages.length)
-          ],
+        cover_url: coverLink,
       })
         .then((cred) => {
           setDoc(currentUserRef, {
@@ -125,6 +138,20 @@ const CreateListModal = () => {
       // Si pas de cover et que l'utilisateur connecté a déjà au moins une liste,
       // ajout de la liste dans le tableau existant et création de la liste sans cover
     } else if (coverSelected.name === undefined) {
+      // Références du storage
+      const defaultCoversRef = ref(
+        storage,
+
+        `images/defaultCover/${
+          defaultCoverNames[
+            Math.floor(Math.random() * defaultCoverNames.length)
+          ]
+        }`
+      );
+
+      // On obtient les urls avec getDownloadUrl
+      const coverLink = await getDownloadURL(defaultCoversRef);
+
       addDoc(listsCollection, {
         author_id: auth.userData?.[0]?.id,
         name,
@@ -132,10 +159,7 @@ const CreateListModal = () => {
         private_list,
         members: [],
         followers: [],
-        cover_url:
-          defaultCoverImages[
-            Math.floor(Math.random() * defaultCoverImages.length)
-          ],
+        cover_url: coverLink,
       })
         .then((cred) => {
           setDoc(currentUserRef, {
@@ -194,6 +218,7 @@ const CreateListModal = () => {
 
       // On obtient les urls avec getDownloadUrl
       const coverLink = await getDownloadURL(listCoversRef);
+
       addDoc(listsCollection, {
         author_id: auth.userData?.[0]?.id,
         name,

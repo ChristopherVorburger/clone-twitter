@@ -15,7 +15,10 @@ import List from "./List";
 import { useFirestore } from "../../utils/useFirestore";
 import UserList from "./UserList";
 
+import useStyles from "./styles";
+
 const Lists = () => {
+  const classes = useStyles();
   const { username } = useParams();
 
   const auth = React.useContext(AuthContext);
@@ -30,11 +33,7 @@ const Lists = () => {
 
   const lists = useFirestore("lists");
 
-  console.log("listes des lists", lists);
-
   const users = useFirestore("users");
-
-  console.log("liste users", users);
 
   // Recherche des listes non suivies
   const unfollowedLists = lists?.filter((list) => {
@@ -64,11 +63,42 @@ const Lists = () => {
           >
             Pinned Lists
           </Typography>
-          <Box>
-            <Typography fontSize="font.main" color="grey.main" p="2rem">
-              Nothing to see here yet — pin your favorite Lists to access them
-              quickly.
-            </Typography>
+          <Box display="flex">
+            {auth?.userData?.[0]?.pinned_lists?.length !== 0 ? (
+              auth?.userData?.[0]?.pinned_lists.map((pinned_list) => {
+                console.log("listes des lists", lists);
+                console.log("pinned_list", pinned_list);
+
+                const matchedList = lists?.filter((list) => {
+                  return list?.id === pinned_list;
+                });
+                console.log("list qui match", matchedList);
+                return (
+                  <Box p="1rem">
+                    <Box>
+                      <img
+                        src={matchedList?.[0]?.cover_url}
+                        alt=""
+                        className={classes.pinned_list__avatar}
+                        width="100px"
+                        height="100px"
+                      />
+                      <Typography
+                        fontSize="font.small"
+                        className={classes.pinned_list__name}
+                      >
+                        {matchedList?.[0]?.name}
+                      </Typography>
+                    </Box>
+                  </Box>
+                );
+              })
+            ) : (
+              <Typography fontSize="font.main" color="grey.main" p="2rem">
+                Nothing to see here yet — pin your favorite Lists to access them
+                quickly.
+              </Typography>
+            )}
           </Box>
         </Box>
         <Box borderBottom="1px solid #eff3f4">

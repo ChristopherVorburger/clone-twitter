@@ -69,13 +69,21 @@ const List = ({ list, author }) => {
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Box display="flex">
           <Box pr="1rem">
-            <img src={images.user} alt="" width={"50px"} />
+            <img
+              src={list?.cover_url}
+              alt=""
+              className={classes.list__avatar}
+            />
           </Box>
           <Box>
             <Typography fontSize="font.main">{list?.name}</Typography>
             <Box display="flex">
               <Box mr="4px">
-                <img src={images.user} alt="" width={"20px"} />
+                <img
+                  src={author?.[0]?.profile_image_url}
+                  alt=""
+                  className={classes.list__avatar_user}
+                />
               </Box>
               <Typography mr="4px" fontSize="font.small">
                 {author?.[0]?.name}
