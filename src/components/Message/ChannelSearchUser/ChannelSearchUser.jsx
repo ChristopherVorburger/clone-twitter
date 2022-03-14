@@ -2,7 +2,10 @@ import { useState, useContext, useReducer, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 // Fonctions firebase
-import { database, storage } from '../../../firebase-config';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
+import { database, getFirebaseConfig, storage } from '../../../firebase-config';
 import { doc, updateDoc } from 'firebase/firestore';
 import { useFirestore } from '../../../utils/useFirestore';
 
@@ -38,163 +41,44 @@ const reducer = (state, action) => {
   }
 };
 
+firebase.initializeApp(getFirebaseConfig());
+const auth = firebase.auth();
+const firestore = firebase.firestore();
+
 const ChannelSearchUser = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const users = useFirestore('users');
+  const channelsRef = firestore.collection('channels');
 
   // States pour la modale
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const [nameError, setNameError] = useState(false);
-  const [imageSelected, setImageSelected] = useState([]);
-  const [coverSelected, setCoverSelected] = useState([]);
-  const [file, setFile] = useState();
-  const [coverFile, setCoverFile] = useState();
+  const [usersSelected, setUsersSelected] = useState([]);
 
-  console.log('imageselected', imageSelected);
-  console.log('coverselected', coverSelected);
-  console.log('file', file);
-
-  //Utilisation du contexte Auth
-  const auth = useContext(AuthContext);
-
-  // Valeurs de départ pour le reducer
-  const initialValue = {
-    name: auth?.userData?.[0]?.name,
-    description: auth?.userData?.[0]?.description,
-    location: auth?.userData?.[0]?.location,
-    website: auth?.userData?.[0]?.website,
-    // age: auth?.userData?.[0]?.age,
-    profile_image_url: auth?.userData?.[0]?.profile_image_url,
-    cover_url: auth?.userData?.[0]?.cover_url,
-  };
-
-  // Utilisation du reducer
-  const [state, dispatch] = useReducer(reducer, initialValue);
-  // Destructuration des valeurs
-  const {
-    name,
-    description,
-    location,
-    website,
-    age,
-    profile_image_url,
-    cover_url,
-  } = state;
-
-  // Action sut les inputs
-  const inputAction = (event) => {
-    dispatch({
-      type: 'update',
-      payload: { key: event.target.name, value: event.target.value },
+  const addNewChannel = async () => {
+    console.log('users selected', usersSelected);
+    const todayDate = firebase.firestore.FieldValue.serverTimestamp();
+    const usersToAdd = usersSelected
+      .filter((user) => user.id != auth.currentUser.uid)
+      .map((user) => user.id);
+    const channel = await channelsRef.add({
+      createdAt: todayDate,
+      updated_at: todayDate,
+      users: [auth.currentUser.uid, ...usersToAdd],
     });
   };
 
-  // Référence à l'id de l'utilisateur connecté à mettre à jour
-  const currentUserRef = doc(database, 'users', auth?.authUser?.uid);
-
-  // Gestion du champ input name vide
-  useEffect(() => {
-    if (name?.length === 0) {
-      setNameError(true);
-    } else {
-      setNameError(false);
-    }
-  }, [name]);
-
-  // Fonction pour editer le profil
+  // Ajout de la conversation
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setNameError(false);
-    if (state.name === '') {
-      setNameError(true);
-    }
 
-    // Si pas de nouvelle image de profil ou de cover, mise à jour des données des inputs
-    if (imageSelected.name === undefined && coverSelected.name === undefined) {
-      updateDoc(currentUserRef, {
-        name,
-        description,
-        location,
-        website,
-        // age,
-      });
-
-      // Si nouvelle image mais pas de cover, mise à jour des données et upload de l'image de profil
-    } else if (coverSelected.name === undefined) {
-      // Référence du storage
-      const profileImageRef = ref(
-        storage,
-        `images/profile/${imageSelected.name}`
-      );
-
-      // upload de l'image de profil dans le firebase storage
-      await uploadBytes(profileImageRef, imageSelected);
-
-      // On obtient l'url de l'image avec getDownloadUrl
-      const profileImageLink = await getDownloadURL(profileImageRef);
-
-      updateDoc(currentUserRef, {
-        name,
-        description,
-        location,
-        website,
-        // age,
-        profile_image_url: profileImageLink,
-      });
-
-      // Si nouvelle cover mais pas d'image de profil, mise à jour des données et upload de la cover
-    } else if (imageSelected.name === undefined) {
-      // Référence du storage
-      const coverRef = ref(storage, `images/cover/${coverSelected.name}`);
-
-      // Upload de la cover dans le firebase storage
-      await uploadBytes(coverRef, coverSelected);
-
-      // On obtient l'url de l'image avec getDownloadUrl
-      const coverLink = await getDownloadURL(coverRef);
-
-      updateDoc(currentUserRef, {
-        name,
-        description,
-        location,
-        website,
-        // age,
-        cover_url: coverLink,
-      });
-
-      // Sinon mise à jour de toutes les données
-    } else {
-      // Références du storage
-      const profileImageRef = ref(
-        storage,
-        `images/profile/${imageSelected.name}`
-      );
-      const coverRef = ref(storage, `images/cover/${coverSelected.name}`);
-
-      // Upload de l'image de profil et de la cover dans le firebase storage
-      await uploadBytes(profileImageRef, imageSelected);
-      await uploadBytes(coverRef, coverSelected);
-
-      // On obtient les urls avec getDownloadUrl
-      const profileImageLink = await getDownloadURL(profileImageRef);
-      const coverLink = await getDownloadURL(coverRef);
-
-      updateDoc(currentUserRef, {
-        name,
-        description,
-        location,
-        website,
-        // age,
-        profile_image_url: profileImageLink,
-        cover_url: coverLink,
-      });
-    }
-    // Retour à la page de profil
-    navigate(`/messages`);
+    addNewChannel();
+    const createdAt =
+      // Retour à la page de profil
+      navigate(`/messages`);
   };
 
   return (
@@ -232,10 +116,10 @@ const ChannelSearchUser = () => {
                     sx={{
                       fontSize: 'font.small',
                       fontWeight: 'mainBold',
-                      backgroundColor: 'black.main',
+                      backgroundColor: 'blue.main',
                       borderRadius: '50px',
                     }}
-                    disabled={nameError}
+                    disabled={!usersSelected || usersSelected.length < 1}
                   >
                     Next
                   </Button>
@@ -249,6 +133,9 @@ const ChannelSearchUser = () => {
                     id="tags-outlined"
                     options={users}
                     getOptionLabel={(option) => option.name}
+                    onChange={(event, newValue) => {
+                      setUsersSelected([newValue]);
+                    }}
                     renderOption={(props, option, { selected }) => (
                       <Box
                         {...props}
