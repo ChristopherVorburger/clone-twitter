@@ -70,7 +70,17 @@ const UserList = ({ list, author }) => {
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Box display="flex">
           <Box pr="1rem">
-            <img src={images.user} alt="" width={"50px"} />
+            {list?.cover_url ? (
+              <img
+                className={classes.avatar}
+                src={list?.cover_url}
+                alt=""
+                width="50px"
+                height="50px"
+              />
+            ) : (
+              <img src={images.user} alt="" width={"50px"} />
+            )}
           </Box>
           <Box>
             <Typography fontSize="font.main">{list?.name}</Typography>

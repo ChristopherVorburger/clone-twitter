@@ -15,4 +15,8 @@ export default makeStyles((theme) => ({
   button_black: {
     backgroundColor: "white!important",
   },
+  avatar: {
+    objectFit: "cover",
+    borderRadius: "10px",
+  },
 }));

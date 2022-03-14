@@ -57,7 +57,7 @@ const List = ({ list, author }) => {
   };
 
   // Fonction pour unfollow
-  const unfollowUser = () => {
+  const unfollowList = () => {
     // Suppression du following dans les datas de l'utilisateur connecté
     updateDoc(currentUserRef, {
       lists: arrayRemove(list?.id),
@@ -108,7 +108,7 @@ const List = ({ list, author }) => {
                   textTransform: "none",
                   minWidth: "6rem",
                 }}
-                onClick={unfollowUser}
+                onClick={unfollowList}
               >
                 {textButton}
               </Button>

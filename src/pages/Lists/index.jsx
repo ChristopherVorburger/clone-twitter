@@ -46,8 +46,6 @@ const Lists = () => {
     if (auth.userData?.[0]?.lists.includes(list.id)) return list;
   });
 
-  const userLists = auth.userData?.[0]?.lists;
-
   console.log("listes du user co", matchedLists);
 
   return (

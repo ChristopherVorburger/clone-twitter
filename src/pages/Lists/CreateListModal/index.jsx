@@ -15,7 +15,7 @@ import Modal from "@mui/material/Modal";
 import { IconButton, Input, TextField } from "@mui/material";
 
 // Icones et images
-import { icons } from "../../../constants";
+import { icons, images } from "../../../constants";
 
 // Styles
 import useStyles from "./styles";
@@ -47,9 +47,6 @@ const CreateListModal = () => {
 
   const [coverSelected, setCoverSelected] = useState([]);
   const [coverFile, setCoverFile] = useState();
-
-  console.log("cover selected", coverSelected);
-  console.log("cover file", coverFile);
 
   //Utilisation du contexte Auth
   const auth = useContext(AuthContext);
@@ -84,6 +81,17 @@ const CreateListModal = () => {
   // Listes de l'utilisateur connecté
   const listsCurrentUser = auth.userData?.[0]?.lists;
 
+  // Tableau d'image de cover par défaut
+  const defaultCoverImages = [
+    images.cover1,
+    images.cover2,
+    images.cover3,
+    images.cover4,
+    images.cover5,
+    images.cover6,
+    images.cover7,
+  ];
+
   // Fonction pour créer une liste
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -98,6 +106,10 @@ const CreateListModal = () => {
         private_list,
         members: [],
         followers: [],
+        cover_url:
+          defaultCoverImages[
+            Math.floor(Math.random() * defaultCoverImages.length)
+          ],
       })
         .then((cred) => {
           setDoc(currentUserRef, {
@@ -120,6 +132,10 @@ const CreateListModal = () => {
         private_list,
         members: [],
         followers: [],
+        cover_url:
+          defaultCoverImages[
+            Math.floor(Math.random() * defaultCoverImages.length)
+          ],
       })
         .then((cred) => {
           setDoc(currentUserRef, {
