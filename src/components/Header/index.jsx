@@ -55,10 +55,9 @@ const Header = ({ iconsLeft, iconsRight, subtitle, title }) => {
                 // Si un lien est affilié on renvoi un composant Link
                 return icon?.path ? (
                   <IconButton
-                    key={icon.name.type.render.displayName}
+                    key={icon?.name?.type?.render?.displayName}
                     sx={{
                       color: "black.main",
-                      transform: "rotate(180deg)",
                     }}
                     aria-label="menu"
                     component={Link}
@@ -68,10 +67,9 @@ const Header = ({ iconsLeft, iconsRight, subtitle, title }) => {
                   </IconButton>
                 ) : (
                   <IconButton
-                    key={icon.name.type.render.displayName}
+                    key={icon?.name?.type?.render?.displayName}
                     sx={{
                       color: "black.main",
-                      transform: "rotate(180deg)",
                     }}
                     aria-label="menu"
                   >

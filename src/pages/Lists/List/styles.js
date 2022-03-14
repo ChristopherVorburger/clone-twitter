@@ -1,11 +1,19 @@
 import { makeStyles } from "@mui/styles";
-import { height } from "@mui/system";
 
 export default makeStyles((theme) => ({
-  container: {
-    "&:hover": {
-      backgroundColor: theme.palette.grey.background__input,
+  profile__cover: {
+    [theme.breakpoints.down("sm")]: {
+      maxWidth: "100%",
     },
+    width: "590px",
+    height: "200px",
+    objectFit: "cover",
+  },
+  user_list__avatar_user: {
+    objectFit: "cover",
+    width: "20px",
+    height: "20px",
+    borderRadius: "10px",
   },
   button: {
     textTransform: "none!important",
@@ -16,20 +24,14 @@ export default makeStyles((theme) => ({
       color: "#f4212e!important",
     },
   },
-
   button_black: {
     textTransform: "none!important",
   },
-  list__avatar: {
-    objectFit: "cover",
-    width: "50px",
-    height: "50px",
-    borderRadius: "10px",
-  },
-  list__avatar_user: {
-    objectFit: "cover",
-    width: "20px",
-    height: "20px",
-    borderRadius: "10px",
+  button__edit: {
+    textTransform: "none!important",
+    "&:hover": {
+      backgroundColor: `${theme.palette.grey.background__input}!important`,
+      borderColor: `${theme.palette.grey.main}!important`,
+    },
   },
 }));

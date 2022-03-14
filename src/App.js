@@ -18,7 +18,8 @@ import { AuthContext } from "./context/authContext";
 import { SnackbarsContextProvider } from "./context/snackbarsContext";
 import Mentions from "./pages/Mentions";
 import Lists from "./pages/Lists";
-import CreateListModal from "./pages/Lists/CreateListModal";
+import CreateListModal from "./components/CreateListModal";
+import List from "./pages/Lists/List";
 
 export default function App() {
   const auth = React.useContext(AuthContext);
@@ -76,6 +77,7 @@ export default function App() {
                 path="/:username/lists/create"
                 element={<CreateListModal />}
               />
+              <Route path="/lists/:id" element={<List />} />
               <Route path="/:username/followers" element={<Followers />} />
               <Route path="/:username/following" element={<Following />} />
               <Route path="/settings/profile" element={<EditProfileModal />} />

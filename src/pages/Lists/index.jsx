@@ -1,19 +1,19 @@
 import React from "react";
 
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import { Box } from "@mui/system";
 
 import Header from "../../components/Header";
 import News from "../../components/News";
+import UserList from "../../components/UserList";
+import DiscoverList from "../../components/DiscoverList";
 
 import { AuthContext } from "../../context/authContext";
 
 import { icons } from "../../constants";
 import { Typography } from "@mui/material";
-import List from "./List";
 import { useFirestore } from "../../utils/useFirestore";
-import UserList from "./UserList";
 
 import useStyles from "./styles";
 
@@ -45,8 +45,6 @@ const Lists = () => {
     if (auth.userData?.[0]?.lists.includes(list.id)) return list;
   });
 
-  console.log("listes du user co", matchedLists);
-
   return (
     <Box display="flex">
       <Box borderLeft="1px solid #eff3f4" borderRight="1px solid #eff3f4">
@@ -66,15 +64,20 @@ const Lists = () => {
           <Box display="flex">
             {auth?.userData?.[0]?.pinned_lists?.length !== 0 ? (
               auth?.userData?.[0]?.pinned_lists.map((pinned_list) => {
-                console.log("listes des lists", lists);
-                console.log("pinned_list", pinned_list);
-
                 const matchedList = lists?.filter((list) => {
                   return list?.id === pinned_list;
                 });
-                console.log("list qui match", matchedList);
                 return (
-                  <Box p="1rem">
+                  <Box
+                    key={pinned_list}
+                    p="1rem"
+                    component={Link}
+                    to={`/lists/${pinned_list}`}
+                    sx={{
+                      textDecoration: "none!important",
+                      color: "black.main",
+                    }}
+                  >
                     <Box>
                       <img
                         src={matchedList?.[0]?.cover_url}
@@ -113,8 +116,7 @@ const Lists = () => {
             const author = users?.filter(
               (user) => user?.id === list?.author_id
             );
-            console.log("user qui match ", author);
-            return <List key={list?.id} list={list} author={author} />;
+            return <DiscoverList key={list?.id} list={list} author={author} />;
           })}
         </Box>
         <Box>
@@ -129,7 +131,6 @@ const Lists = () => {
             const author = users?.filter(
               (user) => user?.id === list?.author_id
             );
-            console.log("listes suivies du user", list);
             return <UserList key={list?.id} list={list} author={author} />;
           })}
         </Box>

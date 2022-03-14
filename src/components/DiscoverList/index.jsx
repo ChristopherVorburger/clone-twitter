@@ -3,53 +3,50 @@ import React from "react";
 import { Box } from "@mui/system";
 import { Button, Typography } from "@mui/material";
 
-import { icons, images } from "../../../constants";
-
 import { arrayRemove, doc, updateDoc } from "firebase/firestore";
-import { database } from "../../../firebase-config";
+import { database } from "../../firebase-config";
 
-import { AuthContext } from "../../../context/authContext";
+import { AuthContext } from "../../context/authContext";
 
 import useStyles from "./styles";
 
 // Composant pour afficher une list
-const UserList = ({ list, author }) => {
+const List = ({ list, author }) => {
   const classes = useStyles();
+  const [textButton, setTextButton] = React.useState("Following");
 
   // Utilisation du hook useContext pour récupérer le contexte Auth
   const auth = React.useContext(AuthContext);
 
-  // Récupération du tableau de liste de l'utilisateur connecté
+  // Récupération du tableau de following de l'utilisateur connecté
   const listsCurrentUser = auth?.userData?.[0]?.lists;
 
   // Référence à l'id de l'utilisateur connecté à mettre à jour
   const currentUserRef = doc(database, "users", auth?.authUser?.uid);
 
-  // Fonction pour pin une list
-  const pinList = (e) => {
+  const followList = (e) => {
     e.preventDefault();
 
-    // Si l'utilisateur connecté n'a pas de pin,
-    // on ajoute le premier dans le tableau pinned_lists
+    // Si l'utilisateur connecté n'a pas de liste,
+    // on ajoute la première dans le tableau lists
     if (!listsCurrentUser) {
       updateDoc(currentUserRef, {
         ...auth.userData?.[0],
-        pinned_lists: [list?.id],
+        lists: [list?.id],
       })
         .then(() => {
-          console.log("First pin created");
+          console.log("First list created");
         })
         .catch((err) => {
           console.log(err.message);
         });
-      // Sinon on ajoute le pin dans le tableau existant
     } else {
       updateDoc(currentUserRef, {
         ...auth.userData?.[0],
-        pinned_lists: [...auth.userData?.[0]?.pinned_lists, list?.id],
+        lists: [...auth.userData?.[0]?.lists, list?.id],
       })
         .then(() => {
-          console.log("Pin created");
+          console.log("List created");
         })
         .catch((err) => {
           console.log(err.message);
@@ -57,11 +54,11 @@ const UserList = ({ list, author }) => {
     }
   };
 
-  // Fonction pour unPin une liste
-  const unPinList = () => {
-    // Suppression du pin dans les datas de l'utilisateur connecté
+  // Fonction pour unfollow
+  const unfollowList = () => {
+    // Suppression du following dans les datas de l'utilisateur connecté
     updateDoc(currentUserRef, {
-      pinned_lists: arrayRemove(list?.id),
+      lists: arrayRemove(list?.id),
     });
   };
 
@@ -70,23 +67,21 @@ const UserList = ({ list, author }) => {
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Box display="flex">
           <Box pr="1rem">
-            {list?.cover_url ? (
-              <img
-                className={classes.avatar}
-                src={list?.cover_url}
-                alt=""
-                width="50px"
-                height="50px"
-              />
-            ) : (
-              <img src={images.user} alt="" width={"50px"} />
-            )}
+            <img
+              src={list?.cover_url}
+              alt=""
+              className={classes.list__avatar}
+            />
           </Box>
           <Box>
             <Typography fontSize="font.main">{list?.name}</Typography>
             <Box display="flex">
               <Box mr="4px">
-                <img src={images.user} alt="" width={"20px"} />
+                <img
+                  src={author?.[0]?.profile_image_url}
+                  alt=""
+                  className={classes.list__avatar_user}
+                />
               </Box>
               <Typography mr="4px" fontSize="font.small">
                 {author?.[0]?.name}
@@ -100,31 +95,42 @@ const UserList = ({ list, author }) => {
           </Box>
         </Box>
         <Box>
-          <Box>
-            {auth?.userData?.[0]?.pinned_lists?.includes(list?.id) ? (
+          <Box
+            onMouseEnter={() => setTextButton("Unfollow")}
+            onMouseLeave={() => setTextButton("Following")}
+          >
+            {auth?.userData?.[0]?.lists?.includes(list?.id) ? (
               <Button
                 className={classes.button}
                 variant="outlined"
                 disableElevation
                 sx={{
-                  borderColor: "transparent",
-                  borderRadius: "100px",
+                  color: "black.main",
+                  fontSize: "font.small",
+                  fontWeight: "mainBold",
+                  backgroundColor: "white.main",
+                  borderColor: "grey.button",
+                  borderRadius: "50px",
+                  textTransform: "none",
+                  minWidth: "6rem",
                 }}
-                onClick={unPinList}
+                onClick={unfollowList}
               >
-                {icons.PushPinIcon.type.render()}
+                {textButton}
               </Button>
             ) : (
               <Button
-                className={classes.button}
-                variant="outlined"
+                className={classes.button_black}
+                variant="contained"
                 sx={{
-                  borderColor: "transparent",
+                  fontSize: "font.small",
+                  fontWeight: "mainBold",
+                  backgroundColor: "black.main",
                   borderRadius: "50px",
                 }}
-                onClick={pinList}
+                onClick={followList}
               >
-                {icons.PushPinOutlinedIcon.type.render()}
+                Follow
               </Button>
             )}
           </Box>
@@ -134,4 +140,4 @@ const UserList = ({ list, author }) => {
   );
 };
 
-export default UserList;
+export default List;

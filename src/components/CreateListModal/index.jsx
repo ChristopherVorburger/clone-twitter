@@ -2,7 +2,7 @@ import { useState, useContext, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
 
 // Fonctions firebase
-import { database, storage } from "../../../firebase-config";
+import { database, storage } from "../../firebase-config";
 import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -15,14 +15,13 @@ import Modal from "@mui/material/Modal";
 import { IconButton, Input, TextField } from "@mui/material";
 
 // Icones et images
-import { icons, images } from "../../../constants";
+import { icons } from "../../constants";
 
 // Styles
 import useStyles from "./styles";
 
 // Context
-import { AuthContext } from "../../../context/authContext";
-import { useFirestore } from "../../../utils/useFirestore";
+import { AuthContext } from "../../context/authContext";
 
 // Reducer
 const reducer = (state, action) => {

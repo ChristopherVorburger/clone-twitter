@@ -19,4 +19,10 @@ export default makeStyles((theme) => ({
     objectFit: "cover",
     borderRadius: "10px",
   },
+  user_list__avatar_user: {
+    objectFit: "cover",
+    width: "20px",
+    height: "20px",
+    borderRadius: "10px",
+  },
 }));
