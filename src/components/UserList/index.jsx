@@ -11,6 +11,7 @@ import { database } from "../../firebase-config";
 import { AuthContext } from "../../context/authContext";
 
 import useStyles from "./styles";
+import { Link } from "react-router-dom";
 
 // Composant pour afficher une list
 const UserList = ({ list, author }) => {
@@ -66,85 +67,89 @@ const UserList = ({ list, author }) => {
   };
 
   return (
-    <Box className={classes.container} p="12px 1rem">
-      <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Box display="flex">
-          <Box pr="1rem">
-            {list?.cover_url ? (
-              <img
-                className={classes.avatar}
-                src={list?.cover_url}
-                alt=""
-                width="50px"
-                height="50px"
-              />
-            ) : (
-              <img src={images.user} alt="" width={"50px"} />
-            )}
+    <Link className={classes.user_list__link} to={`/lists/${list?.id}`}>
+      <Box className={classes.container} p="12px 1rem">
+        <Box display="flex" justifyContent="space-between" alignItems="center">
+          <Box display="flex">
+            <Box pr="1rem">
+              {list?.cover_url ? (
+                <img
+                  className={classes.avatar}
+                  src={list?.cover_url}
+                  alt=""
+                  width="50px"
+                  height="50px"
+                />
+              ) : (
+                <img src={images.user} alt="" width={"50px"} />
+              )}
+            </Box>
+            <Box>
+              <Typography fontSize="font.main" color="black.main">
+                {list?.name}
+              </Typography>
+              <Box display="flex">
+                {author?.[0]?.profile_image_url ? (
+                  <Box mr="4px">
+                    <img
+                      className={classes.user_list__avatar_user}
+                      src={author?.[0]?.profile_image_url}
+                      alt=""
+                    />
+                  </Box>
+                ) : (
+                  <Box mr="4px">
+                    <img
+                      className={classes.user_list__avatar_user}
+                      src={images.user}
+                      alt=""
+                    />
+                  </Box>
+                )}
+                <Typography mr="4px" fontSize="font.small" color="black.main">
+                  {author?.[0]?.name}
+                </Typography>
+                <Typography
+                  mr="4px"
+                  fontSize="font.small"
+                  color="grey.main"
+                >{`@${author?.[0]?.username}`}</Typography>
+              </Box>
+            </Box>
           </Box>
           <Box>
-            <Typography fontSize="font.main">{list?.name}</Typography>
-            <Box display="flex">
-              {author?.[0]?.profile_image_url ? (
-                <Box mr="4px">
-                  <img
-                    className={classes.user_list__avatar_user}
-                    src={author?.[0]?.profile_image_url}
-                    alt=""
-                  />
-                </Box>
+            <Box>
+              {auth?.userData?.[0]?.pinned_lists?.includes(list?.id) ? (
+                <Button
+                  className={classes.button}
+                  variant="outlined"
+                  disableElevation
+                  sx={{
+                    borderColor: "transparent",
+                    borderRadius: "100px",
+                  }}
+                  onClick={unPinList}
+                >
+                  {icons.PushPinIcon.type.render()}
+                </Button>
               ) : (
-                <Box mr="4px">
-                  <img
-                    className={classes.user_list__avatar_user}
-                    src={images.user}
-                    alt=""
-                  />
-                </Box>
+                <Button
+                  className={classes.button}
+                  variant="outlined"
+                  sx={{
+                    borderColor: "transparent",
+                    borderRadius: "50px",
+                  }}
+                  onClick={pinList}
+                >
+                  {icons.PushPinOutlinedIcon.type.render()}
+                </Button>
               )}
-              <Typography mr="4px" fontSize="font.small">
-                {author?.[0]?.name}
-              </Typography>
-              <Typography
-                mr="4px"
-                fontSize="font.small"
-                color="grey.main"
-              >{`@${author?.[0]?.username}`}</Typography>
             </Box>
           </Box>
         </Box>
-        <Box>
-          <Box>
-            {auth?.userData?.[0]?.pinned_lists?.includes(list?.id) ? (
-              <Button
-                className={classes.button}
-                variant="outlined"
-                disableElevation
-                sx={{
-                  borderColor: "transparent",
-                  borderRadius: "100px",
-                }}
-                onClick={unPinList}
-              >
-                {icons.PushPinIcon.type.render()}
-              </Button>
-            ) : (
-              <Button
-                className={classes.button}
-                variant="outlined"
-                sx={{
-                  borderColor: "transparent",
-                  borderRadius: "50px",
-                }}
-                onClick={pinList}
-              >
-                {icons.PushPinOutlinedIcon.type.render()}
-              </Button>
-            )}
-          </Box>
-        </Box>
       </Box>
-    </Box>
+    </Link>
   );
 };
 

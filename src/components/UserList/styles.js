@@ -25,4 +25,7 @@ export default makeStyles((theme) => ({
     height: "20px",
     borderRadius: "10px",
   },
+  user_list__link: {
+    textDecoration: "none!important",
+  },
 }));

@@ -10,6 +10,7 @@ import { AuthContext } from "../../context/authContext";
 
 import useStyles from "./styles";
 import { images } from "../../constants";
+import { Link } from "react-router-dom";
 
 // Composant pour afficher une list
 const List = ({ list, author }) => {
@@ -64,90 +65,94 @@ const List = ({ list, author }) => {
   };
 
   return (
-    <Box className={classes.container} p="12px 1rem">
-      <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Box display="flex">
-          <Box pr="1rem">
-            <img
-              src={list?.cover_url}
-              alt=""
-              className={classes.list__avatar}
-            />
+    <Link className={classes.user_list__link} to={`/lists/${list?.id}`}>
+      <Box className={classes.container} p="12px 1rem">
+        <Box display="flex" justifyContent="space-between" alignItems="center">
+          <Box display="flex">
+            <Box pr="1rem">
+              <img
+                src={list?.cover_url}
+                alt=""
+                className={classes.list__avatar}
+              />
+            </Box>
+            <Box>
+              <Typography fontSize="font.main" color="black.main">
+                {list?.name}
+              </Typography>
+              <Box display="flex">
+                {author?.[0]?.profile_image_url ? (
+                  <Box mr="4px">
+                    <img
+                      src={author?.[0]?.profile_image_url}
+                      alt=""
+                      className={classes.list__avatar_user}
+                    />
+                  </Box>
+                ) : (
+                  <Box mr="4px">
+                    <img
+                      src={images.user}
+                      alt=""
+                      className={classes.list__avatar_user}
+                    />
+                  </Box>
+                )}
+                <Typography mr="4px" fontSize="font.small" color="black.main">
+                  {author?.[0]?.name}
+                </Typography>
+                <Typography
+                  mr="4px"
+                  fontSize="font.small"
+                  color="grey.main"
+                >{`@${author?.[0]?.username}`}</Typography>
+              </Box>
+            </Box>
           </Box>
           <Box>
-            <Typography fontSize="font.main">{list?.name}</Typography>
-            <Box display="flex">
-              {author?.[0]?.profile_image_url ? (
-                <Box mr="4px">
-                  <img
-                    src={author?.[0]?.profile_image_url}
-                    alt=""
-                    className={classes.list__avatar_user}
-                  />
-                </Box>
+            <Box
+              onMouseEnter={() => setTextButton("Unfollow")}
+              onMouseLeave={() => setTextButton("Following")}
+            >
+              {auth?.userData?.[0]?.lists?.includes(list?.id) ? (
+                <Button
+                  className={classes.button}
+                  variant="outlined"
+                  disableElevation
+                  sx={{
+                    color: "black.main",
+                    fontSize: "font.small",
+                    fontWeight: "mainBold",
+                    backgroundColor: "white.main",
+                    borderColor: "grey.button",
+                    borderRadius: "50px",
+                    textTransform: "none",
+                    minWidth: "6rem",
+                  }}
+                  onClick={unfollowList}
+                >
+                  {textButton}
+                </Button>
               ) : (
-                <Box mr="4px">
-                  <img
-                    src={images.user}
-                    alt=""
-                    className={classes.list__avatar_user}
-                  />
-                </Box>
+                <Button
+                  className={classes.button_black}
+                  variant="contained"
+                  sx={{
+                    fontSize: "font.small",
+                    fontWeight: "mainBold",
+                    backgroundColor: "black.main",
+                    borderRadius: "50px",
+                  }}
+                  onClick={followList}
+                >
+                  Follow
+                </Button>
               )}
-              <Typography mr="4px" fontSize="font.small">
-                {author?.[0]?.name}
-              </Typography>
-              <Typography
-                mr="4px"
-                fontSize="font.small"
-                color="grey.main"
-              >{`@${author?.[0]?.username}`}</Typography>
             </Box>
           </Box>
         </Box>
-        <Box>
-          <Box
-            onMouseEnter={() => setTextButton("Unfollow")}
-            onMouseLeave={() => setTextButton("Following")}
-          >
-            {auth?.userData?.[0]?.lists?.includes(list?.id) ? (
-              <Button
-                className={classes.button}
-                variant="outlined"
-                disableElevation
-                sx={{
-                  color: "black.main",
-                  fontSize: "font.small",
-                  fontWeight: "mainBold",
-                  backgroundColor: "white.main",
-                  borderColor: "grey.button",
-                  borderRadius: "50px",
-                  textTransform: "none",
-                  minWidth: "6rem",
-                }}
-                onClick={unfollowList}
-              >
-                {textButton}
-              </Button>
-            ) : (
-              <Button
-                className={classes.button_black}
-                variant="contained"
-                sx={{
-                  fontSize: "font.small",
-                  fontWeight: "mainBold",
-                  backgroundColor: "black.main",
-                  borderRadius: "50px",
-                }}
-                onClick={followList}
-              >
-                Follow
-              </Button>
-            )}
-          </Box>
-        </Box>
       </Box>
-    </Box>
+    </Link>
   );
 };
 
