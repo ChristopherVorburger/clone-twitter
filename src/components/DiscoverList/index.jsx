@@ -7,24 +7,34 @@ import { arrayRemove, doc, updateDoc } from "firebase/firestore";
 import { database } from "../../firebase-config";
 
 import { AuthContext } from "../../context/authContext";
+import { ListsContext } from "../../context/listsContext";
 
 import useStyles from "./styles";
 import { images } from "../../constants";
 import { Link } from "react-router-dom";
 
 // Composant pour afficher une list
-const List = ({ list, author }) => {
+const DiscoverList = ({ list, author }) => {
   const classes = useStyles();
   const [textButton, setTextButton] = React.useState("Following");
 
   // Utilisation du hook useContext pour récupérer le contexte Auth
   const auth = React.useContext(AuthContext);
+  const lists = React.useContext(ListsContext);
 
   // Récupération du tableau de following de l'utilisateur connecté
   const listsCurrentUser = auth?.userData?.[0]?.lists;
 
   // Référence à l'id de l'utilisateur connecté à mettre à jour
   const currentUserRef = doc(database, "users", auth?.authUser?.uid);
+
+  // Référence de la liste à mettre à jour
+  const currentListRef = doc(database, "lists", list?.id);
+
+  // Récupération du tableau de follwers de la liste
+  const listsFollowers = list?.followers;
+
+  console.log("liste des followers", listsFollowers);
 
   const followList = (e) => {
     e.preventDefault();
@@ -36,8 +46,31 @@ const List = ({ list, author }) => {
         ...auth.userData?.[0],
         lists: [list?.id],
       })
+        // Si la liste n'a pas de followers,
+        // on ajoute le premier dans le tableau followers
         .then(() => {
           console.log("First list created");
+          if (!listsFollowers) {
+            updateDoc(currentListRef, {
+              followers: [auth.userData?.[0]?.id],
+            })
+              .then(() => {
+                console.log("ajout d'un premier follower");
+              })
+              .catch((err) => {
+                console.log(err.message);
+              });
+          } else {
+            updateDoc(currentListRef, {
+              followers: [...listsFollowers, auth?.authUser?.uid],
+            })
+              .then(() => {
+                console.log("ajout d'un follower");
+              })
+              .catch((err) => {
+                console.log(err.message);
+              });
+          }
         })
         .catch((err) => {
           console.log(err.message);
@@ -49,6 +82,27 @@ const List = ({ list, author }) => {
       })
         .then(() => {
           console.log("List created");
+          if (!listsFollowers) {
+            updateDoc(currentListRef, {
+              followers: [auth.userData?.[0]?.id],
+            })
+              .then(() => {
+                console.log("ajout d'un premier follower");
+              })
+              .catch((err) => {
+                console.log(err.message);
+              });
+          } else {
+            updateDoc(currentListRef, {
+              followers: [...listsFollowers, auth?.authUser?.uid],
+            })
+              .then(() => {
+                console.log("ajout d'un follower");
+              })
+              .catch((err) => {
+                console.log(err.message);
+              });
+          }
         })
         .catch((err) => {
           console.log(err.message);
@@ -61,7 +115,24 @@ const List = ({ list, author }) => {
     // Suppression du following dans les datas de l'utilisateur connecté
     updateDoc(currentUserRef, {
       lists: arrayRemove(list?.id),
-    });
+    })
+      .then(() => {
+        console.log(
+          "Suppression de la liste dans le tabelau lists du user connecté"
+        );
+        updateDoc(currentListRef, {
+          followers: arrayRemove(auth.userData?.[0]?.id),
+        })
+          .then(() => {
+            console.log("Suppression du follower de la liste");
+          })
+          .catch((err) => {
+            console.log(err.message);
+          });
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
   };
 
   return (
@@ -156,4 +227,4 @@ const List = ({ list, author }) => {
   );
 };
 
-export default List;
+export default DiscoverList;

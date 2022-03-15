@@ -11,6 +11,7 @@ import News from "../../../components/News";
 import Header from "../../../components/Header";
 
 import { AuthContext } from "../../../context/authContext";
+import { ListsContext } from "../../../context/listsContext";
 
 import useStyles from "./styles";
 import { arrayRemove, doc, updateDoc } from "firebase/firestore";
@@ -22,14 +23,13 @@ const List = () => {
   const navigate = useNavigate();
 
   const auth = React.useContext(AuthContext);
+  const lists = React.useContext(ListsContext);
 
   const [textButton, setTextButton] = React.useState("Following");
 
-  const lists = useFirestore("lists");
-
   const users = useFirestore("users");
 
-  const matchedList = lists?.filter((list) => {
+  const matchedList = lists?.lists?.filter((list) => {
     return list?.id === id;
   });
 
@@ -50,6 +50,14 @@ const List = () => {
   // Référence à l'id de l'utilisateur connecté à mettre à jour
   const currentUserRef = doc(database, "users", auth?.authUser?.uid);
 
+  // Référence de la liste à mettre à jour
+  const currentListRef = doc(database, "lists", matchedList?.[0]?.id);
+
+  // Récupération du tableau de follwers de la liste
+  const listsFollowers = matchedList?.[0]?.followers;
+
+  console.log("liste des followers", listsFollowers);
+
   const followList = (e) => {
     e.preventDefault();
 
@@ -60,8 +68,31 @@ const List = () => {
         ...auth.userData?.[0],
         lists: [matchedList?.[0]?.id],
       })
+        // Si la liste n'a pas de followers,
+        // on ajoute le premier dans le tableau followers
         .then(() => {
-          console.log("First list followed");
+          console.log("First list created");
+          if (!listsFollowers) {
+            updateDoc(currentListRef, {
+              followers: [auth.userData?.[0]?.id],
+            })
+              .then(() => {
+                console.log("ajout d'un premier follower");
+              })
+              .catch((err) => {
+                console.log(err.message);
+              });
+          } else {
+            updateDoc(currentListRef, {
+              followers: [...listsFollowers, auth?.authUser?.uid],
+            })
+              .then(() => {
+                console.log("ajout d'un follower");
+              })
+              .catch((err) => {
+                console.log(err.message);
+              });
+          }
         })
         .catch((err) => {
           console.log(err.message);
@@ -72,7 +103,28 @@ const List = () => {
         lists: [...auth.userData?.[0]?.lists, matchedList?.[0]?.id],
       })
         .then(() => {
-          console.log("List followed");
+          console.log("List created");
+          if (!listsFollowers) {
+            updateDoc(currentListRef, {
+              followers: [auth.userData?.[0]?.id],
+            })
+              .then(() => {
+                console.log("ajout d'un premier follower");
+              })
+              .catch((err) => {
+                console.log(err.message);
+              });
+          } else {
+            updateDoc(currentListRef, {
+              followers: [...listsFollowers, auth?.authUser?.uid],
+            })
+              .then(() => {
+                console.log("ajout d'un follower");
+              })
+              .catch((err) => {
+                console.log(err.message);
+              });
+          }
         })
         .catch((err) => {
           console.log(err.message);
@@ -85,7 +137,24 @@ const List = () => {
     // Suppression du following dans les datas de l'utilisateur connecté
     updateDoc(currentUserRef, {
       lists: arrayRemove(matchedList?.[0]?.id),
-    });
+    })
+      .then(() => {
+        console.log(
+          "Suppression de la liste dans le tabelau lists du user connecté"
+        );
+        updateDoc(currentListRef, {
+          followers: arrayRemove(auth.userData?.[0]?.id),
+        })
+          .then(() => {
+            console.log("Suppression du follower de la liste");
+          })
+          .catch((err) => {
+            console.log(err.message);
+          });
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
   };
 
   return (
@@ -153,7 +222,7 @@ const List = () => {
             <Box display="flex" mb="12px">
               <Box display="flex" mr="20px">
                 <Typography mr="4px" fontSize="font.main">
-                  1
+                  {matchedList?.[0]?.members?.length}
                 </Typography>
                 <Typography fontSize="font.main" color="grey.main">
                   Members
@@ -161,7 +230,7 @@ const List = () => {
               </Box>
               <Box display="flex">
                 <Typography mr="4px" fontSize="font.main">
-                  2
+                  {matchedList?.[0]?.followers?.length}
                 </Typography>
                 <Typography fontSize="font.main" color="grey.main">
                   Followers
