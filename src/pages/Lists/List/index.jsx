@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { icons, images } from "../../../constants";
 
@@ -15,10 +15,13 @@ import { AuthContext } from "../../../context/authContext";
 import useStyles from "./styles";
 import { arrayRemove, doc, updateDoc } from "firebase/firestore";
 import { database } from "../../../firebase-config";
+
 const List = () => {
-  const classes = useStyles();
-  const auth = React.useContext(AuthContext);
   const { id } = useParams();
+  const classes = useStyles();
+  const navigate = useNavigate();
+
+  const auth = React.useContext(AuthContext);
 
   const [textButton, setTextButton] = React.useState("Following");
 
@@ -33,8 +36,6 @@ const List = () => {
   const author = users?.filter((user) => {
     return user?.id === matchedList?.[0]?.author_id;
   });
-
-  console.log("liste qui match", matchedList);
 
   const iconsArray = [
     {
@@ -60,7 +61,7 @@ const List = () => {
         lists: [matchedList?.[0]?.id],
       })
         .then(() => {
-          console.log("First list created");
+          console.log("First list followed");
         })
         .catch((err) => {
           console.log(err.message);
@@ -71,7 +72,7 @@ const List = () => {
         lists: [...auth.userData?.[0]?.lists, matchedList?.[0]?.id],
       })
         .then(() => {
-          console.log("List created");
+          console.log("List followed");
         })
         .catch((err) => {
           console.log(err.message);
@@ -102,8 +103,8 @@ const List = () => {
               className={classes.profile__cover}
               src={matchedList?.[0]?.cover_url}
               alt=""
-              maxWidth="590px"
-              maxHeight="200px"
+              maxwidth="590px"
+              maxheight="200px"
             />
           </Box>
           <Box
@@ -187,7 +188,9 @@ const List = () => {
                       textTransform: "none",
                       minWidth: "6rem",
                     }}
-                    // onClick={EditList}
+                    onClick={() =>
+                      navigate(`/lists/${matchedList?.[0]?.id}/info`)
+                    }
                   >
                     Edit List
                   </Button>

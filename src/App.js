@@ -1,28 +1,32 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
+
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+
 import Prehome from "./pages/Prehome";
 import SignUp from "./pages/SignUp/SingUp";
-import Login from "./components/Login/Login";
 import Home from "./pages/Home";
-import Exemple from "./components/Exemple";
 import Profile from "./pages/Profile";
 import Followers from "./pages/Followers";
 import Following from "./pages/Following";
-import EditProfileModal from "./components/EditProfileModal";
-import Layout from "./components/Layout";
 import Bookmarks from "./pages/Bookmarks";
 import Notifications from "./pages/Notifications";
+import Mentions from "./pages/Mentions";
+import Lists from "./pages/Lists";
+import List from "./pages/Lists/List";
+
+import EditProfileModal from "./components/EditProfileModal";
+import Layout from "./components/Layout";
+import Exemple from "./components/Exemple";
+import Login from "./components/Login/Login";
+import CreateListModal from "./components/CreateListModal";
+import SuggestedListModal from "./components/SuggestedListModal";
+import ListMembersModal from "./components/ListMembersModal";
+import EditListModal from "./components/EditListModal";
 
 import { AuthContext } from "./context/authContext";
 import { SnackbarsContextProvider } from "./context/snackbarsContext";
 import { ListsContextProvider } from "./context/listsContext";
-import Mentions from "./pages/Mentions";
-import Lists from "./pages/Lists";
-import CreateListModal from "./components/CreateListModal";
-import List from "./pages/Lists/List";
-import SuggestedListModal from "./components/SuggestedListModal";
-import ListMembersModal from "./components/ListMembersModal";
 
 export default function App() {
   const auth = React.useContext(AuthContext);
@@ -82,6 +86,7 @@ export default function App() {
                   element={<CreateListModal />}
                 />
                 <Route path="/lists/:id" element={<List />} />
+                <Route path="/lists/:id/info" element={<EditListModal />} />
                 <Route
                   path="/lists/:id/members"
                   element={<ListMembersModal />}

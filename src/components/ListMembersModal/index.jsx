@@ -16,10 +16,11 @@ import useStyles from "./styles";
 
 // Context
 import { AuthContext } from "../../context/authContext";
-import { useFirestore } from "../../utils/useFirestore";
-import ListMembers from "../ListMembersModal/ListMembers";
-
 import { ListsContext } from "../../context/listsContext";
+
+import { useFirestore } from "../../utils/useFirestore";
+
+import ListMembers from "../ListMembersModal/ListMembers";
 
 // Liens pour la Nav Tab
 function LinkTab(props) {
