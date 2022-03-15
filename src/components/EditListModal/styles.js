@@ -48,6 +48,6 @@ export default makeStyles((theme) => ({
     padding: "0.5rem",
   },
   field: {
-    padding: "12px 1rem!important",
+    padding: " 1rem!important",
   },
 }));

@@ -106,6 +106,9 @@ const ListMembersModal = () => {
                       backgroundColor: "black.main",
                       borderRadius: "50px",
                     }}
+                    onClick={() =>
+                      navigate(`/${auth.userData?.[0]?.username}/lists`)
+                    }
                   >
                     Done
                   </Button>

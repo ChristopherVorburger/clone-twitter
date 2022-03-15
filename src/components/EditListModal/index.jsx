@@ -1,9 +1,9 @@
 import { useState, useContext, useReducer, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 // Fonctions firebase
 import { database, storage } from "../../firebase-config";
-import { doc, updateDoc } from "firebase/firestore";
+import { arrayRemove, deleteDoc, doc, updateDoc } from "firebase/firestore";
 
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
@@ -23,6 +23,7 @@ import useStyles from "./styles";
 // Context
 import { AuthContext } from "../../context/authContext";
 import { ListsContext } from "../../context/listsContext";
+import { useFirestore } from "../../utils/useFirestore";
 
 // Reducer
 const reducer = (state, action) => {
@@ -55,11 +56,12 @@ const CreateListModal = () => {
   const auth = useContext(AuthContext);
   const lists = useContext(ListsContext);
 
+  const users = useFirestore("users");
+  console.log("users", users);
+
   const matchedList = lists?.lists?.filter((list) => {
     return list.id === id;
   });
-
-  console.log("liste qui match", matchedList);
 
   // Valeurs de départ pour le reducer
   const initialValue = {
@@ -68,8 +70,6 @@ const CreateListModal = () => {
     private_list: false,
     cover_url: matchedList?.[0]?.cover_url,
   };
-
-  console.log("valeurs initiales", initialValue);
 
   // Utilisation du reducer
   const [state, dispatch] = useReducer(reducer, initialValue);
@@ -93,10 +93,8 @@ const CreateListModal = () => {
     }
   }, [name]);
 
-  // Référence à l'id de l'utilisateur connecté à mettre à jour
+  // Référence de la liste à mettre à jour
   const currentListRef = doc(database, "lists", matchedList?.[0]?.id);
-
-  console.log("storage", storage);
 
   // Fonction pour éditer une liste
   const handleSubmit = async (e) => {
@@ -150,6 +148,44 @@ const CreateListModal = () => {
           console.log(err.message);
         });
     }
+  };
+
+  // Création d'un tableau pour stocker les utilisateurs en lien avec la liste
+  const usersWhoPinnedRefs = [];
+
+  // Recherche des utilisateurs en lien avec la liste (pins ou followers)
+  const usersWhoPinnedTheList = users?.filter((user) => {
+    if (user?.pinned_lists?.includes(matchedList?.[0]?.id))
+      return usersWhoPinnedRefs.push(doc(database, "users", user.id));
+    else return null;
+  });
+
+  // Fonction pour ajouter un membre à la liste
+  const deleteList = async (e) => {
+    e.preventDefault();
+    // Suppression du membre de la liste
+    usersWhoPinnedRefs.map((user) => {
+      return updateDoc(user, {
+        lists: arrayRemove(matchedList?.[0]?.id),
+        pinned_lists: arrayRemove(matchedList?.[0]?.id),
+      })
+        .then(() => {
+          console.log(
+            `Suppression des pins et des followers de la liste ${matchedList?.[0]?.name}`
+          );
+          deleteDoc(currentListRef)
+            .then(() => {
+              console.log(`Suppression de la liste ${matchedList?.[0]?.name}`);
+            })
+            .catch((err) => {
+              console.log(err.message);
+            });
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+    });
+    navigate(`/${auth?.userData?.[0]?.username}/lists`);
   };
 
   return (
@@ -322,16 +358,60 @@ const CreateListModal = () => {
                   fullWidth
                 />
               </Box>
-              <Box className={classes.field}>
-                <Box display="flex" justifyContent="space-between">
-                  <Typography>Make private</Typography>
-                  <Input
-                    value={private_list}
-                    type="checkbox"
-                    name="private_list"
-                    onChange={inputAction}
-                    sx={{ width: "20px" }}
-                  />
+              <Box className={classes.field} borderBottom="1px solid #eff3f4">
+                <Box display="flex" flexDirection="column">
+                  <Box display="flex" justifyContent="space-between">
+                    <Typography>Make private</Typography>
+                    <Input
+                      value={private_list}
+                      type="checkbox"
+                      name="private_list"
+                      onChange={inputAction}
+                      sx={{ width: "20px" }}
+                    />
+                  </Box>
+                  <Box>
+                    <Typography fontSize="font.small" color="grey.main">
+                      When you make a List private, only you can see it.
+                    </Typography>
+                  </Box>
+                </Box>
+              </Box>
+              <Box
+                className={classes.field}
+                component={Link}
+                to={`/lists/${id}/members`}
+                sx={{
+                  textDecoration: "none",
+                  color: "black.main",
+                }}
+                display="flex"
+                justifyContent="space-between"
+              >
+                <Box>
+                  <Typography>Manage members</Typography>
+                </Box>
+                <Box sx={{ transform: "rotate(180deg)" }}>
+                  {icons.ArrowBackIcon.type.render()}
+                </Box>
+              </Box>
+              <Box
+                className={classes.field}
+                p="1rem"
+                sx={{
+                  color: "red",
+                }}
+                display="flex"
+                justifyContent="center"
+              >
+                <Box
+                  sx={{
+                    cursor: "pointer",
+                  }}
+                >
+                  <Typography fontSize="font.main" onClick={deleteList}>
+                    Delete List
+                  </Typography>
                 </Box>
               </Box>
             </Box>

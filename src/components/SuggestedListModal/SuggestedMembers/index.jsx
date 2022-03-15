@@ -52,7 +52,7 @@ const SuggestedMembers = ({ member, matchedList }) => {
   return (
     <Box display="flex" p="12px 1rem">
       <Box mr="12px">
-        <img src={images.user} alt="" width="50px" />
+        <img src={images?.user} alt="" width="50px" />
       </Box>
       <Box flexGrow={1}>
         <Box display="flex" justifyContent="space-between">

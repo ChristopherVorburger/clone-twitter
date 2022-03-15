@@ -20,7 +20,7 @@ const UserList = ({ list, author }) => {
   const auth = React.useContext(AuthContext);
 
   // Récupération du tableau de liste de l'utilisateur connecté
-  const listsCurrentUser = auth?.userData?.[0]?.lists;
+  const listsCurrentUser = auth?.userData?.[0]?.pinned_lists;
 
   // Référence à l'id de l'utilisateur connecté à mettre à jour
   const currentUserRef = doc(database, "users", auth?.authUser?.uid);

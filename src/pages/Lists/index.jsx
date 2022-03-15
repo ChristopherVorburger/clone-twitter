@@ -42,7 +42,7 @@ const Lists = () => {
 
   // Recherche des listes de l'utilisateur qui matchent avec les listes
   const matchedLists = lists?.filter((list) => {
-    if (auth.userData?.[0]?.lists.includes(list.id)) return list;
+    if (auth.userData?.[0]?.lists?.includes(list.id)) return list;
   });
 
   return (
@@ -67,7 +67,7 @@ const Lists = () => {
           </Typography>
           <Box display="flex" flexWrap="wrap">
             {auth?.userData?.[0]?.pinned_lists?.length !== 0 ? (
-              auth?.userData?.[0]?.pinned_lists.map((pinned_list) => {
+              auth?.userData?.[0]?.pinned_lists?.map((pinned_list) => {
                 const matchedList = lists?.filter((list) => {
                   return list?.id === pinned_list;
                 });
