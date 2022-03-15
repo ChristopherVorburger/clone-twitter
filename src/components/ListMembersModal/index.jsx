@@ -1,18 +1,12 @@
-import { useState, useContext, useReducer } from "react";
+import { useState, useContext } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-
-// Fonctions firebase
-import { database, storage } from "../../firebase-config";
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
-
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 // Composants MUI
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import { IconButton, Input, Tab, Tabs, TextField } from "@mui/material";
+import { IconButton, Tab, Tabs } from "@mui/material";
 
 // Icones et images
 import { icons } from "../../constants";
@@ -23,7 +17,9 @@ import useStyles from "./styles";
 // Context
 import { AuthContext } from "../../context/authContext";
 import { useFirestore } from "../../utils/useFirestore";
-import ListMembers from "../SuggestedListModal/SuggestedMembers";
+import ListMembers from "../ListMembersModal/ListMembers";
+
+import { ListsContext } from "../../context/listsContext";
 
 // Liens pour la Nav Tab
 function LinkTab(props) {
@@ -31,14 +27,15 @@ function LinkTab(props) {
 }
 
 const ListMembersModal = () => {
+  const { id } = useParams();
   const classes = useStyles();
   const navigate = useNavigate();
-  const { id } = useParams();
 
   console.log(id);
 
-  //Utilisation du contexte Auth
+  //Utilisation des contextes Auth et Lists
   const auth = useContext(AuthContext);
+  const lists = useContext(ListsContext);
 
   // State pour la nav tab
   const [value, setValue] = useState(0);
@@ -51,20 +48,7 @@ const ListMembersModal = () => {
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
 
-  // Référence à l'id de l'utilisateur connecté à mettre à jour
-  const currentUserRef = doc(database, "users", auth?.authUser?.uid);
-
-  // Référence à la collection lists à mettre à jour
-  const listsCollection = collection(database, "lists");
-
-  // Listes de l'utilisateur connecté
-  const listsCurrentUser = auth.userData?.[0]?.lists;
-
-  const lists = useFirestore("lists");
-
-  console.log("lists", lists);
-
-  const matchedList = lists?.filter((list) => {
+  const matchedList = lists?.lists?.filter((list) => {
     return list.id === id;
   });
 
@@ -77,7 +61,9 @@ const ListMembersModal = () => {
 
   const users = useFirestore("users");
 
-  const usersMembers = "b";
+  const usersMembers = users?.filter((user) => {
+    return matchedList?.[0]?.members?.includes(user.id);
+  });
 
   return (
     <>
@@ -151,7 +137,7 @@ const ListMembersModal = () => {
                 </Tabs>
               </Box>
               <Box>
-                {/* {matchedList?.[0]?.members.length === 0 ? (
+                {matchedList?.[0]?.members.length === 0 ? (
                   <Box maxWidth="400px" m="2rem auto" p="0 2rem">
                     <Typography fontSize="32px" fontWeight="mainBold">
                       There isn’t anyone in this List
@@ -163,10 +149,12 @@ const ListMembersModal = () => {
                 ) : (
                   <Box>
                     {usersMembers?.map((user) => {
-                      return <ListMembers member={user} />;
+                      return (
+                        <ListMembers member={user} matchedList={matchedList} />
+                      );
                     })}
                   </Box>
-                )} */}
+                )}
               </Box>
             </Box>
           </Box>
