@@ -16,10 +16,13 @@ import Notifications from "./pages/Notifications";
 
 import { AuthContext } from "./context/authContext";
 import { SnackbarsContextProvider } from "./context/snackbarsContext";
+import { ListsContextProvider } from "./context/listsContext";
 import Mentions from "./pages/Mentions";
 import Lists from "./pages/Lists";
 import CreateListModal from "./components/CreateListModal";
 import List from "./pages/Lists/List";
+import SuggestedListModal from "./components/SuggestedListModal";
+import ListMembersModal from "./components/ListMembersModal";
 
 export default function App() {
   const auth = React.useContext(AuthContext);
@@ -67,26 +70,39 @@ export default function App() {
         </Routes>
       ) : (
         <Layout>
-          <SnackbarsContextProvider>
-            <Routes>
-              <Route path="/home" element={<Home />} />
-              <Route path="/exemple" element={<Exemple />} />
-              <Route path="/:username" element={<Profile />} />
-              <Route path="/:username/lists" element={<Lists />} />
-              <Route
-                path="/:username/lists/create"
-                element={<CreateListModal />}
-              />
-              <Route path="/lists/:id" element={<List />} />
-              <Route path="/:username/followers" element={<Followers />} />
-              <Route path="/:username/following" element={<Following />} />
-              <Route path="/settings/profile" element={<EditProfileModal />} />
-              <Route path="/bookmarks" element={<Bookmarks />} />
-              <Route path="/notifications" element={<Notifications />} />
-              <Route path="/notifications/mentions" element={<Mentions />} />
-              <Route path="*" element={<Navigate to="/home" />} />
-            </Routes>
-          </SnackbarsContextProvider>
+          <ListsContextProvider>
+            <SnackbarsContextProvider>
+              <Routes>
+                <Route path="/home" element={<Home />} />
+                <Route path="/exemple" element={<Exemple />} />
+                <Route path="/:username" element={<Profile />} />
+                <Route path="/:username/lists" element={<Lists />} />
+                <Route
+                  path="/:username/lists/create"
+                  element={<CreateListModal />}
+                />
+                <Route path="/lists/:id" element={<List />} />
+                <Route
+                  path="/lists/:id/members"
+                  element={<ListMembersModal />}
+                />
+                <Route
+                  path="/lists/:id/members/suggested"
+                  element={<SuggestedListModal />}
+                />
+                <Route path="/:username/followers" element={<Followers />} />
+                <Route path="/:username/following" element={<Following />} />
+                <Route
+                  path="/settings/profile"
+                  element={<EditProfileModal />}
+                />
+                <Route path="/bookmarks" element={<Bookmarks />} />
+                <Route path="/notifications" element={<Notifications />} />
+                <Route path="/notifications/mentions" element={<Mentions />} />
+                <Route path="*" element={<Navigate to="/home" />} />
+              </Routes>
+            </SnackbarsContextProvider>
+          </ListsContextProvider>
         </Layout>
       )}
     </ThemeProvider>

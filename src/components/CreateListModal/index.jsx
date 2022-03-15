@@ -129,6 +129,7 @@ const CreateListModal = () => {
             lists: [cred._key.path.segments[1]],
           });
           console.log("First List created without cover !");
+          navigate(`/lists/${cred._key.path.segments[1]}/members/suggested`);
         })
         .catch((err) => {
           console.log(err.message);
@@ -166,6 +167,7 @@ const CreateListModal = () => {
             lists: [...listsCurrentUser, cred._key.path.segments[1]],
           });
           console.log("List created without cover !");
+          navigate(`/lists/${cred._key.path.segments[1]}/members/suggested`);
         })
         .catch((err) => {
           console.log(err.message);
@@ -199,6 +201,7 @@ const CreateListModal = () => {
             lists: [cred._key.path.segments[1]],
           });
           console.log("First List created with cover !");
+          navigate(`/lists/${cred._key.path.segments[1]}/members/suggested`);
         })
         .catch((err) => {
           console.log(err.message);
@@ -233,6 +236,7 @@ const CreateListModal = () => {
             lists: [...listsCurrentUser, cred._key.path.segments[1]],
           });
           console.log("List created with cover !");
+          navigate(`/lists/${cred._key.path.segments[1]}/members/suggested`);
         })
         .catch((err) => {
           console.log(err.message);

@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 
-import { icons } from "../../../constants";
+import { icons, images } from "../../../constants";
 
 import { useFirestore } from "../../../utils/useFirestore";
 
@@ -111,6 +111,7 @@ const List = () => {
             flexDirection="column"
             alignItems="center"
             p="12px"
+            borderBottom="1px solid #eff3f4"
           >
             <Box mb="12px">
               <Typography fontSize="font.large" fontWeight="mainBold">
@@ -123,13 +124,23 @@ const List = () => {
               </Typography>
             </Box>
             <Box display="flex" alignItems="center" mb="12px">
-              <Box>
-                <img
-                  className={classes.user_list__avatar_user}
-                  src={author?.[0]?.profile_image_url}
-                  alt=""
-                />
-              </Box>
+              {author?.[0]?.profile_image_url ? (
+                <Box>
+                  <img
+                    className={classes.user_list__avatar_user}
+                    src={author?.[0]?.profile_image_url}
+                    alt=""
+                  />
+                </Box>
+              ) : (
+                <Box>
+                  <img
+                    className={classes.user_list__avatar_user}
+                    src={images.user}
+                    alt=""
+                  />
+                </Box>
+              )}
               <Typography p="0 4px" fontSize="font.main">
                 {author?.[0]?.name}
               </Typography>
@@ -156,7 +167,7 @@ const List = () => {
                 </Typography>
               </Box>
             </Box>
-            <Box>
+            <Box mb="12px">
               <Box
                 onMouseEnter={() => setTextButton("Unfollow")}
                 onMouseLeave={() => setTextButton("Following")}

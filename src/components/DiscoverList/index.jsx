@@ -9,6 +9,7 @@ import { database } from "../../firebase-config";
 import { AuthContext } from "../../context/authContext";
 
 import useStyles from "./styles";
+import { images } from "../../constants";
 
 // Composant pour afficher une list
 const List = ({ list, author }) => {
@@ -76,13 +77,23 @@ const List = ({ list, author }) => {
           <Box>
             <Typography fontSize="font.main">{list?.name}</Typography>
             <Box display="flex">
-              <Box mr="4px">
-                <img
-                  src={author?.[0]?.profile_image_url}
-                  alt=""
-                  className={classes.list__avatar_user}
-                />
-              </Box>
+              {author?.[0]?.profile_image_url ? (
+                <Box mr="4px">
+                  <img
+                    src={author?.[0]?.profile_image_url}
+                    alt=""
+                    className={classes.list__avatar_user}
+                  />
+                </Box>
+              ) : (
+                <Box mr="4px">
+                  <img
+                    src={images.user}
+                    alt=""
+                    className={classes.list__avatar_user}
+                  />
+                </Box>
+              )}
               <Typography mr="4px" fontSize="font.small">
                 {author?.[0]?.name}
               </Typography>

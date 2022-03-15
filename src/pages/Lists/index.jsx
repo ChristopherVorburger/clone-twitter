@@ -47,7 +47,11 @@ const Lists = () => {
 
   return (
     <Box display="flex">
-      <Box borderLeft="1px solid #eff3f4" borderRight="1px solid #eff3f4">
+      <Box
+        borderLeft="1px solid #eff3f4"
+        borderRight="1px solid #eff3f4"
+        maxWidth="590px"
+      >
         <Header
           title="Lists"
           subtitle={`@${auth?.userData?.[0]?.username}`}
@@ -61,7 +65,7 @@ const Lists = () => {
           >
             Pinned Lists
           </Typography>
-          <Box display="flex">
+          <Box display="flex" flexWrap="wrap">
             {auth?.userData?.[0]?.pinned_lists?.length !== 0 ? (
               auth?.userData?.[0]?.pinned_lists.map((pinned_list) => {
                 const matchedList = lists?.filter((list) => {

@@ -85,13 +85,23 @@ const UserList = ({ list, author }) => {
           <Box>
             <Typography fontSize="font.main">{list?.name}</Typography>
             <Box display="flex">
-              <Box mr="4px">
-                <img
-                  className={classes.user_list__avatar_user}
-                  src={author?.[0]?.profile_image_url}
-                  alt=""
-                />
-              </Box>
+              {author?.[0]?.profile_image_url ? (
+                <Box mr="4px">
+                  <img
+                    className={classes.user_list__avatar_user}
+                    src={author?.[0]?.profile_image_url}
+                    alt=""
+                  />
+                </Box>
+              ) : (
+                <Box mr="4px">
+                  <img
+                    className={classes.user_list__avatar_user}
+                    src={images.user}
+                    alt=""
+                  />
+                </Box>
+              )}
               <Typography mr="4px" fontSize="font.small">
                 {author?.[0]?.name}
               </Typography>
