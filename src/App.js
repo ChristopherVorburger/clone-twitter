@@ -28,8 +28,13 @@ import { AuthContext } from "./context/authContext";
 import { SnackbarsContextProvider } from "./context/snackbarsContext";
 import { ListsContextProvider } from "./context/listsContext";
 
+import TweetPage from "./pages/Tweet/TweetPage";
+import ScrollToTop from "./components/ScrollToTop";
+import Mentions from "./pages/Mentions";
+
 export default function App() {
   const auth = React.useContext(AuthContext);
+
   // Création d'un thème pour changer la couleur principale de MUI
   let theme = createTheme({
     palette: {
@@ -64,12 +69,14 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
+      {/* ScrollToTop permet de revenir en haut de la page quand on clique sur un Link */}
+      <ScrollToTop />
       {!auth.authUser ? (
         <Routes>
-          <Route path="/" element={<Prehome />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="*" element={<Navigate to="/" />} />
+          <Route path='/' element={<Prehome />} />
+          <Route path='/signup' element={<SignUp />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='*' element={<Navigate to='/' />} />
         </Routes>
       ) : (
         <Layout>

@@ -1,11 +1,6 @@
 import { createContext, useEffect } from "react";
 import { useState } from "react";
-import {
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
-  signOut,
-} from "firebase/auth";
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
 // Import de la fonction getAuth() de firebase
 import { auth } from "../firebase-config";
 
@@ -19,8 +14,7 @@ export const AuthContext = createContext();
 export function AuthContextProvider(props) {
   // Récupération des users via le hook perso
   const users = useFirestore("users");
-  const signUp = (email, pwd) =>
-    createUserWithEmailAndPassword(auth, email, pwd);
+  const signUp = (email, pwd) => createUserWithEmailAndPassword(auth, email, pwd);
   const signIn = (email, pwd) => signInWithEmailAndPassword(auth, email, pwd);
   const signUserOut = () => signOut(auth);
 
@@ -31,23 +25,12 @@ export function AuthContextProvider(props) {
   // afin de récupérer les datas de l'utilisateur connecté
   const userData = users?.filter((user) => user?.id === authUser?.uid);
 
-  // TODO: À supprimer avant la prod
-  console.log("user data", userData);
-
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setAuthUser(currentUser);
       setLoadingData(false);
-      // TODO: À supprimer avant la prod
-      console.log("currentUser", currentUser);
       return unsubscribe;
     });
   }, []);
-  return (
-    <AuthContext.Provider
-      value={{ signUp, signIn, authUser, signUserOut, userData }}
-    >
-      {!loadingData && props.children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={{ signUp, signIn, authUser, signUserOut, userData }}>{!loadingData && props.children}</AuthContext.Provider>;
 }

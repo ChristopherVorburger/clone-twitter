@@ -8,8 +8,7 @@ export function SnackbarsContextProvider(props) {
   // States pour la snackbar des bookmarks
   const [openBookmarkSnackbar, setOpenBookmarkSnackbar] = useState(false);
   const [messageBookmarkSnackbar, setMessageBookmarkSnackbar] = useState("");
-  const [messageActionBookmarkSnackbar, setMessageActionBookmarkSnackbar] =
-    useState("");
+  const [messageActionBookmarkSnackbar, setMessageActionBookmarkSnackbar] = useState("");
   //
 
   return (
@@ -23,8 +22,7 @@ export function SnackbarsContextProvider(props) {
         messageActionBookmarkSnackbar,
         setMessageActionBookmarkSnackbar,
         //
-      }}
-    >
+      }}>
       <SnackbarBookmark
         message={messageBookmarkSnackbar}
         openBookmarkSnackbar={openBookmarkSnackbar}

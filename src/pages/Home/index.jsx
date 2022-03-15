@@ -29,7 +29,6 @@ import ModalReplyTweet from "../../components/ModalReplyTweet/ModalReplyTweet";
 
 const Home = () => {
   const classes = useStyles();
-  const { showModal } = useContext(ModalContext);
   // Utilisation du hook useContext pour récupérer le contexte Auth
   const auth = React.useContext(AuthContext);
 
@@ -41,11 +40,9 @@ const Home = () => {
   // Ici en l'occurrence ceux qui ont le même author_id que l'utilisateur connecté
   // et aussi ceux que l'utilisateur connecté a comme following
   const filteredTweets = tweets?.filter((tweet) => {
-    return (
-      tweet?.author_id === auth?.authUser?.uid ||
-      auth?.userData?.[0]?.following?.includes(tweet.author_id)
-    );
+    return tweet?.author_id === auth?.authUser?.uid || auth?.userData?.[0]?.following?.includes(tweet.author_id);
   });
+
 
   const iconsArray = [{ name: icons.AutoAwesomeSharpIcon }];
 
@@ -61,6 +58,7 @@ const Home = () => {
           borderRight="1px solid #eff3f4"
         >
           <Header title="Home" iconsRight={iconsArray} />
+
 
           <NewTweet />
           <Divider sx={{ borderColor: "background__input" }} />
