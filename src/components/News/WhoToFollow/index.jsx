@@ -66,7 +66,7 @@ const WhoToFollow = ({ user }) => {
                 console.log("ajout d'un premier follower");
               })
               .catch((err) => {
-                console.log(err.massage);
+                console.log(err.message);
               });
             // Sinon, mise à jour du tableau followers de l'utilisateur ajouté
           } else {
@@ -77,12 +77,12 @@ const WhoToFollow = ({ user }) => {
                 console.log("ajout d'un follower");
               })
               .catch((err) => {
-                console.log(err.massage);
+                console.log(err.message);
               });
           }
         })
         .catch((err) => {
-          console.log(err.massage);
+          console.log(err.message);
         });
       // Sinon, mise à jour du tableau following
     } else {
@@ -101,7 +101,7 @@ const WhoToFollow = ({ user }) => {
                 console.log("ajout d'un premier follower");
               })
               .catch((err) => {
-                console.log(err.massage);
+                console.log(err.message);
               });
             // Sinon, mise à jour du tableau followers de l'utilisateur ajouté
           } else {
@@ -112,12 +112,12 @@ const WhoToFollow = ({ user }) => {
                 console.log("ajout d'un follower");
               })
               .catch((err) => {
-                console.log(err.massage);
+                console.log(err.message);
               });
           }
         })
         .catch((err) => {
-          console.log(err.massage);
+          console.log(err.message);
         });
     }
   };

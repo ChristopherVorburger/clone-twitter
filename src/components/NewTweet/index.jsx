@@ -69,7 +69,6 @@ const NewTweet = () => {
         console.log(err.message);
       });
   };
-  console.log(text);
   return (
     <Box
       className={classes.new_tweet}

@@ -50,8 +50,8 @@ const Profile = () => {
     setValue(newValue);
   };
 
-  // Utilisation du hook useContext pour récupérer le contexte Auth
   const { username } = useParams();
+  // Utilisation du hook useContext pour récupérer le contexte Auth
   const auth = React.useContext(AuthContext);
 
   // Test si c'est la page de l'utilisateur connecté ou pas

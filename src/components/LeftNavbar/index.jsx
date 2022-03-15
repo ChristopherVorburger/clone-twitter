@@ -36,7 +36,11 @@ const LeftNavbar = () => {
     },
     { name: icons.EmailOutlinedIcon, path: "/messages", text: "Messages" },
     { name: icons.BookmarkBorderIcon, path: "/bookmarks", text: "Bookmarks" },
-    { name: icons.FeaturedPlayListOutlinedIcon, path: "/", text: "Lists" },
+    {
+      name: icons.FeaturedPlayListOutlinedIcon,
+      path: `/${auth?.userData?.[0]?.username}/lists`,
+      text: "Lists",
+    },
     {
       name: icons.PersonOutlineOutlinedIcon,
       path: `/${auth?.userData?.[0]?.username}`,

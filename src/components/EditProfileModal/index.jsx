@@ -42,7 +42,6 @@ const EditProfileModal = () => {
 
   // States pour la modale
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const [nameError, setNameError] = useState(false);
@@ -50,10 +49,6 @@ const EditProfileModal = () => {
   const [coverSelected, setCoverSelected] = useState([]);
   const [file, setFile] = useState();
   const [coverFile, setCoverFile] = useState();
-
-  console.log("imageselected", imageSelected);
-  console.log("coverselected", coverSelected);
-  console.log("file", file);
 
   //Utilisation du contexte Auth
   const auth = useContext(AuthContext);
