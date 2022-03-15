@@ -32,8 +32,6 @@ const ListMembersModal = () => {
   const classes = useStyles();
   const navigate = useNavigate();
 
-  console.log(id);
-
   //Utilisation des contextes Auth et Lists
   const auth = useContext(AuthContext);
   const lists = useContext(ListsContext);
@@ -52,8 +50,6 @@ const ListMembersModal = () => {
   const matchedList = lists?.lists?.filter((list) => {
     return list.id === id;
   });
-
-  console.log("liste qui match", matchedList);
 
   // Fonction pour ajouter un membre
   const handleSubmit = async (e) => {

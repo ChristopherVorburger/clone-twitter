@@ -91,8 +91,6 @@ const CreateListModal = () => {
     "default-cover-7.png",
   ];
 
-  console.log("storage", storage);
-
   // Fonction pour créer une liste
   const handleSubmit = async (e) => {
     e.preventDefault();

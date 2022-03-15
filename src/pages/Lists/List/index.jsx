@@ -16,6 +16,7 @@ import { ListsContext } from "../../../context/listsContext";
 import useStyles from "./styles";
 import { arrayRemove, doc, updateDoc } from "firebase/firestore";
 import { database } from "../../../firebase-config";
+import Tweet from "../../../components/Tweet/Tweet";
 
 const List = () => {
   const { id } = useParams();
@@ -28,6 +29,7 @@ const List = () => {
   const [textButton, setTextButton] = React.useState("Following");
 
   const users = useFirestore("users");
+  const tweets = useFirestore("tweets");
 
   const matchedList = lists?.lists?.filter((list) => {
     return list?.id === id;
@@ -56,7 +58,15 @@ const List = () => {
   // Récupération du tableau de follwers de la liste
   const listsFollowers = matchedList?.[0]?.followers;
 
-  console.log("liste des followers", listsFollowers);
+  console.log("membres de la liste", matchedList?.[0]?.members);
+
+  console.log("tweets", tweets);
+
+  const tweetsOfListMembers = tweets?.filter((tweet) => {
+    return matchedList?.[0]?.members?.includes(tweet.author_id);
+  });
+
+  console.log("je veux voir les tweets des membres", tweetsOfListMembers);
 
   const followList = (e) => {
     e.preventDefault();
@@ -298,6 +308,11 @@ const List = () => {
                 )}
               </Box>
             </Box>
+          </Box>
+          <Box>
+            {tweetsOfListMembers?.map((tweet) => {
+              return <Tweet key={tweet.id} tweet={tweet} />;
+            })}
           </Box>
         </Box>
       </Box>

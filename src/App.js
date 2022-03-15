@@ -30,7 +30,6 @@ import { ListsContextProvider } from "./context/listsContext";
 
 export default function App() {
   const auth = React.useContext(AuthContext);
-  console.log("auth", auth);
   // Création d'un thème pour changer la couleur principale de MUI
   let theme = createTheme({
     palette: {
