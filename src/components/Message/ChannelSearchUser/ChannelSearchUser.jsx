@@ -62,7 +62,7 @@ const ChannelSearchUser = () => {
     console.log('users selected', usersSelected);
     const todayDate = firebase.firestore.FieldValue.serverTimestamp();
     const usersToAdd = usersSelected
-      .filter((user) => user.id != auth.currentUser.uid)
+      // .filter((user) => user.id != auth.currentUser.uid)
       .map((user) => user.id);
     const channel = await channelsRef.add({
       createdAt: todayDate,
