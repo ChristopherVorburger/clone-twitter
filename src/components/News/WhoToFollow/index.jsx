@@ -10,6 +10,7 @@ import { AuthContext } from "../../../context/authContext";
 
 import useStyles from "./styles";
 import { images } from "../../../constants";
+import { Link } from "react-router-dom";
 
 const WhoToFollow = ({ user }) => {
   const classes = useStyles();
@@ -140,32 +141,48 @@ const WhoToFollow = ({ user }) => {
         <Box display="flex" justifyContent="space-between">
           <Box mr="1rem">
             {user?.profile_image_url ? (
-              <img
-                className={classes.avatar}
-                src={user?.profile_image_url}
-                alt={user?.name}
-                width="40px"
-              />
+              <Link to={`/${user?.username}`}>
+                <img
+                  className={classes.avatar}
+                  src={user?.profile_image_url}
+                  alt={user?.name}
+                  width="40px"
+                />
+              </Link>
             ) : (
-              <img
-                className={classes.avatar}
-                style={{ border: "1px solid lightgrey" }}
-                src={images.user}
-                alt={user?.name}
-                width="40px"
-              />
+              <Link to={`/${user?.username}`}>
+                <img
+                  className={classes.avatar}
+                  style={{ border: "1px solid lightgrey" }}
+                  src={images.user}
+                  alt={user?.name}
+                  width="40px"
+                />
+              </Link>
             )}
           </Box>
           <Box>
             <Box>
-              <Typography fontSize="font.main" fontWeight="mainBold">
-                {user?.name}
-              </Typography>
+              <Link to={`/${user?.username}`} className={classes.link}>
+                <Typography
+                  fontSize="font.main"
+                  fontWeight="mainBold"
+                  sx={{ textDecoration: "none", color: "black.main" }}
+                >
+                  {user?.name}
+                </Typography>
+              </Link>
             </Box>
             <Box>
-              <Typography fontSize="font.main" color="grey.main">
-                {`@${user?.username}`}
-              </Typography>
+              <Link to={`/${user?.username}`} className={classes.link}>
+                <Typography
+                  fontSize="font.main"
+                  color="grey.main"
+                  sx={{ textDecoration: "none", color: "black.main" }}
+                >
+                  {`@${user?.username}`}
+                </Typography>
+              </Link>
             </Box>
           </Box>
         </Box>

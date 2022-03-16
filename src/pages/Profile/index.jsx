@@ -54,11 +54,6 @@ const Profile = () => {
   // Utilisation du hook useContext pour récupérer le contexte Auth
   const auth = React.useContext(AuthContext);
 
-  // Test si c'est la page de l'utilisateur connecté ou pas
-  if (auth.userData?.[0]?.username !== username) {
-    console.log("Autre utilisateur");
-  }
-
   // Utilisation du hook perso useFirestoreWithQuery pour récupérer les tweets dans l'ordre de publication
   const tweets = useFirestoreWithQuery("tweets");
 

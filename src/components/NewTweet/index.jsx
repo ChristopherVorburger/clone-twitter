@@ -74,7 +74,7 @@ const NewTweet = () => {
       className={classes.new_tweet}
       sx={{
         width: "100%",
-        maxWidth: "600px",
+        maxWidth: "590px",
         ml: "1rem",
       }}
     >

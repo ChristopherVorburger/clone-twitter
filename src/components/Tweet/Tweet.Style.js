@@ -9,7 +9,7 @@ export const TweetLink = styled(Link)`
 export const TweetContainer = styled.div`
   display: grid;
   grid-template-columns: 70px 1fr;
-  max-width: 595px;
+  max-width: 590px;
   width: 100%;
   font-size: 15px;
   background-color: #fff;
@@ -43,6 +43,7 @@ export const TweetContent = styled.div`
 export const TweetAuthor = styled.span`
   color: #000;
   font-weight: bold;
+  text-decoration: none;
 `;
 
 export const TweetPseudo = styled.p`
