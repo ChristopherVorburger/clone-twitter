@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 export const TweetLink = styled(Link)`
   text-decoration: none;
+  color: #282d31;
 `;
 
 export const TweetContainer = styled.div`
