@@ -36,6 +36,7 @@ export const ExploreHeader = styled.header`
 `;
 
 export const ExploreContainer = styled.div`
+  max-width: 100%;
   h2 {
     font-weight: bold;
     padding: 20px;

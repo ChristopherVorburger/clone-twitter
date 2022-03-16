@@ -31,10 +31,13 @@ import { ListsContextProvider } from "./context/listsContext";
 import TweetPage from "./pages/Tweet/TweetPage";
 import ScrollToTop from "./components/ScrollToTop";
 import Explore from "./pages/Explore/Explore";
-
+import { useFirestore } from "./utils/useFirestore";
 
 export default function App() {
   const auth = React.useContext(AuthContext);
+
+  const lists = useFirestore("lists");
+  console.log("toto", lists);
 
   // Création d'un thème pour changer la couleur principale de MUI
   let theme = createTheme({
@@ -111,7 +114,7 @@ export default function App() {
                 <Route path="/bookmarks" element={<Bookmarks />} />
                 <Route path="/notifications" element={<Notifications />} />
                 <Route path="/notifications/mentions" element={<Mentions />} />
-                <Route path='/status/:id' element={<TweetPage />} />
+                <Route path="/status/:id" element={<TweetPage />} />
                 <Route path="/explore" element={<Explore />} />
                 <Route path="*" element={<Navigate to="/home" />} />
               </Routes>
