@@ -31,11 +31,13 @@ import { ListsContextProvider } from "./context/listsContext";
 import TweetPage from "./pages/Tweet/TweetPage";
 import ScrollToTop from "./components/ScrollToTop";
 import Explore from "./pages/Explore/Explore";
-import { useFirestore } from "./utils/useFirestore";
 
 export default function App() {
   const auth = React.useContext(AuthContext);
+<<<<<<< HEAD
 
+=======
+>>>>>>> dev
   // Création d'un thème pour changer la couleur principale de MUI
   let theme = createTheme({
     palette: {

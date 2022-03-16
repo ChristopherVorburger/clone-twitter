@@ -29,7 +29,7 @@ export const ExploreHeader = styled.header`
     font-size: 23px;
     font-weight: bold;
     color: white;
-    white-space: nowrap;
+    /* white-space: nowrap; */
     text-overflow: ellipsis;
     overflow: hidden;
   }
