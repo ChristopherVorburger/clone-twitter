@@ -210,17 +210,37 @@ export default function Messages() {
           borderLeft="1px solid #eff3f4"
           borderRight="1px solid #eff3f4"
           minWidth="400px"
+          alignContent="center"
           // style={{
           //   maxWidth: '500px',
           // }}
         >
           {/* Entête */}
-          <Box display="flex" flexDirection="row">
-            <Box style={{ padding: '1.2rem' }}>
-              <Typography>Messages</Typography>
+          <Box
+            display="flex"
+            flexDirection="row"
+            alignContent="center"
+            margin="1em"
+          >
+            <Box
+              width="20px"
+              height="20px"
+              flexGrow={1}
+              style={
+                {
+                  // padding: '1.2rem'
+                }
+              }
+            >
+              <Typography fontSize="1.5em">Messages</Typography>
             </Box>
 
-            <Box style={{ padding: '1.2rem' }}>
+            <Box
+              style={{
+                // padding: '1.2rem'
+                minHeight: '36px',
+              }}
+            >
               <Button
                 variant="outlined"
                 onClick={() => navigate('/searchUser')}
@@ -229,10 +249,13 @@ export default function Messages() {
                   border: 'none',
                   width: '0.5rem',
                 }}
+                width="20px"
+                height="20px"
               >
                 {/* <Icons.AddCommentIcon /> */}
 
                 <svg
+                  fontSize="1.5em"
                   viewBox="0 0 24 24"
                   aria-hidden="true"
                   className="r-18jsvk2 r-4qtqp9 r-yyyyoo r-z80fyv r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-19wmn03"
@@ -436,10 +459,9 @@ function Message({
         </List>
       </Box>
 
-      <Box padding="0">
+      <Box>
         <ChannelAddMessage
           handleAddNewMessage={handleAddNewMessage}
-          padding="0"
           // newMessage={newMessage}
           // setNewMessage={setNewMessage}
         />
