@@ -43,6 +43,7 @@ export const TweetContent = styled.div`
 export const TweetAuthor = styled.span`
   color: #000;
   font-weight: bold;
+  text-decoration: none;
 `;
 
 export const TweetPseudo = styled.p`
