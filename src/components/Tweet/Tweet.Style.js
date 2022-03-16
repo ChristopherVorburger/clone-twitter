@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 export const TweetLink = styled(Link)`
   text-decoration: none;
+  color: #000;
 `;
 
 export const TweetContainer = styled.div`
@@ -18,9 +19,6 @@ export const TweetContainer = styled.div`
   color: #000;
   transition: background 0.2s ease;
   cursor: pointer;
-  /* &:hover {
-    background: #f7f7f7;
-  } */
 `;
 
 export const TweetAvatar = styled.img`

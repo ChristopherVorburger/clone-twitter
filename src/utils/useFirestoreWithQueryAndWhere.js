@@ -1,11 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  onSnapshot,
-  collection,
-  query,
-  orderBy,
-  where,
-} from "firebase/firestore";
+import { onSnapshot, collection, query, orderBy, where } from "firebase/firestore";
 import { database } from "../firebase-config";
 
 // Fonction qui trie les données des collections avec les méthodes query et where
@@ -28,4 +22,4 @@ export function useFirestoreWithQueryAndWhere(ref, fieldName, searchParam) {
   }, [ref]);
 
   return data;
-
+}

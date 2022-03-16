@@ -19,6 +19,7 @@ import { SnackbarsContextProvider } from "./context/snackbarsContext";
 import TweetPage from "./pages/Tweet/TweetPage";
 import ScrollToTop from "./components/ScrollToTop";
 import Mentions from "./pages/Mentions";
+import Explore from "./pages/Explore/Explore";
 
 export default function App() {
   const auth = React.useContext(AuthContext);
@@ -81,6 +82,7 @@ export default function App() {
               <Route path='*' element={<Navigate to='/home' />} />
               <Route path="/home" element={<Home />} />
               <Route path="/exemple" element={<Exemple />} />
+              <Route path="/explore" element={<Explore />} />
               <Route path="/:username" element={<Profile />} />
               <Route path="/:username/followers" element={<Followers />} />
               <Route path="/:username/following" element={<Following />} />
