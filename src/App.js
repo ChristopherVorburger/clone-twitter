@@ -36,10 +36,6 @@ import Explore from "./pages/Explore/Explore";
 
 export default function App() {
   const auth = React.useContext(AuthContext);
-<<<<<<< HEAD
-
-=======
->>>>>>> dev
   // Création d'un thème pour changer la couleur principale de MUI
   let theme = createTheme({
     palette: {
@@ -124,7 +120,7 @@ export default function App() {
                     element={<Mentions />}
                   />
                   <Route path="/status/:id" element={<TweetPage />} />
-                <Route path="/explore" element={<Explore />} />
+                  <Route path="/explore" element={<Explore />} />
                   <Route path="*" element={<Navigate to="/home" />} />
                 </Routes>
               </SnackbarsContextProvider>

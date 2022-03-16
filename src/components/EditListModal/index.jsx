@@ -44,7 +44,7 @@ const CreateListModal = () => {
   const navigate = useNavigate();
 
   // States pour la modale
-  const [open, setOpen] = useState(false);
+  const [, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
 
   const [nameError, setNameError] = useState(false);
@@ -57,7 +57,6 @@ const CreateListModal = () => {
   const lists = useContext(ListsContext);
 
   const users = useFirestore("users");
-  console.log("users", users);
 
   const matchedList = lists?.lists?.filter((list) => {
     return list.id === id;
