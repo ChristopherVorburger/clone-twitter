@@ -46,20 +46,22 @@ const Notifications = () => {
   const tweetsWithLikers = sortedTweets?.filter((sortedTweet) => {
     // Si il y a seulement l'utilisateur connecté dans les likers, on return null
     if (
-      sortedTweet.likers.length === 1 &&
-      sortedTweet.likers[0] === auth.userData[0].id
+      sortedTweet?.likers?.length === 1 &&
+      sortedTweet?.likers[0] === auth.userData[0]?.id
     ) {
       return null;
       // Sinon on prend en compte le tweet
     } else {
-      return sortedTweet.likers.length > 0;
+      return sortedTweet?.likers?.length > 0;
     }
   });
+
+  const iconsArray = [{ name: icons.SettingsOutlinedIcon }];
 
   return (
     <Box display="flex">
       <Box borderLeft="1px solid #eff3f4" borderRight="1px solid #eff3f4">
-        <Header title="Notifications" iconsRight={icons.SettingsOutlinedIcon} />
+        <Header title="Notifications" iconsRight={iconsArray} />
         {/* Nav Tab */}
         <Box>
           <Box
@@ -70,13 +72,7 @@ const Notifications = () => {
             textTransform="none"
             borderBottom="1px solid #eff3f4"
           >
-            <Tabs
-              display="flex"
-              justifyContent="space-between"
-              value={value}
-              onChange={handleChange}
-              aria-label="nav tabs"
-            >
+            <Tabs value={value} onChange={handleChange} aria-label="nav tabs">
               <LinkTab
                 className={classes.notifications__link_nav}
                 to={"/notifications"}

@@ -25,6 +25,8 @@ const Bookmarks = () => {
     return auth?.userData?.[0]?.bookmarks?.includes(tweet?.id);
   });
 
+  const iconsArray = [{ name: icons.MoreHorizIcon }];
+
   return (
     <Box display="flex">
       <Box
@@ -35,7 +37,7 @@ const Bookmarks = () => {
         <Header
           title="Bookmarks"
           subtitle={`@${auth.userData?.[0]?.username}`}
-          iconsRight={icons.MoreHorizIcon}
+          iconsRight={iconsArray}
         />
         <Box display="flex" flexDirection="column" justifyContent="center">
           {/* Si l'utilisateur n'a pas de bookmark on affiche ceci */}

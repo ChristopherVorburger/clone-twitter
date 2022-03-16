@@ -36,7 +36,14 @@ import { fr } from "date-fns/locale";
 
 // fonctions firebase
 import { database } from "../../firebase-config";
-import { serverTimestamp, addDoc, collection, updateDoc, doc, arrayRemove } from "firebase/firestore";
+import {
+  serverTimestamp,
+  addDoc,
+  collection,
+  updateDoc,
+  doc,
+  arrayRemove,
+} from "firebase/firestore";
 
 // hooks
 import { useFirestore } from "../../utils/useFirestore";
@@ -184,11 +191,13 @@ export default function Tweet({ tweet }) {
       {matchedUser?.[0]?.profile_image_url ? (
         <TweetAvatar src={matchedUser?.[0]?.profile_image_url} />
       ) : (
+
         <TweetAvatar style={{ border: "1px solid lightgrey" }} src={images.user} />
       )}
 
       <TweetContent>
         <Box display='flex' justifyContent='space-between' alignItems='center'>
+
           <Box>
             <TweetAuthor>{matchedUser?.[0]?.name} </TweetAuthor>
             <TweetPseudo>{`@${matchedUser?.[0]?.username}`}</TweetPseudo>
@@ -232,12 +241,16 @@ export default function Tweet({ tweet }) {
           {/* Si l'utilisateur connecté like le tweet, le coeur est rouge */}
           {tweet?.likers?.includes(auth.userData?.[0]?.id) ? (
             <Likes onClick={likeTweet}>
+
               <icons.FavoriteIcon style={{ color: "#e11616de", width: "20px", height: "20px" }} />
+
               <span>{tweet?.public_metrics?.like_count}</span>
             </Likes>
           ) : (
             <Likes onClick={likeTweet}>
+
               <FavoriteBorderIcon style={{ color: "#535471", width: "20px", height: "20px" }} />
+
               <span>{tweet?.public_metrics?.like_count}</span>
             </Likes>
           )}
@@ -245,7 +258,9 @@ export default function Tweet({ tweet }) {
             {/* ClickAwayListener écoute les cliques hors modale pour fermer la modale */}
             <ClickAwayListener onClickAway={handleClickAwayShare}>
               <Box onClick={handleClickShare}>
+
                 <IosShareOutlinedIcon style={{ color: "#535471", width: "20px", height: "20px" }} />
+
                 {openShare ? <ShareDialog id={id} open={openShare} /> : null}
               </Box>
             </ClickAwayListener>
