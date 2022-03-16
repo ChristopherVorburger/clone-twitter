@@ -14,6 +14,7 @@ import Notifications from "./pages/Notifications";
 import Mentions from "./pages/Mentions";
 import Lists from "./pages/Lists";
 import List from "./pages/Lists/List";
+import ForeignProfile from "./pages/ForeignProfile";
 
 import EditProfileModal from "./components/EditProfileModal";
 import Layout from "./components/Layout";
@@ -27,6 +28,7 @@ import EditListModal from "./components/EditListModal";
 import { AuthContext } from "./context/authContext";
 import { SnackbarsContextProvider } from "./context/snackbarsContext";
 import { ListsContextProvider } from "./context/listsContext";
+import { UsersContextProvider } from "./context/usersContext";
 
 import TweetPage from "./pages/Tweet/TweetPage";
 import ScrollToTop from "./components/ScrollToTop";
@@ -79,40 +81,49 @@ export default function App() {
         </Routes>
       ) : (
         <Layout>
-          <ListsContextProvider>
-            <SnackbarsContextProvider>
-              <Routes>
-                <Route path="/home" element={<Home />} />
-                <Route path="/exemple" element={<Exemple />} />
-                <Route path="/:username" element={<Profile />} />
-                <Route path="/:username/lists" element={<Lists />} />
-                <Route
-                  path="/:username/lists/create"
-                  element={<CreateListModal />}
-                />
-                <Route path="/lists/:id" element={<List />} />
-                <Route path="/lists/:id/info" element={<EditListModal />} />
-                <Route
-                  path="/lists/:id/members"
-                  element={<ListMembersModal />}
-                />
-                <Route
-                  path="/lists/:id/members/suggested"
-                  element={<SuggestedListModal />}
-                />
-                <Route path="/:username/followers" element={<Followers />} />
-                <Route path="/:username/following" element={<Following />} />
-                <Route
-                  path="/settings/profile"
-                  element={<EditProfileModal />}
-                />
-                <Route path="/bookmarks" element={<Bookmarks />} />
-                <Route path="/notifications" element={<Notifications />} />
-                <Route path="/notifications/mentions" element={<Mentions />} />
-                <Route path="*" element={<Navigate to="/home" />} />
-              </Routes>
-            </SnackbarsContextProvider>
-          </ListsContextProvider>
+          <UsersContextProvider>
+            <ListsContextProvider>
+              <SnackbarsContextProvider>
+                <Routes>
+                  <Route path="/home" element={<Home />} />
+                  <Route path="/exemple" element={<Exemple />} />
+                  <Route
+                    path={`/${auth.userData?.[0]?.username}`}
+                    element={<Profile />}
+                  />
+                  <Route path="/:username" element={<ForeignProfile />} />
+                  <Route path="/:username/lists" element={<Lists />} />
+                  <Route
+                    path="/:username/lists/create"
+                    element={<CreateListModal />}
+                  />
+                  <Route path="/lists/:id" element={<List />} />
+                  <Route path="/lists/:id/info" element={<EditListModal />} />
+                  <Route
+                    path="/lists/:id/members"
+                    element={<ListMembersModal />}
+                  />
+                  <Route
+                    path="/lists/:id/members/suggested"
+                    element={<SuggestedListModal />}
+                  />
+                  <Route path="/:username/followers" element={<Followers />} />
+                  <Route path="/:username/following" element={<Following />} />
+                  <Route
+                    path="/settings/profile"
+                    element={<EditProfileModal />}
+                  />
+                  <Route path="/bookmarks" element={<Bookmarks />} />
+                  <Route path="/notifications" element={<Notifications />} />
+                  <Route
+                    path="/notifications/mentions"
+                    element={<Mentions />}
+                  />
+                  <Route path="*" element={<Navigate to="/home" />} />
+                </Routes>
+              </SnackbarsContextProvider>
+            </ListsContextProvider>
+          </UsersContextProvider>
         </Layout>
       )}
     </ThemeProvider>

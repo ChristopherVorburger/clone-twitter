@@ -52,6 +52,7 @@ import { AuthContext } from "../../context/authContext";
 // Composants React
 import TweetDialog from "./TweetDialog";
 import ShareDialog from "./ShareDialog";
+import { Link } from "react-router-dom";
 
 // Fonction pour afficher un tweet
 export default function Tweet({ tweet }) {
@@ -189,12 +190,16 @@ export default function Tweet({ tweet }) {
   return (
     <TweetContainer>
       {matchedUser?.[0]?.profile_image_url ? (
-        <TweetAvatar src={matchedUser?.[0]?.profile_image_url} />
+        <Link to={`/${matchedUser?.[0]?.username}`}>
+          <TweetAvatar src={matchedUser?.[0]?.profile_image_url} />
+        </Link>
       ) : (
-        <TweetAvatar
-          style={{ border: "1px solid lightgrey" }}
-          src={images.user}
-        />
+        <Link to={`/${matchedUser?.[0]?.username}`}>
+          <TweetAvatar
+            style={{ border: "1px solid lightgrey" }}
+            src={images.user}
+          />
+        </Link>
       )}
 
       <TweetContent>
