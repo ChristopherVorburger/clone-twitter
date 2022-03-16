@@ -24,7 +24,7 @@ const ChannelAddMessage = ({
       <Box
         sx={{
           // borderRadius: '50px',
-          padding: '12px',
+          paddingBottom: '23px',
         }}
       >
         <Box
@@ -53,7 +53,7 @@ const ChannelAddMessage = ({
               }}
               variant="text"
             >
-              <icons.SendIcon disabled={(!newMessage).toString()} />
+              <icons.SendIcon disabled={!newMessage} />
             </Button>
           </Box>
         </Box>

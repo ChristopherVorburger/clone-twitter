@@ -202,22 +202,22 @@ export default function Messages() {
 
   return (
     <>
-      <Box display="flex" justifyContent="center">
+      <Box display="flex" justifyContent="center" width="100%">
         {/* Zone à gauche */}
         <Box
           display="flex"
           flexDirection="column"
           borderLeft="1px solid #eff3f4"
           borderRight="1px solid #eff3f4"
-          // width="50%"
+          minWidth="400px"
+          // style={{
+          //   maxWidth: '500px',
+          // }}
         >
           {/* Entête */}
           <Box display="flex" flexDirection="row">
-            <Box>
-              <Header
-                title="Messages"
-                // iconsRight={Icons.AutoAwesomeSharpIcon}
-              />
+            <Box style={{ padding: '1.2rem' }}>
+              <Typography>Messages</Typography>
             </Box>
 
             <Box style={{ padding: '1.2rem' }}>
@@ -227,6 +227,7 @@ export default function Messages() {
                 className={classes.profile__button}
                 style={{
                   border: 'none',
+                  width: '0.5rem',
                 }}
               >
                 {/* <Icons.AddCommentIcon /> */}
@@ -234,7 +235,7 @@ export default function Messages() {
                 <svg
                   viewBox="0 0 24 24"
                   aria-hidden="true"
-                  class="r-18jsvk2 r-4qtqp9 r-yyyyoo r-z80fyv r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-19wmn03"
+                  className="r-18jsvk2 r-4qtqp9 r-yyyyoo r-z80fyv r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-19wmn03"
                 >
                   <g>
                     <path d="M23.25 3.25h-2.425V.825c0-.414-.336-.75-.75-.75s-.75.336-.75.75V3.25H16.9c-.414 0-.75.336-.75.75s.336.75.75.75h2.425v2.425c0 .414.336.75.75.75s.75-.336.75-.75V4.75h2.425c.414 0 .75-.336.75-.75s-.336-.75-.75-.75zm-3.175 6.876c-.414 0-.75.336-.75.75v8.078c0 .414-.337.75-.75.75H4.095c-.412 0-.75-.336-.75-.75V8.298l6.778 4.518c.368.246.79.37 1.213.37.422 0 .844-.124 1.212-.37l4.53-3.013c.336-.223.428-.676.204-1.012-.223-.332-.675-.425-1.012-.2l-4.53 3.014c-.246.162-.563.163-.808 0l-7.586-5.06V5.5c0-.414.337-.75.75-.75h9.094c.414 0 .75-.336.75-.75s-.336-.75-.75-.75H4.096c-1.24 0-2.25 1.01-2.25 2.25v13.455c0 1.24 1.01 2.25 2.25 2.25h14.48c1.24 0 2.25-1.01 2.25-2.25v-8.078c0-.415-.337-.75-.75-.75z"></path>
@@ -262,7 +263,12 @@ export default function Messages() {
           </Box>
 
           {/* Affichage de la liste des conversations */}
-          <Box>
+          <Box
+          // display="flex"
+          // style={{
+          //   maxWidth: '100%',
+          // }}
+          >
             <ListeChannels
               channels={channels}
               handleDiplayMessages={(idChannels) =>
@@ -272,16 +278,14 @@ export default function Messages() {
                 overflowY: 'scroll',
                 overflowX: 'hidden',
                 // overscrollBehavior: 'none',
+                // width: '100%',
               }}
             />
           </Box>
         </Box>
 
         {/* Zone à droite */}
-        <Box
-          display="flex"
-          // width="50%"
-        >
+        <Box display="flex" minWidth="500px" borderRight="1px solid #eff3f4">
           {/* Afficahge des messages */}
           <Message
             messages={messages}
@@ -308,8 +312,8 @@ function ListeChannels({ channels, handleDiplayMessages }) {
   };
 
   if (channels && channels.length > 0) {
-    console.log('channels => ');
-    console.log(channels);
+    // console.log('channels => ');
+    // console.log(channels);
     // console.log('channel id => ' + channels.id);
     return (
       <Box>
@@ -361,70 +365,88 @@ function Message({
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
-  if (messages && messages.length > 0) {
-    // console.log('messages =>');
-    // console.log(messages);
+  // if (messages && messages.length > 0) {
+  // console.log('messages =>');
+  // console.log(messages);
 
-    const handleClick = () => {
-      setOpen((prev) => !prev);
-    };
+  const handleClick = () => {
+    setOpen((prev) => !prev);
+  };
 
-    const handleClickAway = () => {
-      setOpen(false);
-    };
-    return (
+  const handleClickAway = () => {
+    setOpen(false);
+  };
+  return (
+    <Box
+      display="flex"
+      flexDirection="column"
+      justifyContent="space-between"
+      height="100vh"
+      width="100%"
+    >
       <Box
-        display="flex"
-        flexDirection="column"
-        justifyContent="space-between"
-        height="100vh"
+        style={{
+          overflowY: 'auto',
+          overflowX: 'hidden',
+        }}
       >
-        <Box
-          flexGrow={1}
-          style={{
-            overflowY: 'auto',
-            overflowX: 'hidden',
-          }}
-        >
-          <List>
-            {messages.map((message, index) => {
-              return (
-                <ListItem key={index}>
-                  <ListItemText
-                    style={{
-                      textAlign:
-                        message.sender_id == auth.currentUser.uid
-                          ? 'right'
-                          : 'left',
-                      backgroundColor:
-                        message.sender_id == auth.currentUser.uid
-                          ? '#1d9bf0'
-                          : '#ECE7E7',
-                    }}
-                    sx={{
-                      borderRadius: '15px',
-                      marginLeft: '17em',
-                      padding: '0.5em',
-                    }}
-                  >
-                    {message.text}
-                  </ListItemText>
-                </ListItem>
-              );
-            })}
-          </List>
-        </Box>
+        {/* <Box button display="flex" justifyContent="center" alignItems="center"> */}
 
-        <Box>
-          <ChannelAddMessage
-            handleAddNewMessage={handleAddNewMessage}
-            // newMessage={newMessage}
-            // setNewMessage={setNewMessage}
-          />
-        </Box>
+        <List>
+          {messages.map((message, index) => {
+            return (
+              // <ListItem
+              //   alignItems="flex-start"
+              //   key={index}
+              //   style={{
+              //     textAlign:
+              //       message.sender_id == auth.currentUser.uid
+              //         ? 'right'
+              //         : 'left',
+              //     // backgroundColor:
+              //     //   message.sender_id == auth.currentUser.uid
+              //     //     ? '#1d9bf0'
+              //     //     : '#ECE7E7',
+              //   }}
+              // >
+              <ListItemText
+                key={index}
+                align="left"
+                style={{
+                  //   textAlign:
+                  //     message.sender_id == auth.currentUser.uid
+                  //       ? 'right'
+                  //       : 'left',
+                  backgroundColor:
+                    message.sender_id == auth.currentUser.uid
+                      ? '#1d9bf0'
+                      : '#ECE7E7',
+                }}
+                sx={{
+                  borderRadius: '15px',
+                  // marginLeft: '17em',
+                  // padding: '0.5em',
+                }}
+              >
+                {message.text}
+              </ListItemText>
+              // </ListItem>
+            );
+          })}
+        </List>
       </Box>
-    );
-  } else {
-    return <Typography variant="h6">Pas de messages sélectionné!</Typography>;
-  }
+
+      <Box padding="0">
+        <ChannelAddMessage
+          handleAddNewMessage={handleAddNewMessage}
+          padding="0"
+          // newMessage={newMessage}
+          // setNewMessage={setNewMessage}
+        />
+      </Box>
+    </Box>
+  );
+  // } else {
+  //   return <Typography variant="h6">Pas de messages sélectionné!</Typography>;
+  // }
 }
