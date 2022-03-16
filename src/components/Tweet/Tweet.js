@@ -190,9 +190,9 @@ export default function Tweet({ tweet }) {
   return (
     <TweetContainer>
       {matchedUser?.[0]?.profile_image_url ? (
-        <Link to={`/${matchedUser?.[0]?.username}`}>
+        <TweetLink to={`/${matchedUser?.[0]?.username}`}>
           <TweetAvatar src={matchedUser?.[0]?.profile_image_url} />
-        </Link>
+        </TweetLink>
       ) : (
         <Link to={`/${matchedUser?.[0]?.username}`}>
           <TweetAvatar
@@ -205,8 +205,12 @@ export default function Tweet({ tweet }) {
       <TweetContent>
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Box>
-            <TweetAuthor>{matchedUser?.[0]?.name} </TweetAuthor>
-            <TweetPseudo>{`@${matchedUser?.[0]?.username}`}</TweetPseudo>
+            <TweetLink to={`/${matchedUser?.[0]?.username}`}>
+              <TweetAuthor>{matchedUser?.[0]?.name} </TweetAuthor>
+            </TweetLink>
+            <TweetLink to={`/${matchedUser?.[0]?.username}`}>
+              <TweetPseudo>{`@${matchedUser?.[0]?.username}`}</TweetPseudo>
+            </TweetLink>
             <TweetDate>
               {/* calcul de la date du tweet avec la librairie date-fns
                 formateDistance permet de calculer l'interval entre deux dates

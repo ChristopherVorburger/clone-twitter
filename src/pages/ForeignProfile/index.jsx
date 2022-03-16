@@ -60,7 +60,7 @@ const ForeignProfile = () => {
   const auth = React.useContext(AuthContext);
   const users = React.useContext(UsersContext);
 
-  console.log("users venant du contexte", users);
+  console.log("listes users venant du contexte", users);
 
   // Utilisation du hook perso useFirestoreWithQuery pour récupérer les tweets dans l'ordre de publication
   const tweets = useFirestoreWithQuery("tweets");
@@ -69,11 +69,13 @@ const ForeignProfile = () => {
     return user.username === username;
   });
 
+  console.log("user filtré", user);
+
   // Récupération du tableau de following de l'utilisateur connecté
   const following = auth?.userData?.[0]?.following;
 
   // Récupération du tableau de followers de l'utilisateur ciblé
-  const followers = user?.followers;
+  const followers = user?.[0]?.followers;
 
   // Filtre des utilisateurs pour obtenir les non suivis
   const unfollowUsers = users?.users?.filter((user) => {
@@ -86,17 +88,13 @@ const ForeignProfile = () => {
   });
 
   // On filtre les tweets à afficher
-  // Ici en l'occurrence ceux qui ont le même author_id que la personne connectée
+  // Ici les tweets du user en question
   const filteredTweets = tweets?.filter((tweet) => {
-    return tweet.author_id === auth?.authUser?.uid;
+    return tweet.author_id === user?.[0]?.id;
   });
 
   // Référence à l'id de l'utilisateur connecté à mettre à jour
   const currentUserRef = doc(database, "users", auth?.authUser?.uid);
-
-  // Référence à l'id de l'utilisateur ciblé à mettre à jour
-  const followedUserRef = doc(database, "users", user?.[0]?.id);
-
   useEffect(() => {
     console.log("user use effect", user);
     if (user?.[0]?.username === undefined) {
@@ -104,12 +102,15 @@ const ForeignProfile = () => {
     }
   }, [user]);
 
+  // Référence à l'id de l'utilisateur ciblé à mettre à jour
+  const followedUserRef = doc(database, "users", user?.[0]?.id);
+
   // fonction pour ajouter un following
   const followUser = (e) => {
     e.preventDefault();
 
     // Sécurité pour ne pas se suivre soi-même
-    if (auth?.authUser?.uid === user?.id) {
+    if (auth?.authUser?.uid === user?.[0]?.id) {
       console.log(
         "Oui, il faut s'aimer soi-même mais de là à se suivre soit même il y a des limites"
       );
@@ -117,7 +118,7 @@ const ForeignProfile = () => {
     }
 
     // Sécurité pour ne pas suivre deux fois la même personne
-    if (auth?.userData?.[0]?.following?.includes(user?.id)) {
+    if (auth?.userData?.[0]?.following?.includes(user?.[0]?.id)) {
       console.log("Vous suivez déjà cette personne !");
       return;
     }
@@ -126,7 +127,7 @@ const ForeignProfile = () => {
     // premier following
     if (!following) {
       updateDoc(currentUserRef, {
-        following: [user?.id],
+        following: [user?.[0]?.id],
       })
         .then(() => {
           console.log("ajout d'un premier following");
@@ -145,7 +146,7 @@ const ForeignProfile = () => {
             // Sinon, mise à jour du tableau followers de l'utilisateur ajouté
           } else {
             updateDoc(followedUserRef, {
-              followers: [...user?.followers, auth?.authUser?.uid],
+              followers: [...user?.[0]?.followers, auth?.authUser?.uid],
             })
               .then(() => {
                 console.log("ajout d'un follower");
@@ -161,7 +162,7 @@ const ForeignProfile = () => {
       // Sinon, mise à jour du tableau following
     } else {
       updateDoc(currentUserRef, {
-        following: [...auth?.userData?.[0]?.following, user?.id],
+        following: [...auth?.userData?.[0]?.following, user?.[0]?.id],
       })
         .then(() => {
           console.log("ajout d'un following");
@@ -180,7 +181,7 @@ const ForeignProfile = () => {
             // Sinon, mise à jour du tableau followers de l'utilisateur ajouté
           } else {
             updateDoc(followedUserRef, {
-              followers: [...user?.followers, auth?.authUser?.uid],
+              followers: [...user?.[0]?.followers, auth?.authUser?.uid],
             })
               .then(() => {
                 console.log("ajout d'un follower");
@@ -200,7 +201,7 @@ const ForeignProfile = () => {
   const unfollowUser = () => {
     // Suppression du following dans les datas de l'utilisateur connecté
     updateDoc(currentUserRef, {
-      following: arrayRemove(user?.id),
+      following: arrayRemove(user?.[0]?.id),
     });
     // Suppression du follower dans les datas de l'utilisateur supprimé
     updateDoc(followedUserRef, {
@@ -263,13 +264,12 @@ const ForeignProfile = () => {
                   </Box>
                 </Box>
               )}
-              <Box
-                onMouseEnter={() => setTextButton("Unfollow")}
-                onMouseLeave={() => setTextButton("Following")}
-              >
-                {auth?.userData?.[0]?.following?.includes(user?.id) ? (
+              <Box>
+                {auth?.userData?.[0]?.following?.includes(user?.[0]?.id) ? (
                   <Button
                     className={classes.button}
+                    onMouseEnter={() => setTextButton("Unfollow")}
+                    onMouseLeave={() => setTextButton("Following")}
                     variant="outlined"
                     disableElevation
                     sx={{
@@ -281,6 +281,11 @@ const ForeignProfile = () => {
                       borderRadius: "50px",
                       textTransform: "none",
                       minWidth: "6rem",
+                      "&:hover": {
+                        backgroundColor: "#fdc9ce!important",
+                        borderColor: "#f4212e!important",
+                        color: "#f4212e!important",
+                      },
                     }}
                     onClick={unfollowUser}
                   >
@@ -295,6 +300,7 @@ const ForeignProfile = () => {
                       fontWeight: "mainBold",
                       backgroundColor: "black.main",
                       borderRadius: "50px",
+                      textTransform: "none",
                     }}
                     onClick={followUser}
                   >
