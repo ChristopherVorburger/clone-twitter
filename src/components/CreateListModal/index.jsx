@@ -41,7 +41,7 @@ const CreateListModal = () => {
   const navigate = useNavigate();
 
   // States pour la modale
-  const [open, setOpen] = useState(false);
+  const [, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
 
   const [coverSelected, setCoverSelected] = useState([]);

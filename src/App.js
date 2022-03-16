@@ -120,7 +120,7 @@ export default function App() {
                     element={<Mentions />}
                   />
                   <Route path="/status/:id" element={<TweetPage />} />
-                <Route path="/explore" element={<Explore />} />
+                  <Route path="/explore" element={<Explore />} />
                   <Route path="*" element={<Navigate to="/home" />} />
                 </Routes>
               </SnackbarsContextProvider>
