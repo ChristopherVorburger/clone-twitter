@@ -11,7 +11,13 @@ import { doc, getDoc } from "firebase/firestore";
 import { database } from "../../firebase-config";
 import { useLocation, useParams } from "react-router-dom";
 import TweetReply from "../../components/TweetReply/TweetReply";
-import { collection, query, where, onSnapshot, orderBy } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  onSnapshot,
+  orderBy,
+} from "firebase/firestore";
 
 export default function TweetPage() {
   const [dataUser, setDataUser] = useState(null);
@@ -43,9 +49,15 @@ export default function TweetPage() {
   //Fonction qui permet de récupérer les réponses du tweet
   const getTweetReply = (index) => {
     const repliesRef = collection(database, "replies");
-    const q = query(repliesRef, where("tweet_id", "==", index), orderBy("created_at", "desc"));
+    const q = query(
+      repliesRef,
+      where("tweet_id", "==", index),
+      orderBy("created_at", "desc")
+    );
     onSnapshot(q, (snapshot) => {
-      setDataResponsesTweet(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      setDataResponsesTweet(
+        snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+      );
     });
   };
 
@@ -54,16 +66,32 @@ export default function TweetPage() {
     promise.then((index) => getTweetReply(index));
   }, []);
 
+  const iconsArray = [{ name: icons.AutoAwesomeSharpIcon }];
+
   return (
     <>
-      <Box display='flex' justifyContent='center'>
-        <Box display='flex' flexDirection='column' borderLeft='1px solid #eff3f4' borderRight='1px solid #eff3f4'>
-          <Header title='Home' iconsRight={icons.AutoAwesomeSharpIcon} />
+      <Box display="flex" justifyContent="center">
+        <Box
+          display="flex"
+          flexDirection="column"
+          borderLeft="1px solid #eff3f4"
+          borderRight="1px solid #eff3f4"
+        >
+          <Header title="Home" iconsRight={iconsArray} />
           <TweetPageWrapper>
-            <TweetLarge state={state} dataUser={dataUser} isLoading={isLoading} />
+            <TweetLarge
+              state={state}
+              dataUser={dataUser}
+              isLoading={isLoading}
+            />
             <TweetInput />
             {dataResponsesTweet.map((dataResponseTweet) => (
-              <TweetReply key={dataResponseTweet.id} dataResponseTweet={dataResponseTweet} dataUser={dataUser} isLoading={isLoading} />
+              <TweetReply
+                key={dataResponseTweet.id}
+                dataResponseTweet={dataResponseTweet}
+                dataUser={dataUser}
+                isLoading={isLoading}
+              />
             ))}
           </TweetPageWrapper>
         </Box>
