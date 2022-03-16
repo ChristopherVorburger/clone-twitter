@@ -11,7 +11,7 @@ const Welcome = () => {
     <Box
       sx={{
         width: "100%",
-        maxWidth: "600px",
+        maxWidth: "590px",
       }}
       height="100vh"
     >

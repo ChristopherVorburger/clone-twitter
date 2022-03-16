@@ -25,4 +25,7 @@ export default makeStyles((theme) => ({
     objectFit: "cover",
     objectPosition: "center",
   },
+  link: {
+    textDecoration: "none",
+  },
 }));

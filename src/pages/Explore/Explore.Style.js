@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const ExploreWrapper = styled.main`
   font-family: "Lato", sans-serif;
-  max-width: 600px;
+  max-width: 590px;
 `;
 
 export const ExploreHeader = styled.header`
