@@ -41,7 +41,7 @@ export default function ChannelItem({ user, handleClick, channelID }) {
 
   const userToDisplay = user[0];
 
-  console.log('user', user);
+  // console.log('user', user);
   return (
     <Box
       className={classes.profile_section}
@@ -72,11 +72,11 @@ export default function ChannelItem({ user, handleClick, channelID }) {
             @{userToDisplay?.username}
           </Typography>
         </Box>
-        <Box>
+        {/* <Box>
           <Box className={classes.profile_section__icon_more}>
             {icons.MoreHorizIcon.type.render()}
           </Box>
-        </Box>
+        </Box> */}
       </Box>
     </Box>
   );
