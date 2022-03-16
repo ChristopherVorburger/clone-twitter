@@ -36,9 +36,6 @@ import { useFirestore } from "./utils/useFirestore";
 export default function App() {
   const auth = React.useContext(AuthContext);
 
-  const lists = useFirestore("lists");
-  console.log("toto", lists);
-
   // Création d'un thème pour changer la couleur principale de MUI
   let theme = createTheme({
     palette: {
