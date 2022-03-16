@@ -7,7 +7,6 @@ import { arrayRemove, doc, updateDoc } from "firebase/firestore";
 import { database } from "../../firebase-config";
 
 import { AuthContext } from "../../context/authContext";
-import { ListsContext } from "../../context/listsContext";
 
 import useStyles from "./styles";
 import { images } from "../../constants";
@@ -20,7 +19,6 @@ const DiscoverList = ({ list, author }) => {
 
   // Utilisation du hook useContext pour récupérer le contexte Auth
   const auth = React.useContext(AuthContext);
-  const lists = React.useContext(ListsContext);
 
   // Récupération du tableau de following de l'utilisateur connecté
   const listsCurrentUser = auth?.userData?.[0]?.lists;
@@ -33,8 +31,6 @@ const DiscoverList = ({ list, author }) => {
 
   // Récupération du tableau de follwers de la liste
   const listsFollowers = list?.followers;
-
-  console.log("liste des followers", listsFollowers);
 
   const followList = (e) => {
     e.preventDefault();

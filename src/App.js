@@ -30,7 +30,6 @@ import { ListsContextProvider } from "./context/listsContext";
 
 import TweetPage from "./pages/Tweet/TweetPage";
 import ScrollToTop from "./components/ScrollToTop";
-import Mentions from "./pages/Mentions";
 
 export default function App() {
   const auth = React.useContext(AuthContext);
@@ -73,10 +72,10 @@ export default function App() {
       <ScrollToTop />
       {!auth.authUser ? (
         <Routes>
-          <Route path='/' element={<Prehome />} />
-          <Route path='/signup' element={<SignUp />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='*' element={<Navigate to='/' />} />
+          <Route path="/" element={<Prehome />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       ) : (
         <Layout>

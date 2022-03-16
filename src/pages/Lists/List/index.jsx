@@ -58,15 +58,9 @@ const List = () => {
   // Récupération du tableau de follwers de la liste
   const listsFollowers = matchedList?.[0]?.followers;
 
-  console.log("membres de la liste", matchedList?.[0]?.members);
-
-  console.log("tweets", tweets);
-
   const tweetsOfListMembers = tweets?.filter((tweet) => {
     return matchedList?.[0]?.members?.includes(tweet.author_id);
   });
-
-  console.log("je veux voir les tweets des membres", tweetsOfListMembers);
 
   const followList = (e) => {
     e.preventDefault();

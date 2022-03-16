@@ -59,7 +59,8 @@ const UserList = ({ list, author }) => {
   };
 
   // Fonction pour unPin une liste
-  const unPinList = () => {
+  const unPinList = (e) => {
+    e.preventDefault();
     // Suppression du pin dans les datas de l'utilisateur connecté
     updateDoc(currentUserRef, {
       pinned_lists: arrayRemove(list?.id),
@@ -123,7 +124,6 @@ const UserList = ({ list, author }) => {
                 <Button
                   className={classes.button}
                   variant="outlined"
-                  disableElevation
                   sx={{
                     borderColor: "transparent",
                     borderRadius: "100px",
