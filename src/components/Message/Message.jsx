@@ -420,13 +420,13 @@ function Message({
               message.sender_id == auth.currentUser.uid;
             return (
               <ListItem
+                key={index}
                 width="100%"
                 sx={{
                   textAlign: isUserConnectedMessage ? 'right' : 'left',
                 }}
               >
                 <ListItemText
-                  key={index}
                   width="wrap"
                   sx={{
                     '& span': {
