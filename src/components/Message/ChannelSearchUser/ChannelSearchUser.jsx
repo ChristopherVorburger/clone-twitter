@@ -133,9 +133,9 @@ const ChannelSearchUser = () => {
                     id="tags-outlined"
                     options={users}
                     getOptionLabel={(option) => option.name}
-                    onChange={(event, newValue) => {
-                      setUsersSelected([newValue]);
-                    }}
+                    // onChange={(event, newValue) => {
+                    //   setUsersSelected([newValue]);
+                    // }}
                     renderOption={(props, option, { selected }) => (
                       <Box
                         {...props}

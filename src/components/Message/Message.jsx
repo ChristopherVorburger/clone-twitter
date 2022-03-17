@@ -6,7 +6,6 @@ import 'firebase/compat/firestore';
 import 'firebase/compat/analytics';
 import { getFirebaseConfig } from '../../firebase-config';
 import BottomNavigation from '../BottomNavigation';
-import Icons from '../../constants/icons';
 import ChannelItem from './ChannelItem/ChannelItem';
 
 import {
@@ -31,32 +30,6 @@ const auth = firebase.auth();
 const firestore = firebase.firestore();
 
 export default function Messages() {
-  // state to set dimension of the screen
-  const [screenSize, getDimension] = useState({
-    dynamicWidth: window.innerWidth,
-    dynamicHeight: window.innerHeight,
-  });
-
-  // function to set the dimension
-  const setDimension = () => {
-    getDimension({
-      dynamicWidth: window.innerWidth,
-      dynamicHeight: window.innerHeight,
-    });
-  };
-
-  // useEffect to watch the resizing of the screen
-  useEffect(() => {
-    window.addEventListener('resize', setDimension);
-
-    return () => {
-      window.removeEventListener('resize', setDimension);
-    };
-  }, [screenSize]);
-
-  // assign a value to the width of the drawer
-  const drawerWidth = screenSize.dynamicWidth < 600 ? 0 : 88;
-
   const classes = useStyles();
   const channelsRef = firestore.collection('channels');
   const messagesRef = firestore.collection('messages');
@@ -65,11 +38,9 @@ export default function Messages() {
   const [channels, setChannels] = useState([]);
   const [messages, setMessages] = useState([]);
   const [channelSelected, setChannelSelected] = useState('');
-  const [newMessage, setNewMessage] = useState('');
   const navigate = useNavigate();
 
   const dummy = useRef();
-  // console.log('userid => ' + auth.currentUser.uid);
 
   function getChannesls() {
     const queryChannels = channelsRef
@@ -115,7 +86,6 @@ export default function Messages() {
   }
 
   function handleDisplayChannelMessage(idChannels) {
-    // console.log('id channels => ' + idChannels);
     setChannelSelected(idChannels);
     getMessages(idChannels);
   }
@@ -131,7 +101,8 @@ export default function Messages() {
       senderName: '',
       text: newMessage,
     });
-    // setNewMessage('');
+
+    dummy.current.scrollIntoView({ behavior: 'smooth' });
   }
 
   useEffect(() => {
@@ -140,7 +111,6 @@ export default function Messages() {
   }, []);
 
   const tweets = useFirestoreWithQuery('tweets');
-
   const filteredTweets = tweets?.filter((tweet) => {
     return (
       tweet?.author_id === auth?.authUser?.uid ||
@@ -226,13 +196,12 @@ export default function Messages() {
           <Message
             messages={messages}
             handleAddNewMessage={handleAddNewMessage}
-            // newMessage={newMessage}
-            handleTextNewMessage={setNewMessage}
-          />
+          >
+            <span ref={dummy}></span>
+          </Message>
         </Box>
       </Box>
       <BottomNavigation />
-      <span ref={dummy}></span>
     </>
   );
 }
@@ -248,9 +217,6 @@ function ListeChannels({ channels, handleDiplayMessages }) {
   };
 
   if (channels && channels.length > 0) {
-    // console.log('channels => ');
-    // console.log(channels);
-    // console.log('channel id => ' + channels.id);
     return (
       <Box>
         {channels.map((channel, index) => (
@@ -273,19 +239,9 @@ function ListeChannels({ channels, handleDiplayMessages }) {
   }
 }
 
-function Message({
-  messages = [],
-  handleAddNewMessage,
-  newMessage,
-  setNewMessage,
-}) {
+function Message({ messages = [], handleAddNewMessage }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-
-  // if (messages && messages.length > 0) {
-  // console.log('messages =>');
-  // console.log(messages);
-
   const handleClick = () => {
     setOpen((prev) => !prev);
   };
@@ -343,11 +299,7 @@ function Message({
       </Box>
 
       <Box>
-        <ChannelAddMessage
-          handleAddNewMessage={handleAddNewMessage}
-          // newMessage={newMessage}
-          // setNewMessage={setNewMessage}
-        />
+        <ChannelAddMessage handleAddNewMessage={handleAddNewMessage} />
       </Box>
     </Box>
   );

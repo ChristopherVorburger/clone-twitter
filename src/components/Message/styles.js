@@ -25,4 +25,11 @@ export default makeStyles((theme) => ({
     objectFit: 'cover',
     objectPosition: 'center',
   },
+  profile_section__avatar_button: {
+    width: '50px',
+    height: '50px',
+    borderRadius: '50%',
+    objectFit: 'cover',
+    objectPosition: 'center',
+  },
 }));

@@ -47,13 +47,17 @@ const ChannelAddMessage = ({
           <Box>
             <Button
               className={classes.profile_section__icon_more}
-              onClick={() => handleAddNewMessage(newMessage)}
+              onClick={() => {
+                handleAddNewMessage(newMessage);
+                setNewMessage('');
+              }}
               sx={{
                 paddingRight: '1.5em',
               }}
               variant="text"
+              disabled={!newMessage}
             >
-              <icons.SendIcon disabled={!newMessage} />
+              <icons.SendIcon />
             </Button>
           </Box>
         </Box>
