@@ -153,7 +153,7 @@ const EditListModal = () => {
   const usersWhoPinnedRefs = [];
 
   // Recherche des utilisateurs en lien avec la liste (pins ou followers)
-  const usersWhoPinnedTheList = users?.filter((user) => {
+  users?.filter((user) => {
     if (user?.pinned_lists?.includes(matchedList?.[0]?.id))
       return usersWhoPinnedRefs.push(doc(database, "users", user.id));
     else return null;
