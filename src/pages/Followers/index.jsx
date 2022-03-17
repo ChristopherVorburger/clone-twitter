@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import Header from "../../components/Header";
 import News from "../../components/News";
@@ -13,17 +13,17 @@ import {
   Tabs,
 } from "@mui/material";
 
+import NoFollowers from "../../components/NoFollowers";
+import WhoToFollow from "../../components/News/WhoToFollow";
+
 // import AuthContext
-import { AuthContext } from "../../context/authContext";
+import { UsersContext } from "../../context/usersContext";
 
 // Import images
 import { icons } from "../../constants";
 
 // Import styles
 import useStyles from "./styles";
-import { useFirestore } from "../../utils/useFirestore";
-import NoFollowers from "../../components/NoFollowers";
-import WhoToFollow from "../../components/News/WhoToFollow";
 
 // Liens pour la Nav Tab
 function LinkTab(props) {
@@ -32,7 +32,17 @@ function LinkTab(props) {
 
 const Followers = () => {
   const classes = useStyles();
-  const auth = React.useContext(AuthContext);
+
+  // Contexte
+  const users = React.useContext(UsersContext);
+
+  // UseParams pour récupérer le username
+  const { username } = useParams();
+
+  // Recherche du user qui matche
+  const user = users?.users?.filter((user) => {
+    return user?.username === username;
+  });
 
   // State pour la nav tab
   const [value, setValue] = React.useState(1);
@@ -43,14 +53,11 @@ const Followers = () => {
   };
 
   // On check si il y a des following
-  const followers = auth?.userData?.[0]?.followers;
-
-  // Utilisation du hook perso useFirestore pour récupérer les users
-  const users = useFirestore("users");
+  const followers = user?.[0]?.followers;
 
   // Filtre des utilisateurs pour obtenir les suivis
-  const followersUsers = users?.filter((user) => {
-    return auth?.userData?.[0]?.followers?.includes(user.id);
+  const followersUsers = users?.users?.filter((userInArray) => {
+    return user?.[0]?.followers?.includes(userInArray.id);
   });
 
   return (
@@ -64,8 +71,8 @@ const Followers = () => {
         width="100%"
       >
         <Header
-          title={auth.userData?.[0]?.name}
-          subtitle={`@${auth.userData?.[0]?.username}`}
+          title={user?.[0]?.name}
+          subtitle={`@${user?.[0]?.username}`}
           iconsLeft={icons.ArrowBackIcon}
         />
         {/* Nav Tab */}
@@ -80,12 +87,12 @@ const Followers = () => {
             <Tabs value={value} onChange={handleChange} aria-label="nav tabs">
               <LinkTab
                 className={classes.following__link_nav}
-                to={`/${auth?.userData?.[0]?.username}/following`}
+                to={`/${user?.[0]?.username}/following`}
                 label="Following"
               />
               <LinkTab
                 className={classes.following__link_nav}
-                to={`/${auth?.userData?.[0]?.username}/followers`}
+                to={`/${user?.[0]?.username}/followers`}
                 label="Followers"
               />
             </Tabs>
