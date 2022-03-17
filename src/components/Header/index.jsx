@@ -39,42 +39,45 @@ const Header = ({
               <Box className={classes.header__button_profile}>
                 {user?.profile_image_url ? (
                   <Link to={`/${user?.username}`}>
-                    <img
-                      className={classes.avatar}
-                      src={user?.profile_image_url}
-                      alt={user?.name}
-                      width="40px"
-                    />
+                    <Box mr="1rem">
+                      <img
+                        className={classes.avatar}
+                        src={user?.profile_image_url}
+                        alt={user?.name}
+                      />
+                    </Box>
                   </Link>
                 ) : (
                   <Link to={`/${user?.username}`}>
-                    <img
-                      className={classes.avatar}
-                      style={{ border: "1px solid lightgrey" }}
-                      src={images.user}
-                      alt={user?.name}
-                      width="40px"
-                    />
+                    <Box mr="1rem">
+                      <img
+                        className={classes.avatar}
+                        style={{ border: "1px solid lightgrey" }}
+                        src={images.user}
+                        alt={user?.name}
+                      />
+                    </Box>
                   </Link>
                 )}
               </Box>
             ) : null}
           </>
-          <Box>
-            <IconButton
-              sx={{
-                padding: "1rem",
-                color: "black.main",
-                marginRight: "1rem",
-              }}
-              aria-label="menu"
-              onClick={() => {
-                navigate(navigatePath);
-              }}
-            >
-              {iconsLeft?.type?.render()}
-            </IconButton>
-          </Box>
+          {iconsLeft ? (
+            <Box>
+              <IconButton
+                sx={{
+                  color: "black.main",
+                  marginRight: "1rem",
+                }}
+                aria-label="menu"
+                onClick={() => {
+                  navigate(navigatePath);
+                }}
+              >
+                {iconsLeft?.type?.render()}
+              </IconButton>
+            </Box>
+          ) : null}
           <Box
             width="100%"
             display="flex"

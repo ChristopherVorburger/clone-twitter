@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 
 import {
   Box,
@@ -26,6 +26,7 @@ import { AuthContext } from "../../context/authContext";
 
 const NewTweet = () => {
   const [text, setText] = useState("");
+  const [textError, setTextError] = useState(false);
   const auth = useContext(AuthContext);
   const classes = useStyles();
 
@@ -69,17 +70,18 @@ const NewTweet = () => {
         console.log(err.message);
       });
   };
+
+  useEffect(() => {
+    setTextError(false);
+    if (text.length > 280) {
+      setTextError(true);
+    }
+  }, [text]);
+
   return (
-    <Box
-      className={classes.new_tweet}
-      sx={{
-        width: "100%",
-        maxWidth: "590px",
-        ml: "1rem",
-      }}
-    >
-      <Stack direction="row">
-        <Box mr="1rem">
+    <Box className={classes.new_tweet} p="0 1rem" width="100%" maxWidth="590px">
+      <Box display="flex">
+        <Box mr="1rem" flexBasis="48px">
           {auth.userData?.[0]?.profile_image_url ? (
             <img
               className={classes.avatar}
@@ -96,11 +98,20 @@ const NewTweet = () => {
             />
           )}
         </Box>
-        <Stack alignItems="flex-start">
-          <Box>
+        <Box flexGrow="1">
+          <Box
+            width="100%"
+            sx={{
+              overflowWrap: "break-word",
+            }}
+          >
             <TextField
               value={text}
               autoComplete="off"
+              fullWidth
+              multiline="true"
+              helperText={`${text.length} / 280`}
+              maxRows={4}
               sx={{
                 border: "none!important",
                 "& .MuiOutlinedInput-notchedOutline": {
@@ -115,6 +126,9 @@ const NewTweet = () => {
               onChange={(e) => setText(e.target.value)}
             />
           </Box>
+          {textError ? (
+            <Typography color="error">Your message is too long</Typography>
+          ) : null}
           <Box>
             <Button
               sx={{
@@ -177,6 +191,7 @@ const NewTweet = () => {
             <Box>
               <Button
                 variant="contained"
+                disabled={textError}
                 sx={{
                   textTransform: "none",
                   borderRadius: "50px",
@@ -196,8 +211,8 @@ const NewTweet = () => {
               </Button>
             </Box>
           </Box>
-        </Stack>
-      </Stack>
+        </Box>
+      </Box>
     </Box>
   );
 };

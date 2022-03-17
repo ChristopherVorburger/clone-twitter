@@ -7,6 +7,7 @@ import { CircularProgress, Tab, Tabs } from "@mui/material";
 import Header from "../../components/Header";
 import News from "../../components/News";
 import TweetLiked from "../../components/TweetLiked";
+import BottomNavigation from "../../components/BottomNavigation";
 
 import { icons } from "../../constants";
 
@@ -114,6 +115,7 @@ const Notifications = () => {
       <Box>
         <News />
       </Box>
+      <BottomNavigation />
     </Box>
   );
 };
