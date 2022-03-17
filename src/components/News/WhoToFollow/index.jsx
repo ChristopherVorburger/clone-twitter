@@ -128,11 +128,23 @@ const WhoToFollow = ({ user }) => {
     // Suppression du following dans les datas de l'utilisateur connecté
     updateDoc(currentUserRef, {
       following: arrayRemove(user?.id),
-    });
-    // Suppression du follower dans les datas de l'utilisateur supprimé
-    updateDoc(followedUserRef, {
-      followers: arrayRemove(auth?.authUser?.uid),
-    });
+    })
+      .then(() => {
+        console.log("Suppression du following");
+        // Suppression du follower dans les datas de l'utilisateur supprimé
+        updateDoc(followedUserRef, {
+          followers: arrayRemove(auth?.authUser?.uid),
+        })
+          .then(() => {
+            console.log("Suppression du follower");
+          })
+          .catch((err) => {
+            console.log(err.message);
+          });
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
   };
 
   return (

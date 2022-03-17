@@ -60,7 +60,11 @@ const Notifications = () => {
 
   return (
     <Box display="flex">
-      <Box borderLeft="1px solid #eff3f4" borderRight="1px solid #eff3f4">
+      <Box
+        borderLeft="1px solid #eff3f4"
+        borderRight="1px solid #eff3f4"
+        width="100%"
+      >
         <Header title="Notifications" iconsRight={iconsArray} />
         {/* Nav Tab */}
         <Box>
