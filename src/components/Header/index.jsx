@@ -8,7 +8,7 @@ import ProfileButton from "../buttons/ProfileButton";
 import useStyles from "./styles";
 
 // Attention iconsRight est un tableau pour pouvoir faire des tableaux d'objet et ainsi ajouter les chemins d'url ou des fonctions à exécuter au clique
-const Header = ({ iconsLeft, iconsRight, subtitle, title }) => {
+const Header = ({ iconsLeft, iconsRight, subtitle, title, searchBar }) => {
   const classes = useStyles();
   const navigate = useNavigate();
 
@@ -29,6 +29,7 @@ const Header = ({ iconsLeft, iconsRight, subtitle, title }) => {
               sx={{
                 padding: "1rem",
                 color: "black.main",
+                marginRight: "1rem",
               }}
               aria-label="menu"
               onClick={() => navigate(-1)}
@@ -46,6 +47,7 @@ const Header = ({ iconsLeft, iconsRight, subtitle, title }) => {
               <Typography fontSize="font.large" fontWeight="mainBold">
                 {title}
               </Typography>
+              <Box>{searchBar}</Box>
               <Typography fontSize="font.small" color="grey.main">
                 {subtitle}
               </Typography>
