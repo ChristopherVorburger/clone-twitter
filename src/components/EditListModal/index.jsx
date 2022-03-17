@@ -159,10 +159,10 @@ const EditListModal = () => {
     else return null;
   });
 
-  // Fonction pour ajouter un membre à la liste
+  // Fonction pour supprimer une liste
   const deleteList = async (e) => {
     e.preventDefault();
-    // Suppression du membre de la liste
+    // Suppression des pins et des followers de la liste
     usersWhoPinnedRefs.map((user) => {
       return updateDoc(user, {
         lists: arrayRemove(matchedList?.[0]?.id),
