@@ -414,46 +414,36 @@ function Message({
         }}
       >
         {/* <Box button display="flex" justifyContent="center" alignItems="center"> */}
-
         <List>
           {messages.map((message, index) => {
+            const isUserConnectedMessage =
+              message.sender_id == auth.currentUser.uid;
             return (
-              // <ListItem
-              //   alignItems="flex-start"
-              //   key={index}
-              //   style={{
-              //     textAlign:
-              //       message.sender_id == auth.currentUser.uid
-              //         ? 'right'
-              //         : 'left',
-              //     // backgroundColor:
-              //     //   message.sender_id == auth.currentUser.uid
-              //     //     ? '#1d9bf0'
-              //     //     : '#ECE7E7',
-              //   }}
-              // >
-              <ListItemText
-                key={index}
-                align="left"
-                style={{
-                  //   textAlign:
-                  //     message.sender_id == auth.currentUser.uid
-                  //       ? 'right'
-                  //       : 'left',
-                  backgroundColor:
-                    message.sender_id == auth.currentUser.uid
-                      ? '#1d9bf0'
-                      : '#ECE7E7',
-                }}
+              <ListItem
+                width="100%"
                 sx={{
-                  borderRadius: '15px',
-                  // marginLeft: '17em',
-                  // padding: '0.5em',
+                  textAlign: isUserConnectedMessage ? 'right' : 'left',
                 }}
               >
-                {message.text}
-              </ListItemText>
-              // </ListItem>
+                <ListItemText
+                  key={index}
+                  width="wrap"
+                  sx={{
+                    '& span': {
+                      backgroundColor: isUserConnectedMessage
+                        ? '#1d9bf0'
+                        : '#ECE7E7',
+                      width: 'fit-content',
+                      padding: '0.5em',
+                      borderRadius: isUserConnectedMessage
+                        ? '16px 16px 0px 16px'
+                        : '16px 16px 16px 0px',
+                    },
+                  }}
+                >
+                  {message.text}
+                </ListItemText>
+              </ListItem>
             );
           })}
         </List>
