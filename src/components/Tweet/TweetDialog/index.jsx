@@ -43,27 +43,37 @@ const TweetDialog = ({ id, open, author_id }) => {
   // fonction pour supprimer un tweet
   const deleteTweet = (e) => {
     e.preventDefault();
+    console.log(id);
     const docRef = doc(database, "tweets", id);
-
-    usersWhoBookmarkedRefs.map((user) => {
-      return updateDoc(user, {
-        bookmarks: arrayRemove(id),
-      })
+    console.log(usersWhoBookmarkedRefs);
+    if (usersWhoBookmarkedRefs.length === 0) {
+      deleteDoc(docRef)
         .then(() => {
-          console.log(`Delete tweet bookmarks`);
-
-          deleteDoc(docRef)
-            .then(() => {
-              console.log("Delete tweet done");
-            })
-            .catch((err) => {
-              console.log(err.message);
-            });
+          console.log("Delete tweet done");
         })
         .catch((err) => {
           console.log(err.message);
         });
-    });
+    } else {
+      usersWhoBookmarkedRefs.map((user) => {
+        return updateDoc(user, {
+          bookmarks: arrayRemove(id),
+        })
+          .then(() => {
+            console.log(`Delete tweet bookmarks`);
+            deleteDoc(docRef)
+              .then(() => {
+                console.log("Delete tweet done");
+              })
+              .catch((err) => {
+                console.log(err.message);
+              });
+          })
+          .catch((err) => {
+            console.log(err.message);
+          });
+      });
+    }
   };
 
   // Référence à l'id de l'utilisateur connecté à mettre à jour
