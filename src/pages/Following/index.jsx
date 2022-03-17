@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 // Import composants MUI
 import {
@@ -13,18 +13,17 @@ import {
 // Import composants React
 import Header from "../../components/Header";
 import News from "../../components/News";
+import NoFollowing from "../../components/NoFollowing";
+import WhoToFollow from "../../components/News/WhoToFollow";
 
-// import AuthContext
-import { AuthContext } from "../../context/authContext";
+// import Context
+import { UsersContext } from "../../context/usersContext";
 
 // Import images
 import { icons } from "../../constants";
 
 // Import styles
 import useStyles from "./styles";
-import NoFollowing from "../../components/NoFollowing";
-import WhoToFollow from "../../components/News/WhoToFollow";
-import { useFirestore } from "../../utils/useFirestore";
 
 // Liens pour la Nav Tab
 function LinkTab(props) {
@@ -33,7 +32,17 @@ function LinkTab(props) {
 
 const Following = () => {
   const classes = useStyles();
-  const auth = React.useContext(AuthContext);
+
+  // Contexte
+  const users = React.useContext(UsersContext);
+
+  // UseParams pour récupérer le username
+  const { username } = useParams();
+
+  // Recherche du user qui matche
+  const user = users?.users?.filter((user) => {
+    return user?.username === username;
+  });
 
   // State pour la nav tab
   const [value, setValue] = React.useState(0);
@@ -44,14 +53,11 @@ const Following = () => {
   };
 
   // On check si il y a des following
-  const following = auth?.userData?.[0]?.following;
-
-  // Utilisation du hook perso useFirestore pour récupérer les users
-  const users = useFirestore("users");
+  const following = user?.[0]?.following;
 
   // Filtre des utilisateurs pour obtenir les suivis
-  const followedUsers = users?.filter((user) => {
-    return auth?.userData?.[0]?.following?.includes(user.id);
+  const followedUsers = users?.users?.filter((userInArray) => {
+    return user?.[0]?.following?.includes(userInArray.id);
   });
 
   return (
@@ -65,9 +71,10 @@ const Following = () => {
         width="100%"
       >
         <Header
-          title={auth.userData?.[0]?.name}
-          subtitle={`@${auth.userData?.[0]?.username}`}
+          title={user?.[0]?.name}
+          subtitle={`@${user?.[0]?.username}`}
           iconsLeft={icons.ArrowBackIcon}
+          navigatePath={`/${user?.[0]?.username}`}
         />
         {/* Nav Tab */}
         <Box>
@@ -81,12 +88,12 @@ const Following = () => {
             <Tabs value={value} onChange={handleChange} aria-label="nav tabs">
               <LinkTab
                 className={classes.following__link_nav}
-                to={`/${auth?.userData?.[0]?.username}/following`}
+                to={`/${user?.[0]?.username}/following`}
                 label="Following"
               />
               <LinkTab
                 className={classes.following__link_nav}
-                to={`/${auth?.userData?.[0]?.username}/followers`}
+                to={`/${user?.[0]?.username}/followers`}
                 label="Followers"
               />
             </Tabs>
