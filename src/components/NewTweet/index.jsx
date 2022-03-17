@@ -109,7 +109,7 @@ const NewTweet = () => {
               value={text}
               autoComplete="off"
               fullWidth
-              multiline="true"
+              multiline={true}
               helperText={`${text.length} / 280`}
               maxRows={4}
               sx={{
