@@ -15,24 +15,22 @@ import Mentions from "./pages/Mentions";
 import Lists from "./pages/Lists";
 import List from "./pages/Lists/List";
 import ForeignProfile from "./pages/ForeignProfile";
+import TweetPage from "./pages/Tweet/TweetPage";
+import Explore from "./pages/Explore/Explore";
 
 import EditProfileModal from "./components/EditProfileModal";
 import Layout from "./components/Layout";
-import Exemple from "./components/Exemple";
 import Login from "./components/Login/Login";
 import CreateListModal from "./components/CreateListModal";
 import SuggestedListModal from "./components/SuggestedListModal";
 import ListMembersModal from "./components/ListMembersModal";
 import EditListModal from "./components/EditListModal";
+import ScrollToTop from "./components/ScrollToTop";
 
 import { AuthContext } from "./context/authContext";
 import { SnackbarsContextProvider } from "./context/snackbarsContext";
 import { ListsContextProvider } from "./context/listsContext";
 import { UsersContextProvider } from "./context/usersContext";
-
-import TweetPage from "./pages/Tweet/TweetPage";
-import ScrollToTop from "./components/ScrollToTop";
-import Explore from "./pages/Explore/Explore";
 
 export default function App() {
   const auth = React.useContext(AuthContext);
@@ -86,7 +84,6 @@ export default function App() {
               <SnackbarsContextProvider>
                 <Routes>
                   <Route path="/home" element={<Home />} />
-                  <Route path="/exemple" element={<Exemple />} />
                   <Route
                     path={`/${auth.userData?.[0]?.username}`}
                     element={<Profile />}
