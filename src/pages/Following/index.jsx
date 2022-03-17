@@ -74,6 +74,7 @@ const Following = () => {
           title={user?.[0]?.name}
           subtitle={`@${user?.[0]?.username}`}
           iconsLeft={icons.ArrowBackIcon}
+          navigatePath={`/${user?.[0]?.username}`}
         />
         {/* Nav Tab */}
         <Box>

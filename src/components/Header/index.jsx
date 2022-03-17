@@ -10,7 +10,14 @@ import { images } from "../../constants";
 import useStyles from "./styles";
 
 // Attention iconsRight est un tableau pour pouvoir faire des tableaux d'objet et ainsi ajouter les chemins d'url ou des fonctions à exécuter au clique
-const Header = ({ iconsLeft, iconsRight, subtitle, title, searchBar }) => {
+const Header = ({
+  iconsLeft,
+  iconsRight,
+  subtitle,
+  title,
+  searchBar,
+  navigatePath = -1,
+}) => {
   const classes = useStyles();
   const navigate = useNavigate();
   const auth = React.useContext(AuthContext);
@@ -61,7 +68,9 @@ const Header = ({ iconsLeft, iconsRight, subtitle, title, searchBar }) => {
                 marginRight: "1rem",
               }}
               aria-label="menu"
-              onClick={() => navigate(-1)}
+              onClick={() => {
+                navigate(navigatePath);
+              }}
             >
               {iconsLeft?.type?.render()}
             </IconButton>
