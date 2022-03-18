@@ -38,7 +38,7 @@ const reducer = (state, action) => {
   }
 };
 
-const CreateListModal = () => {
+const EditListModal = () => {
   const { id } = useParams();
   const classes = useStyles();
   const navigate = useNavigate();
@@ -153,7 +153,7 @@ const CreateListModal = () => {
   const usersWhoPinnedRefs = [];
 
   // Recherche des utilisateurs en lien avec la liste (pins ou followers)
-  const usersWhoPinnedTheList = users?.filter((user) => {
+  users?.filter((user) => {
     if (user?.pinned_lists?.includes(matchedList?.[0]?.id))
       return usersWhoPinnedRefs.push(doc(database, "users", user.id));
     else return null;
@@ -186,6 +186,8 @@ const CreateListModal = () => {
     });
     navigate(`/${auth?.userData?.[0]?.username}/lists`);
   };
+
+  console.log(nameError);
 
   return (
     <>
@@ -227,6 +229,7 @@ const CreateListModal = () => {
                       backgroundColor: "black.main",
                       borderRadius: "50px",
                     }}
+                    disabled={nameError}
                   >
                     Done
                   </Button>
@@ -343,7 +346,13 @@ const CreateListModal = () => {
                   onChange={inputAction}
                   label="Name"
                   fullWidth
+                  error={nameError}
                 />
+                {nameError ? (
+                  <Typography ml="1rem" fontSize="font.small" color="error">
+                    Name can’t be blank
+                  </Typography>
+                ) : null}
               </Box>
               <Box className={classes.field}>
                 <TextField
@@ -421,4 +430,4 @@ const CreateListModal = () => {
   );
 };
 
-export default CreateListModal;
+export default EditListModal;
