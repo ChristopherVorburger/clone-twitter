@@ -235,11 +235,10 @@ const ForeignProfile = () => {
             <InexistingAccount />
           ) : (
             <>
-              {/* TODO: Rendre le subtitle dynamique */}
               <Header
                 title={user?.[0]?.name}
                 iconsLeft={icons.ArrowBackIcon}
-                subtitle={"10 tweets"}
+                subtitle={`${filteredTweets?.length} tweets`}
               />
               {/* Premier bloc */}
               <Box maxWidth="590px" maxHeight="200px">

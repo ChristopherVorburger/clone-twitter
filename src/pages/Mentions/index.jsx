@@ -6,6 +6,7 @@ import { Tab, Tabs } from "@mui/material";
 
 import Header from "../../components/Header";
 import News from "../../components/News";
+import BottomNavigation from "../../components/BottomNavigation";
 
 import { icons } from "../../constants";
 
@@ -71,6 +72,7 @@ const Mentions = () => {
       <Box>
         <News />
       </Box>
+      <BottomNavigation />
     </Box>
   );
 };

@@ -12,36 +12,66 @@ import {
   ListItemText,
 } from "@mui/material";
 
-import useStyles from "./styles";
-
 import { AuthContext } from "../../../context/authContext";
+import { UsersContext } from "../../../context/usersContext";
+
 import { icons } from "../../../constants";
-import { useFirestore } from "../../../utils/useFirestore";
+
+import useStyles from "./styles";
 
 // Fonction qui affiche lea actions possibles sur un tweet
 const TweetDialog = ({ id, open, author_id }) => {
   const classes = useStyles();
-  const auth = React.useContext(AuthContext);
 
-  // Utilisation du hook perso useFirestore pour récupérer les users
-  const users = useFirestore("users");
+  // Utilisation des contextes Auth et Users
+  const auth = React.useContext(AuthContext);
+  const users = React.useContext(UsersContext);
 
   //Recherche de l'id du user qui match avec l'author_id du tweet
-  const matchedUser = users?.filter((user) => user?.id === author_id);
+  const matchedUser = users?.users?.filter((user) => user?.id === author_id);
+
+  // Création d'un tableau pour stocker les utilisateurs en lien avec le tweet
+  const usersWhoBookmarkedRefs = [];
+
+  // Recherche des utilisateurs en lien avec le tweet (bookmarks)
+  users?.users?.filter((user) => {
+    if (user?.bookmarks?.includes(id))
+      return usersWhoBookmarkedRefs.push(doc(database, "users", user.id));
+    else return null;
+  });
 
   // fonction pour supprimer un tweet
   const deleteTweet = (e) => {
     e.preventDefault();
-
     const docRef = doc(database, "tweets", id);
-
-    deleteDoc(docRef)
-      .then(() => {
-        console.log("Delete tweet done");
-      })
-      .catch((err) => {
-        console.log(err.message);
+    if (usersWhoBookmarkedRefs.length === 0) {
+      deleteDoc(docRef)
+        .then(() => {
+          console.log("Delete tweet done");
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+    } else {
+      usersWhoBookmarkedRefs.map((user) => {
+        return updateDoc(user, {
+          bookmarks: arrayRemove(id),
+        })
+          .then(() => {
+            console.log(`Delete tweet bookmarks`);
+            deleteDoc(docRef)
+              .then(() => {
+                console.log("Delete tweet done");
+              })
+              .catch((err) => {
+                console.log(err.message);
+              });
+          })
+          .catch((err) => {
+            console.log(err.message);
+          });
       });
+    }
   };
 
   // Référence à l'id de l'utilisateur connecté à mettre à jour
@@ -55,11 +85,23 @@ const TweetDialog = ({ id, open, author_id }) => {
     // Suppression du following dans les datas de l'utilisateur connecté
     updateDoc(currentUserRef, {
       following: arrayRemove(author_id),
-    });
-    // Suppression du follower dans les datas de l'utilisateur supprimé
-    updateDoc(followedUserRef, {
-      followers: arrayRemove(auth?.authUser?.uid),
-    });
+    })
+      .then(() => {
+        console.log("Delete following in user connected data");
+        // Suppression du follower dans les datas de l'utilisateur supprimé
+        updateDoc(followedUserRef, {
+          followers: arrayRemove(auth?.authUser?.uid),
+        })
+          .then(() => {
+            console.log("Delete followers in user targeted data");
+          })
+          .catch((err) => {
+            console.log(err.message);
+          });
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
   };
 
   const personalTweetIconsArray = [

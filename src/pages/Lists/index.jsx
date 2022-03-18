@@ -56,6 +56,7 @@ const Lists = () => {
           title="Lists"
           subtitle={`@${auth?.userData?.[0]?.username}`}
           iconsRight={iconsArray}
+          iconsLeft={icons.ArrowBackIcon}
         />
         <Box borderBottom="1px solid #eff3f4">
           <Typography
