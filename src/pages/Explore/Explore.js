@@ -7,11 +7,12 @@ import {
 import BottomNavigation from "../../components/BottomNavigation";
 import { icons } from "../../constants";
 import Header from "../../components/Header";
-import { Box } from "@mui/material";
+import { Box, Input, InputAdornment } from "@mui/material";
 import News from "../../components/News";
 import ExploreRow from "../../components/ExploreRow/ExploreRow";
 import axios from "axios";
 import Skeleton from "@mui/material/Skeleton";
+import SearchIcon from "@mui/icons-material/Search";
 
 export default function Explore() {
   const [dataExplore, setDataExplore] = useState([]);
@@ -35,7 +36,7 @@ export default function Explore() {
     getDataExplore();
   }, []);
 
-  const iconsArray = [{ name: icons.AutoAwesomeSharpIcon }];
+  const iconsArray = [{ name: icons.SettingsOutlinedIcon }];
 
   return (
     <>
@@ -46,7 +47,31 @@ export default function Explore() {
           borderLeft="1px solid #eff3f4"
           borderRight="1px solid #eff3f4"
         >
-          <Header title="Home" iconsRight={iconsArray} />
+          <Box>
+            <Header
+              searchBar={
+                <Input
+                  // className={classes.input}
+                  sx={{
+                    padding: "0.5rem",
+                    backgroundColor: "grey.background__input",
+                    borderRadius: "50px",
+                    "&::before": {
+                      content: "none",
+                    },
+                  }}
+                  id="input-with-icon-adornment"
+                  startAdornment={
+                    <InputAdornment position="start">
+                      <SearchIcon />
+                    </InputAdornment>
+                  }
+                  placeholder="Search Twitter"
+                />
+              }
+              iconsRight={iconsArray}
+            />
+          </Box>
           <ExploreWrapper>
             {isLoading ? (
               <ExploreHeader url={dataExplore[0].urlToImage}>
