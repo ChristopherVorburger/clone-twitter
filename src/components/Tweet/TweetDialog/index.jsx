@@ -43,9 +43,7 @@ const TweetDialog = ({ id, open, author_id }) => {
   // fonction pour supprimer un tweet
   const deleteTweet = (e) => {
     e.preventDefault();
-    console.log(id);
     const docRef = doc(database, "tweets", id);
-    console.log(usersWhoBookmarkedRefs);
     if (usersWhoBookmarkedRefs.length === 0) {
       deleteDoc(docRef)
         .then(() => {
