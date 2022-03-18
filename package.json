@@ -1,5 +1,6 @@
 {
   "name": "clone-twitter",
+  "homepage": "https://clone-twitter.netlify.app",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
