@@ -16,14 +16,14 @@ import {
   Alert,
   TextField,
   Button,
-} from '@mui/material';
-import React, { useState, useEffect, useRef } from 'react';
+} from "@mui/material";
+import React, { useState, useEffect, useRef } from "react";
 
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
-import 'firebase/compat/firestore';
-import 'firebase/compat/analytics';
-import { useAuthState } from 'react-firebase-hooks/auth';
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import "firebase/compat/firestore";
+import "firebase/compat/analytics";
+// import { useAuthState } from 'react-firebase-hooks/auth';
 //   import { useCollectionData } from 'react-firebase-hooks/firestore';
 //   import { getFirebaseConfig } from '../../firebase-config';
 //   import LeftNavbar from '../LeftNavbar';
@@ -32,8 +32,8 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 //   import BottomNavigation from '../BottomNavigation';
 //   import AddCommentIcon from '@mui/icons-material/AddComment';
 //   import Icons from '../../constants/icons';
-import useStyles from './styles';
-import { icons, images } from '../../../constants';
+import useStyles from "./styles";
+import { icons, images } from "../../../constants";
 
 export default function ChannelItem({ user, handleClick, channelID }) {
   const auth = firebase.auth();
@@ -46,7 +46,7 @@ export default function ChannelItem({ user, handleClick, channelID }) {
     <Box
       className={classes.profile_section}
       sx={{
-        padding: '12px',
+        padding: "12px",
       }}
       onClick={() => handleClick(channelID)}
     >
@@ -54,10 +54,10 @@ export default function ChannelItem({ user, handleClick, channelID }) {
         <Box width="50px" height="50px" marginRight="0.5rem">
           <img
             className={classes.profile_section__avatar_button}
-            style={{ border: '1px solid lightgrey' }}
+            style={{ border: "1px solid lightgrey" }}
             src={
               userToDisplay?.profile_image_url &&
-              userToDisplay?.profile_image_url != ''
+              userToDisplay?.profile_image_url != ""
                 ? userToDisplay?.profile_image_url
                 : images.user
             }

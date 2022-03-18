@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from "react";
 
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
-import 'firebase/compat/firestore';
-import 'firebase/compat/analytics';
-import { getFirebaseConfig } from '../../firebase-config';
-import BottomNavigation from '../BottomNavigation';
-import ChannelItem from './ChannelItem/ChannelItem';
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import "firebase/compat/firestore";
+import "firebase/compat/analytics";
+import { getFirebaseConfig } from "../../firebase-config";
+import BottomNavigation from "../BottomNavigation";
+import ChannelItem from "./ChannelItem/ChannelItem";
 
 import {
   ListItem,
@@ -16,13 +16,13 @@ import {
   Divider,
   Button,
   List,
-} from '@mui/material';
-import useStyles from './styles';
-import { onSnapshot } from 'firebase/firestore';
-import { useFirestoreWithQuery } from '../../utils/useFirestoreWithQuery';
-import ChannelAddMessage from './ChannelAddMessage/ChannelAddMessage';
-import { useNavigate } from 'react-router-dom';
-import { useFirestore } from '../../utils/useFirestore';
+} from "@mui/material";
+import useStyles from "./styles";
+import { onSnapshot } from "firebase/firestore";
+import { useFirestoreWithQuery } from "../../utils/useFirestoreWithQuery";
+import ChannelAddMessage from "./ChannelAddMessage/ChannelAddMessage";
+import { useNavigate } from "react-router-dom";
+import { useFirestore } from "../../utils/useFirestore";
 
 firebase.initializeApp(getFirebaseConfig());
 
@@ -31,21 +31,21 @@ const firestore = firebase.firestore();
 
 export default function Messages() {
   const classes = useStyles();
-  const channelsRef = firestore.collection('channels');
-  const messagesRef = firestore.collection('messages');
-  const usersRef = firestore.collection('users');
+  const channelsRef = firestore.collection("channels");
+  const messagesRef = firestore.collection("messages");
+  const usersRef = firestore.collection("users");
   const [users, setUsers] = useState([]);
   const [channels, setChannels] = useState([]);
   const [messages, setMessages] = useState([]);
-  const [channelSelected, setChannelSelected] = useState('');
+  const [channelSelected, setChannelSelected] = useState("");
   const navigate = useNavigate();
 
   const dummy = useRef();
 
   function getChannesls() {
     const queryChannels = channelsRef
-      .where('users', 'array-contains', auth.currentUser.uid)
-      .orderBy('updated_at', 'desc');
+      .where("users", "array-contains", auth.currentUser.uid)
+      .orderBy("updated_at", "desc");
 
     onSnapshot(queryChannels, (queryQnapshot) => {
       const items = [];
@@ -58,7 +58,7 @@ export default function Messages() {
   }
 
   function getUsers() {
-    const queryUsers = usersRef.orderBy('name');
+    const queryUsers = usersRef.orderBy("name");
 
     onSnapshot(queryUsers, (queryQnapshot) => {
       const items = [];
@@ -71,7 +71,7 @@ export default function Messages() {
   }
 
   function getMessages(idChannels) {
-    const queryMessages = messagesRef.orderBy('created_at', 'asc');
+    const queryMessages = messagesRef.orderBy("created_at", "asc");
 
     onSnapshot(queryMessages, (queryQnapshot) => {
       const items = [];
@@ -98,11 +98,11 @@ export default function Messages() {
       created_at: todayDate,
       photoUrl: null,
       sender_id: userId,
-      senderName: '',
+      senderName: "",
       text: newMessage,
     });
 
-    dummy.current.scrollIntoView({ behavior: 'smooth' });
+    dummy.current.scrollIntoView({ behavior: "smooth" });
   }
 
   useEffect(() => {
@@ -110,7 +110,7 @@ export default function Messages() {
     getUsers();
   }, []);
 
-  const tweets = useFirestoreWithQuery('tweets');
+  const tweets = useFirestoreWithQuery("tweets");
   const filteredTweets = tweets?.filter((tweet) => {
     return (
       tweet?.author_id === auth?.authUser?.uid ||
@@ -143,16 +143,16 @@ export default function Messages() {
 
             <Box
               style={{
-                minHeight: '36px',
+                minHeight: "36px",
               }}
             >
               <Button
                 variant="outlined"
-                onClick={() => navigate('/searchUser')}
+                onClick={() => navigate("/searchUser")}
                 className={classes.profile__button}
                 style={{
-                  border: 'none',
-                  width: '0.5rem',
+                  border: "none",
+                  width: "0.5rem",
                 }}
                 width="20px"
                 height="20px"
@@ -172,7 +172,7 @@ export default function Messages() {
           </Box>
 
           <Box>
-            <Divider sx={{ borderColor: 'background__input' }} />
+            <Divider sx={{ borderColor: "background__input" }} />
           </Box>
 
           {/* Affichage de la liste des conversations */}
@@ -183,8 +183,8 @@ export default function Messages() {
                 handleDisplayChannelMessage(idChannels)
               }
               style={{
-                overflowY: 'scroll',
-                overflowX: 'hidden',
+                overflowY: "scroll",
+                overflowX: "hidden",
               }}
             />
           </Box>
@@ -208,7 +208,7 @@ export default function Messages() {
 
 function ListeChannels({ channels, handleDiplayMessages }) {
   const classes = useStyles();
-  const users = useFirestore('users');
+  const users = useFirestore("users");
 
   const getUser = (userId) => {
     return users?.filter((user) => {
@@ -259,8 +259,8 @@ function Message({ messages = [], handleAddNewMessage }) {
     >
       <Box
         style={{
-          overflowY: 'auto',
-          overflowX: 'hidden',
+          overflowY: "auto",
+          overflowX: "hidden",
         }}
       >
         <List>
@@ -272,21 +272,22 @@ function Message({ messages = [], handleAddNewMessage }) {
                 key={index}
                 width="100%"
                 sx={{
-                  textAlign: isUserConnectedMessage ? 'right' : 'left',
+                  flexDirection: isUserConnectedMessage ? "column-reverse" : "",
+                  alignItems: isUserConnectedMessage ? "flex-end" : "",
                 }}
               >
                 <ListItemText
                   width="wrap"
                   sx={{
-                    '& span': {
+                    "& span": {
                       backgroundColor: isUserConnectedMessage
-                        ? '#1d9bf0'
-                        : '#ECE7E7',
-                      width: 'fit-content',
-                      padding: '0.5em',
+                        ? "#1d9bf0"
+                        : "#ECE7E7",
+                      width: "fit-content",
+                      padding: "0.5em",
                       borderRadius: isUserConnectedMessage
-                        ? '16px 16px 0px 16px'
-                        : '16px 16px 16px 0px',
+                        ? "16px 16px 0px 16px"
+                        : "16px 16px 16px 0px",
                     },
                   }}
                 >
