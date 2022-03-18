@@ -38,7 +38,7 @@ const News = () => {
   React.useEffect(() => {
     axios
       .get("https://api.newscatcherapi.com/v2/search", {
-        params: { q: "Love", lang: "en", sort_by: "relevancy", page: "1" },
+        params: { q: "React", lang: "en", sort_by: "relevancy", page: "1" },
         headers: {
           "x-api-key": `${process.env.REACT_APP_NEWS_API_KEY}`,
         },
