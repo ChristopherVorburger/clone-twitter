@@ -36,7 +36,11 @@ const LeftNavbar = () => {
     },
     { name: icons.EmailOutlinedIcon, path: "/messages", text: "Messages" },
     { name: icons.BookmarkBorderIcon, path: "/bookmarks", text: "Bookmarks" },
-    { name: icons.FeaturedPlayListOutlinedIcon, path: "/", text: "Lists" },
+    {
+      name: icons.FeaturedPlayListOutlinedIcon,
+      path: `/${auth?.userData?.[0]?.username}/lists`,
+      text: "Lists",
+    },
     {
       name: icons.PersonOutlineOutlinedIcon,
       path: `/${auth?.userData?.[0]?.username}`,
@@ -66,7 +70,11 @@ const LeftNavbar = () => {
         >
           <Box>
             <List>
-              <ListItemButton sx={{ borderRadius: "50px" }}>
+              <ListItemButton
+                sx={{ borderRadius: "50px" }}
+                component={Link}
+                to="/home"
+              >
                 <ListItemIcon
                   sx={{
                     mb: "0.5rem",
@@ -127,7 +135,7 @@ const LeftNavbar = () => {
               </ListItemButton>
               <ListItemButton className={classes.list_item_button}>
                 <ListItemIcon className={classes.add_tweet__button_large}>
-                  <ClassicButton text={"Tweet"} />
+                  <ClassicButton path={"/home"} text={"Tweet"} />
                 </ListItemIcon>
               </ListItemButton>
             </List>

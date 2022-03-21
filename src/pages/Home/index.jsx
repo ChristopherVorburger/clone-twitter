@@ -29,7 +29,6 @@ import ModalReplyTweet from "../../components/ModalReplyTweet/ModalReplyTweet";
 
 const Home = () => {
   const classes = useStyles();
-  const { showModal } = useContext(ModalContext);
   // Utilisation du hook useContext pour récupérer le contexte Auth
   const auth = React.useContext(AuthContext);
 
@@ -46,11 +45,12 @@ const Home = () => {
       auth?.userData?.[0]?.following?.includes(tweet.author_id)
     );
   });
-  console.log(tweets);
+
+  const iconsArray = [{ name: icons.AutoAwesomeSharpIcon }];
 
   return (
     <>
-      {showModal && <ModalReplyTweet />}
+      {/* {showModal && <ModalReplyTweet />} */}
 
       <Box display="flex" justifyContent="center">
         <Box
@@ -59,7 +59,7 @@ const Home = () => {
           borderLeft="1px solid #eff3f4"
           borderRight="1px solid #eff3f4"
         >
-          <Header title="Home" iconsRight={icons.AutoAwesomeSharpIcon} />
+          <Header title="Home" iconsRight={iconsArray} />
 
           <NewTweet />
           <Divider sx={{ borderColor: "background__input" }} />
@@ -75,7 +75,7 @@ const Home = () => {
               ))}
             </>
           ) : (
-            <CircularProgress />
+            <CircularProgress sx={{ margin: "auto" }} />
           )}
         </Box>
         <News />

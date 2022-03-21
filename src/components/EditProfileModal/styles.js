@@ -32,6 +32,7 @@ export default makeStyles((theme) => ({
     opacity: 0.75,
   },
   cover__container: {
+    position: "relative",
     backgroundColor: `${theme.palette.grey.main}!important`,
   },
   avatar__container: {
@@ -63,7 +64,7 @@ export default makeStyles((theme) => ({
     position: "absolute!important",
     borderRadius: "50%",
     width: "50px",
-    top: "30%",
+    top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
     backgroundColor: `${theme.palette.black.main}!important`,

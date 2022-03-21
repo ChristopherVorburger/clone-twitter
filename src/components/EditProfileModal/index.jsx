@@ -15,7 +15,7 @@ import Modal from "@mui/material/Modal";
 import { IconButton, TextField } from "@mui/material";
 
 // Icones et images
-import { icons, images } from "../../constants";
+import { icons } from "../../constants";
 
 // Styles
 import useStyles from "./styles";
@@ -41,8 +41,7 @@ const EditProfileModal = () => {
   const navigate = useNavigate();
 
   // States pour la modale
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
+  const [, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
 
   const [nameError, setNameError] = useState(false);
@@ -50,10 +49,6 @@ const EditProfileModal = () => {
   const [coverSelected, setCoverSelected] = useState([]);
   const [file, setFile] = useState();
   const [coverFile, setCoverFile] = useState();
-
-  console.log("imageselected", imageSelected);
-  console.log("coverselected", coverSelected);
-  console.log("file", file);
 
   //Utilisation du contexte Auth
   const auth = useContext(AuthContext);

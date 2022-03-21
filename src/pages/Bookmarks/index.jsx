@@ -25,6 +25,8 @@ const Bookmarks = () => {
     return auth?.userData?.[0]?.bookmarks?.includes(tweet?.id);
   });
 
+  const iconsArray = [{ name: icons.MoreHorizIcon }];
+
   return (
     <Box display="flex">
       <Box
@@ -35,11 +37,11 @@ const Bookmarks = () => {
         <Header
           title="Bookmarks"
           subtitle={`@${auth.userData?.[0]?.username}`}
-          iconsRight={icons.MoreHorizIcon}
+          iconsRight={iconsArray}
         />
         <Box display="flex" flexDirection="column" justifyContent="center">
           {/* Si l'utilisateur n'a pas de bookmark on affiche ceci */}
-          {auth.userData?.[0]?.bookmarks.length === 0 ? (
+          {auth.userData?.[0]?.bookmarks?.length === 0 ? (
             <Box maxWidth="400px" m="2rem auto" p="0 2rem">
               <Box m="1rem 0 36px 0">
                 <img src={images.cage} alt="bird cage" />
@@ -62,7 +64,7 @@ const Bookmarks = () => {
                   ))}
                 </>
               ) : (
-                <CircularProgress />
+                <CircularProgress sx={{ margin: "auto" }} />
               )}
             </Box>
           )}

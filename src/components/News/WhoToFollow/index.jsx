@@ -10,6 +10,7 @@ import { AuthContext } from "../../../context/authContext";
 
 import useStyles from "./styles";
 import { images } from "../../../constants";
+import { Link } from "react-router-dom";
 
 const WhoToFollow = ({ user }) => {
   const classes = useStyles();
@@ -66,7 +67,7 @@ const WhoToFollow = ({ user }) => {
                 console.log("ajout d'un premier follower");
               })
               .catch((err) => {
-                console.log(err.massage);
+                console.log(err.message);
               });
             // Sinon, mise à jour du tableau followers de l'utilisateur ajouté
           } else {
@@ -77,12 +78,12 @@ const WhoToFollow = ({ user }) => {
                 console.log("ajout d'un follower");
               })
               .catch((err) => {
-                console.log(err.massage);
+                console.log(err.message);
               });
           }
         })
         .catch((err) => {
-          console.log(err.massage);
+          console.log(err.message);
         });
       // Sinon, mise à jour du tableau following
     } else {
@@ -101,7 +102,7 @@ const WhoToFollow = ({ user }) => {
                 console.log("ajout d'un premier follower");
               })
               .catch((err) => {
-                console.log(err.massage);
+                console.log(err.message);
               });
             // Sinon, mise à jour du tableau followers de l'utilisateur ajouté
           } else {
@@ -112,12 +113,12 @@ const WhoToFollow = ({ user }) => {
                 console.log("ajout d'un follower");
               })
               .catch((err) => {
-                console.log(err.massage);
+                console.log(err.message);
               });
           }
         })
         .catch((err) => {
-          console.log(err.massage);
+          console.log(err.message);
         });
     }
   };
@@ -127,11 +128,23 @@ const WhoToFollow = ({ user }) => {
     // Suppression du following dans les datas de l'utilisateur connecté
     updateDoc(currentUserRef, {
       following: arrayRemove(user?.id),
-    });
-    // Suppression du follower dans les datas de l'utilisateur supprimé
-    updateDoc(followedUserRef, {
-      followers: arrayRemove(auth?.authUser?.uid),
-    });
+    })
+      .then(() => {
+        console.log("Suppression du following");
+        // Suppression du follower dans les datas de l'utilisateur supprimé
+        updateDoc(followedUserRef, {
+          followers: arrayRemove(auth?.authUser?.uid),
+        })
+          .then(() => {
+            console.log("Suppression du follower");
+          })
+          .catch((err) => {
+            console.log(err.message);
+          });
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
   };
 
   return (
@@ -140,32 +153,48 @@ const WhoToFollow = ({ user }) => {
         <Box display="flex" justifyContent="space-between">
           <Box mr="1rem">
             {user?.profile_image_url ? (
-              <img
-                className={classes.avatar}
-                src={user?.profile_image_url}
-                alt={user?.name}
-                width="40px"
-              />
+              <Link to={`/${user?.username}`}>
+                <img
+                  className={classes.avatar}
+                  src={user?.profile_image_url}
+                  alt={user?.name}
+                  width="40px"
+                />
+              </Link>
             ) : (
-              <img
-                className={classes.avatar}
-                style={{ border: "1px solid lightgrey" }}
-                src={images.user}
-                alt={user?.name}
-                width="40px"
-              />
+              <Link to={`/${user?.username}`}>
+                <img
+                  className={classes.avatar}
+                  style={{ border: "1px solid lightgrey" }}
+                  src={images.user}
+                  alt={user?.name}
+                  width="40px"
+                />
+              </Link>
             )}
           </Box>
           <Box>
             <Box>
-              <Typography fontSize="font.main" fontWeight="mainBold">
-                {user?.name}
-              </Typography>
+              <Link to={`/${user?.username}`} className={classes.link}>
+                <Typography
+                  fontSize="font.main"
+                  fontWeight="mainBold"
+                  sx={{ textDecoration: "none", color: "black.main" }}
+                >
+                  {user?.name}
+                </Typography>
+              </Link>
             </Box>
             <Box>
-              <Typography fontSize="font.main" color="grey.main">
-                {`@${user?.username}`}
-              </Typography>
+              <Link to={`/${user?.username}`} className={classes.link}>
+                <Typography
+                  fontSize="font.main"
+                  color="grey.main"
+                  sx={{ textDecoration: "none", color: "black.main" }}
+                >
+                  {`@${user?.username}`}
+                </Typography>
+              </Link>
             </Box>
           </Box>
         </Box>

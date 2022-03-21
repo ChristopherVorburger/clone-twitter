@@ -37,10 +37,14 @@ const News = () => {
   // Appel a l'API pour récupérer les dernières news des US
   React.useEffect(() => {
     axios
-      .get(
-        "https://newsapi.org/v2/top-headlines?country=us&apiKey=d4b08c83bfe14672899774992fd01d3f"
-      )
+      .get("https://api.newscatcherapi.com/v2/search", {
+        params: { q: "React", lang: "en", sort_by: "relevancy", page: "1" },
+        headers: {
+          "x-api-key": `${process.env.REACT_APP_NEWS_API_KEY}`,
+        },
+      })
       .then((response) => {
+        console.log("response", response);
         setTopHeadlines(response.data.articles);
       })
       .catch((err) => console.log(err));

@@ -19,7 +19,7 @@ export default makeStyles((theme) => ({
   container: {
     margin: "auto!important",
     padding: "20px",
-    maxWidth: "600px",
+    maxWidth: "590px",
   },
   icon__twitter: {
     paddingBottom: "12px",

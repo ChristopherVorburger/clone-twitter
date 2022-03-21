@@ -14,4 +14,11 @@ export default makeStyles((theme) => ({
       minWidth: "590px",
     },
   },
+  avatar: {
+    width: "35px",
+    height: "35px",
+    borderRadius: "50%",
+    objectFit: "cover",
+    objectPosition: "center",
+  },
 }));

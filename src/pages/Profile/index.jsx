@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import {
   Box,
@@ -19,6 +19,7 @@ import WhoToFollow from "../../components/News/WhoToFollow";
 
 // Import Auth Context
 import { AuthContext } from "../../context/authContext";
+import { UsersContext } from "../../context/usersContext";
 
 // Import des icones
 import { icons } from "../../constants";
@@ -28,7 +29,6 @@ import { images } from "../../constants";
 
 // Import hooks
 import { useFirestoreWithQuery } from "../../utils/useFirestoreWithQuery";
-import { useFirestore } from "../../utils/useFirestore";
 
 // Import styles
 import useStyles from "./styles";
@@ -50,23 +50,15 @@ const Profile = () => {
     setValue(newValue);
   };
 
-  // Utilisation du hook useContext pour récupérer le contexte Auth
-  const { username } = useParams();
+  // Utilisation des contextes Auth et Users
   const auth = React.useContext(AuthContext);
-
-  // Test si c'est la page de l'utilisateur connecté ou pas
-  if (auth.userData?.[0]?.username !== username) {
-    console.log("Autre utilisateur");
-  }
+  const users = React.useContext(UsersContext);
 
   // Utilisation du hook perso useFirestoreWithQuery pour récupérer les tweets dans l'ordre de publication
   const tweets = useFirestoreWithQuery("tweets");
 
-  // Utilisation du hook perso useFirestore pour récupérer les users
-  const users = useFirestore("users");
-
   // Filtre des utilisateurs pour obtenir les non suivis
-  const unfollowUsers = users?.filter((user) => {
+  const unfollowUsers = users?.users?.filter((user) => {
     return !auth?.userData?.[0]?.following?.includes(user.id);
   });
 
@@ -96,11 +88,10 @@ const Profile = () => {
           maxWidth="590px"
           width="100%"
         >
-          {/* TODO: Rendre dynamique le subtitle */}
           <Header
             title={auth.userData?.[0]?.name}
             iconsLeft={icons.ArrowBackIcon}
-            subtitle={"10 tweets"}
+            subtitle={`${filteredTweets?.length} tweets`}
           />
           {/* Premier bloc */}
           <Box maxWidth="590px" maxHeight="200px">
