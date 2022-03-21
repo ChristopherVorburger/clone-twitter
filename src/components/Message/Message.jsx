@@ -272,8 +272,13 @@ function Message({ messages = [], handleAddNewMessage }) {
                 }}
               >
                 <ListItemText
-                  width="wrap"
+                  // width="wrap"
                   sx={{
+                    "&.MuiListItemText-root": {
+                      width: "20em",
+                      display: "flex",
+                      justifyContent: isUserConnectedMessage ? "flex-end" : "",
+                    },
                     "& span": {
                       backgroundColor: isUserConnectedMessage
                         ? "#1d9bf0"
