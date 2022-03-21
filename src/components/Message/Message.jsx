@@ -76,7 +76,7 @@ export default function Messages() {
     onSnapshot(queryMessages, (queryQnapshot) => {
       const items = [];
       queryQnapshot.forEach((doc) => {
-        if (doc.data().channels_id == idChannels) {
+        if (doc.data().channels_id === idChannels) {
           items.push({ id: doc.id, ...doc.data() });
         }
       });
@@ -93,7 +93,7 @@ export default function Messages() {
   function handleAddNewMessage(newMessage) {
     const userId = auth.currentUser.uid;
     const todayDate = firebase.firestore.FieldValue.serverTimestamp();
-    const messageChannel = messagesRef.add({
+    messagesRef.add({
       channels_id: channelSelected,
       created_at: todayDate,
       photoUrl: null,
@@ -240,15 +240,6 @@ function ListeChannels({ channels, handleDiplayMessages }) {
 }
 
 function Message({ messages = [], handleAddNewMessage }) {
-  const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
-  const handleClick = () => {
-    setOpen((prev) => !prev);
-  };
-
-  const handleClickAway = () => {
-    setOpen(false);
-  };
   return (
     <Box
       display="flex"
