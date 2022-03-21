@@ -257,7 +257,7 @@ function Message({ messages = [], handleAddNewMessage }) {
         <List>
           {messages.map((message, index) => {
             const isUserConnectedMessage =
-              message.sender_id == auth.currentUser.uid;
+              message.sender_id === auth.currentUser.uid;
             return (
               <ListItem
                 key={index}
@@ -265,6 +265,10 @@ function Message({ messages = [], handleAddNewMessage }) {
                 sx={{
                   flexDirection: isUserConnectedMessage ? "column-reverse" : "",
                   alignItems: isUserConnectedMessage ? "flex-end" : "",
+                  "&.MuiListItem-root": {
+                    paddingTop: "0px",
+                    paddingBottom: "0px",
+                  },
                 }}
               >
                 <ListItemText
