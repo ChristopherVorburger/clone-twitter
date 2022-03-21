@@ -1,37 +1,30 @@
-import { useState, useContext, useReducer, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 // Fonctions firebase
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
-import 'firebase/compat/firestore';
-import { database, getFirebaseConfig, storage } from '../../../firebase-config';
-import { doc, updateDoc } from 'firebase/firestore';
-import { useFirestore } from '../../../utils/useFirestore';
-
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import "firebase/compat/firestore";
+import { getFirebaseConfig } from "../../../firebase-config";
+import { useFirestore } from "../../../utils/useFirestore";
 
 // Composants MUI
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
-import { Autocomplete, IconButton, TextField } from '@mui/material';
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Modal from "@mui/material/Modal";
+import { Autocomplete, IconButton, TextField } from "@mui/material";
 
 // Icones et images
-import { icons, images } from '../../../constants';
+import { icons, images } from "../../../constants";
 
 // Styles
-import useStyles from './styles';
-
-// Context
-import { AuthContext } from '../../../context/authContext';
-import ChannelItem from '../ChannelItem/ChannelItem';
+import useStyles from "./styles";
 
 // Reducer
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'update':
+    case "update":
       return {
         ...state,
         [action.payload.key]: action.payload.value,
@@ -48,23 +41,20 @@ const firestore = firebase.firestore();
 const ChannelSearchUser = () => {
   const classes = useStyles();
   const navigate = useNavigate();
-  const users = useFirestore('users');
-  const channelsRef = firestore.collection('channels');
+  const users = useFirestore("users");
+  const channelsRef = firestore.collection("channels");
 
   // States pour la modale
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const [usersSelected, setUsersSelected] = useState([]);
 
   const addNewChannel = async () => {
-    console.log('users selected', usersSelected);
+    console.log("users selected", usersSelected);
     const todayDate = firebase.firestore.FieldValue.serverTimestamp();
-    const usersToAdd = usersSelected
-      // .filter((user) => user.id != auth.currentUser.uid)
-      .map((user) => user.id);
-    const channel = await channelsRef.add({
+    const usersToAdd = usersSelected.map((user) => user.id);
+    await channelsRef.add({
       createdAt: todayDate,
       updated_at: todayDate,
       users: [auth.currentUser.uid, ...usersToAdd],
@@ -76,9 +66,9 @@ const ChannelSearchUser = () => {
     e.preventDefault();
 
     addNewChannel();
-    const createdAt =
-      // Retour à la page de profil
-      navigate(`/messages`);
+
+    // Retour à la page de profil
+    navigate(`/messages`);
   };
 
   return (
@@ -98,7 +88,7 @@ const ChannelSearchUser = () => {
                 <Box justifyContent="flex-start">
                   <IconButton
                     onClick={() => navigate(`/messages`)}
-                    sx={{ padding: '0.5rem', marginRight: '1rem' }}
+                    sx={{ padding: "0.5rem", marginRight: "1rem" }}
                   >
                     <icons.CloseIcon />
                   </IconButton>
@@ -114,10 +104,10 @@ const ChannelSearchUser = () => {
                     type="submit"
                     variant="contained"
                     sx={{
-                      fontSize: 'font.small',
-                      fontWeight: 'mainBold',
-                      backgroundColor: 'blue.main',
-                      borderRadius: '50px',
+                      fontSize: "font.small",
+                      fontWeight: "mainBold",
+                      backgroundColor: "blue.main",
+                      borderRadius: "50px",
                     }}
                     disabled={!usersSelected || usersSelected.length < 1}
                   >
@@ -133,16 +123,16 @@ const ChannelSearchUser = () => {
                     id="tags-outlined"
                     options={users}
                     getOptionLabel={(option) => option.name}
-                    // onChange={(event, newValue) => {
-                    //   setUsersSelected([newValue]);
-                    // }}
+                    onChange={(event, newValue) => {
+                      setUsersSelected([newValue]);
+                    }}
                     renderOption={(props, option, { selected }) => (
                       <Box
                         {...props}
                         key={option.id}
                         className={classes.profile_section}
                         sx={{
-                          padding: '12px',
+                          padding: "12px",
                         }}
                       >
                         <Box
@@ -154,10 +144,10 @@ const ChannelSearchUser = () => {
                           <Box width="50px" height="50px" marginRight="0.5rem">
                             <img
                               className={classes.profile_section__avatar_button}
-                              style={{ border: '1px solid lightgrey' }}
+                              style={{ border: "1px solid lightgrey" }}
                               src={
                                 option?.profile_image_url &&
-                                option?.profile_image_url != ''
+                                option?.profile_image_url != ""
                                   ? option?.profile_image_url
                                   : images.user
                               }
