@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
-
+import React, { useState, useEffect } from "react";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
@@ -7,7 +6,6 @@ import "firebase/compat/analytics";
 import { getFirebaseConfig } from "../../firebase-config";
 import BottomNavigation from "../BottomNavigation";
 import ChannelItem from "./ChannelItem/ChannelItem";
-
 import {
   ListItem,
   ListItemText,
@@ -39,8 +37,6 @@ export default function Messages() {
   const [messages, setMessages] = useState([]);
   const [channelSelected, setChannelSelected] = useState("");
   const navigate = useNavigate();
-
-  const dummy = useRef();
 
   function getChannesls() {
     const queryChannels = channelsRef
@@ -101,8 +97,6 @@ export default function Messages() {
       senderName: "",
       text: newMessage,
     });
-
-    dummy.current.scrollIntoView({ behavior: "smooth" });
   }
 
   useEffect(() => {
@@ -196,9 +190,7 @@ export default function Messages() {
           <Message
             messages={messages}
             handleAddNewMessage={handleAddNewMessage}
-          >
-            <span ref={dummy}></span>
-          </Message>
+          />
         </Box>
       </Box>
       <BottomNavigation />
@@ -207,12 +199,11 @@ export default function Messages() {
 }
 
 function ListeChannels({ channels, handleDiplayMessages }) {
-  const classes = useStyles();
   const users = useFirestore("users");
 
   const getUser = (userId) => {
     return users?.filter((user) => {
-      return user.id == userId;
+      return user.id === userId;
     });
   };
 
@@ -272,7 +263,6 @@ function Message({ messages = [], handleAddNewMessage }) {
                 }}
               >
                 <ListItemText
-                  // width="wrap"
                   sx={{
                     "&.MuiListItemText-root": {
                       width: "20em",
