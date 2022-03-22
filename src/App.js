@@ -31,6 +31,8 @@ import { AuthContext } from "./context/authContext";
 import { SnackbarsContextProvider } from "./context/snackbarsContext";
 import { ListsContextProvider } from "./context/listsContext";
 import { UsersContextProvider } from "./context/usersContext";
+import Message from './components/Message/Message';
+import ChannelSearchUser from './components/Message/ChannelSearchUser/ChannelSearchUser';
 
 export default function App() {
   const auth = React.useContext(AuthContext);
@@ -119,6 +121,8 @@ export default function App() {
                   <Route path="/status/:id" element={<TweetPage />} />
                   <Route path="/explore" element={<Explore />} />
                   <Route path="*" element={<Navigate to="/home" />} />
+                  <Route path="/messages" element={<Message />} />
+                  <Route path="/searchUser" element={<ChannelSearchUser />} />
                 </Routes>
               </SnackbarsContextProvider>
             </ListsContextProvider>
