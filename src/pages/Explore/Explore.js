@@ -1,9 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  ExploreWrapper,
-  ExploreHeader,
-  ExploreContainer,
-} from "./Explore.Style";
+import { ExploreWrapper, ExploreHeader, ExploreContainer } from "./Explore.Style";
 import BottomNavigation from "../../components/BottomNavigation";
 import { icons } from "../../constants";
 import Header from "../../components/Header";
@@ -21,14 +17,9 @@ export default function Explore() {
   useEffect(() => {
     function getDataExplore() {
       try {
-        return axios
-          .get(
-            "https://newsapi.org/v2/top-headlines?country=us&apiKey=d4b08c83bfe14672899774992fd01d3f"
-          )
-          .then((res) => {
-            setDataExplore(res.data.articles);
-            setIsLoading(true);
-          });
+        return axios.get("https://api.themoviedb.org/3/trending/movie/week").then((res) => {
+          console.log(res);
+        });
       } catch (err) {
         console.log("page explore : ", err);
       }
@@ -40,18 +31,12 @@ export default function Explore() {
 
   return (
     <>
-      <Box display="flex" justifyContent="center">
-        <Box
-          display="flex"
-          flexDirection="column"
-          borderLeft="1px solid #eff3f4"
-          borderRight="1px solid #eff3f4"
-        >
+      <Box display='flex' justifyContent='center'>
+        <Box display='flex' flexDirection='column' borderLeft='1px solid #eff3f4' borderRight='1px solid #eff3f4'>
           <Box>
             <Header
               searchBar={
                 <Input
-                  // className={classes.input}
                   sx={{
                     padding: "0.5rem",
                     backgroundColor: "grey.background__input",
@@ -60,13 +45,13 @@ export default function Explore() {
                       content: "none",
                     },
                   }}
-                  id="input-with-icon-adornment"
+                  id='input-with-icon-adornment'
                   startAdornment={
-                    <InputAdornment position="start">
+                    <InputAdornment position='start'>
                       <SearchIcon />
                     </InputAdornment>
                   }
-                  placeholder="Search Twitter"
+                  placeholder='Search Twitter'
                 />
               }
               iconsRight={iconsArray}
@@ -74,11 +59,11 @@ export default function Explore() {
           </Box>
           <ExploreWrapper>
             {isLoading ? (
-              <ExploreHeader url={dataExplore[0].urlToImage}>
-                <h3>{dataExplore[0].title}</h3>
+              <ExploreHeader url={dataExplore[0]?.media}>
+                <h3>{dataExplore[2]?.title}</h3>
               </ExploreHeader>
             ) : (
-              <Skeleton variant="rectangular" width={600} height={335} />
+              <Skeleton variant='rectangular' width={600} height={335} />
             )}
 
             <ExploreContainer>
@@ -91,12 +76,12 @@ export default function Explore() {
                 </>
               ) : (
                 <>
-                  <Skeleton variant="text" />
-                  <Skeleton variant="text" />
-                  <Skeleton variant="text" />
-                  <Skeleton variant="text" />
-                  <Skeleton variant="text" />
-                  <Skeleton variant="text" />
+                  <Skeleton variant='text' />
+                  <Skeleton variant='text' />
+                  <Skeleton variant='text' />
+                  <Skeleton variant='text' />
+                  <Skeleton variant='text' />
+                  <Skeleton variant='text' />
                 </>
               )}
             </ExploreContainer>
