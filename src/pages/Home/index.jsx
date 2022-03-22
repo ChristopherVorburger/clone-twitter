@@ -58,6 +58,7 @@ const Home = () => {
           flexDirection="column"
           borderLeft="1px solid #eff3f4"
           borderRight="1px solid #eff3f4"
+          maxWidth="590px"
         >
           <Header title="Home" iconsRight={iconsArray} />
 
