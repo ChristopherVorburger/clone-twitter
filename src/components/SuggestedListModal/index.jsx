@@ -44,7 +44,7 @@ const SuggestedListModal = () => {
 
   /* Modal */
   // States pour la modale
-  const [open, setOpen] = useState(false);
+  const [, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
 
   //Utilisation des contextes Auth et Lists
@@ -59,6 +59,7 @@ const SuggestedListModal = () => {
   });
 
   // Recherche des utilisateurs qui ne sont pas membres de cette liste
+  // eslint-disable-next-line array-callback-return
   const usersNotInTheList = users?.filter((user) => {
     if (!matchedList?.[0]?.members?.includes(user.id)) return user;
   });

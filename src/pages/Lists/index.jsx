@@ -36,11 +36,13 @@ const Lists = () => {
   const users = useFirestore("users");
 
   // Recherche des listes non suivies
+  // eslint-disable-next-line array-callback-return
   const unfollowedLists = lists?.filter((list) => {
     if (!auth.userData?.[0]?.lists?.includes(list.id)) return list;
   });
 
   // Recherche des listes de l'utilisateur qui matchent avec les listes
+  // eslint-disable-next-line array-callback-return
   const matchedLists = lists?.filter((list) => {
     if (auth.userData?.[0]?.lists?.includes(list.id)) return list;
   });

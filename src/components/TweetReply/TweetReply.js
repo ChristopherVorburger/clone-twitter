@@ -25,24 +25,32 @@ export default function TweetReply({ dataResponseTweet, dataUser, isLoading }) {
 
   useEffect(() => {
     getUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <TweetReplyContainer>
       {isLoadingResponse ? (
-        <Skeleton variant='circular' width={50} height={50} />
+        <Skeleton variant="circular" width={50} height={50} />
       ) : dataUserResponse.profile_image_url ? (
-        <TweetAvatar src={dataUserResponse.profile_image_url} alt='image de profil user' />
+        <TweetAvatar
+          src={dataUserResponse.profile_image_url}
+          alt="image de profil user"
+        />
       ) : (
-        <TweetAvatar style={{ border: "1px solid lightgrey" }} src={images.user} alt='user avatar' />
+        <TweetAvatar
+          style={{ border: "1px solid lightgrey" }}
+          src={images.user}
+          alt="user avatar"
+        />
       )}
 
-      <div className='container-1'>
-        <div className='container-2'>
+      <div className="container-1">
+        <div className="container-2">
           {isLoadingResponse ? (
             <>
-              <Skeleton variant='text' width='100px' />
-              <Skeleton variant='text' width='150px' />
+              <Skeleton variant="text" width="100px" />
+              <Skeleton variant="text" width="150px" />
             </>
           ) : (
             <>
@@ -52,9 +60,9 @@ export default function TweetReply({ dataResponseTweet, dataUser, isLoading }) {
           )}
 
           {isLoading ? (
-            <Skeleton variant='text' width='140px' />
+            <Skeleton variant="text" width="140px" />
           ) : (
-            <p className='infos-reply'>
+            <p className="infos-reply">
               En réponse à <span>@ {dataUser.username}</span>
             </p>
           )}
