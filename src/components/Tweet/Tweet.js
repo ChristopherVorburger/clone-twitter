@@ -14,7 +14,6 @@ import {
   Comments,
   Retweets,
   Likes,
-  TweetReply,
   Share,
 } from "./Tweet.Style";
 
@@ -27,7 +26,7 @@ import ReplyAllIcon from "@mui/icons-material/ReplyAll";
 import IosShareOutlinedIcon from "@mui/icons-material/IosShareOutlined";
 
 // Composant MUI
-import { Box, ClickAwayListener, Typography } from "@mui/material";
+import { Box, ClickAwayListener } from "@mui/material";
 
 // Ajout de la librarie date-fns pour faciliter la manipulation de dates
 import { zonedTimeToUtc } from "date-fns-tz";
@@ -36,14 +35,7 @@ import { fr } from "date-fns/locale";
 
 // fonctions firebase
 import { database } from "../../firebase-config";
-import {
-  serverTimestamp,
-  addDoc,
-  collection,
-  updateDoc,
-  doc,
-  arrayRemove,
-} from "firebase/firestore";
+import { updateDoc, doc, arrayRemove } from "firebase/firestore";
 
 // hooks
 import { useFirestore } from "../../utils/useFirestore";
@@ -71,47 +63,9 @@ export default function Tweet({ tweet }) {
   //
   //Gestion des réponses du tweet
   const [openReply, setOpenReply] = useState(false);
-  const [textReply, setTextReply] = useState("");
-
-  // On séléctionne les collection dont on a besoin
-  const repliesCollection = collection(database, "replies");
 
   // On séléctionne les références dont on a besoin
   const selectedTweetRef = doc(database, "tweets", id);
-
-  // Fonction pour répondre à un tweet et mettre a jour le nombre de réponses du tweet en question
-  const handleReply = (e) => {
-    e.preventDefault();
-
-    addDoc(repliesCollection, {
-      tweet_id: id,
-      author_id: auth.authUser.uid,
-      text: textReply,
-      created_at: serverTimestamp(),
-    })
-      // Si il n'y a pas d'erreur lors de la création du tweet on passe à l'étape suivante
-      .then(() => {
-        setOpenReply(false);
-        console.log("Reply created !");
-        // On met à jour le nombre de réponses ici
-        updateDoc(selectedTweetRef, {
-          public_metrics: {
-            ...tweet?.public_metrics,
-            reply_count: parseInt(tweet?.public_metrics?.reply_count, 10) + 1,
-          },
-        })
-          .then(() => {
-            console.log("Update reply_count done !");
-          })
-          .catch((err) => {
-            console.log(err.message);
-          });
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-  };
-  //
 
   // Fonctions pour liker un tweet
   const likeTweet = () => {
@@ -203,8 +157,7 @@ export default function Tweet({ tweet }) {
       )}
 
       <TweetContent>
-        <Box display='flex' justifyContent='space-between' alignItems='center'>
-
+        <Box display="flex" justifyContent="space-between" alignItems="center">
           <Box>
             <TweetLink to={`/${matchedUser?.[0]?.username}`}>
               <TweetAuthor>{matchedUser?.[0]?.name} </TweetAuthor>
@@ -232,7 +185,9 @@ export default function Tweet({ tweet }) {
             <ClickAwayListener onClickAway={handleClickAwayMore}>
               <Box onClick={handleClickMore}>
                 <TweetMore>{icons.MoreHorizIcon.type.render()}</TweetMore>
-                {openMore ? <TweetDialog id={id} open={openMore} author_id={author_id} /> : null}
+                {openMore ? (
+                  <TweetDialog id={id} open={openMore} author_id={author_id} />
+                ) : null}
               </Box>
             </ClickAwayListener>
           </Box>
@@ -242,25 +197,31 @@ export default function Tweet({ tweet }) {
         </TweetLink>
         <TweetReactions>
           <Comments onClick={() => setOpenReply(!openReply)}>
-            <MessageIcon style={{ color: "#535471", width: "20px", height: "20px" }} />
+            <MessageIcon
+              style={{ color: "#535471", width: "20px", height: "20px" }}
+            />
             <span>{tweet?.public_metrics?.reply_count}</span>
           </Comments>
           <Retweets>
-            <ReplyAllIcon style={{ color: "#535471", width: "20px", height: "20px" }} />
+            <ReplyAllIcon
+              style={{ color: "#535471", width: "20px", height: "20px" }}
+            />
             <span>0</span>
           </Retweets>
           {/* Si l'utilisateur connecté like le tweet, le coeur est rouge */}
           {tweet?.likers?.includes(auth.userData?.[0]?.id) ? (
             <Likes onClick={likeTweet}>
-
-              <icons.FavoriteIcon style={{ color: "#e11616de", width: "20px", height: "20px" }} />
+              <icons.FavoriteIcon
+                style={{ color: "#e11616de", width: "20px", height: "20px" }}
+              />
 
               <span>{tweet?.public_metrics?.like_count}</span>
             </Likes>
           ) : (
             <Likes onClick={likeTweet}>
-
-              <FavoriteBorderIcon style={{ color: "#535471", width: "20px", height: "20px" }} />
+              <FavoriteBorderIcon
+                style={{ color: "#535471", width: "20px", height: "20px" }}
+              />
 
               <span>{tweet?.public_metrics?.like_count}</span>
             </Likes>
@@ -269,8 +230,9 @@ export default function Tweet({ tweet }) {
             {/* ClickAwayListener écoute les cliques hors modale pour fermer la modale */}
             <ClickAwayListener onClickAway={handleClickAwayShare}>
               <Box onClick={handleClickShare}>
-
-                <IosShareOutlinedIcon style={{ color: "#535471", width: "20px", height: "20px" }} />
+                <IosShareOutlinedIcon
+                  style={{ color: "#535471", width: "20px", height: "20px" }}
+                />
 
                 {openShare ? <ShareDialog id={id} open={openShare} /> : null}
               </Box>

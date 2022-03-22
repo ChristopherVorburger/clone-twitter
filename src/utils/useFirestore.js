@@ -12,6 +12,7 @@ export function useFirestore(ref) {
     onSnapshot(collectionRef, (snapshot) => {
       setData(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ref]);
 
   return data;

@@ -1,9 +1,8 @@
-import React, { useContext } from "react";
+import React from "react";
 
 // components
 import Header from "../../components/Header";
 import BottomNavigation from "../../components/BottomNavigation";
-import LeftNavbar from "../../components/LeftNavbar";
 import Welcome from "../../components/Welcome";
 import News from "../../components/News";
 import NewTweet from "../../components/NewTweet";
@@ -19,16 +18,10 @@ import { useFirestoreWithQuery } from "../../utils/useFirestoreWithQuery";
 // Import du context Auth
 import { AuthContext } from "../../context/authContext";
 
-import useStyles from "./styles";
-
 //Import des icones
 import { icons } from "../../constants";
-import ModalAddTweets from "../../components/ModalAddTweets/ModalAddTweets";
-import { ModalContext } from "../../context/modalContext";
-import ModalReplyTweet from "../../components/ModalReplyTweet/ModalReplyTweet";
 
 const Home = () => {
-  const classes = useStyles();
   // Utilisation du hook useContext pour récupérer le contexte Auth
   const auth = React.useContext(AuthContext);
 
@@ -50,8 +43,6 @@ const Home = () => {
 
   return (
     <>
-      {/* {showModal && <ModalReplyTweet />} */}
-
       <Box display="flex" justifyContent="center">
         <Box
           display="flex"

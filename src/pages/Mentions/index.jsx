@@ -10,8 +10,6 @@ import BottomNavigation from "../../components/BottomNavigation";
 
 import { icons } from "../../constants";
 
-import { AuthContext } from "../../context/authContext";
-
 import useStyles from "./styles";
 import NoContent from "../../components/NoContent";
 
@@ -22,8 +20,6 @@ function LinkTab(props) {
 
 const Mentions = () => {
   const classes = useStyles();
-  const auth = React.useContext(AuthContext);
-
   // State pour la nav tab
   const [value, setValue] = React.useState(1);
 
