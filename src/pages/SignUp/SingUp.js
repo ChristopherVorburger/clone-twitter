@@ -217,9 +217,15 @@ function SignUp() {
               <TextField
                 className={classes.allInput}
                 autoFocus={true}
-                error={errorName}
+                error={errorName ? null : name.length > 50}
                 fullWidth={true}
-                helperText={errorName === true ? "Quel est votre nom ?" : null}
+                helperText={
+                  errorName === true
+                    ? "Quel est votre nom ?"
+                    : name.length > 50
+                    ? "Vous êtes limité à 50 caractères"
+                    : null
+                }
                 label="Nom et Prénom"
                 onChange={(e) => {
                   setName(e.target.value);
@@ -230,11 +236,17 @@ function SignUp() {
             {/* Input UserName */}
             <Box className={classes.allInput}>
               <TextField
-                error={errorUserName}
+                error={
+                  errorUserName
+                    ? null
+                    : username?.includes(" ") || username.length > 50
+                }
                 fullWidth={true}
                 helperText={
-                  errorUserName === true
-                    ? "Choisissez un nom d'utilisateur."
+                  username?.includes(" ") === true
+                    ? "Vous ne pouvez pas mettre d'espaces dans votre nom d'utilisateur."
+                    : username.length > 50
+                    ? "Vous êtes limité à 50 caractères"
                     : null
                 }
                 label="Nom d'utilisateur"
