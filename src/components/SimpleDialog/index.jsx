@@ -22,7 +22,8 @@ function SimpleDialog(props) {
     auth
       .signUserOut()
       .then(() => {
-        return console.log("User signed out"), setOpen(false), Navigate("/");
+        setOpen(false);
+        Navigate("/");
       })
       .catch((err) => {
         console.log(err.message);

@@ -64,6 +64,7 @@ export default function TweetPage() {
   useEffect(() => {
     getUser();
     promise.then((index) => getTweetReply(index));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const iconsArray = [{ name: icons.AutoAwesomeSharpIcon }];

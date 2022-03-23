@@ -38,6 +38,9 @@ import InsertLinkOutlinedIcon from "@mui/icons-material/InsertLinkOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import PushPinIcon from "@mui/icons-material/PushPin";
 import IosShareIcon from "@mui/icons-material/IosShare";
+import SendIcon from '@mui/icons-material/Send';
+import AddCommentIcon from '@mui/icons-material/AddComment';
+
 const icons = {
   HomeSharpIcon,
   SearchSharpIcon,
@@ -79,6 +82,8 @@ const icons = {
   SettingsOutlinedIcon,
   PushPinIcon,
   IosShareIcon,
+  SendIcon,
+  AddCommentIcon,
 };
 
 export default icons;

@@ -46,6 +46,7 @@ export default function Explore() {
           flexDirection="column"
           borderLeft="1px solid #eff3f4"
           borderRight="1px solid #eff3f4"
+          maxWidth="590px"
         >
           <Box>
             <Header

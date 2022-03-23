@@ -65,6 +65,7 @@ const Notifications = () => {
         borderLeft="1px solid #eff3f4"
         borderRight="1px solid #eff3f4"
         width="100%"
+        maxWidth="590px"
       >
         <Header title="Notifications" iconsRight={iconsArray} />
         {/* Nav Tab */}
