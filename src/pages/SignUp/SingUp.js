@@ -31,15 +31,22 @@ function SignUp() {
   const [errorUserName, setErrorUserName] = React.useState(false);
   const [phone, setPhone] = React.useState("");
 
+  // gestion des erreurs pour disable le boutton
+  const globalError = errorName || errorUserName;
+
   // Fonction qui crée un user dans l'authentification et le firestore
   const signUp = (e) => {
     e.preventDefault();
     setErrorName(false);
     setErrorUserName(false);
 
-    if (name === "" || name.lenght > 100) {
+    if (name === "" || name.lenght > 50) {
       setErrorName(true);
-    } else if (username === "" || username.length > 100) {
+    } else if (
+      username === "" ||
+      username.length > 50 ||
+      username.includes(" ")
+    ) {
       setErrorUserName(true);
     } else {
       auth
@@ -192,7 +199,7 @@ function SignUp() {
       </Box>
     );
   };
-
+  console.log(globalError);
   return (
     <Box className={classes.background}>
       <Box className={classes.modal}>
@@ -217,18 +224,17 @@ function SignUp() {
               <TextField
                 className={classes.allInput}
                 autoFocus={true}
-                error={errorName ? null : name.length > 50}
+                error={name.length > 50 ? true : false}
                 fullWidth={true}
                 helperText={
-                  errorName === true
-                    ? "Quel est votre nom ?"
-                    : name.length > 50
-                    ? "Vous êtes limité à 50 caractères"
-                    : null
+                  name.length > 50 ? "Vous êtes limité à 50 caractères" : null
                 }
                 label="Nom et Prénom"
                 onChange={(e) => {
                   setName(e.target.value);
+                  e.target.value.length > 50 === true
+                    ? setErrorName(true)
+                    : setErrorName(false);
                 }}
                 required
               />
@@ -237,13 +243,11 @@ function SignUp() {
             <Box className={classes.allInput}>
               <TextField
                 error={
-                  errorUserName
-                    ? null
-                    : username?.includes(" ") || username.length > 50
+                  username.includes(" ") || username.length > 50 ? true : false
                 }
                 fullWidth={true}
                 helperText={
-                  username?.includes(" ") === true
+                  username.includes(" ") === true
                     ? "Vous ne pouvez pas mettre d'espaces dans votre nom d'utilisateur."
                     : username.length > 50
                     ? "Vous êtes limité à 50 caractères"
@@ -252,6 +256,10 @@ function SignUp() {
                 label="Nom d'utilisateur"
                 onChange={(e) => {
                   setUserName(e.target.value);
+                  (e.target.value.includes(" ") ||
+                    e.target.value.length > 50) === true
+                    ? setErrorUserName(true)
+                    : setErrorUserName(false);
                 }}
                 required
               />
@@ -319,7 +327,12 @@ function SignUp() {
             <MMDDYYYYInput />
           </Box>
           <Box>
-            <Button className={classes.nextButton} size="large" type="submit">
+            <Button
+              className={classes.nextButton}
+              disabled={globalError}
+              size="large"
+              type="submit"
+            >
               Suivant
             </Button>
           </Box>
