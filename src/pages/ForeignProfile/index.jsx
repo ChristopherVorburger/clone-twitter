@@ -20,7 +20,7 @@ import InexistingAccount from "../../components/InexistingAccount";
 
 // Import Auth Context
 import { useAuth } from "../../context/authContext";
-import { UsersContext } from "../../context/usersContext";
+import { useUsers } from "../../context/usersContext";
 
 // Import des icones
 import { icons } from "../../constants";
@@ -62,13 +62,13 @@ const ForeignProfile = () => {
 
   // Utilisation des contextes Auth et Users
   const { authUser, userData } = useAuth();
-  const users = React.useContext(UsersContext);
+  const { users } = useUsers();
 
   // Utilisation du hook perso useFirestoreWithQuery pour récupérer les tweets dans l'ordre de publication
   const tweets = useFirestoreWithQuery("tweets");
 
   // Récupération du user en fonction du username dans l'url via useParams()
-  const user = users?.users?.filter((user) => {
+  const user = users?.filter((user) => {
     return user.username === username;
   });
 
@@ -79,7 +79,7 @@ const ForeignProfile = () => {
   const followers = user?.[0]?.followers;
 
   // Filtre des utilisateurs pour obtenir les non suivis
-  const unfollowUsers = users?.users?.filter((user) => {
+  const unfollowUsers = users?.filter((user) => {
     return !user?.[0]?.following?.includes(user.id);
   });
 

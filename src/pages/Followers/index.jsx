@@ -17,7 +17,7 @@ import NoFollowers from "../../components/NoFollowers";
 import WhoToFollow from "../../components/News/WhoToFollow";
 
 // import AuthContext
-import { UsersContext } from "../../context/usersContext";
+import { useUsers } from "../../context/usersContext";
 
 // Import images
 import { icons } from "../../constants";
@@ -34,13 +34,13 @@ const Followers = () => {
   const classes = useStyles();
 
   // Contexte
-  const users = React.useContext(UsersContext);
+  const { users } = useUsers();
 
   // UseParams pour récupérer le username
   const { username } = useParams();
 
   // Recherche du user qui matche
-  const user = users?.users?.filter((user) => {
+  const user = users?.filter((user) => {
     return user?.username === username;
   });
 
@@ -56,7 +56,7 @@ const Followers = () => {
   const followers = user?.[0]?.followers;
 
   // Filtre des utilisateurs pour obtenir les suivis
-  const followersUsers = users?.users?.filter((userInArray) => {
+  const followersUsers = users?.filter((userInArray) => {
     return user?.[0]?.followers?.includes(userInArray.id);
   });
 
