@@ -1,6 +1,6 @@
-import { DesktopAccessDisabled } from "@mui/icons-material";
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
+
 import ClassicButton from "../../buttons/ClassicButton";
 
 export default function InformationActionButton({

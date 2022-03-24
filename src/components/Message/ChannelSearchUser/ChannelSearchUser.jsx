@@ -6,7 +6,6 @@ import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
 import { getFirebaseConfig } from "../../../firebase-config";
-import { useFirestore } from "../../../utils/useFirestore";
 
 // Composants MUI
 import Box from "@mui/material/Box";
@@ -18,6 +17,9 @@ import { Autocomplete, IconButton, TextField } from "@mui/material";
 // Icones et images
 import { icons, images } from "../../../constants";
 
+// Contexte
+import { useUsers } from "../../../context/usersContext";
+
 // Styles
 import useStyles from "./styles";
 
@@ -28,7 +30,8 @@ const firestore = firebase.firestore();
 const ChannelSearchUser = () => {
   const classes = useStyles();
   const navigate = useNavigate();
-  const users = useFirestore("users");
+  const { users } = useUsers();
+
   const channelsRef = firestore.collection("channels");
 
   // States pour la modale

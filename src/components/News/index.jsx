@@ -1,28 +1,27 @@
 import React from "react";
+
 import { Box } from "@mui/system";
 import { Input, InputAdornment, Typography } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 
-import useStyles from "./styles";
-
 import Trend from "./Trend";
 import WhoToFollow from "./WhoToFollow";
 
-// Import du context Auth
+// Contextes
 import { useAuth } from "../../context/authContext";
-
-import { useFirestore } from "../../utils/useFirestore";
+import { useUsers } from "../../context/usersContext";
 
 import axios from "axios";
+
+import useStyles from "./styles";
 
 const News = () => {
   const classes = useStyles();
   const [topHeadlines, setTopHeadlines] = React.useState();
 
-  // Utilisation du hook useContext pour récupérer le contexte Auth
+  // Utilisation des contextes
   const { authUser, userData } = useAuth();
-
-  const users = useFirestore("users");
+  const { users } = useUsers();
 
   // Filtre des utilisateurs pour obtenir les non suivis
   const unfollowUsers = users?.filter((user) => {
@@ -50,7 +49,7 @@ const News = () => {
   }, []);
 
   return (
-    <Box className={classes.container} m='1rem' maxWidth='350px'>
+    <Box className={classes.container} m="1rem" maxWidth="350px">
       <Input
         className={classes.input}
         sx={{
@@ -59,16 +58,20 @@ const News = () => {
           borderRadius: "50px",
           content: "none",
         }}
-        id='input-with-icon-adornment'
+        id="input-with-icon-adornment"
         startAdornment={
-          <InputAdornment position='start'>
+          <InputAdornment position="start">
             <SearchIcon />
           </InputAdornment>
         }
-        placeholder='Search Twitter'
+        placeholder="Search Twitter"
       />
-      <Box m='2rem auto' backgroundColor='grey.background__trend' borderRadius='20px'>
-        <Typography fontSize='font.large' fontWeight='800' p='1rem'>
+      <Box
+        m="2rem auto"
+        backgroundColor="grey.background__trend"
+        borderRadius="20px"
+      >
+        <Typography fontSize="font.large" fontWeight="800" p="1rem">
           Trends
         </Typography>
         {topHeadlines?.slice(0, 4)?.map((news, index) => {
@@ -79,8 +82,12 @@ const News = () => {
           );
         })}
       </Box>
-      <Box m='2rem auto' backgroundColor='grey.background__trend' borderRadius='20px'>
-        <Typography fontSize='font.large' fontWeight='mainBold' p='1rem'>
+      <Box
+        m="2rem auto"
+        backgroundColor="grey.background__trend"
+        borderRadius="20px"
+      >
+        <Typography fontSize="font.large" fontWeight="mainBold" p="1rem">
           Who to follow
         </Typography>
         {/* On affiche les utilisateurs non suivi dans who to follow en limitant leur nombre à trois */}
@@ -93,9 +100,10 @@ const News = () => {
           );
         })}
       </Box>
-      <Box m='2rem auto' p='1rem'>
-        <Typography fontSize='font.main' color='grey.main'>
-          Terms of Service Privacy Policy Cookie Policy Accessibility Ads info More © 2022 Twitter, Inc.
+      <Box m="2rem auto" p="1rem">
+        <Typography fontSize="font.main" color="grey.main">
+          Terms of Service Privacy Policy Cookie Policy Accessibility Ads info
+          More © 2022 Twitter, Inc.
         </Typography>
       </Box>
     </Box>

@@ -19,9 +19,8 @@ import useStyles from "./styles";
 import { onSnapshot } from "firebase/firestore";
 import ChannelAddMessage from "./ChannelAddMessage/ChannelAddMessage";
 import { useNavigate } from "react-router-dom";
-import { useFirestore } from "../../utils/useFirestore";
-import ClassicButton from "../buttons/ClassicButton";
 import InformationActionButton from "./InformationActionButton/InformationActionButton";
+import { useUsers } from "../../context/usersContext";
 
 firebase.initializeApp(getFirebaseConfig());
 
@@ -212,7 +211,7 @@ export default function Messages() {
 }
 
 function ListeChannels({ channels, handleDiplayMessages }) {
-  const users = useFirestore("users");
+  const { users } = useUsers();
 
   const getUser = (userId) => {
     return users?.filter((user) => {

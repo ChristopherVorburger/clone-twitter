@@ -38,11 +38,9 @@ import { fr } from "date-fns/locale";
 import { database } from "../../firebase-config";
 import { updateDoc, doc, arrayRemove } from "firebase/firestore";
 
-// Hooks
-import { useFirestore } from "../../utils/useFirestore";
-
-// Contextex
+// Contextes
 import { useAuth } from "../../context/authContext";
+import { useUsers } from "../../context/usersContext";
 
 // Composants React
 import TweetDialog from "./TweetDialog";
@@ -50,14 +48,12 @@ import ShareDialog from "./ShareDialog";
 
 // Fonction pour afficher un tweet
 export default function Tweet({ tweet }) {
-  // Récupération du contexte
+  // Récupération des contextes
   const { userData } = useAuth();
+  const { users } = useUsers();
 
   // Destructuration des données du tweet
   const { id, text, author_id, created_at } = tweet;
-
-  // Utilisation du hook perso useFirestore pour récupérer les users
-  const users = useFirestore("users");
 
   //Recherche de l'id du user qui match avec l'author_id du tweet
   const matchedUser = users?.filter((user) => user?.id === author_id);
