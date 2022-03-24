@@ -36,6 +36,7 @@ function SignUp() {
   const [errorName, setErrorName] = React.useState(false);
   const [errorUserName, setErrorUserName] = React.useState(false);
   const [phone, setPhone] = React.useState("");
+  const [disableButton, setDisableButton] = React.useState(false);
 
   // Fonction qui crée un user dans l'authentification et le firestore
   const signUpUser = (e) => {
@@ -198,6 +199,17 @@ function SignUp() {
     );
   };
 
+  React.useEffect(() => {
+    setDisableButton(false);
+    if (username?.includes(" ") === true) {
+      setDisableButton(true);
+    } else if (username.length > 30) {
+      setDisableButton(true);
+    } else if (name.length > 30) {
+      setDisableButton(true);
+    }
+  }, [username, name]);
+
   return (
     <Box className={classes.background}>
       <Box className={classes.modal}>
@@ -222,13 +234,13 @@ function SignUp() {
               <TextField
                 className={classes.allInput}
                 autoFocus={true}
-                error={errorName ? null : name.length > 50}
+                error={errorName ? null : name.length > 30}
                 fullWidth={true}
                 helperText={
                   errorName === true
                     ? "Quel est votre nom ?"
-                    : name.length > 50
-                    ? "Vous êtes limité à 50 caractères"
+                    : name.length > 30
+                    ? "Vous êtes limité à 30 caractères"
                     : null
                 }
                 label="Nom et Prénom"
@@ -244,14 +256,14 @@ function SignUp() {
                 error={
                   errorUserName
                     ? null
-                    : username?.includes(" ") || username.length > 50
+                    : username?.includes(" ") || username.length > 30
                 }
                 fullWidth={true}
                 helperText={
                   username?.includes(" ") === true
                     ? "Vous ne pouvez pas mettre d'espaces dans votre nom d'utilisateur."
-                    : username.length > 50
-                    ? "Vous êtes limité à 50 caractères"
+                    : username.length > 30
+                    ? "Vous êtes limité à 30 caractères"
                     : null
                 }
                 label="Nom d'utilisateur"
@@ -298,7 +310,7 @@ function SignUp() {
             error={passwordConfirmation}
             fullWidth={true}
             helperText={
-              passwordConfirmation ? "Votre mot de passe est trop cours" : null
+              passwordConfirmation ? "Votre mot de passe est trop court" : null
             }
             label="Mot de passe"
             onChange={(e) => {
@@ -323,8 +335,20 @@ function SignUp() {
             </Typography>
             <MMDDYYYYInput />
           </Box>
-          <Box>
-            <Button className={classes.nextButton} size="large" type="submit">
+          <Box display="flex" justifyContent="center">
+            <Button
+              className={classes.nextButton}
+              variant="outlined"
+              disabled={disableButton}
+              type="submit"
+              size="large"
+              sx={{
+                textTransform: "none",
+                borderRadius: "50px",
+                fontWeight: "bold",
+                width: "50%",
+              }}
+            >
               Suivant
             </Button>
           </Box>

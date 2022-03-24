@@ -67,6 +67,7 @@ const LeftNavbar = () => {
           flexDirection="column"
           justifyContent="space-between"
           height="100vh"
+          maxWidth="250px"
         >
           <Box>
             <List>
