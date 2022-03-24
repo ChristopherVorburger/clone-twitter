@@ -6,9 +6,6 @@ import { arrayRemove, doc, updateDoc } from "firebase/firestore";
 import { database } from "../../../firebase-config";
 
 const ListMembers = ({ member, matchedList }) => {
-  // Récupération des membres de la liste en question
-  const members = matchedList?.[0]?.members;
-
   // Référence à la liste à mettre à jour
   const currentListRef = doc(database, "lists", matchedList?.[0]?.id);
 

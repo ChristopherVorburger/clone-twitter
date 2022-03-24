@@ -33,6 +33,7 @@ const Bookmarks = () => {
         className={classes.bookmarks__center}
         borderLeft="1px solid #eff3f4"
         borderRight="1px solid #eff3f4"
+        maxWidth="590px"
       >
         <Header
           title="Bookmarks"

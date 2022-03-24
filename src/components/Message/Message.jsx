@@ -17,7 +17,6 @@ import {
 } from "@mui/material";
 import useStyles from "./styles";
 import { onSnapshot } from "firebase/firestore";
-import { useFirestoreWithQuery } from "../../utils/useFirestoreWithQuery";
 import ChannelAddMessage from "./ChannelAddMessage/ChannelAddMessage";
 import { useNavigate } from "react-router-dom";
 import { useFirestore } from "../../utils/useFirestore";
@@ -34,7 +33,7 @@ export default function Messages() {
   const channelsRef = firestore.collection("channels");
   const messagesRef = firestore.collection("messages");
   const usersRef = firestore.collection("users");
-  const [users, setUsers] = useState([]);
+  const [, setUsers] = useState([]);
   const [channels, setChannels] = useState([]);
   const [messages, setMessages] = useState(null);
   const [channelSelected, setChannelSelected] = useState("");
@@ -104,15 +103,8 @@ export default function Messages() {
   useEffect(() => {
     getChannesls();
     getUsers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const tweets = useFirestoreWithQuery("tweets");
-  const filteredTweets = tweets?.filter((tweet) => {
-    return (
-      tweet?.author_id === auth?.authUser?.uid ||
-      auth?.userData?.[0]?.following?.includes(tweet.author_id)
-    );
-  });
 
   return (
     <>
@@ -235,7 +227,7 @@ function ListeChannels({ channels, handleDiplayMessages }) {
           <Box key={index}>
             <ChannelItem
               user={getUser(
-                channel?.users[0] == auth.currentUser.uid
+                channel?.users[0] === auth.currentUser.uid
                   ? channel?.users[1]
                   : channel?.users[0]
               )}

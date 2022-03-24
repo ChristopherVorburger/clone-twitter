@@ -21,19 +21,6 @@ import { icons, images } from "../../../constants";
 // Styles
 import useStyles from "./styles";
 
-// Reducer
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "update":
-      return {
-        ...state,
-        [action.payload.key]: action.payload.value,
-      };
-    default:
-      throw new Error(`Unknown action type: ${action.type}`);
-  }
-};
-
 firebase.initializeApp(getFirebaseConfig());
 const auth = firebase.auth();
 const firestore = firebase.firestore();
@@ -45,7 +32,7 @@ const ChannelSearchUser = () => {
   const channelsRef = firestore.collection("channels");
 
   // States pour la modale
-  const [open, setOpen] = useState(false);
+  const [, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
 
   const [usersSelected, setUsersSelected] = useState([]);
@@ -147,7 +134,7 @@ const ChannelSearchUser = () => {
                               style={{ border: "1px solid lightgrey" }}
                               src={
                                 option?.profile_image_url &&
-                                option?.profile_image_url != ""
+                                option?.profile_image_url !== ""
                                   ? option?.profile_image_url
                                   : images.user
                               }

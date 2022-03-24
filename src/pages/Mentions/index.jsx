@@ -10,8 +10,6 @@ import BottomNavigation from "../../components/BottomNavigation";
 
 import { icons } from "../../constants";
 
-import { AuthContext } from "../../context/authContext";
-
 import useStyles from "./styles";
 import NoContent from "../../components/NoContent";
 
@@ -22,8 +20,6 @@ function LinkTab(props) {
 
 const Mentions = () => {
   const classes = useStyles();
-  const auth = React.useContext(AuthContext);
-
   // State pour la nav tab
   const [value, setValue] = React.useState(1);
 
@@ -36,7 +32,11 @@ const Mentions = () => {
 
   return (
     <Box display="flex">
-      <Box borderLeft="1px solid #eff3f4" borderRight="1px solid #eff3f4">
+      <Box
+        borderLeft="1px solid #eff3f4"
+        borderRight="1px solid #eff3f4"
+        maxWidth="590px"
+      >
         <Header title="Notifications" iconsRight={iconsArray} />
         {/* Nav Tab */}
         <Box>
