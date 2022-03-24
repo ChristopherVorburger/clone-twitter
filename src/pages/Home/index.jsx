@@ -16,14 +16,14 @@ import { Box, Divider } from "@mui/material";
 import { useFirestoreWithQuery } from "../../utils/useFirestoreWithQuery";
 
 // Import du context Auth
-import { AuthContext } from "../../context/authContext";
+import { useAuth } from "../../context/authContext";
 
 //Import des icones
 import { icons } from "../../constants";
 
 const Home = () => {
   // Utilisation du hook useContext pour récupérer le contexte Auth
-  const auth = React.useContext(AuthContext);
+  const { authUser, userData } = useAuth();
 
   // Utilisation du hook perso useFirestoreWithQuery pour récupérer les tweets dans l'ordre de publication
   const tweets = useFirestoreWithQuery("tweets");
@@ -34,8 +34,8 @@ const Home = () => {
   // et aussi ceux que l'utilisateur connecté a comme following
   const filteredTweets = tweets?.filter((tweet) => {
     return (
-      tweet?.author_id === auth?.authUser?.uid ||
-      auth?.userData?.[0]?.following?.includes(tweet.author_id)
+      tweet?.author_id === authUser?.uid ||
+      userData?.[0]?.following?.includes(tweet.author_id)
     );
   });
 

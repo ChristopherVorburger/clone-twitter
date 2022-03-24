@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import {
   List,
   ListItemIcon,
@@ -7,24 +8,23 @@ import {
   ClickAwayListener,
 } from "@mui/material";
 
-import { icons } from "../../constants";
-
-import useStyles from "./styles";
-import AddTweetButton from "../buttons/AddTweetButton";
-import { Link } from "react-router-dom";
-
 import { Box } from "@mui/system";
 
-import { AuthContext } from "../../context/authContext";
+import { icons } from "../../constants";
+
+import AddTweetButton from "../buttons/AddTweetButton";
 import ClassicButton from "../buttons/ClassicButton";
 import SimpleDialog from "../SimpleDialog";
 import BottomAvatar from "./BottomAvatar";
 
-const LeftNavbar = () => {
-  // Utilisation du hook useContext pour récupérer le contexte Auth
-  const auth = React.useContext(AuthContext);
+import { useAuth } from "../../context/authContext";
 
+import useStyles from "./styles";
+
+const LeftNavbar = () => {
   const classes = useStyles();
+  // Récupération du contexte Auth
+  const { userData } = useAuth();
 
   const iconsArray = [
     { name: icons.HomeSharpIcon, path: "/home", text: "Home" },
@@ -38,12 +38,12 @@ const LeftNavbar = () => {
     { name: icons.BookmarkBorderIcon, path: "/bookmarks", text: "Bookmarks" },
     {
       name: icons.FeaturedPlayListOutlinedIcon,
-      path: `/${auth?.userData?.[0]?.username}/lists`,
+      path: `/${userData?.[0]?.username}/lists`,
       text: "Lists",
     },
     {
       name: icons.PersonOutlineOutlinedIcon,
-      path: `/${auth?.userData?.[0]?.username}`,
+      path: `/${userData?.[0]?.username}`,
       text: "Profile",
     },
     { name: icons.MoreHorizIcon, path: "", text: "More" },
@@ -67,6 +67,7 @@ const LeftNavbar = () => {
           flexDirection="column"
           justifyContent="space-between"
           height="100vh"
+          maxWidth="250px"
         >
           <Box>
             <List>

@@ -1,7 +1,7 @@
 import React from "react";
-
 import { Link, useParams } from "react-router-dom";
 
+import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 
 import Header from "../../components/Header";
@@ -9,11 +9,11 @@ import News from "../../components/News";
 import UserList from "../../components/UserList";
 import DiscoverList from "../../components/DiscoverList";
 
-import { AuthContext } from "../../context/authContext";
+import { useAuth } from "../../context/authContext";
+
+import { useFirestore } from "../../utils/useFirestore";
 
 import { icons } from "../../constants";
-import { Typography } from "@mui/material";
-import { useFirestore } from "../../utils/useFirestore";
 
 import useStyles from "./styles";
 
@@ -21,7 +21,7 @@ const Lists = () => {
   const classes = useStyles();
   const { username } = useParams();
 
-  const auth = React.useContext(AuthContext);
+  const { userData } = useAuth();
 
   const iconsArray = [
     {
@@ -38,13 +38,13 @@ const Lists = () => {
   // Recherche des listes non suivies
   // eslint-disable-next-line array-callback-return
   const unfollowedLists = lists?.filter((list) => {
-    if (!auth.userData?.[0]?.lists?.includes(list.id)) return list;
+    if (!userData?.[0]?.lists?.includes(list.id)) return list;
   });
 
   // Recherche des listes de l'utilisateur qui matchent avec les listes
   // eslint-disable-next-line array-callback-return
   const matchedLists = lists?.filter((list) => {
-    if (auth.userData?.[0]?.lists?.includes(list.id)) return list;
+    if (userData?.[0]?.lists?.includes(list.id)) return list;
   });
 
   return (
@@ -56,7 +56,7 @@ const Lists = () => {
       >
         <Header
           title="Lists"
-          subtitle={`@${auth?.userData?.[0]?.username}`}
+          subtitle={`@${userData?.[0]?.username}`}
           iconsRight={iconsArray}
           iconsLeft={icons.ArrowBackIcon}
         />
@@ -69,8 +69,8 @@ const Lists = () => {
             Pinned Lists
           </Typography>
           <Box display="flex" flexWrap="wrap">
-            {auth?.userData?.[0]?.pinned_lists?.length !== 0 ? (
-              auth?.userData?.[0]?.pinned_lists?.map((pinned_list) => {
+            {userData?.[0]?.pinned_lists?.length !== 0 ? (
+              userData?.[0]?.pinned_lists?.map((pinned_list) => {
                 const matchedList = lists?.filter((list) => {
                   return list?.id === pinned_list;
                 });

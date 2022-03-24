@@ -79,14 +79,6 @@ export default makeStyles({
       overflowY: "auto",
     },
   },
-  nextButton: {
-    backgroundColor: "#999999 !important",
-    color: "white !important",
-    textTransform: "none !important",
-    borderRadius: "50px !important",
-    fontWeight: "bold !important",
-    width: "100%",
-  },
   switchPhoneEmail: {
     fontSize: "15px !important",
     color: "rgb(29, 155, 240)",

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import { Box } from "@mui/system";
 import { Button, Typography } from "@mui/material";
@@ -6,25 +7,25 @@ import { Button, Typography } from "@mui/material";
 import { icons, images } from "../../constants";
 
 import { arrayRemove, doc, updateDoc } from "firebase/firestore";
+
 import { database } from "../../firebase-config";
 
-import { AuthContext } from "../../context/authContext";
+import { useAuth } from "../../context/authContext";
 
 import useStyles from "./styles";
-import { Link } from "react-router-dom";
 
 // Composant pour afficher une list
 const UserList = ({ list, author }) => {
   const classes = useStyles();
 
   // Utilisation du hook useContext pour récupérer le contexte Auth
-  const auth = React.useContext(AuthContext);
+  const { authUser, userData } = useAuth();
 
   // Récupération du tableau de liste de l'utilisateur connecté
-  const listsCurrentUser = auth?.userData?.[0]?.pinned_lists;
+  const listsCurrentUser = userData?.[0]?.pinned_lists;
 
   // Référence à l'id de l'utilisateur connecté à mettre à jour
-  const currentUserRef = doc(database, "users", auth?.authUser?.uid);
+  const currentUserRef = doc(database, "users", authUser?.uid);
 
   // Fonction pour pin une list
   const pinList = (e) => {
@@ -34,7 +35,7 @@ const UserList = ({ list, author }) => {
     // on ajoute le premier dans le tableau pinned_lists
     if (!listsCurrentUser) {
       updateDoc(currentUserRef, {
-        ...auth.userData?.[0],
+        ...userData?.[0],
         pinned_lists: [list?.id],
       })
         .then(() => {
@@ -46,8 +47,8 @@ const UserList = ({ list, author }) => {
       // Sinon on ajoute le pin dans le tableau existant
     } else {
       updateDoc(currentUserRef, {
-        ...auth.userData?.[0],
-        pinned_lists: [...auth.userData?.[0]?.pinned_lists, list?.id],
+        ...userData?.[0],
+        pinned_lists: [...userData?.[0]?.pinned_lists, list?.id],
       })
         .then(() => {
           console.log("Pin created");
@@ -120,7 +121,7 @@ const UserList = ({ list, author }) => {
           </Box>
           <Box>
             <Box>
-              {auth?.userData?.[0]?.pinned_lists?.includes(list?.id) ? (
+              {userData?.[0]?.pinned_lists?.includes(list?.id) ? (
                 <Button
                   className={classes.button}
                   variant="outlined"

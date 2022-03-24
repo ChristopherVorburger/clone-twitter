@@ -1,4 +1,4 @@
-import { useState, useContext, useReducer } from "react";
+import { useState, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
 
 // Fonctions firebase
@@ -21,7 +21,7 @@ import { icons } from "../../constants";
 import useStyles from "./styles";
 
 // Context
-import { AuthContext } from "../../context/authContext";
+import { useAuth } from "../../context/authContext";
 
 // Reducer
 const reducer = (state, action) => {
@@ -48,7 +48,7 @@ const CreateListModal = () => {
   const [coverFile, setCoverFile] = useState();
 
   //Utilisation du contexte Auth
-  const auth = useContext(AuthContext);
+  const { authUser, userData } = useAuth();
 
   // Valeurs de départ pour le reducer
   const initialValue = {
@@ -72,13 +72,13 @@ const CreateListModal = () => {
   };
 
   // Référence à l'id de l'utilisateur connecté à mettre à jour
-  const currentUserRef = doc(database, "users", auth?.authUser?.uid);
+  const currentUserRef = doc(database, "users", authUser?.uid);
 
   // Référence à la collection lists à mettre à jour
   const listsCollection = collection(database, "lists");
 
   // Listes de l'utilisateur connecté
-  const listsCurrentUser = auth.userData?.[0]?.lists;
+  const listsCurrentUser = userData?.[0]?.lists;
 
   // Tableau d'image de cover par défaut
   const defaultCoverNames = [
@@ -113,7 +113,7 @@ const CreateListModal = () => {
       const coverLink = await getDownloadURL(defaultCoversRef);
 
       addDoc(listsCollection, {
-        author_id: auth.userData?.[0]?.id,
+        author_id: userData?.[0]?.id,
         name,
         description,
         private_list,
@@ -123,7 +123,7 @@ const CreateListModal = () => {
       })
         .then((cred) => {
           setDoc(currentUserRef, {
-            ...auth.userData?.[0],
+            ...userData?.[0],
             lists: [cred._key.path.segments[1]],
           });
           console.log("First List created without cover !");
@@ -151,7 +151,7 @@ const CreateListModal = () => {
       const coverLink = await getDownloadURL(defaultCoversRef);
 
       addDoc(listsCollection, {
-        author_id: auth.userData?.[0]?.id,
+        author_id: userData?.[0]?.id,
         name,
         description,
         private_list,
@@ -161,7 +161,7 @@ const CreateListModal = () => {
       })
         .then((cred) => {
           setDoc(currentUserRef, {
-            ...auth.userData?.[0],
+            ...userData?.[0],
             lists: [...listsCurrentUser, cred._key.path.segments[1]],
           });
           console.log("List created without cover !");
@@ -185,7 +185,7 @@ const CreateListModal = () => {
       // On obtient les urls avec getDownloadUrl
       const coverLink = await getDownloadURL(listCoversRef);
       addDoc(listsCollection, {
-        author_id: auth.userData?.[0]?.id,
+        author_id: userData?.[0]?.id,
         name,
         description,
         private_list,
@@ -195,7 +195,7 @@ const CreateListModal = () => {
       })
         .then((cred) => {
           setDoc(currentUserRef, {
-            ...auth.userData?.[0],
+            ...userData?.[0],
             lists: [cred._key.path.segments[1]],
           });
           console.log("First List created with cover !");
@@ -220,7 +220,7 @@ const CreateListModal = () => {
       const coverLink = await getDownloadURL(listCoversRef);
 
       addDoc(listsCollection, {
-        author_id: auth.userData?.[0]?.id,
+        author_id: userData?.[0]?.id,
         name,
         description,
         private_list,
@@ -230,7 +230,7 @@ const CreateListModal = () => {
       })
         .then((cred) => {
           setDoc(currentUserRef, {
-            ...auth.userData?.[0],
+            ...userData?.[0],
             lists: [...listsCurrentUser, cred._key.path.segments[1]],
           });
           console.log("List created with cover !");
@@ -242,7 +242,7 @@ const CreateListModal = () => {
     }
 
     // Retour à la page des listes
-    navigate(`/${auth?.userData?.[0]?.username}/lists`);
+    navigate(`/${userData?.[0]?.username}/lists`);
   };
 
   return (
@@ -261,9 +261,7 @@ const CreateListModal = () => {
               <Box display="flex" alignItems="center" height="53px" p="0 1rem">
                 <Box justifyContent="flex-start">
                   <IconButton
-                    onClick={() =>
-                      navigate(`/${auth?.userData?.[0]?.username}`)
-                    }
+                    onClick={() => navigate(`/${userData?.[0]?.username}`)}
                     sx={{ padding: "0.5rem", marginRight: "1rem" }}
                   >
                     <icons.CloseIcon />

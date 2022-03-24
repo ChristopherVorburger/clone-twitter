@@ -9,18 +9,17 @@ import useStyles from "./styles";
 
 import { images } from "../../constants";
 
-import { AuthContext } from "../../context/authContext";
+import { useAuth } from "../../context/authContext";
 
 function SimpleDialog(props) {
-  const auth = React.useContext(AuthContext);
+  const { signUserOut, userData } = useAuth();
 
   const classes = useStyles();
   const { open, setOpen } = props;
 
   const logout = () => {
     // On utilise la fonction signUserOut du AuthContext
-    auth
-      .signUserOut()
+    signUserOut()
       .then(() => {
         setOpen(false);
         Navigate("/");
@@ -40,10 +39,10 @@ function SimpleDialog(props) {
           alignItems="center"
         >
           <Box width="50px" height="50px" marginRight="0.5rem">
-            {auth.userData?.[0]?.profile_image_url ? (
+            {userData?.[0]?.profile_image_url ? (
               <img
                 className={classes.dialog__avatar_button}
-                src={auth.userData?.[0]?.profile_image_url}
+                src={userData?.[0]?.profile_image_url}
                 alt="user avatar default"
               />
             ) : (
@@ -56,10 +55,10 @@ function SimpleDialog(props) {
           </Box>
           <Box className={classes.dialog__avatar_texts} flexGrow="1">
             <Typography fontSize="font.main" fontWeight="mainBold">
-              {auth.userData?.[0]?.name}
+              {userData?.[0]?.name}
             </Typography>
             <Typography fontSize="font.main" color="grey.main">
-              @{auth.userData?.[0]?.username}
+              @{userData?.[0]?.username}
             </Typography>
           </Box>
         </Box>
@@ -68,7 +67,7 @@ function SimpleDialog(props) {
         <Typography>Add an existing accout</Typography>
       </Box>
       <Box padding="1rem" className={classes.dialog__sentence} onClick={logout}>
-        <Typography>Log out @{auth.userData?.[0]?.username}</Typography>
+        <Typography>Log out @{userData?.[0]?.username}</Typography>
       </Box>
     </Dialog>
   );

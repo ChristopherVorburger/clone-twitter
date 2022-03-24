@@ -8,15 +8,15 @@ import Header from "../../components/Header";
 import News from "../../components/News";
 import TweetLiked from "../../components/TweetLiked";
 import BottomNavigation from "../../components/BottomNavigation";
+import NoContent from "../../components/NoContent";
 
 import { icons } from "../../constants";
 
-import { AuthContext } from "../../context/authContext";
+import { useAuth } from "../../context/authContext";
 
 import { useFirestoreWithQueryAndWhere } from "../../utils/useFirestoreWithQueryAndWhere";
 
 import useStyles from "./styles";
-import NoContent from "../../components/NoContent";
 
 // Liens pour la Nav Tab
 function LinkTab(props) {
@@ -25,7 +25,7 @@ function LinkTab(props) {
 
 const Notifications = () => {
   const classes = useStyles();
-  const auth = React.useContext(AuthContext);
+  const { userData } = useAuth();
 
   // State pour la nav tab
   const [value, setValue] = React.useState(0);
@@ -40,7 +40,7 @@ const Notifications = () => {
   const sortedTweets = useFirestoreWithQueryAndWhere(
     "tweets",
     "author_id",
-    `${auth.userData?.[0]?.id}`
+    `${userData?.[0]?.id}`
   );
 
   // Tweets de l'utilisateur connecté qui ont des likers
@@ -48,7 +48,7 @@ const Notifications = () => {
     // Si il y a seulement l'utilisateur connecté dans les likers, on return null
     if (
       sortedTweet?.likers?.length === 1 &&
-      sortedTweet?.likers[0] === auth.userData[0]?.id
+      sortedTweet?.likers[0] === userData[0]?.id
     ) {
       return null;
       // Sinon on prend en compte le tweet

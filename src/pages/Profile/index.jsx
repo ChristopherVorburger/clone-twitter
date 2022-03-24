@@ -18,7 +18,7 @@ import Tweet from "../../components/Tweet/Tweet";
 import WhoToFollow from "../../components/News/WhoToFollow";
 
 // Import Auth Context
-import { AuthContext } from "../../context/authContext";
+import { useAuth } from "../../context/authContext";
 import { UsersContext } from "../../context/usersContext";
 
 // Import des icones
@@ -51,7 +51,7 @@ const Profile = () => {
   };
 
   // Utilisation des contextes Auth et Users
-  const auth = React.useContext(AuthContext);
+  const { authUser, userData } = useAuth();
   const users = React.useContext(UsersContext);
 
   // Utilisation du hook perso useFirestoreWithQuery pour récupérer les tweets dans l'ordre de publication
@@ -59,18 +59,18 @@ const Profile = () => {
 
   // Filtre des utilisateurs pour obtenir les non suivis
   const unfollowUsers = users?.users?.filter((user) => {
-    return !auth?.userData?.[0]?.following?.includes(user.id);
+    return !userData?.[0]?.following?.includes(user.id);
   });
 
   // Filtre les utilisateurs non suivis pour supprimer l'utilisateur connecté du tableau
   const filterUnfollowUsers = unfollowUsers?.filter((user) => {
-    return user?.id !== auth?.authUser?.uid;
+    return user?.id !== authUser?.uid;
   });
 
   // On filtre les tweets à afficher
   // Ici en l'occurrence ceux qui ont le même author_id que la personne connectée
   const filteredTweets = tweets?.filter((tweet) => {
-    return tweet.author_id === auth?.authUser?.uid;
+    return tweet.author_id === authUser?.uid;
   });
 
   return (
@@ -89,16 +89,16 @@ const Profile = () => {
           width="100%"
         >
           <Header
-            title={auth.userData?.[0]?.name}
+            title={userData?.[0]?.name}
             iconsLeft={icons.ArrowBackIcon}
             subtitle={`${filteredTweets?.length} tweets`}
           />
           {/* Premier bloc */}
           <Box maxWidth="590px" maxHeight="200px">
-            {auth?.userData?.[0]?.cover_url ? (
+            {userData?.[0]?.cover_url ? (
               <img
                 className={classes.profile__cover}
-                src={auth?.userData?.[0]?.cover_url}
+                src={userData?.[0]?.cover_url}
                 alt=""
               />
             ) : (
@@ -112,11 +112,11 @@ const Profile = () => {
           </Box>
           <Box mb="1rem" p="12px 1rem 0 1rem">
             <Box display="flex" justifyContent="space-between" mb="2rem">
-              {auth?.userData?.[0]?.profile_image_url ? (
+              {userData?.[0]?.profile_image_url ? (
                 <Box>
                   <img
                     className={classes.avatar}
-                    src={auth?.userData?.[0]?.profile_image_url}
+                    src={userData?.[0]?.profile_image_url}
                     alt=""
                   />
                 </Box>
@@ -145,16 +145,16 @@ const Profile = () => {
                 lineHeight="24px"
                 fontWeight="mainBold"
               >
-                {auth?.userData?.[0]?.name}
+                {userData?.[0]?.name}
               </Typography>
               <Typography fontSize="font.main" color="grey.main">
-                {`@${auth?.userData?.[0]?.username}`}
+                {`@${userData?.[0]?.username}`}
               </Typography>
             </Box>
             <Box mb="12px">
               <Box>
                 <Typography fontSize="font.main">
-                  {auth?.userData?.[0]?.description}
+                  {userData?.[0]?.description}
                 </Typography>
               </Box>
               <Box>
@@ -174,7 +174,7 @@ const Profile = () => {
                 <Typography fontSize="font.large" mr="4px">
                   <icons.FmdGoodOutlinedIcon />
                 </Typography>
-                <Typography>{auth?.userData?.[0]?.location}</Typography>
+                <Typography>{userData?.[0]?.location}</Typography>
               </Box>
               <Box display="flex" alignItems="center">
                 <Typography fontSize="font.large" mr="4px">
@@ -186,13 +186,13 @@ const Profile = () => {
             <Box display="flex" fontSize="font.main">
               <Box mr="20px">
                 <Link
-                  to={`/${auth?.userData?.[0]?.username}/following`}
+                  to={`/${userData?.[0]?.username}/following`}
                   textDecoration="none"
                   className={classes.profile__link}
                 >
                   <Box display="flex" color="black.main">
                     <Typography fontWeight="mainBold" mr="4px">
-                      {auth?.userData?.[0]?.following?.length}
+                      {userData?.[0]?.following?.length}
                     </Typography>
                     <Typography>Following</Typography>
                   </Box>
@@ -200,12 +200,12 @@ const Profile = () => {
               </Box>
               <Box>
                 <Link
-                  to={`/${auth?.userData?.[0]?.username}/followers`}
+                  to={`/${userData?.[0]?.username}/followers`}
                   className={classes.profile__link}
                 >
                   <Box display="flex" color="black.main">
                     <Typography fontWeight="mainBold" mr="4px">
-                      {auth?.userData?.[0]?.followers?.length}
+                      {userData?.[0]?.followers?.length}
                     </Typography>
                     <Typography>Followers</Typography>
                   </Box>
@@ -227,22 +227,22 @@ const Profile = () => {
               >
                 <LinkTab
                   className={classes.profile__link_nav}
-                  to={`/${auth?.userData?.[0]?.username}`}
+                  to={`/${userData?.[0]?.username}`}
                   label="Tweet"
                 />
                 <LinkTab
                   className={classes.profile__link_nav}
-                  to={`/${auth?.userData?.[0]?.username}/with_replies`}
+                  to={`/${userData?.[0]?.username}/with_replies`}
                   label="Tweet & replies"
                 />
                 <LinkTab
                   className={classes.profile__link_nav}
-                  to={`/${auth?.userData?.[0]?.username}/media`}
+                  to={`/${userData?.[0]?.username}/media`}
                   label="Media"
                 />
                 <LinkTab
                   className={classes.profile__link_nav}
-                  to={`/${auth?.userData?.[0]?.username}/likes`}
+                  to={`/${userData?.[0]?.username}/likes`}
                   label="Likes"
                 />
               </Tabs>
@@ -263,7 +263,7 @@ const Profile = () => {
             <Box>
               {filterUnfollowUsers?.slice(0, 3).map((user) => {
                 // On affiche pas l'utilisateur connecté
-                if (user?.id === auth?.authUser?.uid) {
+                if (user?.id === authUser?.uid) {
                   return null;
                 } else {
                   return (
