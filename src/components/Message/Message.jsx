@@ -20,6 +20,8 @@ import { onSnapshot } from "firebase/firestore";
 import ChannelAddMessage from "./ChannelAddMessage/ChannelAddMessage";
 import { useNavigate } from "react-router-dom";
 import { useFirestore } from "../../utils/useFirestore";
+import ClassicButton from "../buttons/ClassicButton";
+import InformationActionButton from "./InformationActionButton/InformationActionButton";
 
 firebase.initializeApp(getFirebaseConfig());
 
@@ -33,7 +35,7 @@ export default function Messages() {
   const usersRef = firestore.collection("users");
   const [, setUsers] = useState([]);
   const [channels, setChannels] = useState([]);
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState(null);
   const [channelSelected, setChannelSelected] = useState("");
   const navigate = useNavigate();
 
@@ -177,12 +179,31 @@ export default function Messages() {
         </Box>
 
         {/* Zone à droite */}
-        <Box display="flex" minWidth="500px" borderRight="1px solid #eff3f4">
+        <Box
+          display="flex"
+          minWidth="500px"
+          minHeight="75em"
+          borderRight="1px solid #eff3f4"
+        >
           {/* Afficahge des messages */}
-          <Message
-            messages={messages}
-            handleAddNewMessage={handleAddNewMessage}
-          />
+
+          {messages ? (
+            <Message
+              messages={messages}
+              handleAddNewMessage={handleAddNewMessage}
+            />
+          ) : (
+            <Box display="flex" flexDirection="vertical" alignItems="center">
+              <InformationActionButton
+                title={" You don't have a message selected"}
+                details={
+                  "Choose one from your existing messages, or start a new one."
+                }
+                buttonText={"New message"}
+                buttonLink={"/searchUser"}
+              />
+            </Box>
+          )}
         </Box>
       </Box>
       <BottomNavigation />
@@ -218,11 +239,22 @@ function ListeChannels({ channels, handleDiplayMessages }) {
       </Box>
     );
   } else {
-    return <Typography variant="h6">Pas de conversation!</Typography>;
+    return (
+      <Box display="flex" flexDirection="vertical" alignItems="center">
+        <InformationActionButton
+          title={"Send a message, get a message"}
+          details={
+            "Direct Messages are private conversations between you and other people on Twitter. Share Tweets, media, and more!"
+          }
+          buttonText={"Start a conversation"}
+          buttonLink={"/searchUser"}
+        />
+      </Box>
+    );
   }
 }
 
-function Message({ messages = [], handleAddNewMessage }) {
+export function Message({ messages = [], handleAddNewMessage }) {
   return (
     <Box
       display="flex"
