@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { AppBar, Box, IconButton, Toolbar, Typography } from "@mui/material";
 
-import { AuthContext } from "../../context/authContext";
+import { useAuth } from "../../context/authContext";
 
 import { images } from "../../constants";
 
@@ -20,9 +20,9 @@ const Header = ({
 }) => {
   const classes = useStyles();
   const navigate = useNavigate();
-  const auth = React.useContext(AuthContext);
+  const { userData } = useAuth();
 
-  const user = auth.userData?.[0];
+  const user = userData?.[0];
 
   const pathname = window.location.pathname;
 

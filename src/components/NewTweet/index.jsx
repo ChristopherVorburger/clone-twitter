@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 import {
   Box,
@@ -21,13 +21,15 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 
-import { AuthContext } from "../../context/authContext";
+import { useAuth } from "../../context/authContext";
 
 const NewTweet = () => {
+  const classes = useStyles();
   const [text, setText] = useState("");
   const [textError, setTextError] = useState(false);
-  const auth = useContext(AuthContext);
-  const classes = useStyles();
+  const [disableButton, setDisableButton] = useState(false);
+
+  const { authUser, userData } = useAuth();
 
   const iconsArray = [
     { name: icons.ImageOutlinedIcon, path: "/" },
@@ -51,7 +53,7 @@ const NewTweet = () => {
       text,
       // on utilise serverTimestamp() pour créer automatiquement la date de création du tweet
       created_at: serverTimestamp(),
-      author_id: auth.authUser.uid,
+      author_id: authUser.uid,
       public_metrics: {
         retweet_count: 0,
         reply_count: 0,
@@ -72,8 +74,11 @@ const NewTweet = () => {
 
   useEffect(() => {
     setTextError(false);
+    setDisableButton(false);
     if (text.length > 280) {
       setTextError(true);
+    } else if (text.length === 0) {
+      setDisableButton(true);
     }
   }, [text]);
 
@@ -81,11 +86,11 @@ const NewTweet = () => {
     <Box className={classes.new_tweet} p="0 1rem" width="100%" maxWidth="590px">
       <Box display="flex">
         <Box mr="1rem" flexBasis="48px">
-          {auth.userData?.[0]?.profile_image_url ? (
+          {userData?.[0]?.profile_image_url ? (
             <img
               className={classes.avatar}
               style={{ border: "1px solid lightgrey" }}
-              src={auth.userData?.[0]?.profile_image_url}
+              src={userData?.[0]?.profile_image_url}
               alt="user avatar"
             />
           ) : (
@@ -190,7 +195,7 @@ const NewTweet = () => {
             <Box>
               <Button
                 variant="contained"
-                disabled={textError}
+                disabled={(textError, disableButton)}
                 sx={{
                   textTransform: "none",
                   borderRadius: "50px",

@@ -16,9 +16,10 @@ import News from "../../components/News";
 import BottomNavigation from "../../components/BottomNavigation";
 import Tweet from "../../components/Tweet/Tweet";
 import WhoToFollow from "../../components/News/WhoToFollow";
+import InexistingAccount from "../../components/InexistingAccount";
 
 // Import Auth Context
-import { AuthContext } from "../../context/authContext";
+import { useAuth } from "../../context/authContext";
 import { UsersContext } from "../../context/usersContext";
 
 // Import des icones
@@ -31,10 +32,10 @@ import { images } from "../../constants";
 import { useFirestoreWithQuery } from "../../utils/useFirestoreWithQuery";
 
 // Import styles
-import useStyles from "./styles";
 import { arrayRemove, doc, updateDoc } from "firebase/firestore";
 import { database } from "../../firebase-config";
-import InexistingAccount from "../../components/InexistingAccount";
+
+import useStyles from "./styles";
 
 // Liens pour la Nav Tab
 function LinkTab(props) {
@@ -60,7 +61,7 @@ const ForeignProfile = () => {
   };
 
   // Utilisation des contextes Auth et Users
-  const auth = React.useContext(AuthContext);
+  const { authUser, userData } = useAuth();
   const users = React.useContext(UsersContext);
 
   // Utilisation du hook perso useFirestoreWithQuery pour récupérer les tweets dans l'ordre de publication
@@ -72,7 +73,7 @@ const ForeignProfile = () => {
   });
 
   // Récupération du tableau de following de l'utilisateur connecté
-  const following = auth?.userData?.[0]?.following;
+  const following = userData?.[0]?.following;
 
   // Récupération du tableau de followers de l'utilisateur ciblé
   const followers = user?.[0]?.followers;
@@ -84,7 +85,7 @@ const ForeignProfile = () => {
 
   // Filtre les utilisateurs non suivis pour supprimer l'utilisateur connecté du tableau
   const filterUnfollowUsers = unfollowUsers?.filter((user) => {
-    return user?.id !== auth?.authUser?.uid;
+    return user?.id !== authUser?.uid;
   });
 
   // On filtre les tweets à afficher
@@ -94,7 +95,7 @@ const ForeignProfile = () => {
   });
 
   // Référence à l'id de l'utilisateur connecté à mettre à jour
-  const currentUserRef = doc(database, "users", auth?.authUser?.uid);
+  const currentUserRef = doc(database, "users", authUser?.uid);
 
   // On écoute le changement de username et donc le changement d'url
   useEffect(() => {
@@ -111,7 +112,7 @@ const ForeignProfile = () => {
     e.preventDefault();
 
     // Sécurité pour ne pas se suivre soi-même
-    if (auth?.authUser?.uid === user?.[0]?.id) {
+    if (authUser?.uid === user?.[0]?.id) {
       console.log(
         "Oui, il faut s'aimer soi-même mais de là à se suivre soit même il y a des limites"
       );
@@ -119,7 +120,7 @@ const ForeignProfile = () => {
     }
 
     // Sécurité pour ne pas suivre deux fois la même personne
-    if (auth?.userData?.[0]?.following?.includes(user?.[0]?.id)) {
+    if (userData?.[0]?.following?.includes(user?.[0]?.id)) {
       console.log("Vous suivez déjà cette personne !");
       return;
     }
@@ -136,7 +137,7 @@ const ForeignProfile = () => {
           // premier follower
           if (!followers) {
             updateDoc(doc(database, "users", user?.[0]?.id), {
-              followers: [auth?.authUser?.uid],
+              followers: [authUser?.uid],
             })
               .then(() => {
                 console.log("ajout d'un premier follower");
@@ -147,7 +148,7 @@ const ForeignProfile = () => {
             // Sinon, mise à jour du tableau followers de l'utilisateur ajouté
           } else {
             updateDoc(doc(database, "users", user?.[0]?.id), {
-              followers: [...user?.[0]?.followers, auth?.authUser?.uid],
+              followers: [...user?.[0]?.followers, authUser?.uid],
             })
               .then(() => {
                 console.log("ajout d'un follower");
@@ -163,7 +164,7 @@ const ForeignProfile = () => {
       // Sinon, mise à jour du tableau following
     } else {
       updateDoc(currentUserRef, {
-        following: [...auth?.userData?.[0]?.following, user?.[0]?.id],
+        following: [...userData?.[0]?.following, user?.[0]?.id],
       })
         .then(() => {
           console.log("ajout d'un following");
@@ -171,7 +172,7 @@ const ForeignProfile = () => {
           // premier follower
           if (!followers) {
             updateDoc(doc(database, "users", user?.[0]?.id), {
-              followers: [auth?.authUser?.uid],
+              followers: [authUser?.uid],
             })
               .then(() => {
                 console.log("ajout d'un premier follower");
@@ -182,7 +183,7 @@ const ForeignProfile = () => {
             // Sinon, mise à jour du tableau followers de l'utilisateur ajouté
           } else {
             updateDoc(doc(database, "users", user?.[0]?.id), {
-              followers: [...user?.[0]?.followers, auth?.authUser?.uid],
+              followers: [...user?.[0]?.followers, authUser?.uid],
             })
               .then(() => {
                 console.log("ajout d'un follower");
@@ -207,7 +208,7 @@ const ForeignProfile = () => {
       .then(() => {
         // Suppression du follower dans les datas de l'utilisateur supprimé
         updateDoc(doc(database, "users", user?.[0]?.id), {
-          followers: arrayRemove(auth?.authUser?.uid),
+          followers: arrayRemove(authUser?.uid),
         });
       })
       .catch((err) => {
@@ -279,7 +280,7 @@ const ForeignProfile = () => {
                     </Box>
                   )}
                   <Box>
-                    {auth?.userData?.[0]?.following?.includes(user?.[0]?.id) ? (
+                    {userData?.[0]?.following?.includes(user?.[0]?.id) ? (
                       <Button
                         className={classes.button}
                         onMouseEnter={() => setTextButton("Unfollow")}
@@ -447,7 +448,7 @@ const ForeignProfile = () => {
                 <Box>
                   {filterUnfollowUsers?.slice(0, 3).map((user) => {
                     // On affiche pas l'utilisateur connecté
-                    if (user?.id === auth?.authUser?.uid) {
+                    if (user?.id === authUser?.uid) {
                       return null;
                     } else {
                       return (

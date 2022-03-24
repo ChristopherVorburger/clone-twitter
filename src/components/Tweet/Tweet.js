@@ -1,4 +1,5 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
 import {
   TweetLink,
@@ -33,23 +34,24 @@ import { zonedTimeToUtc } from "date-fns-tz";
 import { formatDistance } from "date-fns";
 import { fr } from "date-fns/locale";
 
-// fonctions firebase
+// Fonctions firebase
 import { database } from "../../firebase-config";
 import { updateDoc, doc, arrayRemove } from "firebase/firestore";
 
-// hooks
+// Hooks
 import { useFirestore } from "../../utils/useFirestore";
-import { AuthContext } from "../../context/authContext";
+
+// Contextex
+import { useAuth } from "../../context/authContext";
 
 // Composants React
 import TweetDialog from "./TweetDialog";
 import ShareDialog from "./ShareDialog";
-import { Link } from "react-router-dom";
 
 // Fonction pour afficher un tweet
 export default function Tweet({ tweet }) {
   // Récupération du contexte
-  const auth = useContext(AuthContext);
+  const { userData } = useAuth();
 
   // Destructuration des données du tweet
   const { id, text, author_id, created_at } = tweet;
@@ -70,10 +72,10 @@ export default function Tweet({ tweet }) {
   // Fonctions pour liker un tweet
   const likeTweet = () => {
     // Si le tableau de likers du tweet contient déjà l'id du user connecté
-    if (tweet?.likers?.includes(auth.userData?.[0]?.id)) {
+    if (tweet?.likers?.includes(userData?.[0]?.id)) {
       // Suppression du user et -1 pour le like_counter
       updateDoc(selectedTweetRef, {
-        likers: arrayRemove(auth.userData?.[0]?.id),
+        likers: arrayRemove(userData?.[0]?.id),
         public_metrics: {
           ...tweet?.public_metrics,
           like_count: parseInt(tweet?.public_metrics?.like_count, 10) - 1,
@@ -89,7 +91,7 @@ export default function Tweet({ tweet }) {
     } else if (!tweet?.likers) {
       // Si le tweet n'a pas de likers, ajout d'un premier liker et + 1 au compteur
       updateDoc(selectedTweetRef, {
-        likers: [auth.userData?.[0]?.id],
+        likers: [userData?.[0]?.id],
         public_metrics: {
           ...tweet?.public_metrics,
           like_count: parseInt(tweet?.public_metrics?.like_count, 10) + 1,
@@ -104,7 +106,7 @@ export default function Tweet({ tweet }) {
     } else {
       // Sinon ajout du user et +1 pour le like_counter
       updateDoc(selectedTweetRef, {
-        likers: [...tweet?.likers, auth.userData?.[0]?.id],
+        likers: [...tweet?.likers, userData?.[0]?.id],
         public_metrics: {
           ...tweet?.public_metrics,
           like_count: parseInt(tweet?.public_metrics?.like_count, 10) + 1,
@@ -209,7 +211,7 @@ export default function Tweet({ tweet }) {
             <span>0</span>
           </Retweets>
           {/* Si l'utilisateur connecté like le tweet, le coeur est rouge */}
-          {tweet?.likers?.includes(auth.userData?.[0]?.id) ? (
+          {tweet?.likers?.includes(userData?.[0]?.id) ? (
             <Likes onClick={likeTweet}>
               <icons.FavoriteIcon
                 style={{ color: "#e11616de", width: "20px", height: "20px" }}

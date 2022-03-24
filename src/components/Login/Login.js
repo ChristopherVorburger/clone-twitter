@@ -18,7 +18,7 @@ import { TextField } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { makeStyles } from "@mui/styles";
 import { Link } from "react-router-dom";
-import { AuthContext } from "../../context/authContext";
+import { useAuth } from "../../context/authContext";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import Alert from "@mui/material/Alert";
@@ -28,7 +28,7 @@ export default function Login() {
   const [emalValid, setEmalValid] = useState(null);
   const [loginError, setLoginError] = useState(false);
 
-  const { signIn } = useContext(AuthContext);
+  const { signIn } = useAuth();
   const navigate = useNavigate();
 
   //Style cross Icon

@@ -12,7 +12,7 @@ import { IconButton, Tab, Tabs } from "@mui/material";
 import { icons } from "../../constants";
 
 // Context
-import { AuthContext } from "../../context/authContext";
+import { useAuth } from "../../context/authContext";
 import { ListsContext } from "../../context/listsContext";
 
 // Hooks
@@ -48,7 +48,7 @@ const SuggestedListModal = () => {
   const handleClose = () => setOpen(false);
 
   //Utilisation des contextes Auth et Lists
-  const auth = useContext(AuthContext);
+  const { userData } = useAuth();
   const listsContext = useContext(ListsContext);
 
   const users = useFirestore("users");
@@ -79,7 +79,7 @@ const SuggestedListModal = () => {
             <Box display="flex" alignItems="center" height="53px" p="0 1rem">
               <Box justifyContent="flex-start">
                 <IconButton
-                  onClick={() => navigate(`/${auth?.userData?.[0]?.username}`)}
+                  onClick={() => navigate(`/${userData?.[0]?.username}`)}
                   sx={{ padding: "0.5rem", marginRight: "1rem" }}
                 >
                   <icons.CloseIcon />
@@ -101,9 +101,7 @@ const SuggestedListModal = () => {
                     backgroundColor: "black.main",
                     borderRadius: "50px",
                   }}
-                  onClick={() =>
-                    navigate(`/${auth.userData?.[0]?.username}/lists`)
-                  }
+                  onClick={() => navigate(`/${userData?.[0]?.username}/lists`)}
                 >
                   Done
                 </Button>

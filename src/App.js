@@ -27,15 +27,15 @@ import ListMembersModal from "./components/ListMembersModal";
 import EditListModal from "./components/EditListModal";
 import ScrollToTop from "./components/ScrollToTop";
 
-import { AuthContext } from "./context/authContext";
+import { useAuth } from "./context/authContext";
 import { SnackbarsContextProvider } from "./context/snackbarsContext";
 import { ListsContextProvider } from "./context/listsContext";
 import { UsersContextProvider } from "./context/usersContext";
-import Message from './components/Message/Message';
-import ChannelSearchUser from './components/Message/ChannelSearchUser/ChannelSearchUser';
+import Message from "./components/Message/Message";
+import ChannelSearchUser from "./components/Message/ChannelSearchUser/ChannelSearchUser";
 
 export default function App() {
-  const auth = React.useContext(AuthContext);
+  const { authUser, userData } = useAuth();
   // Création d'un thème pour changer la couleur principale de MUI
   let theme = createTheme({
     palette: {
@@ -72,7 +72,7 @@ export default function App() {
     <ThemeProvider theme={theme}>
       {/* ScrollToTop permet de revenir en haut de la page quand on clique sur un Link */}
       <ScrollToTop />
-      {!auth.authUser ? (
+      {!authUser ? (
         <Routes>
           <Route path="/" element={<Prehome />} />
           <Route path="/signup" element={<SignUp />} />
@@ -87,7 +87,7 @@ export default function App() {
                 <Routes>
                   <Route path="/home" element={<Home />} />
                   <Route
-                    path={`/${auth.userData?.[0]?.username}`}
+                    path={`/${userData?.[0]?.username}`}
                     element={<Profile />}
                   />
                   <Route path="/:username" element={<ForeignProfile />} />

@@ -10,7 +10,7 @@ import { Box, Button, Typography } from "@mui/material";
 import News from "../../../components/News";
 import Header from "../../../components/Header";
 
-import { AuthContext } from "../../../context/authContext";
+import { useAuth } from "../../../context/authContext";
 import { ListsContext } from "../../../context/listsContext";
 
 import useStyles from "./styles";
@@ -23,7 +23,7 @@ const List = () => {
   const classes = useStyles();
   const navigate = useNavigate();
 
-  const auth = React.useContext(AuthContext);
+  const { authUser, userData } = useAuth();
   const lists = React.useContext(ListsContext);
 
   const [textButton, setTextButton] = React.useState("Following");
@@ -47,10 +47,10 @@ const List = () => {
   ];
 
   // Récupération du tableau de following de l'utilisateur connecté
-  const listsCurrentUser = auth?.userData?.[0]?.lists;
+  const listsCurrentUser = userData?.[0]?.lists;
 
   // Référence à l'id de l'utilisateur connecté à mettre à jour
-  const currentUserRef = doc(database, "users", auth?.authUser?.uid);
+  const currentUserRef = doc(database, "users", authUser?.uid);
 
   // Référence de la liste à mettre à jour
   const currentListRef = doc(database, "lists", matchedList?.[0]?.id);
@@ -69,7 +69,7 @@ const List = () => {
     // on ajoute la première dans le tableau lists
     if (!listsCurrentUser) {
       updateDoc(currentUserRef, {
-        ...auth.userData?.[0],
+        ...userData?.[0],
         lists: [matchedList?.[0]?.id],
       })
         // Si la liste n'a pas de followers,
@@ -78,7 +78,7 @@ const List = () => {
           console.log("First list created");
           if (!listsFollowers) {
             updateDoc(currentListRef, {
-              followers: [auth.userData?.[0]?.id],
+              followers: [userData?.[0]?.id],
             })
               .then(() => {
                 console.log("ajout d'un premier follower");
@@ -88,7 +88,7 @@ const List = () => {
               });
           } else {
             updateDoc(currentListRef, {
-              followers: [...listsFollowers, auth?.authUser?.uid],
+              followers: [...listsFollowers, authUser?.uid],
             })
               .then(() => {
                 console.log("ajout d'un follower");
@@ -103,14 +103,14 @@ const List = () => {
         });
     } else {
       updateDoc(currentUserRef, {
-        ...auth.userData?.[0],
-        lists: [...auth.userData?.[0]?.lists, matchedList?.[0]?.id],
+        ...userData?.[0],
+        lists: [...userData?.[0]?.lists, matchedList?.[0]?.id],
       })
         .then(() => {
           console.log("List created");
           if (!listsFollowers) {
             updateDoc(currentListRef, {
-              followers: [auth.userData?.[0]?.id],
+              followers: [userData?.[0]?.id],
             })
               .then(() => {
                 console.log("ajout d'un premier follower");
@@ -120,7 +120,7 @@ const List = () => {
               });
           } else {
             updateDoc(currentListRef, {
-              followers: [...listsFollowers, auth?.authUser?.uid],
+              followers: [...listsFollowers, authUser?.uid],
             })
               .then(() => {
                 console.log("ajout d'un follower");
@@ -147,7 +147,7 @@ const List = () => {
           "Suppression de la liste dans le tabelau lists du user connecté"
         );
         updateDoc(currentListRef, {
-          followers: arrayRemove(auth.userData?.[0]?.id),
+          followers: arrayRemove(userData?.[0]?.id),
         })
           .then(() => {
             console.log("Suppression du follower de la liste");
@@ -246,7 +246,7 @@ const List = () => {
                 onMouseEnter={() => setTextButton("Unfollow")}
                 onMouseLeave={() => setTextButton("Following")}
               >
-                {author?.[0]?.id === auth.userData?.[0]?.id ? (
+                {author?.[0]?.id === userData?.[0]?.id ? (
                   <Button
                     className={classes.button__edit}
                     variant="outlined"
@@ -267,9 +267,7 @@ const List = () => {
                   >
                     Edit List
                   </Button>
-                ) : auth.userData?.[0]?.lists?.includes(
-                    matchedList?.[0]?.id
-                  ) ? (
+                ) : userData?.[0]?.lists?.includes(matchedList?.[0]?.id) ? (
                   <Button
                     className={classes.button}
                     variant="contained"

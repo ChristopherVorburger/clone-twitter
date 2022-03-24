@@ -6,7 +6,7 @@ import { Button, Typography } from "@mui/material";
 import { arrayRemove, doc, updateDoc } from "firebase/firestore";
 import { database } from "../../firebase-config";
 
-import { AuthContext } from "../../context/authContext";
+import { useAuth } from "../../context/authContext";
 
 import useStyles from "./styles";
 import { images } from "../../constants";
@@ -18,13 +18,13 @@ const DiscoverList = ({ list, author }) => {
   const [textButton, setTextButton] = React.useState("Following");
 
   // Utilisation du hook useContext pour récupérer le contexte Auth
-  const auth = React.useContext(AuthContext);
+  const { authUser, userData } = useAuth();
 
   // Récupération du tableau de following de l'utilisateur connecté
-  const listsCurrentUser = auth?.userData?.[0]?.lists;
+  const listsCurrentUser = userData?.[0]?.lists;
 
   // Référence à l'id de l'utilisateur connecté à mettre à jour
-  const currentUserRef = doc(database, "users", auth?.authUser?.uid);
+  const currentUserRef = doc(database, "users", authUser?.uid);
 
   // Référence de la liste à mettre à jour
   const currentListRef = doc(database, "lists", list?.id);
@@ -39,7 +39,7 @@ const DiscoverList = ({ list, author }) => {
     // on ajoute la première dans le tableau lists
     if (!listsCurrentUser) {
       updateDoc(currentUserRef, {
-        ...auth.userData?.[0],
+        ...userData?.[0],
         lists: [list?.id],
       })
         // Si la liste n'a pas de followers,
@@ -48,7 +48,7 @@ const DiscoverList = ({ list, author }) => {
           console.log("First list created");
           if (!listsFollowers) {
             updateDoc(currentListRef, {
-              followers: [auth.userData?.[0]?.id],
+              followers: [userData?.[0]?.id],
             })
               .then(() => {
                 console.log("ajout d'un premier follower");
@@ -58,7 +58,7 @@ const DiscoverList = ({ list, author }) => {
               });
           } else {
             updateDoc(currentListRef, {
-              followers: [...listsFollowers, auth?.authUser?.uid],
+              followers: [...listsFollowers, authUser?.uid],
             })
               .then(() => {
                 console.log("ajout d'un follower");
@@ -73,14 +73,14 @@ const DiscoverList = ({ list, author }) => {
         });
     } else {
       updateDoc(currentUserRef, {
-        ...auth.userData?.[0],
-        lists: [...auth.userData?.[0]?.lists, list?.id],
+        ...userData?.[0],
+        lists: [...userData?.[0]?.lists, list?.id],
       })
         .then(() => {
           console.log("List created");
           if (!listsFollowers) {
             updateDoc(currentListRef, {
-              followers: [auth.userData?.[0]?.id],
+              followers: [userData?.[0]?.id],
             })
               .then(() => {
                 console.log("ajout d'un premier follower");
@@ -90,7 +90,7 @@ const DiscoverList = ({ list, author }) => {
               });
           } else {
             updateDoc(currentListRef, {
-              followers: [...listsFollowers, auth?.authUser?.uid],
+              followers: [...listsFollowers, authUser?.uid],
             })
               .then(() => {
                 console.log("ajout d'un follower");
@@ -117,7 +117,7 @@ const DiscoverList = ({ list, author }) => {
           "Suppression de la liste dans le tabelau lists du user connecté"
         );
         updateDoc(currentListRef, {
-          followers: arrayRemove(auth.userData?.[0]?.id),
+          followers: arrayRemove(userData?.[0]?.id),
         })
           .then(() => {
             console.log("Suppression du follower de la liste");
@@ -181,7 +181,7 @@ const DiscoverList = ({ list, author }) => {
               onMouseEnter={() => setTextButton("Unfollow")}
               onMouseLeave={() => setTextButton("Following")}
             >
-              {auth?.userData?.[0]?.lists?.includes(list?.id) ? (
+              {userData?.[0]?.lists?.includes(list?.id) ? (
                 <Button
                   className={classes.button}
                   variant="outlined"
