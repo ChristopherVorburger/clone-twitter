@@ -22,6 +22,13 @@ import { AuthContext } from "../../context/authContext";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import Alert from "@mui/material/Alert";
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
+import "firebase/compat/auth";
+import { getFirebaseConfig } from "../../firebase-config";
+
+firebase.initializeApp(getFirebaseConfig());
+const auth = firebase.auth();
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -79,7 +86,10 @@ export default function Login() {
   };
 
   // Connexion with Google
-  const provider = new GoogleAuthProvider();
+  const signInWithGoogle = () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    auth.signInWithPopup(provider);
+  };
 
   return (
     <Overlay>
@@ -161,6 +171,7 @@ export default function Login() {
                 margin="0 0 25px 0"
                 maxWidth="290px"
                 data-testid="connectButtonGoogle"
+                onClick={signInWithGoogle}
               >
                 <img src={LogoGoogle} alt="logo de google" />
                 <span>Se connecter avec Google</span>

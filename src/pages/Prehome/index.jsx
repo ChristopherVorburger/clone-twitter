@@ -8,8 +8,25 @@ import { images } from "../../constants";
 
 import useStyles from "./styles";
 
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
+import "firebase/compat/auth";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { getFirebaseConfig } from "../../firebase-config";
+
+firebase.initializeApp(getFirebaseConfig());
+
+const auth = firebase.auth();
+const firestore = firebase.firestore();
+
 const PreHome = () => {
   const classes = useStyles();
+
+  const signInWithGoogle = () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    auth.signInWithPopup(provider);
+  };
+
   return (
     <main>
       <Box className={classes.box__main}>
@@ -41,6 +58,7 @@ const PreHome = () => {
                   sx={{ marginBottom: "0.5rem" }}
                   className={classes.button}
                   variant="outlined"
+                  onClick={signInWithGoogle}
                 >
                   <img
                     className={classes.button__logo}
