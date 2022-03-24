@@ -1,4 +1,4 @@
-import { useState, useContext, useReducer, useEffect } from "react";
+import { useState, useReducer, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 // Fonctions firebase
@@ -22,8 +22,8 @@ import useStyles from "./styles";
 
 // Context
 import { useAuth } from "../../context/authContext";
-import { ListsContext } from "../../context/listsContext";
-import { useFirestore } from "../../utils/useFirestore";
+import { useLists } from "../../context/listsContext";
+import { useUsers } from "../../context/usersContext";
 
 // Reducer
 const reducer = (state, action) => {
@@ -52,13 +52,12 @@ const EditListModal = () => {
   const [coverSelected, setCoverSelected] = useState([]);
   const [coverFile, setCoverFile] = useState();
 
-  //Utilisation du contexte Auth
+  //Utilisation des contextes
   const { userData } = useAuth();
-  const lists = useContext(ListsContext);
+  const { lists } = useLists();
+  const { users } = useUsers();
 
-  const users = useFirestore("users");
-
-  const matchedList = lists?.lists?.filter((list) => {
+  const matchedList = lists?.filter((list) => {
     return list.id === id;
   });
 
@@ -186,8 +185,6 @@ const EditListModal = () => {
     });
     navigate(`/${userData?.[0]?.username}/lists`);
   };
-
-  console.log(nameError);
 
   return (
     <>

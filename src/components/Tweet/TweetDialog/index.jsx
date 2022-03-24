@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 
 import { useAuth } from "../../../context/authContext";
-import { UsersContext } from "../../../context/usersContext";
+import { useUsers } from "../../../context/usersContext";
 
 import { icons } from "../../../constants";
 
@@ -25,16 +25,16 @@ const TweetDialog = ({ id, open, author_id }) => {
 
   // Utilisation des contextes Auth et Users
   const { authUser, userData } = useAuth();
-  const users = React.useContext(UsersContext);
+  const { users } = useUsers();
 
   //Recherche de l'id du user qui match avec l'author_id du tweet
-  const matchedUser = users?.users?.filter((user) => user?.id === author_id);
+  const matchedUser = users?.filter((user) => user?.id === author_id);
 
   // Création d'un tableau pour stocker les utilisateurs en lien avec le tweet
   const usersWhoBookmarkedRefs = [];
 
   // Recherche des utilisateurs en lien avec le tweet (bookmarks)
-  users?.users?.filter((user) => {
+  users?.filter((user) => {
     if (user?.bookmarks?.includes(id))
       return usersWhoBookmarkedRefs.push(doc(database, "users", user.id));
     else return null;

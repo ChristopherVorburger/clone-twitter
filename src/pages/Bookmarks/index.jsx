@@ -10,8 +10,7 @@ import Tweet from "../../components/Tweet/Tweet";
 import { icons, images } from "../../constants";
 
 import { useAuth } from "../../context/authContext";
-
-import { useFirestoreWithQuery } from "../../utils/useFirestoreWithQuery";
+import { useTweets } from "../../context/tweetContext";
 
 import useStyles from "./styles";
 
@@ -19,9 +18,9 @@ const Bookmarks = () => {
   const classes = useStyles();
   const { userData } = useAuth();
 
-  const tweets = useFirestoreWithQuery("tweets");
+  const { tweetsByDate } = useTweets();
 
-  const filteredTweets = tweets?.filter((tweet) => {
+  const filteredTweets = tweetsByDate?.filter((tweet) => {
     return userData?.[0]?.bookmarks?.includes(tweet?.id);
   });
 
@@ -58,7 +57,7 @@ const Bookmarks = () => {
           ) : (
             <Box width="100%">
               {/* Sinon on affiche les bookmarks */}
-              {tweets ? (
+              {tweetsByDate ? (
                 <>
                   {filteredTweets.map((tweet) => (
                     <Tweet key={tweet?.id} tweet={tweet} />

@@ -1,13 +1,12 @@
 import React from "react";
-import { Box } from "@mui/system";
 
+import { Box } from "@mui/system";
 import { Typography } from "@mui/material";
 
 import { icons, images } from "../../constants";
 
-import { useFirestore } from "../../utils/useFirestore";
-
 import { useAuth } from "../../context/authContext";
+import { useUsers } from "../../context/usersContext";
 
 import useStyles from "./styles";
 
@@ -15,8 +14,7 @@ import useStyles from "./styles";
 const TweetLiked = ({ tweet }) => {
   const classes = useStyles();
   const { authUser } = useAuth();
-
-  const users = useFirestore("users");
+  const { users } = useUsers();
 
   // Filtre des utilisateurs qui ont likés le tweet
   const userWhoLiked = users?.filter((user) => {
