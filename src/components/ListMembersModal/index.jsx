@@ -15,7 +15,7 @@ import { icons } from "../../constants";
 import useStyles from "./styles";
 
 // Context
-import { AuthContext } from "../../context/authContext";
+import { useAuth } from "../../context/authContext";
 import { ListsContext } from "../../context/listsContext";
 
 import { useFirestore } from "../../utils/useFirestore";
@@ -33,7 +33,7 @@ const ListMembersModal = () => {
   const navigate = useNavigate();
 
   //Utilisation des contextes Auth et Lists
-  const auth = useContext(AuthContext);
+  const { userData } = useAuth();
   const lists = useContext(ListsContext);
 
   // State pour la nav tab
@@ -78,9 +78,7 @@ const ListMembersModal = () => {
               <Box display="flex" alignItems="center" height="53px" p="0 1rem">
                 <Box justifyContent="flex-start">
                   <IconButton
-                    onClick={() =>
-                      navigate(`/${auth?.userData?.[0]?.username}`)
-                    }
+                    onClick={() => navigate(`/${userData?.[0]?.username}`)}
                     sx={{ padding: "0.5rem", marginRight: "1rem" }}
                   >
                     <icons.CloseIcon />
@@ -103,7 +101,7 @@ const ListMembersModal = () => {
                       borderRadius: "50px",
                     }}
                     onClick={() =>
-                      navigate(`/${auth.userData?.[0]?.username}/lists`)
+                      navigate(`/${userData?.[0]?.username}/lists`)
                     }
                   >
                     Done

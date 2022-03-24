@@ -9,7 +9,7 @@ import Trend from "./Trend";
 import WhoToFollow from "./WhoToFollow";
 
 // Import du context Auth
-import { AuthContext } from "../../context/authContext";
+import { useAuth } from "../../context/authContext";
 
 import { useFirestore } from "../../utils/useFirestore";
 
@@ -20,18 +20,18 @@ const News = () => {
   const [topHeadlines, setTopHeadlines] = React.useState();
 
   // Utilisation du hook useContext pour récupérer le contexte Auth
-  const auth = React.useContext(AuthContext);
+  const { authUser, userData } = useAuth();
 
   const users = useFirestore("users");
 
   // Filtre des utilisateurs pour obtenir les non suivis
   const unfollowUsers = users?.filter((user) => {
-    return !auth?.userData?.[0]?.following?.includes(user?.id);
+    return !userData?.[0]?.following?.includes(user?.id);
   });
 
   // Filtre les utilisateurs non suivis pour supprimer l'utilisateur connecté du tableau
   const filterUnfollowUsers = unfollowUsers?.filter((user) => {
-    return user?.id !== auth?.authUser?.uid;
+    return user?.id !== authUser?.uid;
   });
 
   // Appel a l'API pour récupérer les dernières news des US
@@ -44,7 +44,6 @@ const News = () => {
         },
       })
       .then((response) => {
-        console.log("response", response);
         setTopHeadlines(response.data.articles);
       })
       .catch((err) => console.log(err));

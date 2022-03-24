@@ -1,13 +1,19 @@
 // Tous les import que j'ai besoin
 import React from "react";
-import useStyles from "./Styles";
+import { Link, useNavigate } from "react-router-dom";
+
+import { Box, Button, MenuItem, Typography, TextField } from "@mui/material";
+
 import CloseButton from "../../components/CloseButton/CloseButton";
 import LogoTwitter from "../../components/TwitterLogo/TwitterLogo";
+
 import { selectMonth } from "./DataSelect";
-import { Box, Button, MenuItem, Typography, TextField } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+
 import { doc, getFirestore, serverTimestamp, setDoc } from "firebase/firestore";
-import { AuthContext } from "../../context/authContext";
+
+import { useAuth } from "../../context/authContext";
+
+import useStyles from "./Styles";
 
 // Firestore
 const database = getFirestore();
@@ -16,7 +22,7 @@ const database = getFirestore();
 function SignUp() {
   // Const générales
   const classes = useStyles();
-  const auth = React.useContext(AuthContext);
+  const { signUp } = useAuth();
   const navigate = useNavigate();
 
   // State authentification
@@ -32,7 +38,7 @@ function SignUp() {
   const [phone, setPhone] = React.useState("");
 
   // Fonction qui crée un user dans l'authentification et le firestore
-  const signUp = (e) => {
+  const signUpUser = (e) => {
     e.preventDefault();
     setErrorName(false);
     setErrorUserName(false);
@@ -42,8 +48,7 @@ function SignUp() {
     } else if (username === "" || username.length > 100) {
       setErrorUserName(true);
     } else {
-      auth
-        .signUp(email, password)
+      signUp(email, password)
         .then((cred) => {
           setEmail("");
           setPassword("");
@@ -207,7 +212,7 @@ function SignUp() {
             <LogoTwitter />
           </Box>
         </Box>
-        <form className={classes.form} action="submit" onSubmit={signUp}>
+        <form className={classes.form} action="submit" onSubmit={signUpUser}>
           <Typography className={classes.accountCreateTitle}>
             Créer votre compte
           </Typography>

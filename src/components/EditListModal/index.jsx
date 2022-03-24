@@ -21,7 +21,7 @@ import { icons } from "../../constants";
 import useStyles from "./styles";
 
 // Context
-import { AuthContext } from "../../context/authContext";
+import { useAuth } from "../../context/authContext";
 import { ListsContext } from "../../context/listsContext";
 import { useFirestore } from "../../utils/useFirestore";
 
@@ -53,7 +53,7 @@ const EditListModal = () => {
   const [coverFile, setCoverFile] = useState();
 
   //Utilisation du contexte Auth
-  const auth = useContext(AuthContext);
+  const { userData } = useAuth();
   const lists = useContext(ListsContext);
 
   const users = useFirestore("users");
@@ -113,7 +113,7 @@ const EditListModal = () => {
       })
         .then(() => {
           console.log(`Mise à jour de la liste ${matchedList?.[0]?.name}`);
-          navigate(`/${auth?.userData?.[0]?.username}/lists`);
+          navigate(`/${userData?.[0]?.username}/lists`);
         })
         .catch((err) => {
           console.log(err.message);
@@ -141,7 +141,7 @@ const EditListModal = () => {
       })
         .then(() => {
           console.log(`Mise à jour de la liste ${matchedList?.[0]?.name}`);
-          navigate(`/${auth?.userData?.[0]?.username}/lists`);
+          navigate(`/${userData?.[0]?.username}/lists`);
         })
         .catch((err) => {
           console.log(err.message);
@@ -184,7 +184,7 @@ const EditListModal = () => {
           console.log(err.message);
         });
     });
-    navigate(`/${auth?.userData?.[0]?.username}/lists`);
+    navigate(`/${userData?.[0]?.username}/lists`);
   };
 
   console.log(nameError);
@@ -206,7 +206,7 @@ const EditListModal = () => {
                 <Box justifyContent="flex-start">
                   <IconButton
                     onClick={() =>
-                      navigate(`/${auth?.userData?.[0]?.username}/lists`)
+                      navigate(`/${userData?.[0]?.username}/lists`)
                     }
                     sx={{ padding: "0.5rem", marginRight: "1rem" }}
                   >

@@ -1,25 +1,27 @@
 import React from "react";
 import { Box } from "@mui/system";
 
+import { Typography } from "@mui/material";
+
 import { icons, images } from "../../constants";
 
-import useStyles from "./styles";
-import { Typography } from "@mui/material";
 import { useFirestore } from "../../utils/useFirestore";
 
-import { AuthContext } from "../../context/authContext";
+import { useAuth } from "../../context/authContext";
+
+import useStyles from "./styles";
 
 // Composants qui affiche les tweets likés
 const TweetLiked = ({ tweet }) => {
   const classes = useStyles();
-  const auth = React.useContext(AuthContext);
+  const { authUser } = useAuth();
 
   const users = useFirestore("users");
 
   // Filtre des utilisateurs qui ont likés le tweet
   const userWhoLiked = users?.filter((user) => {
     // Suppression de l'utilisateur connecté
-    if (user?.id === auth?.authUser?.uid) {
+    if (user?.id === authUser?.uid) {
       return null;
     }
     return tweet?.likers?.includes(user?.id);

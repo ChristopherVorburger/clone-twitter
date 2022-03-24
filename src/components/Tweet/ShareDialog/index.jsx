@@ -12,18 +12,18 @@ import {
   ListItemText,
 } from "@mui/material";
 
-import { AuthContext } from "../../../context/authContext";
+import { useAuth } from "../../../context/authContext";
 import { SnackbarsContext } from "../../../context/snackbarsContext";
 
 import { icons } from "../../../constants";
 
 // Fonction qui affiche les actions possibles au clique sur le bouton share
 const ShareDialog = ({ id, open }) => {
-  const auth = React.useContext(AuthContext);
+  const { userData } = useAuth();
   const snackbar = React.useContext(SnackbarsContext);
 
   // Référence du user à mettre à jour
-  const userRef = doc(database, "users", auth.userData?.[0]?.id);
+  const userRef = doc(database, "users", userData?.[0]?.id);
 
   // fonction pour ajouter un bookmark
   const addBookmark = (e) => {
@@ -31,7 +31,7 @@ const ShareDialog = ({ id, open }) => {
     snackbar.setMessageBookmarkSnackbar("");
 
     // Si l'utilisateur n'a pas de bookmarks on lui ajoute un nouveau tableau bookmarks avec le premier
-    if (!auth.userData?.[0]?.bookmarks) {
+    if (!userData?.[0]?.bookmarks) {
       updateDoc(userRef, {
         bookmarks: [id],
       })
@@ -47,7 +47,7 @@ const ShareDialog = ({ id, open }) => {
     } else {
       // Sinon on ajoute juste le tweet au tableau existant
       updateDoc(userRef, {
-        bookmarks: [...auth.userData?.[0]?.bookmarks, id],
+        bookmarks: [...userData?.[0]?.bookmarks, id],
       })
         // Puis on affiche la snackbar en mettant à jour les states
         .then(() => {
@@ -120,7 +120,7 @@ const ShareDialog = ({ id, open }) => {
     <Dialog disableScrollLock open={open}>
       <List>
         {/* Si le tweet est dans les bookmarks on affiche ceci */}
-        {auth.userData?.[0]?.bookmarks?.includes(id)
+        {userData?.[0]?.bookmarks?.includes(id)
           ? removeBookmarksIconsArray.map((icon, index) => {
               return (
                 // icon.action est une référence à la fonction à executer lors du clique

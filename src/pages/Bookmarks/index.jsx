@@ -5,24 +5,24 @@ import { CircularProgress, Typography } from "@mui/material";
 
 import Header from "../../components/Header";
 import News from "../../components/News";
+import Tweet from "../../components/Tweet/Tweet";
 
 import { icons, images } from "../../constants";
 
-import { AuthContext } from "../../context/authContext";
+import { useAuth } from "../../context/authContext";
 
 import { useFirestoreWithQuery } from "../../utils/useFirestoreWithQuery";
 
 import useStyles from "./styles";
-import Tweet from "../../components/Tweet/Tweet";
 
 const Bookmarks = () => {
   const classes = useStyles();
-  const auth = React.useContext(AuthContext);
+  const { userData } = useAuth();
 
   const tweets = useFirestoreWithQuery("tweets");
 
   const filteredTweets = tweets?.filter((tweet) => {
-    return auth?.userData?.[0]?.bookmarks?.includes(tweet?.id);
+    return userData?.[0]?.bookmarks?.includes(tweet?.id);
   });
 
   const iconsArray = [{ name: icons.MoreHorizIcon }];
@@ -37,12 +37,12 @@ const Bookmarks = () => {
       >
         <Header
           title="Bookmarks"
-          subtitle={`@${auth.userData?.[0]?.username}`}
+          subtitle={`@${userData?.[0]?.username}`}
           iconsRight={iconsArray}
         />
         <Box display="flex" flexDirection="column" justifyContent="center">
           {/* Si l'utilisateur n'a pas de bookmark on affiche ceci */}
-          {auth.userData?.[0]?.bookmarks?.length === 0 ? (
+          {userData?.[0]?.bookmarks?.length === 0 ? (
             <Box maxWidth="400px" m="2rem auto" p="0 2rem">
               <Box m="1rem 0 36px 0">
                 <img src={images.cage} alt="bird cage" />

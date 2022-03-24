@@ -12,7 +12,7 @@ import {
   ListItemText,
 } from "@mui/material";
 
-import { AuthContext } from "../../../context/authContext";
+import { useAuth } from "../../../context/authContext";
 import { UsersContext } from "../../../context/usersContext";
 
 import { icons } from "../../../constants";
@@ -24,7 +24,7 @@ const TweetDialog = ({ id, open, author_id }) => {
   const classes = useStyles();
 
   // Utilisation des contextes Auth et Users
-  const auth = React.useContext(AuthContext);
+  const { authUser, userData } = useAuth();
   const users = React.useContext(UsersContext);
 
   //Recherche de l'id du user qui match avec l'author_id du tweet
@@ -75,7 +75,7 @@ const TweetDialog = ({ id, open, author_id }) => {
   };
 
   // Référence à l'id de l'utilisateur connecté à mettre à jour
-  const currentUserRef = doc(database, "users", auth?.authUser?.uid);
+  const currentUserRef = doc(database, "users", authUser?.uid);
 
   // Référence à l'id de l'utilisateur ciblé à mettre à jour
   const followedUserRef = doc(database, "users", author_id);
@@ -90,7 +90,7 @@ const TweetDialog = ({ id, open, author_id }) => {
         console.log("Delete following in user connected data");
         // Suppression du follower dans les datas de l'utilisateur supprimé
         updateDoc(followedUserRef, {
-          followers: arrayRemove(auth?.authUser?.uid),
+          followers: arrayRemove(authUser?.uid),
         })
           .then(() => {
             console.log("Delete followers in user targeted data");
@@ -114,7 +114,7 @@ const TweetDialog = ({ id, open, author_id }) => {
     {
       name: icons.PlaylistAddOutlinedIcon,
       path: "",
-      text: `Add/remove @${auth.userData?.[0]?.username} from lists`,
+      text: `Add/remove @${userData?.[0]?.username} from lists`,
     },
     {
       name: icons.ChatBubbleOutlineOutlinedIcon,
@@ -158,7 +158,7 @@ const TweetDialog = ({ id, open, author_id }) => {
   return (
     <Dialog disableScrollLock open={open}>
       <List className={classes.tweet_dialog__list}>
-        {auth.userData?.[0]?.id === author_id
+        {userData?.[0]?.id === author_id
           ? personalTweetIconsArray.map((icon, index) => {
               return (
                 <ListItemButton

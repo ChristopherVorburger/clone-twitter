@@ -5,12 +5,12 @@ import { Box } from "@mui/system";
 
 import { icons, images } from "../../../constants";
 
+import { useAuth } from "../../../context/authContext";
+
 import useStyles from "./styles";
 
-import { AuthContext } from "../../../context/authContext";
-
 const BottomAvatar = () => {
-  const auth = React.useContext(AuthContext);
+  const { userData } = useAuth();
 
   const classes = useStyles();
   return (
@@ -23,11 +23,11 @@ const BottomAvatar = () => {
     >
       <Box display="flex" justifyContent="center" alignItems="center">
         <Box width="50px" height="50px" marginRight="0.5rem">
-          {auth.userData?.[0]?.profile_image_url ? (
+          {userData?.[0]?.profile_image_url ? (
             <img
               className={classes.profile_section__avatar_button}
               style={{ border: "1px solid lightgrey" }}
-              src={auth.userData?.[0]?.profile_image_url}
+              src={userData?.[0]?.profile_image_url}
               alt="user avatar"
             />
           ) : (
@@ -41,10 +41,10 @@ const BottomAvatar = () => {
         </Box>
         <Box className={classes.profile_section__avatar_texts} flexGrow="1">
           <Typography fontSize="font.main" fontWeight="mainBold">
-            {auth.userData?.[0]?.name}
+            {userData?.[0]?.name}
           </Typography>
           <Typography fontSize="font.main" color="grey.main">
-            @{auth.userData?.[0]?.username}
+            @{userData?.[0]?.username}
           </Typography>
         </Box>
         <Box>

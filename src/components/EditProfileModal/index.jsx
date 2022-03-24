@@ -1,4 +1,4 @@
-import { useState, useContext, useReducer, useEffect } from "react";
+import { useState, useReducer, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 // Fonctions firebase
@@ -21,7 +21,7 @@ import { icons } from "../../constants";
 import useStyles from "./styles";
 
 // Context
-import { AuthContext } from "../../context/authContext";
+import { useAuth } from "../../context/authContext";
 
 // Reducer
 const reducer = (state, action) => {
@@ -51,17 +51,17 @@ const EditProfileModal = () => {
   const [coverFile, setCoverFile] = useState();
 
   //Utilisation du contexte Auth
-  const auth = useContext(AuthContext);
+  const { authUser, userData } = useAuth();
 
   // Valeurs de départ pour le reducer
   const initialValue = {
-    name: auth?.userData?.[0]?.name,
-    description: auth?.userData?.[0]?.description,
-    location: auth?.userData?.[0]?.location,
-    website: auth?.userData?.[0]?.website,
+    name: userData?.[0]?.name,
+    description: userData?.[0]?.description,
+    location: userData?.[0]?.location,
+    website: userData?.[0]?.website,
     // age: auth?.userData?.[0]?.age,
-    profile_image_url: auth?.userData?.[0]?.profile_image_url,
-    cover_url: auth?.userData?.[0]?.cover_url,
+    profile_image_url: userData?.[0]?.profile_image_url,
+    cover_url: userData?.[0]?.cover_url,
   };
 
   // Utilisation du reducer
@@ -86,7 +86,7 @@ const EditProfileModal = () => {
   };
 
   // Référence à l'id de l'utilisateur connecté à mettre à jour
-  const currentUserRef = doc(database, "users", auth?.authUser?.uid);
+  const currentUserRef = doc(database, "users", authUser?.uid);
 
   // Gestion du champ input name vide
   useEffect(() => {
@@ -186,7 +186,7 @@ const EditProfileModal = () => {
       });
     }
     // Retour à la page de profil
-    navigate(`/${auth?.userData?.[0]?.username}`);
+    navigate(`/${userData?.[0]?.username}`);
   };
 
   return (
@@ -205,9 +205,7 @@ const EditProfileModal = () => {
               <Box display="flex" alignItems="center" height="53px" p="0 1rem">
                 <Box justifyContent="flex-start">
                   <IconButton
-                    onClick={() =>
-                      navigate(`/${auth?.userData?.[0]?.username}`)
-                    }
+                    onClick={() => navigate(`/${userData?.[0]?.username}`)}
                     sx={{ padding: "0.5rem", marginRight: "1rem" }}
                   >
                     <icons.CloseIcon />
