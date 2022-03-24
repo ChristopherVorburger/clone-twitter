@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 // Composants MUI
@@ -16,7 +16,7 @@ import useStyles from "./styles";
 
 // Context
 import { useAuth } from "../../context/authContext";
-import { ListsContext } from "../../context/listsContext";
+import { useLists } from "../../context/listsContext";
 
 import { useFirestore } from "../../utils/useFirestore";
 
@@ -34,7 +34,7 @@ const ListMembersModal = () => {
 
   //Utilisation des contextes Auth et Lists
   const { userData } = useAuth();
-  const lists = useContext(ListsContext);
+  const { lists } = useLists();
 
   // State pour la nav tab
   const [value, setValue] = useState(0);
@@ -47,7 +47,7 @@ const ListMembersModal = () => {
   const [, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
 
-  const matchedList = lists?.lists?.filter((list) => {
+  const matchedList = lists?.filter((list) => {
     return list.id === id;
   });
 

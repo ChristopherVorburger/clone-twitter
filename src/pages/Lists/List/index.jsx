@@ -11,7 +11,7 @@ import News from "../../../components/News";
 import Header from "../../../components/Header";
 
 import { useAuth } from "../../../context/authContext";
-import { ListsContext } from "../../../context/listsContext";
+import { useLists } from "../../../context/listsContext";
 
 import useStyles from "./styles";
 import { arrayRemove, doc, updateDoc } from "firebase/firestore";
@@ -24,14 +24,14 @@ const List = () => {
   const navigate = useNavigate();
 
   const { authUser, userData } = useAuth();
-  const lists = React.useContext(ListsContext);
+  const { lists } = useLists();
 
   const [textButton, setTextButton] = React.useState("Following");
 
   const users = useFirestore("users");
   const tweets = useFirestore("tweets");
 
-  const matchedList = lists?.lists?.filter((list) => {
+  const matchedList = lists?.filter((list) => {
     return list?.id === id;
   });
 

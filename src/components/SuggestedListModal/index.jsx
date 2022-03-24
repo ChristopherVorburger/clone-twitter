@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 // Composants MUI
@@ -13,7 +13,7 @@ import { icons } from "../../constants";
 
 // Context
 import { useAuth } from "../../context/authContext";
-import { ListsContext } from "../../context/listsContext";
+import { useLists } from "../../context/listsContext";
 
 // Hooks
 import { useFirestore } from "../../utils/useFirestore";
@@ -49,12 +49,12 @@ const SuggestedListModal = () => {
 
   //Utilisation des contextes Auth et Lists
   const { userData } = useAuth();
-  const listsContext = useContext(ListsContext);
+  const { lists } = useLists();
 
   const users = useFirestore("users");
 
   // Recherche de la liste séléctionnée
-  const matchedList = listsContext?.lists?.filter((list) => {
+  const matchedList = lists?.filter((list) => {
     return list.id === id;
   });
 

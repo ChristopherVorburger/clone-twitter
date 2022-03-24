@@ -1,4 +1,4 @@
-import { useState, useContext, useReducer, useEffect } from "react";
+import { useState, useReducer, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 // Fonctions firebase
@@ -22,7 +22,7 @@ import useStyles from "./styles";
 
 // Context
 import { useAuth } from "../../context/authContext";
-import { ListsContext } from "../../context/listsContext";
+import { useLists } from "../../context/listsContext";
 import { useFirestore } from "../../utils/useFirestore";
 
 // Reducer
@@ -54,11 +54,11 @@ const EditListModal = () => {
 
   //Utilisation du contexte Auth
   const { userData } = useAuth();
-  const lists = useContext(ListsContext);
+  const { lists } = useLists();
 
   const users = useFirestore("users");
 
-  const matchedList = lists?.lists?.filter((list) => {
+  const matchedList = lists?.filter((list) => {
     return list.id === id;
   });
 
