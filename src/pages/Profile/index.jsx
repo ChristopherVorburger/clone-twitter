@@ -20,15 +20,13 @@ import WhoToFollow from "../../components/News/WhoToFollow";
 // Import Auth Context
 import { useAuth } from "../../context/authContext";
 import { useUsers } from "../../context/usersContext";
+import { useTweets } from "../../context/tweetContext";
 
 // Import des icones
 import { icons } from "../../constants";
 
 // Import des images
 import { images } from "../../constants";
-
-// Import hooks
-import { useFirestoreWithQuery } from "../../utils/useFirestoreWithQuery";
 
 // Import styles
 import useStyles from "./styles";
@@ -53,9 +51,7 @@ const Profile = () => {
   // Utilisation des contextes Auth et Users
   const { authUser, userData } = useAuth();
   const { users } = useUsers();
-
-  // Utilisation du hook perso useFirestoreWithQuery pour récupérer les tweets dans l'ordre de publication
-  const tweets = useFirestoreWithQuery("tweets");
+  const { tweetsByDate } = useTweets();
 
   // Filtre des utilisateurs pour obtenir les non suivis
   const unfollowUsers = users?.filter((user) => {
@@ -69,7 +65,7 @@ const Profile = () => {
 
   // On filtre les tweets à afficher
   // Ici en l'occurrence ceux qui ont le même author_id que la personne connectée
-  const filteredTweets = tweets?.filter((tweet) => {
+  const filteredTweets = tweetsByDate?.filter((tweet) => {
     return tweet.author_id === authUser?.uid;
   });
 
@@ -249,7 +245,7 @@ const Profile = () => {
             </Box>
             {/* Tweets de l'utilisateur connecté */}
             <Box>
-              {tweets ? (
+              {tweetsByDate ? (
                 <>
                   {filteredTweets.map((tweet) => (
                     <Tweet key={tweet.id} tweet={tweet} />

@@ -21,6 +21,7 @@ import InexistingAccount from "../../components/InexistingAccount";
 // Import Auth Context
 import { useAuth } from "../../context/authContext";
 import { useUsers } from "../../context/usersContext";
+import { useTweets } from "../../context/tweetContext";
 
 // Import des icones
 import { icons } from "../../constants";
@@ -28,10 +29,6 @@ import { icons } from "../../constants";
 // Import des images
 import { images } from "../../constants";
 
-// Import hooks
-import { useFirestoreWithQuery } from "../../utils/useFirestoreWithQuery";
-
-// Import styles
 import { arrayRemove, doc, updateDoc } from "firebase/firestore";
 import { database } from "../../firebase-config";
 
@@ -63,9 +60,7 @@ const ForeignProfile = () => {
   // Utilisation des contextes Auth et Users
   const { authUser, userData } = useAuth();
   const { users } = useUsers();
-
-  // Utilisation du hook perso useFirestoreWithQuery pour récupérer les tweets dans l'ordre de publication
-  const tweets = useFirestoreWithQuery("tweets");
+  const { tweetsByDate } = useTweets();
 
   // Récupération du user en fonction du username dans l'url via useParams()
   const user = users?.filter((user) => {
@@ -90,7 +85,7 @@ const ForeignProfile = () => {
 
   // On filtre les tweets à afficher
   // Ici les tweets du user en question
-  const filteredTweets = tweets?.filter((tweet) => {
+  const filteredTweets = tweetsByDate?.filter((tweet) => {
     return tweet.author_id === user?.[0]?.id;
   });
 
@@ -434,7 +429,7 @@ const ForeignProfile = () => {
                 </Box>
                 {/* Tweets de l'utilisateur connecté */}
                 <Box>
-                  {tweets ? (
+                  {tweetsByDate ? (
                     <>
                       {filteredTweets.map((tweet) => (
                         <Tweet key={tweet.id} tweet={tweet} />

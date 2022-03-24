@@ -5,8 +5,6 @@ import { Box, Button, Typography } from "@mui/material";
 
 import { icons, images } from "../../../constants";
 
-import { useFirestore } from "../../../utils/useFirestore";
-
 import News from "../../../components/News";
 import Header from "../../../components/Header";
 import Tweet from "../../../components/Tweet/Tweet";
@@ -14,6 +12,7 @@ import Tweet from "../../../components/Tweet/Tweet";
 import { useAuth } from "../../../context/authContext";
 import { useLists } from "../../../context/listsContext";
 import { useUsers } from "../../../context/usersContext";
+import { useTweets } from "../../../context/tweetContext";
 
 import { arrayRemove, doc, updateDoc } from "firebase/firestore";
 import { database } from "../../../firebase-config";
@@ -28,10 +27,9 @@ const List = () => {
   const { authUser, userData } = useAuth();
   const { lists } = useLists();
   const { users } = useUsers();
+  const { tweets } = useTweets();
 
   const [textButton, setTextButton] = React.useState("Following");
-
-  const tweets = useFirestore("tweets");
 
   const matchedList = lists?.filter((list) => {
     return list?.id === id;

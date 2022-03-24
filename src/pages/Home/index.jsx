@@ -12,11 +12,9 @@ import Tweet from "../../components/Tweet/Tweet";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Box, Divider } from "@mui/material";
 
-// hooks
-import { useFirestoreWithQuery } from "../../utils/useFirestoreWithQuery";
-
 // Import du context Auth
 import { useAuth } from "../../context/authContext";
+import { useTweets } from "../../context/tweetContext";
 
 //Import des icones
 import { icons } from "../../constants";
@@ -24,15 +22,13 @@ import { icons } from "../../constants";
 const Home = () => {
   // Utilisation du hook useContext pour récupérer le contexte Auth
   const { authUser, userData } = useAuth();
-
-  // Utilisation du hook perso useFirestoreWithQuery pour récupérer les tweets dans l'ordre de publication
-  const tweets = useFirestoreWithQuery("tweets");
+  const { tweetsByDate } = useTweets();
 
   // On filtre les tweets à afficher
   // Ici en l'occurrence ceux qui ont le même author_id que la personne connectée
   // Ici en l'occurrence ceux qui ont le même author_id que l'utilisateur connecté
   // et aussi ceux que l'utilisateur connecté a comme following
-  const filteredTweets = tweets?.filter((tweet) => {
+  const filteredTweets = tweetsByDate?.filter((tweet) => {
     return (
       tweet?.author_id === authUser?.uid ||
       userData?.[0]?.following?.includes(tweet.author_id)
@@ -60,7 +56,7 @@ const Home = () => {
           {filteredTweets?.length === 0 ? <Welcome /> : null}
           {/* Sinon, */}
           {/* On map sur le tableau filtré */}
-          {tweets ? (
+          {tweetsByDate ? (
             <>
               {filteredTweets.map((tweet) => (
                 <Tweet key={tweet?.id} tweet={tweet} />
