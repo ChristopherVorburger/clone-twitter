@@ -58,10 +58,6 @@ export default function Tweet({ tweet }) {
   //Recherche de l'id du user qui match avec l'author_id du tweet
   const matchedUser = users?.filter((user) => user?.id === author_id);
 
-  //
-  //Gestion des réponses du tweet
-  const [openReply, setOpenReply] = useState(false);
-
   // On séléctionne les références dont on a besoin
   const selectedTweetRef = doc(database, "tweets", id);
 
@@ -194,11 +190,13 @@ export default function Tweet({ tweet }) {
           <TweetTxt>{text}</TweetTxt>
         </TweetLink>
         <TweetReactions>
-          <Comments onClick={() => setOpenReply(!openReply)}>
-            <MessageIcon
-              style={{ color: "#535471", width: "20px", height: "20px" }}
-            />
-            <span>{tweet?.public_metrics?.reply_count}</span>
+          <Comments>
+            <TweetLink to={`/status/${tweet?.id}`} state={{ state: tweet }}>
+              <MessageIcon
+                style={{ color: "#535471", width: "20px", height: "20px" }}
+              />
+              <span>{tweet?.public_metrics?.reply_count}</span>
+            </TweetLink>
           </Comments>
           <Retweets>
             <ReplyAllIcon

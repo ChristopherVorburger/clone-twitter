@@ -9,19 +9,36 @@ import {
   ButtonSubmit,
 } from "./TweetInput.Style";
 
-import { addDoc, serverTimestamp, collection } from "firebase/firestore";
+import {
+  addDoc,
+  serverTimestamp,
+  collection,
+  updateDoc,
+  doc,
+} from "firebase/firestore";
 
 import { database } from "../../firebase-config";
 
 import { useAuth } from "../../context/authContext";
+import { useTweets } from "../../context/tweetContext";
 
 import { images } from "../../constants";
 
 export default function TweetInput() {
   const [text, setText] = useState("");
   const { authUser, userData } = useAuth();
+  const { tweets } = useTweets();
+
   //on récup l'id du tweet dans l'URL
   const { id } = useParams();
+
+  // On séléctionne les références dont on a besoin
+  const selectedTweetRef = doc(database, "tweets", id);
+
+  // Recherche du tweet sélectionné
+  const tweet = tweets?.filter((tweet) => {
+    return tweet.id === id;
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,6 +48,16 @@ export default function TweetInput() {
       created_at: serverTimestamp(),
       text,
       tweet_id: id,
+    }).then(() => {
+      updateDoc(selectedTweetRef, {
+        public_metrics: {
+          ...tweet?.[0]?.public_metrics,
+          reply_count:
+            parseInt(tweet?.[0]?.public_metrics?.reply_count, 10) + 1,
+        },
+      }).catch((err) => {
+        console.log(err.message);
+      });
     });
 
     setText("");
