@@ -23,7 +23,7 @@ import useStyles from "./styles";
 // Context
 import { useAuth } from "../../context/authContext";
 import { useLists } from "../../context/listsContext";
-import { useFirestore } from "../../utils/useFirestore";
+import { useUsers } from "../../context/usersContext";
 
 // Reducer
 const reducer = (state, action) => {
@@ -52,11 +52,10 @@ const EditListModal = () => {
   const [coverSelected, setCoverSelected] = useState([]);
   const [coverFile, setCoverFile] = useState();
 
-  //Utilisation du contexte Auth
+  //Utilisation des contextes
   const { userData } = useAuth();
   const { lists } = useLists();
-
-  const users = useFirestore("users");
+  const { users } = useUsers();
 
   const matchedList = lists?.filter((list) => {
     return list.id === id;
@@ -186,8 +185,6 @@ const EditListModal = () => {
     });
     navigate(`/${userData?.[0]?.username}/lists`);
   };
-
-  console.log(nameError);
 
   return (
     <>

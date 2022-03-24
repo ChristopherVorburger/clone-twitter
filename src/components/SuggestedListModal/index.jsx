@@ -14,9 +14,7 @@ import { icons } from "../../constants";
 // Context
 import { useAuth } from "../../context/authContext";
 import { useLists } from "../../context/listsContext";
-
-// Hooks
-import { useFirestore } from "../../utils/useFirestore";
+import { useUsers } from "../../context/usersContext";
 
 // Composants React
 import SuggestedMembers from "./SuggestedMembers";
@@ -50,8 +48,7 @@ const SuggestedListModal = () => {
   //Utilisation des contextes Auth et Lists
   const { userData } = useAuth();
   const { lists } = useLists();
-
-  const users = useFirestore("users");
+  const { users } = useUsers();
 
   // Recherche de la liste séléctionnée
   const matchedList = lists?.filter((list) => {

@@ -1,22 +1,24 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
+import { Box, Button, Typography } from "@mui/material";
+
 import { icons, images } from "../../../constants";
 
 import { useFirestore } from "../../../utils/useFirestore";
 
-import { Box, Button, Typography } from "@mui/material";
-
 import News from "../../../components/News";
 import Header from "../../../components/Header";
+import Tweet from "../../../components/Tweet/Tweet";
 
 import { useAuth } from "../../../context/authContext";
 import { useLists } from "../../../context/listsContext";
+import { useUsers } from "../../../context/usersContext";
 
-import useStyles from "./styles";
 import { arrayRemove, doc, updateDoc } from "firebase/firestore";
 import { database } from "../../../firebase-config";
-import Tweet from "../../../components/Tweet/Tweet";
+
+import useStyles from "./styles";
 
 const List = () => {
   const { id } = useParams();
@@ -25,10 +27,10 @@ const List = () => {
 
   const { authUser, userData } = useAuth();
   const { lists } = useLists();
+  const { users } = useUsers();
 
   const [textButton, setTextButton] = React.useState("Following");
 
-  const users = useFirestore("users");
   const tweets = useFirestore("tweets");
 
   const matchedList = lists?.filter((list) => {

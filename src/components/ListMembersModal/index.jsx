@@ -14,11 +14,10 @@ import { icons } from "../../constants";
 // Styles
 import useStyles from "./styles";
 
-// Context
+// Contexts
 import { useAuth } from "../../context/authContext";
 import { useLists } from "../../context/listsContext";
-
-import { useFirestore } from "../../utils/useFirestore";
+import { useUsers } from "../../context/usersContext";
 
 import ListMembers from "../ListMembersModal/ListMembers";
 
@@ -32,9 +31,10 @@ const ListMembersModal = () => {
   const classes = useStyles();
   const navigate = useNavigate();
 
-  //Utilisation des contextes Auth et Lists
+  //Utilisation des contextes
   const { userData } = useAuth();
   const { lists } = useLists();
+  const { users } = useUsers();
 
   // State pour la nav tab
   const [value, setValue] = useState(0);
@@ -55,8 +55,6 @@ const ListMembersModal = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
   };
-
-  const users = useFirestore("users");
 
   const usersMembers = users?.filter((user) => {
     return matchedList?.[0]?.members?.includes(user.id);

@@ -10,8 +10,8 @@ import UserList from "../../components/UserList";
 import DiscoverList from "../../components/DiscoverList";
 
 import { useAuth } from "../../context/authContext";
-
-import { useFirestore } from "../../utils/useFirestore";
+import { useLists } from "../../context/listsContext";
+import { useUsers } from "../../context/usersContext";
 
 import { icons } from "../../constants";
 
@@ -22,6 +22,8 @@ const Lists = () => {
   const { username } = useParams();
 
   const { userData } = useAuth();
+  const { lists } = useLists();
+  const { users } = useUsers();
 
   const iconsArray = [
     {
@@ -30,10 +32,6 @@ const Lists = () => {
     },
     { name: icons.MoreHorizIcon },
   ];
-
-  const lists = useFirestore("lists");
-
-  const users = useFirestore("users");
 
   // Recherche des listes non suivies
   // eslint-disable-next-line array-callback-return
