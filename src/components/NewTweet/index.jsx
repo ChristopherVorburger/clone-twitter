@@ -27,6 +27,7 @@ const NewTweet = () => {
   const classes = useStyles();
   const [text, setText] = useState("");
   const [textError, setTextError] = useState(false);
+  const [disableButton, setDisableButton] = useState(false);
 
   const { authUser, userData } = useAuth();
 
@@ -73,8 +74,11 @@ const NewTweet = () => {
 
   useEffect(() => {
     setTextError(false);
+    setDisableButton(false);
     if (text.length > 280) {
       setTextError(true);
+    } else if (text.length === 0) {
+      setDisableButton(true);
     }
   }, [text]);
 
@@ -191,7 +195,7 @@ const NewTweet = () => {
             <Box>
               <Button
                 variant="contained"
-                disabled={textError}
+                disabled={(textError, disableButton)}
                 sx={{
                   textTransform: "none",
                   borderRadius: "50px",
