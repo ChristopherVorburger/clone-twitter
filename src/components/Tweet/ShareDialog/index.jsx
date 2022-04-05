@@ -1,9 +1,10 @@
 import React from "react";
 
+// Firebase
 import { database } from "../../../firebase-config";
-
 import { doc, updateDoc, arrayRemove } from "firebase/firestore";
 
+// MUI
 import {
   Dialog,
   List,
@@ -12,73 +13,97 @@ import {
   ListItemText,
 } from "@mui/material";
 
+// Contexts
 import { useAuth } from "../../../context/authContext";
-import { SnackbarsContext } from "../../../context/snackbarsContext";
+import { useGlobal } from "../../../context/globalContext";
 
+// Icons
 import { icons } from "../../../constants";
 
 // Fonction qui affiche les actions possibles au clique sur le bouton share
 const ShareDialog = ({ id, open }) => {
   const { userData } = useAuth();
-  const snackbar = React.useContext(SnackbarsContext);
+  const { dispatch } = useGlobal();
 
   // Référence du user à mettre à jour
   const userRef = doc(database, "users", userData?.[0]?.id);
 
-  // fonction pour ajouter un bookmark
+  // Fonction pour ajouter un bookmark
   const addBookmark = (e) => {
     e.preventDefault();
-    snackbar.setMessageBookmarkSnackbar("");
 
+    // Sécurité pour ne pas ajouter deux fois le même tweet dans les bookmarks
+    if (userData?.[0]?.bookmarks?.includes(id)) {
+      dispatch({
+        type: "OPEN_INFO_SNACKBAR",
+        payload: { message: "The tweet is already in your bookmarks " },
+      });
+      return;
+    }
     // Si l'utilisateur n'a pas de bookmarks on lui ajoute un nouveau tableau bookmarks avec le premier
     if (!userData?.[0]?.bookmarks) {
       updateDoc(userRef, {
         bookmarks: [id],
       })
-        // Puis on affiche la snackbar en mettant à jour les states
+        // Puis on affiche la snackbar
         .then(() => {
-          snackbar.setMessageBookmarkSnackbar("Tweet added to your Bookmarks");
-          snackbar.setOpenBookmarkSnackbar(true);
-          console.log("Add first bookmark done");
+          dispatch({
+            type: "OPEN_INFO_SNACKBAR",
+            payload: { message: "Tweet added to your Bookmarks" },
+          });
         })
         .catch((err) => {
-          console.log(err.message);
+          dispatch({
+            type: "OPEN_ERROR_SNACKBAR",
+            payload: {
+              message: `An error occurred when adding the tweet ${err.message}`,
+            },
+          });
         });
     } else {
       // Sinon on ajoute juste le tweet au tableau existant
       updateDoc(userRef, {
         bookmarks: [...userData?.[0]?.bookmarks, id],
       })
-        // Puis on affiche la snackbar en mettant à jour les states
+        // Puis on affiche la snackbar
         .then(() => {
-          snackbar.setMessageBookmarkSnackbar("Tweet added to your Bookmarks");
-          snackbar.setOpenBookmarkSnackbar(true);
-          console.log("Add to bookmarks done");
+          dispatch({
+            type: "OPEN_INFO_SNACKBAR",
+            payload: { message: "Tweet added to your Bookmarks" },
+          });
         })
         .catch((err) => {
-          console.log(err.message);
+          dispatch({
+            type: "OPEN_INFO_SNACKBAR",
+            payload: {
+              message: `An error occurred when adding the tweet ${err.message}`,
+            },
+          });
         });
     }
   };
 
-  // fonction pour supprimer un bookmark
+  // Fonction pour supprimer un bookmark
   const removeBookmark = (e) => {
     e.preventDefault();
-    snackbar.setMessageBookmarkSnackbar("");
 
     updateDoc(userRef, {
       bookmarks: arrayRemove(id),
     })
-      // Puis on affiche la snackbar en mettant à jour les states
+      // Puis on affiche la snackbar
       .then(() => {
-        snackbar.setMessageBookmarkSnackbar(
-          "Tweet removed from your Bookmarks"
-        );
-        snackbar.setOpenBookmarkSnackbar(true);
-        console.log("Remove from bookmarks done");
+        dispatch({
+          type: "OPEN_INFO_SNACKBAR",
+          payload: { message: "Tweet removed from your Bookmarks" },
+        });
       })
       .catch((err) => {
-        console.log(err.message);
+        dispatch({
+          type: "OPEN_INFO_SNACKBAR",
+          payload: {
+            message: `An error occurred when adding the tweet : ${err.message}`,
+          },
+        });
       });
   };
 

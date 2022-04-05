@@ -7,15 +7,18 @@ import App from "./App";
 import "./index.css";
 import { AuthContextProvider } from "./context/authContext";
 import { ModalContextProvider } from "./context/modalContext";
+import { GlobalContextProvider } from "./context/globalContext";
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
-      <AuthContextProvider>
-        <ModalContextProvider>
-          <App />
-        </ModalContextProvider>
-      </AuthContextProvider>
+      <GlobalContextProvider>
+        <AuthContextProvider>
+          <ModalContextProvider>
+            <App />
+          </ModalContextProvider>
+        </AuthContextProvider>
+      </GlobalContextProvider>
     </Router>
   </React.StrictMode>,
   document.getElementById("root")

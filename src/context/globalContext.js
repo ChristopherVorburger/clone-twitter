@@ -23,12 +23,44 @@ const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
+// Reducer snackbars
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "OPEN_INFO_SNACKBAR":
+      return {
+        openSnackbar: true,
+        snackbarMessage: action.payload.message,
+        snackbarColor: "info",
+      };
+    case "OPEN_ERROR_SNACKBAR":
+      return {
+        openSnackbar: true,
+        snackbarMessage: action.payload.message,
+        snackbarColor: "error",
+      };
+    case "CLOSE_SNACKBAR":
+      return {
+        ...state,
+        openSnackbar: false,
+      };
+    default:
+      throw new Error(`Unknown action type: ${action.type}`);
+  }
+};
+
 // Create context provider
 export function GlobalContextProvider(props) {
-  // States snackbar
-  const [openSnackbar, setOpenSnackbar] = React.useState(false);
-  const [snackbarMessage, setSnackbarMessage] = React.useState("");
-  const [snackbarColor, setSnackbarColor] = React.useState("success");
+  // Initial State for the snackbar reducer
+  const initialSnackbarValue = {
+    openSnackbar: false,
+    snackbarMessage: "",
+    snackbarColor: "info",
+  };
+  // Using reducer
+  const [state, dispatch] = React.useReducer(reducer, initialSnackbarValue);
+
+  // Destructuring values from the state of the recucer
+  const { openSnackbar, snackbarMessage, snackbarColor } = state;
 
   // Handle close snackbar
   const handleClose = (event, reason) => {
@@ -36,14 +68,12 @@ export function GlobalContextProvider(props) {
       return;
     }
 
-    setOpenSnackbar(false);
+    dispatch({ type: "CLOSE_SNACKBAR" });
   };
 
   const value = React.useMemo(
     () => ({
-      setOpenSnackbar,
-      setSnackbarMessage,
-      setSnackbarColor,
+      dispatch,
     }),
     []
   );
@@ -54,6 +84,7 @@ export function GlobalContextProvider(props) {
         open={openSnackbar}
         autoHideDuration={3000}
         onClose={handleClose}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
         <Alert
           onClose={handleClose}

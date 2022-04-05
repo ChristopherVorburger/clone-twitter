@@ -30,7 +30,6 @@ import Message from "./components/Message/Message";
 import ChannelSearchUser from "./components/Message/ChannelSearchUser/ChannelSearchUser";
 
 import { useAuth } from "./context/authContext";
-import { SnackbarsContextProvider } from "./context/snackbarsContext";
 import { ListsContextProvider } from "./context/listsContext";
 import { UsersContextProvider } from "./context/usersContext";
 import { TweetsContextProvider } from "./context/tweetContext";
@@ -85,54 +84,46 @@ export default function App() {
           <UsersContextProvider>
             <TweetsContextProvider>
               <ListsContextProvider>
-                <SnackbarsContextProvider>
-                  <Routes>
-                    <Route path="/home" element={<Home />} />
-                    <Route
-                      path={`/${userData?.[0]?.username}`}
-                      element={<Profile />}
-                    />
-                    <Route path="/:username" element={<ForeignProfile />} />
-                    <Route path="/:username/lists" element={<Lists />} />
-                    <Route
-                      path="/:username/lists/create"
-                      element={<CreateListModal />}
-                    />
-                    <Route path="/lists/:id" element={<List />} />
-                    <Route path="/lists/:id/info" element={<EditListModal />} />
-                    <Route
-                      path="/lists/:id/members"
-                      element={<ListMembersModal />}
-                    />
-                    <Route
-                      path="/lists/:id/members/suggested"
-                      element={<SuggestedListModal />}
-                    />
-                    <Route
-                      path="/:username/followers"
-                      element={<Followers />}
-                    />
-                    <Route
-                      path="/:username/following"
-                      element={<Following />}
-                    />
-                    <Route
-                      path="/settings/profile"
-                      element={<EditProfileModal />}
-                    />
-                    <Route path="/bookmarks" element={<Bookmarks />} />
-                    <Route path="/notifications" element={<Notifications />} />
-                    <Route
-                      path="/notifications/mentions"
-                      element={<Mentions />}
-                    />
-                    <Route path="/status/:id" element={<TweetPage />} />
-                    <Route path="/explore" element={<Explore />} />
-                    <Route path="*" element={<Navigate to="/home" />} />
-                    <Route path="/messages" element={<Message />} />
-                    <Route path="/searchUser" element={<ChannelSearchUser />} />
-                  </Routes>
-                </SnackbarsContextProvider>
+                <Routes>
+                  <Route path="/home" element={<Home />} />
+                  <Route
+                    path={`/${userData?.[0]?.username}`}
+                    element={<Profile />}
+                  />
+                  <Route path="/:username" element={<ForeignProfile />} />
+                  <Route path="/:username/lists" element={<Lists />} />
+                  <Route
+                    path="/:username/lists/create"
+                    element={<CreateListModal />}
+                  />
+                  <Route path="/lists/:id" element={<List />} />
+                  <Route path="/lists/:id/info" element={<EditListModal />} />
+                  <Route
+                    path="/lists/:id/members"
+                    element={<ListMembersModal />}
+                  />
+                  <Route
+                    path="/lists/:id/members/suggested"
+                    element={<SuggestedListModal />}
+                  />
+                  <Route path="/:username/followers" element={<Followers />} />
+                  <Route path="/:username/following" element={<Following />} />
+                  <Route
+                    path="/settings/profile"
+                    element={<EditProfileModal />}
+                  />
+                  <Route path="/bookmarks" element={<Bookmarks />} />
+                  <Route path="/notifications" element={<Notifications />} />
+                  <Route
+                    path="/notifications/mentions"
+                    element={<Mentions />}
+                  />
+                  <Route path="/status/:id" element={<TweetPage />} />
+                  <Route path="/explore" element={<Explore />} />
+                  <Route path="*" element={<Navigate to="/home" />} />
+                  <Route path="/messages" element={<Message />} />
+                  <Route path="/searchUser" element={<ChannelSearchUser />} />
+                </Routes>
               </ListsContextProvider>
             </TweetsContextProvider>
           </UsersContextProvider>
