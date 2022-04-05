@@ -1,4 +1,4 @@
-import { useState, useReducer } from "react";
+import { useState, useReducer, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 // Fonctions firebase
@@ -38,17 +38,19 @@ const reducer = (state, action) => {
 };
 
 const CreateListModal = () => {
-  const classes = useStyles();
-  const navigate = useNavigate();
-  // Renommage du dispatch pour les snackbars pour éviter la collision avec le reducer déjà présent dans ce fichier
-  const { dispatch: dispatchSnackbar } = useGlobal();
+  const [coverSelected, setCoverSelected] = useState([]);
+  const [coverFile, setCoverFile] = useState();
+  const [nameError, setNameError] = useState(false);
 
   // States pour la modale
   const [, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
 
-  const [coverSelected, setCoverSelected] = useState([]);
-  const [coverFile, setCoverFile] = useState();
+  // Hooks
+  const classes = useStyles();
+  const navigate = useNavigate();
+  // Renommage du dispatch pour les snackbars pour éviter la collision avec le reducer déjà présent dans ce fichier
+  const { dispatch: dispatchSnackbar } = useGlobal();
 
   //Utilisation du contexte Auth
   const { authUser, userData } = useAuth();
@@ -97,6 +99,18 @@ const CreateListModal = () => {
   // Fonction pour créer une liste
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // Gestion du champ input name vide
+    setNameError(false);
+    if (name?.length === 0) {
+      setNameError(true);
+      dispatchSnackbar({
+        type: "OPEN_ERROR_SNACKBAR",
+        payload: {
+          message: "Name can't be blank",
+        },
+      });
+      return;
+    }
 
     // Si il n'y a pas de cover et que l'utilisateur connecté n'a pas encore de liste de liste,
     // création du tableau lists dans userData et création de la première liste sans cover
@@ -426,6 +440,7 @@ const CreateListModal = () => {
                   onChange={inputAction}
                   label="Name"
                   fullWidth
+                  error={nameError}
                 />
               </Box>
               <Box className={classes.field}>
