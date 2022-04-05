@@ -103,7 +103,7 @@ const EditListModal = () => {
       setNameError(true);
     }
 
-    // Si pas de nouvelle image de profil ou de cover, mise à jour des données des inputs
+    // Si pas de nouvelle image de cover, mise à jour des données des inputs uniquement
     if (coverSelected.name === undefined) {
       updateDoc(currentListRef, {
         name,

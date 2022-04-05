@@ -22,6 +22,7 @@ import useStyles from "./styles";
 
 // Context
 import { useAuth } from "../../context/authContext";
+import { useGlobal } from "../../context/globalContext";
 
 // Reducer
 const reducer = (state, action) => {
@@ -39,6 +40,8 @@ const reducer = (state, action) => {
 const CreateListModal = () => {
   const classes = useStyles();
   const navigate = useNavigate();
+  // Renommage du dispatch pour les snackbars pour éviter la collision avec le reducer déjà présent dans ce fichier
+  const { dispatch: dispatchSnackbar } = useGlobal();
 
   // States pour la modale
   const [, setOpen] = useState(false);
@@ -126,11 +129,19 @@ const CreateListModal = () => {
             ...userData?.[0],
             lists: [cred._key.path.segments[1]],
           });
-          console.log("First List created without cover !");
+          dispatchSnackbar({
+            type: "OPEN_INFO_SNACKBAR",
+            payload: { message: "List created !" },
+          });
           navigate(`/lists/${cred._key.path.segments[1]}/members/suggested`);
         })
         .catch((err) => {
-          console.log(err.message);
+          dispatch({
+            type: "OPEN_ERROR_SNACKBAR",
+            payload: {
+              message: `An error occurred when creating the list : ${err.message}`,
+            },
+          });
         });
 
       // Si pas de cover et que l'utilisateur connecté a déjà au moins une liste,
@@ -164,11 +175,19 @@ const CreateListModal = () => {
             ...userData?.[0],
             lists: [...listsCurrentUser, cred._key.path.segments[1]],
           });
-          console.log("List created without cover !");
+          dispatchSnackbar({
+            type: "OPEN_INFO_SNACKBAR",
+            payload: { message: "List created !" },
+          });
           navigate(`/lists/${cred._key.path.segments[1]}/members/suggested`);
         })
         .catch((err) => {
-          console.log(err.message);
+          dispatch({
+            type: "OPEN_ERROR_SNACKBAR",
+            payload: {
+              message: `An error occurred when creating the list : ${err.message}`,
+            },
+          });
         });
 
       // Si il n'y a pas de listes mais une image de cover, on ajoute une première liste avec cover
@@ -198,11 +217,19 @@ const CreateListModal = () => {
             ...userData?.[0],
             lists: [cred._key.path.segments[1]],
           });
-          console.log("First List created with cover !");
+          dispatchSnackbar({
+            type: "OPEN_INFO_SNACKBAR",
+            payload: { message: "List created !" },
+          });
           navigate(`/lists/${cred._key.path.segments[1]}/members/suggested`);
         })
         .catch((err) => {
-          console.log(err.message);
+          dispatch({
+            type: "OPEN_ERROR_SNACKBAR",
+            payload: {
+              message: `An error occurred when creating the list : ${err.message}`,
+            },
+          });
         });
 
       // Sinon on ajoute au tableau déjà présent
@@ -233,11 +260,19 @@ const CreateListModal = () => {
             ...userData?.[0],
             lists: [...listsCurrentUser, cred._key.path.segments[1]],
           });
-          console.log("List created with cover !");
+          dispatchSnackbar({
+            type: "OPEN_INFO_SNACKBAR",
+            payload: { message: "List created !" },
+          });
           navigate(`/lists/${cred._key.path.segments[1]}/members/suggested`);
         })
         .catch((err) => {
-          console.log(err.message);
+          dispatch({
+            type: "OPEN_ERROR_SNACKBAR",
+            payload: {
+              message: `An error occurred when creating the list : ${err.message}`,
+            },
+          });
         });
     }
 
@@ -322,10 +357,6 @@ const CreateListModal = () => {
                         <input
                           className={classes.button__add_cover}
                           onChange={(e) => {
-                            console.log(
-                              "e.target.files image cover",
-                              e.target.files
-                            );
                             return (
                               setCoverSelected(e.target.files[0]),
                               // Création de l'aperçu de l'image
@@ -368,10 +399,6 @@ const CreateListModal = () => {
                         <input
                           className={classes.button__add_cover}
                           onChange={(e) => {
-                            console.log(
-                              "e.target.files default cover",
-                              e.target.files
-                            );
                             return (
                               setCoverSelected(e.target.files[0]),
                               // Création de l'aperçu de l'image

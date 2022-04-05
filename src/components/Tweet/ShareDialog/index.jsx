@@ -35,7 +35,7 @@ const ShareDialog = ({ id, open }) => {
     // Sécurité pour ne pas ajouter deux fois le même tweet dans les bookmarks
     if (userData?.[0]?.bookmarks?.includes(id)) {
       dispatch({
-        type: "OPEN_INFO_SNACKBAR",
+        type: "OPEN_ERROR_SNACKBAR",
         payload: { message: "The tweet is already in your bookmarks " },
       });
       return;
@@ -74,7 +74,7 @@ const ShareDialog = ({ id, open }) => {
         })
         .catch((err) => {
           dispatch({
-            type: "OPEN_INFO_SNACKBAR",
+            type: "OPEN_ERROR_SNACKBAR",
             payload: {
               message: `An error occurred when adding the tweet ${err.message}`,
             },
@@ -99,7 +99,7 @@ const ShareDialog = ({ id, open }) => {
       })
       .catch((err) => {
         dispatch({
-          type: "OPEN_INFO_SNACKBAR",
+          type: "OPEN_ERROR_SNACKBAR",
           payload: {
             message: `An error occurred when adding the tweet : ${err.message}`,
           },
