@@ -24,6 +24,7 @@ import useStyles from "./styles";
 import { useAuth } from "../../context/authContext";
 import { useLists } from "../../context/listsContext";
 import { useUsers } from "../../context/usersContext";
+import { useGlobal } from "../../context/globalContext";
 
 // Reducer
 const reducer = (state, action) => {
@@ -39,23 +40,24 @@ const reducer = (state, action) => {
 };
 
 const EditListModal = () => {
-  const { id } = useParams();
-  const classes = useStyles();
-  const navigate = useNavigate();
+  const [nameError, setNameError] = useState(false);
+  const [coverSelected, setCoverSelected] = useState([]);
+  const [coverFile, setCoverFile] = useState();
 
   // States pour la modale
   const [, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
 
-  const [nameError, setNameError] = useState(false);
-
-  const [coverSelected, setCoverSelected] = useState([]);
-  const [coverFile, setCoverFile] = useState();
+  const { id } = useParams();
+  const classes = useStyles();
+  const navigate = useNavigate();
 
   //Utilisation des contextes
   const { userData } = useAuth();
   const { lists } = useLists();
   const { users } = useUsers();
+  // Renommage du dispatch pour les snackbars pour éviter la collision avec le reducer déjà présent dans ce fichier
+  const { dispatchSnackbar } = useGlobal();
 
   const matchedList = lists?.filter((list) => {
     return list.id === id;
@@ -111,11 +113,21 @@ const EditListModal = () => {
         private_list,
       })
         .then(() => {
-          console.log(`Mise à jour de la liste ${matchedList?.[0]?.name}`);
+          dispatchSnackbar({
+            type: "OPEN_INFO_SNACKBAR",
+            payload: {
+              message: `${matchedList?.[0]?.name} has been updated`,
+            },
+          });
           navigate(`/${userData?.[0]?.username}/lists`);
         })
         .catch((err) => {
-          console.log(err.message);
+          dispatchSnackbar({
+            type: "OPEN_ERROR_SNACKBAR",
+            payload: {
+              message: `An error occurred while updating ${matchedList?.[0]?.name} list : ${err.message}`,
+            },
+          });
         });
     }
     // Sinon mise à jour de toutes les données
@@ -139,11 +151,21 @@ const EditListModal = () => {
         cover_url: coverLink,
       })
         .then(() => {
-          console.log(`Mise à jour de la liste ${matchedList?.[0]?.name}`);
+          dispatchSnackbar({
+            type: "OPEN_INFO_SNACKBAR",
+            payload: {
+              message: `${matchedList?.[0]?.name} list has been updated`,
+            },
+          });
           navigate(`/${userData?.[0]?.username}/lists`);
         })
         .catch((err) => {
-          console.log(err.message);
+          dispatchSnackbar({
+            type: "OPEN_ERROR_SNACKBAR",
+            payload: {
+              message: `An error occurred while updating ${matchedList?.[0]?.name} list : ${err.message}`,
+            },
+          });
         });
     }
   };
@@ -161,28 +183,61 @@ const EditListModal = () => {
   // Fonction pour supprimer une liste
   const deleteList = async (e) => {
     e.preventDefault();
-    // Suppression des pins et des followers de la liste
-    usersWhoPinnedRefs.map((user) => {
-      return updateDoc(user, {
-        lists: arrayRemove(matchedList?.[0]?.id),
-        pinned_lists: arrayRemove(matchedList?.[0]?.id),
-      })
-        .then(() => {
-          console.log(
-            `Suppression des pins et des followers de la liste ${matchedList?.[0]?.name}`
-          );
-          deleteDoc(currentListRef)
+
+    // Si la liste possède des utilisateurs en lien avec elle
+    usersWhoPinnedRefs.length > 0
+      ? // Suppression des pins et des followers de la liste
+        usersWhoPinnedRefs.map((user) => {
+          return updateDoc(user, {
+            lists: arrayRemove(matchedList?.[0]?.id),
+            pinned_lists: arrayRemove(matchedList?.[0]?.id),
+          })
             .then(() => {
-              console.log(`Suppression de la liste ${matchedList?.[0]?.name}`);
+              deleteDoc(currentListRef)
+                .then(() => {
+                  dispatchSnackbar({
+                    type: "OPEN_INFO_SNACKBAR",
+                    payload: {
+                      message: `${matchedList?.[0]?.name} has been deleted`,
+                    },
+                  });
+                })
+                .catch((err) => {
+                  dispatchSnackbar({
+                    type: "OPEN_ERROR_SNACKBAR",
+                    payload: {
+                      message: `An error occurred while deleting ${matchedList?.[0]?.name} list : ${err.message}`,
+                    },
+                  });
+                });
             })
             .catch((err) => {
-              console.log(err.message);
+              dispatchSnackbar({
+                type: "OPEN_ERROR_SNACKBAR",
+                payload: {
+                  message: `An error occurred while deleting ${matchedList?.[0]?.name} list : ${err.message}`,
+                },
+              });
             });
         })
-        .catch((err) => {
-          console.log(err.message);
-        });
-    });
+      : // Sinon on la supprime uniquement elle
+        deleteDoc(currentListRef)
+          .then(() => {
+            dispatchSnackbar({
+              type: "OPEN_INFO_SNACKBAR",
+              payload: {
+                message: `${matchedList?.[0]?.name} has been deleted`,
+              },
+            });
+          })
+          .catch((err) => {
+            dispatchSnackbar({
+              type: "OPEN_ERROR_SNACKBAR",
+              payload: {
+                message: `An error occurred while deleting ${matchedList?.[0]?.name} list : ${err.message}`,
+              },
+            });
+          });
     navigate(`/${userData?.[0]?.username}/lists`);
   };
 
@@ -266,10 +321,6 @@ const EditListModal = () => {
                         <input
                           className={classes.button__add_cover}
                           onChange={(e) => {
-                            console.log(
-                              "e.target.files image cover",
-                              e.target.files
-                            );
                             return (
                               setCoverSelected(e.target.files[0]),
                               // Création de l'aperçu de l'image
@@ -312,10 +363,6 @@ const EditListModal = () => {
                         <input
                           className={classes.button__add_cover}
                           onChange={(e) => {
-                            console.log(
-                              "e.target.files default cover",
-                              e.target.files
-                            );
                             return (
                               setCoverSelected(e.target.files[0]),
                               // Création de l'aperçu de l'image

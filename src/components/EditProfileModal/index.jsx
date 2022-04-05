@@ -267,10 +267,6 @@ const EditProfileModal = () => {
                         <input
                           className={classes.button__add_cover}
                           onChange={(e) => {
-                            console.log(
-                              "e.target.files image cover",
-                              e.target.files
-                            );
                             return (
                               setCoverSelected(e.target.files[0]),
                               // Création de l'aperçu de l'image
@@ -313,10 +309,6 @@ const EditProfileModal = () => {
                         <input
                           className={classes.button__add_cover}
                           onChange={(e) => {
-                            console.log(
-                              "e.target.files default cover",
-                              e.target.files
-                            );
                             return (
                               setCoverSelected(e.target.files[0]),
                               // Création de l'aperçu de l'image
@@ -361,11 +353,6 @@ const EditProfileModal = () => {
                         </label>
                         <input
                           onChange={(e) => {
-                            console.log(
-                              "e.target.files image profil",
-                              e.target.files
-                            );
-
                             return (
                               setImageSelected(e.target.files[0]),
                               // Création de l'aperçu de l'image

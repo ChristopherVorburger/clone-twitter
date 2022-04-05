@@ -23,7 +23,7 @@ import { icons } from "../../../constants";
 // Fonction qui affiche les actions possibles au clique sur le bouton share
 const ShareDialog = ({ id, open }) => {
   const { userData } = useAuth();
-  const { dispatch } = useGlobal();
+  const { dispatchSnackbar } = useGlobal();
 
   // Référence du user à mettre à jour
   const userRef = doc(database, "users", userData?.[0]?.id);
@@ -34,7 +34,7 @@ const ShareDialog = ({ id, open }) => {
 
     // Sécurité pour ne pas ajouter deux fois le même tweet dans les bookmarks
     if (userData?.[0]?.bookmarks?.includes(id)) {
-      dispatch({
+      dispatchSnackbar({
         type: "OPEN_ERROR_SNACKBAR",
         payload: { message: "The tweet is already in your bookmarks " },
       });
@@ -47,16 +47,16 @@ const ShareDialog = ({ id, open }) => {
       })
         // Puis on affiche la snackbar
         .then(() => {
-          dispatch({
+          dispatchSnackbar({
             type: "OPEN_INFO_SNACKBAR",
             payload: { message: "Tweet added to your Bookmarks" },
           });
         })
         .catch((err) => {
-          dispatch({
+          dispatchSnackbar({
             type: "OPEN_ERROR_SNACKBAR",
             payload: {
-              message: `An error occurred when adding the tweet ${err.message}`,
+              message: `An error occurred while adding the tweet ${err.message}`,
             },
           });
         });
@@ -67,16 +67,16 @@ const ShareDialog = ({ id, open }) => {
       })
         // Puis on affiche la snackbar
         .then(() => {
-          dispatch({
+          dispatchSnackbar({
             type: "OPEN_INFO_SNACKBAR",
             payload: { message: "Tweet added to your Bookmarks" },
           });
         })
         .catch((err) => {
-          dispatch({
+          dispatchSnackbar({
             type: "OPEN_ERROR_SNACKBAR",
             payload: {
-              message: `An error occurred when adding the tweet ${err.message}`,
+              message: `An error occurred while adding the tweet ${err.message}`,
             },
           });
         });
@@ -92,16 +92,16 @@ const ShareDialog = ({ id, open }) => {
     })
       // Puis on affiche la snackbar
       .then(() => {
-        dispatch({
+        dispatchSnackbar({
           type: "OPEN_INFO_SNACKBAR",
           payload: { message: "Tweet removed from your Bookmarks" },
         });
       })
       .catch((err) => {
-        dispatch({
+        dispatchSnackbar({
           type: "OPEN_ERROR_SNACKBAR",
           payload: {
-            message: `An error occurred when adding the tweet : ${err.message}`,
+            message: `An error occurred while adding the tweet : ${err.message}`,
           },
         });
       });

@@ -50,7 +50,7 @@ const CreateListModal = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   // Renommage du dispatch pour les snackbars pour éviter la collision avec le reducer déjà présent dans ce fichier
-  const { dispatch: dispatchSnackbar } = useGlobal();
+  const { dispatchSnackbar } = useGlobal();
 
   //Utilisation du contexte Auth
   const { authUser, userData } = useAuth();

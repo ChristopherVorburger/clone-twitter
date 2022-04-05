@@ -1,24 +1,30 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
+// MUI
 import { Box } from "@mui/system";
 import { Button, Typography } from "@mui/material";
 
+// Firebase
 import { arrayRemove, doc, updateDoc } from "firebase/firestore";
 import { database } from "../../firebase-config";
 
+// Contexts
 import { useAuth } from "../../context/authContext";
+import { useGlobal } from "../../context/globalContext";
 
-import useStyles from "./styles";
+// Constants & styles
 import { images } from "../../constants";
-import { Link } from "react-router-dom";
+import useStyles from "./styles";
 
 // Composant pour afficher une list
 const DiscoverList = ({ list, author }) => {
-  const classes = useStyles();
   const [textButton, setTextButton] = React.useState("Following");
 
-  // Utilisation du hook useContext pour récupérer le contexte Auth
+  // Hooks
+  const classes = useStyles();
   const { authUser, userData } = useAuth();
+  const { dispatchSnackbar } = useGlobal();
 
   // Récupération du tableau de following de l'utilisateur connecté
   const listsCurrentUser = userData?.[0]?.lists;

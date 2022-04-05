@@ -57,7 +57,10 @@ export function GlobalContextProvider(props) {
     snackbarColor: "info",
   };
   // Using reducer
-  const [state, dispatch] = React.useReducer(reducer, initialSnackbarValue);
+  const [state, dispatchSnackbar] = React.useReducer(
+    reducer,
+    initialSnackbarValue
+  );
 
   // Destructuring values from the state of the recucer
   const { openSnackbar, snackbarMessage, snackbarColor } = state;
@@ -68,12 +71,12 @@ export function GlobalContextProvider(props) {
       return;
     }
 
-    dispatch({ type: "CLOSE_SNACKBAR" });
+    dispatchSnackbar({ type: "CLOSE_SNACKBAR" });
   };
 
   const value = React.useMemo(
     () => ({
-      dispatch,
+      dispatchSnackbar,
     }),
     []
   );
@@ -90,6 +93,7 @@ export function GlobalContextProvider(props) {
           onClose={handleClose}
           severity={snackbarColor}
           sx={{ width: "100%" }}
+          Snackbar
         >
           {snackbarMessage}
         </Alert>
