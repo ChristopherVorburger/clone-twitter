@@ -146,7 +146,11 @@ const ListMembersModal = () => {
                   <Box>
                     {usersMembers?.map((user) => {
                       return (
-                        <ListMembers member={user} matchedList={matchedList} />
+                        <ListMembers
+                          key={user?.id}
+                          member={user}
+                          matchedList={matchedList}
+                        />
                       );
                     })}
                   </Box>

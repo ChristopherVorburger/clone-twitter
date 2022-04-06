@@ -1,9 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+// MUI
 import { Box, Button, Typography } from "@mui/material";
-
-import { images } from "../../../constants";
 
 // import des fonctions firebase
 import { database } from "../../../firebase-config";
@@ -11,15 +10,20 @@ import { arrayRemove, doc, updateDoc } from "firebase/firestore";
 
 // Import du context Auth
 import { useAuth } from "../../../context/authContext";
+import { useGlobal } from "../../../context/globalContext";
 
+// Images & styles
+import { images } from "../../../constants";
 import useStyles from "./styles";
 
 const WhoToFollow = ({ user }) => {
-  const classes = useStyles();
   const [textButton, setTextButton] = React.useState("Following");
 
-  // Utilisation du hook useContext pour récupérer le contexte Auth
+  const classes = useStyles();
+
+  // Context hooks
   const { authUser, userData } = useAuth();
+  const { dispatchSnackbar } = useGlobal();
 
   // Récupération du tableau de following de l'utilisateur connecté
   const following = userData?.[0]?.following;
@@ -39,15 +43,19 @@ const WhoToFollow = ({ user }) => {
 
     // Sécurité pour ne pas se suivre soi-même
     if (authUser?.uid === user?.id) {
-      console.log(
-        "Oui, il faut s'aimer soi-même mais de là à se suivre soit même il y a des limites"
-      );
+      dispatchSnackbar({
+        type: "OPEN_ERROR_SNACKBAR",
+        payload: { message: "You can't follow yourself" },
+      });
       return;
     }
 
     // Sécurité pour ne pas suivre deux fois la même personne
     if (userData?.[0]?.following?.includes(user?.id)) {
-      console.log("Vous suivez déjà cette personne !");
+      dispatchSnackbar({
+        type: "OPEN_ERROR_SNACKBAR",
+        payload: { message: "You'r already following this account" },
+      });
       return;
     }
 
@@ -58,7 +66,6 @@ const WhoToFollow = ({ user }) => {
         following: [user?.id],
       })
         .then(() => {
-          console.log("ajout d'un premier following");
           // Si l'utilisateur ajouté n'a pas de followers, on crée un tableau avec son
           // premier follower
           if (!followers) {
@@ -66,10 +73,18 @@ const WhoToFollow = ({ user }) => {
               followers: [authUser?.uid],
             })
               .then(() => {
-                console.log("ajout d'un premier follower");
+                dispatchSnackbar({
+                  type: "OPEN_INFO_SNACKBAR",
+                  payload: { message: `You'r now following ${user?.name}` },
+                });
               })
               .catch((err) => {
-                console.log(err.message);
+                dispatchSnackbar({
+                  type: "OPEN_ERROR_SNACKBAR",
+                  payload: {
+                    message: `An error occurred while adding ${user?.name} account :  ${err.message}`,
+                  },
+                });
               });
             // Sinon, mise à jour du tableau followers de l'utilisateur ajouté
           } else {
@@ -77,15 +92,28 @@ const WhoToFollow = ({ user }) => {
               followers: [...user?.followers, authUser?.uid],
             })
               .then(() => {
-                console.log("ajout d'un follower");
+                dispatchSnackbar({
+                  type: "OPEN_INFO_SNACKBAR",
+                  payload: { message: `You'r now following ${user?.name}` },
+                });
               })
               .catch((err) => {
-                console.log(err.message);
+                dispatchSnackbar({
+                  type: "OPEN_ERROR_SNACKBAR",
+                  payload: {
+                    message: `An error occurred while adding ${user?.name} account :  ${err.message}`,
+                  },
+                });
               });
           }
         })
         .catch((err) => {
-          console.log(err.message);
+          dispatchSnackbar({
+            type: "OPEN_ERROR_SNACKBAR",
+            payload: {
+              message: `An error occurred while adding ${user?.name} account :  ${err.message}`,
+            },
+          });
         });
       // Sinon, mise à jour du tableau following
     } else {
@@ -93,7 +121,6 @@ const WhoToFollow = ({ user }) => {
         following: [...userData?.[0]?.following, user?.id],
       })
         .then(() => {
-          console.log("ajout d'un following");
           // Si l'utilisateur ajouté n'a pas de followers, on crée un tableau avec son
           // premier follower
           if (!followers) {
@@ -101,10 +128,18 @@ const WhoToFollow = ({ user }) => {
               followers: [authUser?.uid],
             })
               .then(() => {
-                console.log("ajout d'un premier follower");
+                dispatchSnackbar({
+                  type: "OPEN_INFO_SNACKBAR",
+                  payload: { message: `You'r now following ${user?.name}` },
+                });
               })
               .catch((err) => {
-                console.log(err.message);
+                dispatchSnackbar({
+                  type: "OPEN_ERROR_SNACKBAR",
+                  payload: {
+                    message: `An error occurred while adding ${user?.name} account :  ${err.message}`,
+                  },
+                });
               });
             // Sinon, mise à jour du tableau followers de l'utilisateur ajouté
           } else {
@@ -112,15 +147,28 @@ const WhoToFollow = ({ user }) => {
               followers: [...user?.followers, authUser?.uid],
             })
               .then(() => {
-                console.log("ajout d'un follower");
+                dispatchSnackbar({
+                  type: "OPEN_INFO_SNACKBAR",
+                  payload: { message: `You'r now following ${user?.name}` },
+                });
               })
               .catch((err) => {
-                console.log(err.message);
+                dispatchSnackbar({
+                  type: "OPEN_ERROR_SNACKBAR",
+                  payload: {
+                    message: `An error occurred while adding ${user?.name} account :  ${err.message}`,
+                  },
+                });
               });
           }
         })
         .catch((err) => {
-          console.log(err.message);
+          dispatchSnackbar({
+            type: "OPEN_ERROR_SNACKBAR",
+            payload: {
+              message: `An error occurred while adding ${user?.name} account :  ${err.message}`,
+            },
+          });
         });
     }
   };
@@ -132,20 +180,34 @@ const WhoToFollow = ({ user }) => {
       following: arrayRemove(user?.id),
     })
       .then(() => {
-        console.log("Suppression du following");
         // Suppression du follower dans les datas de l'utilisateur supprimé
         updateDoc(followedUserRef, {
           followers: arrayRemove(authUser?.uid),
         })
           .then(() => {
-            console.log("Suppression du follower");
+            dispatchSnackbar({
+              type: "OPEN_INFO_SNACKBAR",
+              payload: {
+                message: `${user?.name} was deleted from your following`,
+              },
+            });
           })
           .catch((err) => {
-            console.log(err.message);
+            dispatchSnackbar({
+              type: "OPEN_ERROR_SNACKBAR",
+              payload: {
+                message: `An error occurred while deleting ${user?.name} account :  ${err.message}`,
+              },
+            });
           });
       })
       .catch((err) => {
-        console.log(err.message);
+        dispatchSnackbar({
+          type: "OPEN_ERROR_SNACKBAR",
+          payload: {
+            message: `An error occurred while deleting ${user?.name} account :  ${err.message}`,
+          },
+        });
       });
   };
 
