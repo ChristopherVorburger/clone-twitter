@@ -41,6 +41,7 @@ import { updateDoc, doc, arrayRemove } from "firebase/firestore";
 // Contextes
 import { useAuth } from "../../context/authContext";
 import { useUsers } from "../../context/usersContext";
+import { useGlobal } from "../../context/globalContext";
 
 // Composants React
 import TweetDialog from "./TweetDialog";
@@ -51,6 +52,7 @@ export default function Tweet({ tweet }) {
   // Récupération des contextes
   const { userData } = useAuth();
   const { users } = useUsers();
+  const { dispatchSnackbar } = useGlobal();
 
   // Destructuration des données du tweet
   const { id, text, author_id, created_at } = tweet;
@@ -74,10 +76,18 @@ export default function Tweet({ tweet }) {
         },
       })
         .then(() => {
-          console.log("Update like_count -1 done !");
+          dispatchSnackbar({
+            type: "OPEN_INFO_SNACKBAR",
+            payload: { message: "Tweet unliked !" },
+          });
         })
         .catch((err) => {
-          console.log(err.message);
+          dispatchSnackbar({
+            type: "OPEN_ERROR_SNACKBAR",
+            payload: {
+              message: `An error occurred while unliked the tweet : ${err.message}`,
+            },
+          });
         });
       // Sinon
     } else if (!tweet?.likers) {
@@ -90,10 +100,18 @@ export default function Tweet({ tweet }) {
         },
       })
         .then(() => {
-          console.log("Update like_count +1 done !");
+          dispatchSnackbar({
+            type: "OPEN_INFO_SNACKBAR",
+            payload: { message: "Tweet liked !" },
+          });
         })
         .catch((err) => {
-          console.log(err.message);
+          dispatchSnackbar({
+            type: "OPEN_ERROR_SNACKBAR",
+            payload: {
+              message: `An error occurred while liked the tweet : ${err.message}`,
+            },
+          });
         });
     } else {
       // Sinon ajout du user et +1 pour le like_counter
@@ -105,10 +123,18 @@ export default function Tweet({ tweet }) {
         },
       })
         .then(() => {
-          console.log("Update like_count +1 done !");
+          dispatchSnackbar({
+            type: "OPEN_INFO_SNACKBAR",
+            payload: { message: "Tweet liked !" },
+          });
         })
         .catch((err) => {
-          console.log(err.message);
+          dispatchSnackbar({
+            type: "OPEN_ERROR_SNACKBAR",
+            payload: {
+              message: `An error occurred while liked the tweet : ${err.message}`,
+            },
+          });
         });
     }
   };

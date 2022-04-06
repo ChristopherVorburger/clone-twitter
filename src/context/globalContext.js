@@ -92,7 +92,6 @@ export function GlobalContextProvider(props) {
           onClose={handleClose}
           severity={snackbarColor}
           sx={{ width: "100%" }}
-          Snackbar
         >
           {snackbarMessage}
         </Alert>
