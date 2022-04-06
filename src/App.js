@@ -28,15 +28,19 @@ import EditListModal from "./components/EditListModal";
 import ScrollToTop from "./components/ScrollToTop";
 import Message from "./components/Message/Message";
 import ChannelSearchUser from "./components/Message/ChannelSearchUser/ChannelSearchUser";
+import Loader from "./components/Loader";
 
 import { useAuth } from "./context/authContext";
-import { SnackbarsContextProvider } from "./context/snackbarsContext";
+import { useGlobal } from "./context/globalContext";
+
 import { ListsContextProvider } from "./context/listsContext";
 import { UsersContextProvider } from "./context/usersContext";
 import { TweetsContextProvider } from "./context/tweetContext";
 
 export default function App() {
   const { authUser, userData } = useAuth();
+  const { loading } = useGlobal();
+
   // Création d'un thème pour changer la couleur principale de MUI
   let theme = createTheme({
     palette: {
@@ -82,10 +86,12 @@ export default function App() {
         </Routes>
       ) : (
         <Layout>
-          <UsersContextProvider>
-            <TweetsContextProvider>
-              <ListsContextProvider>
-                <SnackbarsContextProvider>
+          {loading ? (
+            <Loader />
+          ) : (
+            <UsersContextProvider>
+              <TweetsContextProvider>
+                <ListsContextProvider>
                   <Routes>
                     <Route path="/home" element={<Home />} />
                     <Route
@@ -132,10 +138,10 @@ export default function App() {
                     <Route path="/messages" element={<Message />} />
                     <Route path="/searchUser" element={<ChannelSearchUser />} />
                   </Routes>
-                </SnackbarsContextProvider>
-              </ListsContextProvider>
-            </TweetsContextProvider>
-          </UsersContextProvider>
+                </ListsContextProvider>
+              </TweetsContextProvider>
+            </UsersContextProvider>
+          )}
         </Layout>
       )}
     </ThemeProvider>
