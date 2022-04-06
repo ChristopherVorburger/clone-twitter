@@ -45,7 +45,11 @@ const News = () => {
       .then((response) => {
         setTopHeadlines(response.data.articles);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        if (err.message === "Request failed with status code 401") {
+          console.log("API calls limit reached, il faut payer maintenant !");
+        }
+      });
   }, []);
 
   return (

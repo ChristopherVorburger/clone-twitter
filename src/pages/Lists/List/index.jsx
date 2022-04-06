@@ -1,35 +1,43 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
+// MUI
 import { Box, Button, Typography } from "@mui/material";
 
-import { icons, images } from "../../../constants";
-
+// Components
 import News from "../../../components/News";
 import Header from "../../../components/Header";
 import Tweet from "../../../components/Tweet/Tweet";
 
+// Contexts
 import { useAuth } from "../../../context/authContext";
 import { useLists } from "../../../context/listsContext";
 import { useUsers } from "../../../context/usersContext";
 import { useTweets } from "../../../context/tweetContext";
+import { useGlobal } from "../../../context/globalContext";
 
+// Firebase
 import { arrayRemove, doc, updateDoc } from "firebase/firestore";
 import { database } from "../../../firebase-config";
 
+// Constants & styles
+import { icons, images } from "../../../constants";
 import useStyles from "./styles";
 
 const List = () => {
+  const [textButton, setTextButton] = React.useState("Following");
+
+  // Hooks
   const { id } = useParams();
   const classes = useStyles();
   const navigate = useNavigate();
 
+  // Contexts hooks
   const { authUser, userData } = useAuth();
   const { lists } = useLists();
   const { users } = useUsers();
   const { tweets } = useTweets();
-
-  const [textButton, setTextButton] = React.useState("Following");
+  const { dispatchSnackbar } = useGlobal();
 
   const matchedList = lists?.filter((list) => {
     return list?.id === id;
@@ -75,31 +83,55 @@ const List = () => {
         // Si la liste n'a pas de followers,
         // on ajoute le premier dans le tableau followers
         .then(() => {
-          console.log("First list created");
           if (!listsFollowers) {
             updateDoc(currentListRef, {
               followers: [userData?.[0]?.id],
             })
               .then(() => {
-                console.log("ajout d'un premier follower");
+                dispatchSnackbar({
+                  type: "OPEN_INFO_SNACKBAR",
+                  payload: {
+                    message: `${matchedList?.[0]?.name} list followed`,
+                  },
+                });
               })
               .catch((err) => {
-                console.log(err.message);
+                dispatchSnackbar({
+                  type: "OPEN_ERROR_SNACKBAR",
+                  payload: {
+                    message: `An error occurred while following ${matchedList?.[0]?.name} list : ${err.message}`,
+                  },
+                });
               });
           } else {
             updateDoc(currentListRef, {
               followers: [...listsFollowers, authUser?.uid],
             })
               .then(() => {
-                console.log("ajout d'un follower");
+                dispatchSnackbar({
+                  type: "OPEN_INFO_SNACKBAR",
+                  payload: {
+                    message: `${matchedList?.[0]?.name} list followed`,
+                  },
+                });
               })
               .catch((err) => {
-                console.log(err.message);
+                dispatchSnackbar({
+                  type: "OPEN_ERROR_SNACKBAR",
+                  payload: {
+                    message: `An error occurred while following ${matchedList?.[0]?.name} list : ${err.message}`,
+                  },
+                });
               });
           }
         })
         .catch((err) => {
-          console.log(err.message);
+          dispatchSnackbar({
+            type: "OPEN_ERROR_SNACKBAR",
+            payload: {
+              message: `An error occurred while following ${matchedList?.[0]?.name} list : ${err.message}`,
+            },
+          });
         });
     } else {
       updateDoc(currentUserRef, {
@@ -107,31 +139,55 @@ const List = () => {
         lists: [...userData?.[0]?.lists, matchedList?.[0]?.id],
       })
         .then(() => {
-          console.log("List created");
           if (!listsFollowers) {
             updateDoc(currentListRef, {
               followers: [userData?.[0]?.id],
             })
               .then(() => {
-                console.log("ajout d'un premier follower");
+                dispatchSnackbar({
+                  type: "OPEN_INFO_SNACKBAR",
+                  payload: {
+                    message: `${matchedList?.[0]?.name} list followed`,
+                  },
+                });
               })
               .catch((err) => {
-                console.log(err.message);
+                dispatchSnackbar({
+                  type: "OPEN_ERROR_SNACKBAR",
+                  payload: {
+                    message: `An error occurred while following ${matchedList?.[0]?.name} list : ${err.message}`,
+                  },
+                });
               });
           } else {
             updateDoc(currentListRef, {
               followers: [...listsFollowers, authUser?.uid],
             })
               .then(() => {
-                console.log("ajout d'un follower");
+                dispatchSnackbar({
+                  type: "OPEN_INFO_SNACKBAR",
+                  payload: {
+                    message: `${matchedList?.[0]?.name} list followed`,
+                  },
+                });
               })
               .catch((err) => {
-                console.log(err.message);
+                dispatchSnackbar({
+                  type: "OPEN_ERROR_SNACKBAR",
+                  payload: {
+                    message: `An error occurred while following ${matchedList?.[0]?.name} list : ${err.message}`,
+                  },
+                });
               });
           }
         })
         .catch((err) => {
-          console.log(err.message);
+          dispatchSnackbar({
+            type: "OPEN_ERROR_SNACKBAR",
+            payload: {
+              message: `An error occurred while following ${matchedList?.[0]?.name} list : ${err.message}`,
+            },
+          });
         });
     }
   };
@@ -143,21 +199,33 @@ const List = () => {
       lists: arrayRemove(matchedList?.[0]?.id),
     })
       .then(() => {
-        console.log(
-          "Suppression de la liste dans le tabelau lists du user connecté"
-        );
         updateDoc(currentListRef, {
           followers: arrayRemove(userData?.[0]?.id),
         })
           .then(() => {
-            console.log("Suppression du follower de la liste");
+            dispatchSnackbar({
+              type: "OPEN_INFO_SNACKBAR",
+              payload: {
+                message: `${matchedList?.[0]?.name} list unfollowed`,
+              },
+            });
           })
           .catch((err) => {
-            console.log(err.message);
+            dispatchSnackbar({
+              type: "OPEN_ERROR_SNACKBAR",
+              payload: {
+                message: `An error occurred while unfollowing ${matchedList?.[0]?.name} list : ${err.message}`,
+              },
+            });
           });
       })
       .catch((err) => {
-        console.log(err.message);
+        dispatchSnackbar({
+          type: "OPEN_ERROR_SNACKBAR",
+          payload: {
+            message: `An error occurred while unfollowing ${matchedList?.[0]?.name} list : ${err.message}`,
+          },
+        });
       });
   };
 
