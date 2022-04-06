@@ -23,7 +23,7 @@ import { icons } from "../../../constants";
 // Fonction qui affiche les actions possibles au clique sur le bouton share
 const ShareDialog = ({ id, open }) => {
   const { userData } = useAuth();
-  const { dispatchSnackbar, setLoading } = useGlobal();
+  const { dispatchSnackbar } = useGlobal();
 
   // Référence du user à mettre à jour
   const userRef = doc(database, "users", userData?.[0]?.id);

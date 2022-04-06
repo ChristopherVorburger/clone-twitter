@@ -56,7 +56,6 @@ const EditListModal = () => {
   const { userData } = useAuth();
   const { lists } = useLists();
   const { users } = useUsers();
-  // Renommage du dispatch pour les snackbars pour éviter la collision avec le reducer déjà présent dans ce fichier
   const { dispatchSnackbar } = useGlobal();
 
   const matchedList = lists?.filter((list) => {

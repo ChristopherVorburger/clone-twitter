@@ -22,6 +22,7 @@ import useStyles from "./styles";
 
 // Context
 import { useAuth } from "../../context/authContext";
+import { useGlobal } from "../../context/globalContext";
 
 // Reducer
 const reducer = (state, action) => {
@@ -39,6 +40,7 @@ const reducer = (state, action) => {
 const EditProfileModal = () => {
   const classes = useStyles();
   const navigate = useNavigate();
+  const { dispatchSnackbar, setLoading } = useGlobal();
 
   // States pour la modale
   const [, setOpen] = useState(false);
@@ -101,6 +103,8 @@ const EditProfileModal = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setNameError(false);
+    setLoading(true);
+
     if (state.name === "") {
       setNameError(true);
     }
@@ -113,7 +117,25 @@ const EditProfileModal = () => {
         location,
         website,
         // age,
-      });
+      })
+        .then(() => {
+          setLoading(false);
+          dispatchSnackbar({
+            type: "OPEN_INFO_SNACKBAR",
+            payload: {
+              message: "Your profile has been updated",
+            },
+          });
+        })
+        .catch((err) => {
+          setLoading(false);
+          dispatchSnackbar({
+            type: "OPEN_ERROR_SNACKBAR",
+            payload: {
+              message: `An error occurred while updating profile : ${err.message}`,
+            },
+          });
+        });
 
       // Si nouvelle image mais pas de cover, mise à jour des données et upload de l'image de profil
     } else if (coverSelected.name === undefined) {
@@ -136,7 +158,25 @@ const EditProfileModal = () => {
         website,
         // age,
         profile_image_url: profileImageLink,
-      });
+      })
+        .then(() => {
+          setLoading(false);
+          dispatchSnackbar({
+            type: "OPEN_INFO_SNACKBAR",
+            payload: {
+              message: "Your profile has been updated",
+            },
+          });
+        })
+        .catch((err) => {
+          setLoading(false);
+          dispatchSnackbar({
+            type: "OPEN_ERROR_SNACKBAR",
+            payload: {
+              message: `An error occurred while updating profile : ${err.message}`,
+            },
+          });
+        });
 
       // Si nouvelle cover mais pas d'image de profil, mise à jour des données et upload de la cover
     } else if (imageSelected.name === undefined) {
@@ -156,7 +196,25 @@ const EditProfileModal = () => {
         website,
         // age,
         cover_url: coverLink,
-      });
+      })
+        .then(() => {
+          setLoading(false);
+          dispatchSnackbar({
+            type: "OPEN_INFO_SNACKBAR",
+            payload: {
+              message: "Your profile has been updated",
+            },
+          });
+        })
+        .catch((err) => {
+          setLoading(false);
+          dispatchSnackbar({
+            type: "OPEN_ERROR_SNACKBAR",
+            payload: {
+              message: `An error occurred while updating profile : ${err.message}`,
+            },
+          });
+        });
 
       // Sinon mise à jour de toutes les données
     } else {
@@ -183,7 +241,25 @@ const EditProfileModal = () => {
         // age,
         profile_image_url: profileImageLink,
         cover_url: coverLink,
-      });
+      })
+        .then(() => {
+          setLoading(false);
+          dispatchSnackbar({
+            type: "OPEN_INFO_SNACKBAR",
+            payload: {
+              message: "Your profile has been updated",
+            },
+          });
+        })
+        .catch((err) => {
+          setLoading(false);
+          dispatchSnackbar({
+            type: "OPEN_ERROR_SNACKBAR",
+            payload: {
+              message: `An error occurred while updating profile : ${err.message}`,
+            },
+          });
+        });
     }
     // Retour à la page de profil
     navigate(`/${userData?.[0]?.username}`);

@@ -2,28 +2,32 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+// MUI
 import { Box, Button, MenuItem, Typography, TextField } from "@mui/material";
 
+// Components
 import CloseButton from "../../components/CloseButton/CloseButton";
 import LogoTwitter from "../../components/TwitterLogo/TwitterLogo";
 
 import { selectMonth } from "./DataSelect";
 
-import { doc, getFirestore, serverTimestamp, setDoc } from "firebase/firestore";
+// Firebase
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { database } from "../../firebase-config";
 
+// Contexts
 import { useAuth } from "../../context/authContext";
+import { useGlobal } from "../../context/globalContext";
 
 import useStyles from "./Styles";
 
-// Firestore
-const database = getFirestore();
-
 // Fonction principale SignUp
 function SignUp() {
-  // Const générales
+  // Hooks
   const classes = useStyles();
   const { signUp } = useAuth();
   const navigate = useNavigate();
+  const { dispatchSnackbar, setLoading } = useGlobal();
 
   // State authentification
   const [email, setEmail] = React.useState("");
@@ -41,6 +45,7 @@ function SignUp() {
   // Fonction qui crée un user dans l'authentification et le firestore
   const signUpUser = (e) => {
     e.preventDefault();
+    setLoading(true);
     setErrorName(false);
     setErrorUserName(false);
 
@@ -79,13 +84,26 @@ function SignUp() {
               setName("");
               setUserName("");
               navigate("/home");
+              setLoading(false);
             })
             .catch((err) => {
-              console.log(err.message);
+              setLoading(false);
+              dispatchSnackbar({
+                type: "OPEN_ERROR_SNACKBAR",
+                payload: {
+                  message: `An error occurred while signin up ${err.message}`,
+                },
+              });
             });
         })
         .catch((err) => {
-          console.log(err.message);
+          setLoading(false);
+          dispatchSnackbar({
+            type: "OPEN_ERROR_SNACKBAR",
+            payload: {
+              message: `An error occurred while signin up ${err.message}`,
+            },
+          });
         });
     }
   };
