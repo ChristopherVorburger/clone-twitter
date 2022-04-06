@@ -28,14 +28,19 @@ import EditListModal from "./components/EditListModal";
 import ScrollToTop from "./components/ScrollToTop";
 import Message from "./components/Message/Message";
 import ChannelSearchUser from "./components/Message/ChannelSearchUser/ChannelSearchUser";
+import Loader from "./components/Loader";
 
 import { useAuth } from "./context/authContext";
+import { useGlobal } from "./context/globalContext";
+
 import { ListsContextProvider } from "./context/listsContext";
 import { UsersContextProvider } from "./context/usersContext";
 import { TweetsContextProvider } from "./context/tweetContext";
 
 export default function App() {
   const { authUser, userData } = useAuth();
+  const { loading } = useGlobal();
+
   // Création d'un thème pour changer la couleur principale de MUI
   let theme = createTheme({
     palette: {
@@ -81,52 +86,62 @@ export default function App() {
         </Routes>
       ) : (
         <Layout>
-          <UsersContextProvider>
-            <TweetsContextProvider>
-              <ListsContextProvider>
-                <Routes>
-                  <Route path="/home" element={<Home />} />
-                  <Route
-                    path={`/${userData?.[0]?.username}`}
-                    element={<Profile />}
-                  />
-                  <Route path="/:username" element={<ForeignProfile />} />
-                  <Route path="/:username/lists" element={<Lists />} />
-                  <Route
-                    path="/:username/lists/create"
-                    element={<CreateListModal />}
-                  />
-                  <Route path="/lists/:id" element={<List />} />
-                  <Route path="/lists/:id/info" element={<EditListModal />} />
-                  <Route
-                    path="/lists/:id/members"
-                    element={<ListMembersModal />}
-                  />
-                  <Route
-                    path="/lists/:id/members/suggested"
-                    element={<SuggestedListModal />}
-                  />
-                  <Route path="/:username/followers" element={<Followers />} />
-                  <Route path="/:username/following" element={<Following />} />
-                  <Route
-                    path="/settings/profile"
-                    element={<EditProfileModal />}
-                  />
-                  <Route path="/bookmarks" element={<Bookmarks />} />
-                  <Route path="/notifications" element={<Notifications />} />
-                  <Route
-                    path="/notifications/mentions"
-                    element={<Mentions />}
-                  />
-                  <Route path="/status/:id" element={<TweetPage />} />
-                  <Route path="/explore" element={<Explore />} />
-                  <Route path="*" element={<Navigate to="/home" />} />
-                  <Route path="/messages" element={<Message />} />
-                  <Route path="/searchUser" element={<ChannelSearchUser />} />
-                </Routes>
-              </ListsContextProvider>
-            </TweetsContextProvider>
-          </UsersContextProvider>
+          {loading ? (
+            <Loader />
+          ) : (
+            <UsersContextProvider>
+              <TweetsContextProvider>
+                <ListsContextProvider>
+                  <Routes>
+                    <Route path="/home" element={<Home />} />
+                    <Route
+                      path={`/${userData?.[0]?.username}`}
+                      element={<Profile />}
+                    />
+                    <Route path="/:username" element={<ForeignProfile />} />
+                    <Route path="/:username/lists" element={<Lists />} />
+                    <Route
+                      path="/:username/lists/create"
+                      element={<CreateListModal />}
+                    />
+                    <Route path="/lists/:id" element={<List />} />
+                    <Route path="/lists/:id/info" element={<EditListModal />} />
+                    <Route
+                      path="/lists/:id/members"
+                      element={<ListMembersModal />}
+                    />
+                    <Route
+                      path="/lists/:id/members/suggested"
+                      element={<SuggestedListModal />}
+                    />
+                    <Route
+                      path="/:username/followers"
+                      element={<Followers />}
+                    />
+                    <Route
+                      path="/:username/following"
+                      element={<Following />}
+                    />
+                    <Route
+                      path="/settings/profile"
+                      element={<EditProfileModal />}
+                    />
+                    <Route path="/bookmarks" element={<Bookmarks />} />
+                    <Route path="/notifications" element={<Notifications />} />
+                    <Route
+                      path="/notifications/mentions"
+                      element={<Mentions />}
+                    />
+                    <Route path="/status/:id" element={<TweetPage />} />
+                    <Route path="/explore" element={<Explore />} />
+                    <Route path="*" element={<Navigate to="/home" />} />
+                    <Route path="/messages" element={<Message />} />
+                    <Route path="/searchUser" element={<ChannelSearchUser />} />
+                  </Routes>
+                </ListsContextProvider>
+              </TweetsContextProvider>
+            </UsersContextProvider>
+          )}
         </Layout>
       )}
     </ThemeProvider>

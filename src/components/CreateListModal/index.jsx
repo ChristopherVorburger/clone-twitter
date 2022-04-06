@@ -1,4 +1,4 @@
-import { useState, useReducer, useEffect } from "react";
+import { useState, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
 
 // Fonctions firebase
@@ -50,7 +50,7 @@ const CreateListModal = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   // Renommage du dispatch pour les snackbars pour éviter la collision avec le reducer déjà présent dans ce fichier
-  const { dispatchSnackbar } = useGlobal();
+  const { dispatchSnackbar, setLoading } = useGlobal();
 
   //Utilisation du contexte Auth
   const { authUser, userData } = useAuth();
@@ -99,8 +99,9 @@ const CreateListModal = () => {
   // Fonction pour créer une liste
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Gestion du champ input name vide
     setNameError(false);
+
+    // Gestion du champ input name vide
     if (name?.length === 0) {
       setNameError(true);
       dispatchSnackbar({
@@ -110,11 +111,10 @@ const CreateListModal = () => {
         },
       });
       return;
-    }
-
-    // Si il n'y a pas de cover et que l'utilisateur connecté n'a pas encore de liste de liste,
-    // création du tableau lists dans userData et création de la première liste sans cover
-    if (coverSelected.name === undefined && !listsCurrentUser) {
+      // Si il n'y a pas de cover et que l'utilisateur connecté n'a pas encore de liste de liste,
+      // création du tableau lists dans userData et création de la première liste sans cover
+    } else if (coverSelected.name === undefined && !listsCurrentUser) {
+      setLoading(true);
       // Références du storage
       const defaultCoversRef = ref(
         storage,
@@ -139,17 +139,20 @@ const CreateListModal = () => {
         cover_url: coverLink,
       })
         .then((cred) => {
+          navigate(`/lists/${cred._key.path.segments[1]}/members/suggested`);
           setDoc(currentUserRef, {
             ...userData?.[0],
             lists: [cred._key.path.segments[1]],
           });
+          setLoading(false);
+
           dispatchSnackbar({
             type: "OPEN_INFO_SNACKBAR",
             payload: { message: "List created !" },
           });
-          navigate(`/lists/${cred._key.path.segments[1]}/members/suggested`);
         })
         .catch((err) => {
+          setLoading(false);
           dispatch({
             type: "OPEN_ERROR_SNACKBAR",
             payload: {
@@ -161,6 +164,8 @@ const CreateListModal = () => {
       // Si pas de cover et que l'utilisateur connecté a déjà au moins une liste,
       // ajout de la liste dans le tableau existant et création de la liste sans cover
     } else if (coverSelected.name === undefined) {
+      setLoading(true);
+
       // Références du storage
       const defaultCoversRef = ref(
         storage,
@@ -185,17 +190,19 @@ const CreateListModal = () => {
         cover_url: coverLink,
       })
         .then((cred) => {
+          navigate(`/lists/${cred._key.path.segments[1]}/members/suggested`);
           setDoc(currentUserRef, {
             ...userData?.[0],
             lists: [...listsCurrentUser, cred._key.path.segments[1]],
           });
+          setLoading(false);
           dispatchSnackbar({
             type: "OPEN_INFO_SNACKBAR",
             payload: { message: "List created !" },
           });
-          navigate(`/lists/${cred._key.path.segments[1]}/members/suggested`);
         })
         .catch((err) => {
+          setLoading(false);
           dispatch({
             type: "OPEN_ERROR_SNACKBAR",
             payload: {
@@ -206,6 +213,8 @@ const CreateListModal = () => {
 
       // Si il n'y a pas de listes mais une image de cover, on ajoute une première liste avec cover
     } else if (!listsCurrentUser) {
+      setLoading(true);
+
       // Références du storage
       const listCoversRef = ref(
         storage,
@@ -227,17 +236,19 @@ const CreateListModal = () => {
         cover_url: coverLink,
       })
         .then((cred) => {
+          navigate(`/lists/${cred._key.path.segments[1]}/members/suggested`);
           setDoc(currentUserRef, {
             ...userData?.[0],
             lists: [cred._key.path.segments[1]],
           });
+          setLoading(false);
           dispatchSnackbar({
             type: "OPEN_INFO_SNACKBAR",
             payload: { message: "List created !" },
           });
-          navigate(`/lists/${cred._key.path.segments[1]}/members/suggested`);
         })
         .catch((err) => {
+          setLoading(false);
           dispatch({
             type: "OPEN_ERROR_SNACKBAR",
             payload: {
@@ -248,6 +259,8 @@ const CreateListModal = () => {
 
       // Sinon on ajoute au tableau déjà présent
     } else {
+      setLoading(true);
+
       // Références du storage
       const listCoversRef = ref(
         storage,
@@ -270,17 +283,19 @@ const CreateListModal = () => {
         cover_url: coverLink,
       })
         .then((cred) => {
+          navigate(`/lists/${cred._key.path.segments[1]}/members/suggested`);
           setDoc(currentUserRef, {
             ...userData?.[0],
             lists: [...listsCurrentUser, cred._key.path.segments[1]],
           });
+          setLoading(false);
           dispatchSnackbar({
             type: "OPEN_INFO_SNACKBAR",
             payload: { message: "List created !" },
           });
-          navigate(`/lists/${cred._key.path.segments[1]}/members/suggested`);
         })
         .catch((err) => {
+          setLoading(false);
           dispatch({
             type: "OPEN_ERROR_SNACKBAR",
             payload: {
@@ -301,7 +316,12 @@ const CreateListModal = () => {
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
-        sx={{ padding: 0 }}
+        sx={{
+          padding: 0,
+          "&.MuiModal-root": {
+            backgroundColor: (theme) => theme.palette.white.main,
+          },
+        }}
       >
         <form onSubmit={handleSubmit}>
           <Box className={classes.modal}>

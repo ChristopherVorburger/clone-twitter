@@ -23,7 +23,7 @@ import { icons } from "../../../constants";
 // Fonction qui affiche les actions possibles au clique sur le bouton share
 const ShareDialog = ({ id, open }) => {
   const { userData } = useAuth();
-  const { dispatchSnackbar } = useGlobal();
+  const { dispatchSnackbar, setLoading } = useGlobal();
 
   // Référence du user à mettre à jour
   const userRef = doc(database, "users", userData?.[0]?.id);
@@ -86,7 +86,6 @@ const ShareDialog = ({ id, open }) => {
   // Fonction pour supprimer un bookmark
   const removeBookmark = (e) => {
     e.preventDefault();
-
     updateDoc(userRef, {
       bookmarks: arrayRemove(id),
     })

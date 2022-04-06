@@ -50,6 +50,7 @@ const reducer = (state, action) => {
 
 // Create context provider
 export function GlobalContextProvider(props) {
+  const [loading, setLoading] = React.useState(false);
   // Initial State for the snackbar reducer
   const initialSnackbarValue = {
     openSnackbar: false,
@@ -75,10 +76,8 @@ export function GlobalContextProvider(props) {
   };
 
   const value = React.useMemo(
-    () => ({
-      dispatchSnackbar,
-    }),
-    []
+    () => ({ loading, setLoading, dispatchSnackbar }),
+    [loading]
   );
 
   return (
