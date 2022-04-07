@@ -1,11 +1,22 @@
 import React from "react";
+
+// MUI
 import { Box } from "@mui/system";
-import { images } from "../../../constants";
 import { Button, Typography } from "@mui/material";
+
+// Firebase
 import { arrayRemove, doc, updateDoc } from "firebase/firestore";
 import { database } from "../../../firebase-config";
 
+// Context
+import { useGlobal } from "../../../context/globalContext";
+
+// Images
+import { images } from "../../../constants";
+
+// Modale de la liste des membres d'une liste
 const ListMembers = ({ member, matchedList }) => {
+  const { dispatchSnackbar } = useGlobal();
   // Référence à la liste à mettre à jour
   const currentListRef = doc(database, "lists", matchedList?.[0]?.id);
 
@@ -17,12 +28,20 @@ const ListMembers = ({ member, matchedList }) => {
       members: arrayRemove(member?.id),
     })
       .then(() => {
-        console.log(
-          `Suppression du membre ${member?.name} de la liste ${matchedList?.[0]?.name}`
-        );
+        dispatchSnackbar({
+          type: "OPEN_INFO_SNACKBAR",
+          payload: {
+            message: `Member ${member?.name} was deleted from the list ${matchedList?.[0]?.name}`,
+          },
+        });
       })
       .catch((err) => {
-        console.log(err.message);
+        dispatchSnackbar({
+          type: "OPEN_ERROR_SNACKBAR",
+          payload: {
+            message: `An error occurred while deleting the member ${member?.name} : ${err.message}`,
+          },
+        });
       });
   };
 

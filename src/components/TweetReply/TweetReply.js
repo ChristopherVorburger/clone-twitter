@@ -1,9 +1,15 @@
+import { useEffect, useState } from "react";
+
+// MUI
+import Skeleton from "@mui/material/Skeleton";
+
+// Firebase
+import { database } from "../../firebase-config";
+import { doc, getDoc } from "firebase/firestore";
+
+// Constants & styles
 import { TweetReplyContainer, TweetReplyContent } from "./TweetReply.Style";
 import { TweetAuthor, TweetAvatar, TweetPseudo } from "../Tweet/Tweet.Style";
-import { database } from "../../firebase-config";
-import Skeleton from "@mui/material/Skeleton";
-import { useEffect, useState } from "react";
-import { doc, getDoc } from "firebase/firestore";
 import { images } from "../../constants";
 
 export default function TweetReply({ dataResponseTweet, dataUser, isLoading }) {
@@ -18,8 +24,6 @@ export default function TweetReply({ dataResponseTweet, dataUser, isLoading }) {
     if (docSnap.exists()) {
       setDataUserResponse(docSnap.data());
       setIsLoadingResponse(false);
-    } else {
-      console.log("No such document !");
     }
   };
 

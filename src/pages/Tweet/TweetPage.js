@@ -1,16 +1,20 @@
 import { useState, useEffect } from "react";
-import BottomNavigation from "../../components/BottomNavigation";
-import { icons } from "../../constants";
-import Header from "../../components/Header";
+import { useLocation, useParams } from "react-router-dom";
+
+// MUI
 import { Box } from "@mui/material";
+
+// Components
+import BottomNavigation from "../../components/BottomNavigation";
+import Header from "../../components/Header";
 import News from "../../components/News";
-import { TweetPageWrapper } from "./TweetPage.Style";
 import TweetLarge from "../../components/TweetLarge/TweetLarge";
 import TweetInput from "../../components/TweetInput/TweetInput";
+import TweetReply from "../../components/TweetReply/TweetReply";
+
+// Firebase
 import { doc, getDoc } from "firebase/firestore";
 import { database } from "../../firebase-config";
-import { useLocation, useParams } from "react-router-dom";
-import TweetReply from "../../components/TweetReply/TweetReply";
 import {
   collection,
   query,
@@ -19,10 +23,19 @@ import {
   orderBy,
 } from "firebase/firestore";
 
+// Context
+import { useGlobal } from "../../context/globalContext";
+
+// Icons & styles
+import { icons } from "../../constants";
+import { TweetPageWrapper } from "./TweetPage.Style";
+
 export default function TweetPage() {
   const [dataUser, setDataUser] = useState(null);
   const [dataResponsesTweet, setDataResponsesTweet] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  const { dispatchSnackbar } = useGlobal();
 
   //Gestion idTweet qui est récupérer depuis l'URL
   const { id: tweetID } = useParams();
@@ -30,7 +43,6 @@ export default function TweetPage() {
     resolve(tweetID);
     reject("erreur : tweetID ");
   });
-
   const { state } = useLocation();
 
   //Fonction qui permet de récupérer les donnés concerant l'auteur du tweet séléctioné
@@ -42,7 +54,10 @@ export default function TweetPage() {
       setDataUser(docSnap.data());
       setIsLoading(false);
     } else {
-      console.log("No such document !");
+      dispatchSnackbar({
+        type: "OPEN_ERROR_SNACKBAR",
+        payload: { message: "No such a document" },
+      });
     }
   };
 

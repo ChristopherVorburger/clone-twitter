@@ -1,11 +1,23 @@
 import React from "react";
+
+// MUI
 import { Box } from "@mui/system";
-import { images } from "../../../constants";
 import { Button, Typography } from "@mui/material";
+
+// Firebase
 import { doc, updateDoc } from "firebase/firestore";
 import { database } from "../../../firebase-config";
 
+// Context
+import { useGlobal } from "../../../context/globalContext";
+
+// Images
+import { images } from "../../../constants";
+
+// Modale de la liste des membres suggérés
 const SuggestedMembers = ({ member, matchedList }) => {
+  const { dispatchSnackbar } = useGlobal();
+
   // Récupération des membres de la liste en question
   const members = matchedList?.[0]?.members;
 
@@ -18,7 +30,12 @@ const SuggestedMembers = ({ member, matchedList }) => {
 
     // Sécurité pour ne pas suivre deux fois la même liste
     if (matchedList?.[0]?.members?.includes(member?.id)) {
-      console.log("Cet utilisateur est déjà membre de la liste !");
+      dispatchSnackbar({
+        type: "OPEN_ERROR_SNACKBAR",
+        payload: {
+          message: ` ${member?.name} is already a member of the list ${matchedList?.[0]?.name}`,
+        },
+      });
       return;
     }
     //Si la liste n'a pas de membre, on crée un tableau avec son premier membre
@@ -27,12 +44,20 @@ const SuggestedMembers = ({ member, matchedList }) => {
         members: [member?.id],
       })
         .then(() => {
-          console.log(
-            `Ajout d'un premier membre à la liste ${matchedList?.[0]?.name}`
-          );
+          dispatchSnackbar({
+            type: "OPEN_INFO_SNACKBAR",
+            payload: {
+              message: `Member ${member?.name} was added to the list ${matchedList?.[0]?.name}`,
+            },
+          });
         })
         .catch((err) => {
-          console.log(err.message);
+          dispatchSnackbar({
+            type: "OPEN_ERROR_SNACKBAR",
+            payload: {
+              message: `An error occurred while adding the member ${member?.name} : ${err.message}`,
+            },
+          });
         });
     } // Sinon, mise à jour du tableau members de la liste
     else {
@@ -41,10 +66,20 @@ const SuggestedMembers = ({ member, matchedList }) => {
         members: [...matchedList?.[0]?.members, member?.id],
       })
         .then(() => {
-          console.log(`Ajout d'un membre à la liste ${matchedList?.[0]?.name}`);
+          dispatchSnackbar({
+            type: "OPEN_INFO_SNACKBAR",
+            payload: {
+              message: `Member ${member?.name} was added to the list ${matchedList?.[0]?.name}`,
+            },
+          });
         })
         .catch((err) => {
-          console.log(err.message);
+          dispatchSnackbar({
+            type: "OPEN_ERROR_SNACKBAR",
+            payload: {
+              message: `An error occurred while adding the member ${member?.name} : ${err.message}`,
+            },
+          });
         });
     }
   };
