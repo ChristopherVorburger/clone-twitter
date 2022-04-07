@@ -1,21 +1,25 @@
 import * as React from "react";
 import { Navigate } from "react-router-dom";
 
+// MUI
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
 import { Box, Typography } from "@mui/material";
 
+// Contexts
+import { useAuth } from "../../context/authContext";
+import { useGlobal } from "../../context/globalContext";
+
+// Images & styles
+import { images } from "../../constants";
 import useStyles from "./styles";
 
-import { images } from "../../constants";
-
-import { useAuth } from "../../context/authContext";
-
-function SimpleDialog(props) {
+// Modale onClick Profile leftNavBar
+function SimpleDialog({ open, setOpen }) {
   const { signUserOut, userData } = useAuth();
+  const { dispatchSnackbar } = useGlobal();
 
   const classes = useStyles();
-  const { open, setOpen } = props;
 
   const logout = () => {
     // On utilise la fonction signUserOut du AuthContext
@@ -23,9 +27,18 @@ function SimpleDialog(props) {
       .then(() => {
         setOpen(false);
         Navigate("/");
+        dispatchSnackbar({
+          type: "OPEN_INFO_SNACKBAR",
+          payload: { message: "Success logout, see you soon" },
+        });
       })
       .catch((err) => {
-        console.log(err.message);
+        dispatchSnackbar({
+          type: "OPEN_ERROR_SNACKBAR",
+          payload: {
+            message: `An error occurred while logout`,
+          },
+        });
       });
   };
 

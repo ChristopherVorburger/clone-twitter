@@ -1,9 +1,10 @@
 import React from "react";
 
+// Firebase
 import { database } from "../../../firebase-config";
-
 import { doc, deleteDoc, updateDoc, arrayRemove } from "firebase/firestore";
 
+// MUI
 import {
   Dialog,
   List,
@@ -12,20 +13,23 @@ import {
   ListItemText,
 } from "@mui/material";
 
+// Contexts
 import { useAuth } from "../../../context/authContext";
 import { useUsers } from "../../../context/usersContext";
+import { useGlobal } from "../../../context/globalContext";
 
+// Constants & styles
 import { icons } from "../../../constants";
-
 import useStyles from "./styles";
 
-// Fonction qui affiche lea actions possibles sur un tweet
+// Fonction qui affiche les actions possibles sur un tweet
 const TweetDialog = ({ id, open, author_id }) => {
   const classes = useStyles();
 
-  // Utilisation des contextes Auth et Users
+  // Utilisation des contextes
   const { authUser, userData } = useAuth();
   const { users } = useUsers();
+  const { dispatchSnackbar } = useGlobal();
 
   //Recherche de l'id du user qui match avec l'author_id du tweet
   const matchedUser = users?.filter((user) => user?.id === author_id);
@@ -44,31 +48,54 @@ const TweetDialog = ({ id, open, author_id }) => {
   const deleteTweet = (e) => {
     e.preventDefault();
     const docRef = doc(database, "tweets", id);
+
+    // Si le tweet n'a pas d'utilisateur en lien avec lui, on le supprime directement
     if (usersWhoBookmarkedRefs.length === 0) {
       deleteDoc(docRef)
         .then(() => {
-          console.log("Delete tweet done");
+          dispatchSnackbar({
+            type: "OPEN_INFO_SNACKBAR",
+            payload: { message: "Tweet was deleted" },
+          });
         })
         .catch((err) => {
-          console.log(err.message);
+          dispatchSnackbar({
+            type: "OPEN_ERROR_SNACKBAR",
+            payload: {
+              message: `An error occurred while deleting the tweet ${err.message}`,
+            },
+          });
         });
+      // Sinon on supprime d'abord les bookmarks
     } else {
       usersWhoBookmarkedRefs.map((user) => {
         return updateDoc(user, {
           bookmarks: arrayRemove(id),
         })
           .then(() => {
-            console.log(`Delete tweet bookmarks`);
             deleteDoc(docRef)
               .then(() => {
-                console.log("Delete tweet done");
+                dispatchSnackbar({
+                  type: "OPEN_INFO_SNACKBAR",
+                  payload: { message: "Tweet was deleted" },
+                });
               })
               .catch((err) => {
-                console.log(err.message);
+                dispatchSnackbar({
+                  type: "OPEN_ERROR_SNACKBAR",
+                  payload: {
+                    message: `An error occurred while deleting the tweet ${err.message}`,
+                  },
+                });
               });
           })
           .catch((err) => {
-            console.log(err.message);
+            dispatchSnackbar({
+              type: "OPEN_ERROR_SNACKBAR",
+              payload: {
+                message: `An error occurred while deleting the tweet ${err.message}`,
+              },
+            });
           });
       });
     }
@@ -87,20 +114,34 @@ const TweetDialog = ({ id, open, author_id }) => {
       following: arrayRemove(author_id),
     })
       .then(() => {
-        console.log("Delete following in user connected data");
         // Suppression du follower dans les datas de l'utilisateur supprimé
         updateDoc(followedUserRef, {
           followers: arrayRemove(authUser?.uid),
         })
           .then(() => {
-            console.log("Delete followers in user targeted data");
+            dispatchSnackbar({
+              type: "OPEN_INFO_SNACKBAR",
+              payload: {
+                message: `${matchedUser?.[0]?.name} has been deleted from your following`,
+              },
+            });
           })
           .catch((err) => {
-            console.log(err.message);
+            dispatchSnackbar({
+              type: "OPEN_ERROR_SNACKBAR",
+              payload: {
+                message: `An error occurred while unfollowing ${matchedUser?.[0]?.name} : ${err.message}`,
+              },
+            });
           });
       })
       .catch((err) => {
-        console.log(err.message);
+        dispatchSnackbar({
+          type: "OPEN_ERROR_SNACKBAR",
+          payload: {
+            message: `An error occurred while unfollowing ${matchedUser?.[0]?.name} : ${err.message}`,
+          },
+        });
       });
   };
 

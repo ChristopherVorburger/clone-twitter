@@ -41,7 +41,6 @@ const ChannelSearchUser = () => {
   const [usersSelected, setUsersSelected] = useState([]);
 
   const addNewChannel = async () => {
-    console.log("users selected", usersSelected);
     const todayDate = firebase.firestore.FieldValue.serverTimestamp();
     const usersToAdd = usersSelected.map((user) => user.id);
     await channelsRef.add({

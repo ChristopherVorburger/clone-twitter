@@ -1,24 +1,30 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
+// MUI
 import { Box } from "@mui/system";
 import { Button, Typography } from "@mui/material";
 
+// Firebase
 import { arrayRemove, doc, updateDoc } from "firebase/firestore";
 import { database } from "../../firebase-config";
 
+// Contexts
 import { useAuth } from "../../context/authContext";
+import { useGlobal } from "../../context/globalContext";
 
-import useStyles from "./styles";
+// Constants & styles
 import { images } from "../../constants";
-import { Link } from "react-router-dom";
+import useStyles from "./styles";
 
 // Composant pour afficher une list
 const DiscoverList = ({ list, author }) => {
-  const classes = useStyles();
   const [textButton, setTextButton] = React.useState("Following");
 
-  // Utilisation du hook useContext pour récupérer le contexte Auth
+  // Hooks
+  const classes = useStyles();
   const { authUser, userData } = useAuth();
+  const { dispatchSnackbar } = useGlobal();
 
   // Récupération du tableau de following de l'utilisateur connecté
   const listsCurrentUser = userData?.[0]?.lists;
@@ -45,31 +51,55 @@ const DiscoverList = ({ list, author }) => {
         // Si la liste n'a pas de followers,
         // on ajoute le premier dans le tableau followers
         .then(() => {
-          console.log("First list created");
           if (!listsFollowers) {
             updateDoc(currentListRef, {
               followers: [userData?.[0]?.id],
             })
               .then(() => {
-                console.log("ajout d'un premier follower");
+                dispatchSnackbar({
+                  type: "OPEN_INFO_SNACKBAR",
+                  payload: {
+                    message: `${list?.name} list followed`,
+                  },
+                });
               })
               .catch((err) => {
-                console.log(err.message);
+                dispatchSnackbar({
+                  type: "OPEN_ERROR_SNACKBAR",
+                  payload: {
+                    message: `An error occurred while following ${list?.name} list : ${err.message}`,
+                  },
+                });
               });
           } else {
             updateDoc(currentListRef, {
               followers: [...listsFollowers, authUser?.uid],
             })
               .then(() => {
-                console.log("ajout d'un follower");
+                dispatchSnackbar({
+                  type: "OPEN_INFO_SNACKBAR",
+                  payload: {
+                    message: `${list?.name} list followed`,
+                  },
+                });
               })
               .catch((err) => {
-                console.log(err.message);
+                dispatchSnackbar({
+                  type: "OPEN_ERROR_SNACKBAR",
+                  payload: {
+                    message: `An error occurred while following ${list?.name} list : ${err.message}`,
+                  },
+                });
               });
           }
         })
         .catch((err) => {
-          console.log(err.message);
+          dispatchSnackbar({
+            type: "OPEN_ERROR_SNACKBAR",
+            payload: {
+              message: `An error occurred while following ${list?.name} list : ${err.message}`,
+            },
+          });
         });
     } else {
       updateDoc(currentUserRef, {
@@ -77,31 +107,55 @@ const DiscoverList = ({ list, author }) => {
         lists: [...userData?.[0]?.lists, list?.id],
       })
         .then(() => {
-          console.log("List created");
           if (!listsFollowers) {
             updateDoc(currentListRef, {
               followers: [userData?.[0]?.id],
             })
               .then(() => {
-                console.log("ajout d'un premier follower");
+                dispatchSnackbar({
+                  type: "OPEN_INFO_SNACKBAR",
+                  payload: {
+                    message: `${list?.name} list followed`,
+                  },
+                });
               })
               .catch((err) => {
-                console.log(err.message);
+                dispatchSnackbar({
+                  type: "OPEN_ERROR_SNACKBAR",
+                  payload: {
+                    message: `An error occurred while following ${list?.name} list : ${err.message}`,
+                  },
+                });
               });
           } else {
             updateDoc(currentListRef, {
               followers: [...listsFollowers, authUser?.uid],
             })
               .then(() => {
-                console.log("ajout d'un follower");
+                dispatchSnackbar({
+                  type: "OPEN_INFO_SNACKBAR",
+                  payload: {
+                    message: `${list?.name} list followed`,
+                  },
+                });
               })
               .catch((err) => {
-                console.log(err.message);
+                dispatchSnackbar({
+                  type: "OPEN_ERROR_SNACKBAR",
+                  payload: {
+                    message: `An error occurred while following ${list?.name} list : ${err.message}`,
+                  },
+                });
               });
           }
         })
         .catch((err) => {
-          console.log(err.message);
+          dispatchSnackbar({
+            type: "OPEN_ERROR_SNACKBAR",
+            payload: {
+              message: `An error occurred while following ${list?.name} list : ${err.message}`,
+            },
+          });
         });
     }
   };
@@ -113,21 +167,33 @@ const DiscoverList = ({ list, author }) => {
       lists: arrayRemove(list?.id),
     })
       .then(() => {
-        console.log(
-          "Suppression de la liste dans le tabelau lists du user connecté"
-        );
         updateDoc(currentListRef, {
           followers: arrayRemove(userData?.[0]?.id),
         })
           .then(() => {
-            console.log("Suppression du follower de la liste");
+            dispatchSnackbar({
+              type: "OPEN_INFO_SNACKBAR",
+              payload: {
+                message: `${list?.name} list unfollowed`,
+              },
+            });
           })
           .catch((err) => {
-            console.log(err.message);
+            dispatchSnackbar({
+              type: "OPEN_ERROR_SNACKBAR",
+              payload: {
+                message: `An error occurred while unfollowing ${list?.name} list : ${err.message}`,
+              },
+            });
           });
-      })
-      .catch((err) => {
-        console.log(err.message);
+        })
+        .catch((err) => {
+        dispatchSnackbar({
+          type: "OPEN_ERROR_SNACKBAR",
+          payload: {
+            message: `An error occurred while unfollowing ${list?.name} list : ${err.message}`,
+          },
+        });
       });
   };
 

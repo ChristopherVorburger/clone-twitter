@@ -1,14 +1,7 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { TweetAvatar } from "../Tweet/Tweet.Style";
-import {
-  TweetInputContainer,
-  Form,
-  Input,
-  ButtonSubmit,
-} from "./TweetInput.Style";
-
+// Firebase
 import {
   addDoc,
   serverTimestamp,
@@ -16,21 +9,31 @@ import {
   updateDoc,
   doc,
 } from "firebase/firestore";
-
 import { database } from "../../firebase-config";
 
+// Context
 import { useAuth } from "../../context/authContext";
 import { useTweets } from "../../context/tweetContext";
+import { useGlobal } from "../../context/globalContext";
 
+// Constant & styles
+import { TweetAvatar } from "../Tweet/Tweet.Style";
+import {
+  TweetInputContainer,
+  Form,
+  Input,
+  ButtonSubmit,
+} from "./TweetInput.Style";
 import { images } from "../../constants";
 
 export default function TweetInput() {
   const [text, setText] = useState("");
+  const { id } = useParams();
+
+  // Contexts hooks
   const { authUser, userData } = useAuth();
   const { tweets } = useTweets();
-
-  //on récup l'id du tweet dans l'URL
-  const { id } = useParams();
+  const { dispatchSnackbar } = useGlobal();
 
   // On séléctionne les références dont on a besoin
   const selectedTweetRef = doc(database, "tweets", id);
@@ -48,17 +51,38 @@ export default function TweetInput() {
       created_at: serverTimestamp(),
       text,
       tweet_id: id,
-    }).then(() => {
-      updateDoc(selectedTweetRef, {
-        public_metrics: {
-          ...tweet?.[0]?.public_metrics,
-          reply_count:
-            parseInt(tweet?.[0]?.public_metrics?.reply_count, 10) + 1,
-        },
-      }).catch((err) => {
-        console.log(err.message);
+    })
+      .then(() => {
+        updateDoc(selectedTweetRef, {
+          public_metrics: {
+            ...tweet?.[0]?.public_metrics,
+            reply_count:
+              parseInt(tweet?.[0]?.public_metrics?.reply_count, 10) + 1,
+          },
+        })
+          .then(() => {
+            dispatchSnackbar({
+              type: "OPEN_INFO_SNACKBAR",
+              payload: { message: "Your response has been posted" },
+            });
+          })
+          .catch((err) => {
+            dispatchSnackbar({
+              type: "OPEN_ERROR_SNACKBAR",
+              payload: {
+                message: `An error occurred while posting your repsonse : ${err.message}`,
+              },
+            });
+          });
+      })
+      .catch((err) => {
+        dispatchSnackbar({
+          type: "OPEN_ERROR_SNACKBAR",
+          payload: {
+            message: `An error occurred while posting your repsonse : ${err.message}`,
+          },
+        });
       });
-    });
 
     setText("");
   };

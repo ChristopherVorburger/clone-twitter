@@ -1,29 +1,53 @@
 import { useEffect, useState } from "react";
-import { ExploreWrapper, ExploreHeader, ExploreContainer } from "./Explore.Style";
-import BottomNavigation from "../../components/BottomNavigation";
-import { icons } from "../../constants";
-import Header from "../../components/Header";
-import { Box, Input, InputAdornment } from "@mui/material";
-import News from "../../components/News";
-import ExploreRow from "../../components/ExploreRow/ExploreRow";
 import axios from "axios";
+
+// MUI
+import { Box, Input, InputAdornment } from "@mui/material";
 import Skeleton from "@mui/material/Skeleton";
 import SearchIcon from "@mui/icons-material/Search";
+
+// Components
+import BottomNavigation from "../../components/BottomNavigation";
+import Header from "../../components/Header";
+import News from "../../components/News";
+import ExploreRow from "../../components/ExploreRow/ExploreRow";
+
+// Contexts
+import { useGlobal } from "../../context/globalContext";
+
+// Constants & styles
+import {
+  ExploreWrapper,
+  ExploreHeader,
+  ExploreContainer,
+} from "./Explore.Style";
+import { icons } from "../../constants";
 
 export default function Explore() {
   const [dataExplore, setDataExplore] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const imagePath = "https://image.tmdb.org/t/p/original";
 
+  const { dispatchSnackbar } = useGlobal();
+
   useEffect(() => {
     function getDataExplore() {
       try {
-        return axios.get(`https://api.themoviedb.org/3/trending/movie/week?api_key=${process.env.REACT_APP_API_TMDB_KEY}`).then((res) => {
-          setDataExplore(res.data.results);
-          setIsLoading(true);
-        });
+        return axios
+          .get(
+            `https://api.themoviedb.org/3/trending/movie/week?api_key=${process.env.REACT_APP_API_TMDB_KEY}`
+          )
+          .then((res) => {
+            setDataExplore(res.data.results);
+            setIsLoading(true);
+          });
       } catch (err) {
-        console.log("page explore : ", err);
+        dispatchSnackbar({
+          type: "OPEN_ERROR_SNACKBAR",
+          payload: {
+            message: `An error occurred :  ${err.message}`,
+          },
+        });
       }
     }
     getDataExplore();
@@ -33,8 +57,14 @@ export default function Explore() {
 
   return (
     <>
-      <Box display='flex' justifyContent='center'>
-        <Box display='flex' flexDirection='column' borderLeft='1px solid #eff3f4' borderRight='1px solid #eff3f4' maxWidth='590px'>
+      <Box display="flex" justifyContent="center">
+        <Box
+          display="flex"
+          flexDirection="column"
+          borderLeft="1px solid #eff3f4"
+          borderRight="1px solid #eff3f4"
+          maxWidth="590px"
+        >
           <Box>
             <Header
               searchBar={
@@ -47,13 +77,13 @@ export default function Explore() {
                       content: "none",
                     },
                   }}
-                  id='input-with-icon-adornment'
+                  id="input-with-icon-adornment"
                   startAdornment={
-                    <InputAdornment position='start'>
+                    <InputAdornment position="start">
                       <SearchIcon />
                     </InputAdornment>
                   }
-                  placeholder='Search Twitter'
+                  placeholder="Search Twitter"
                 />
               }
               iconsRight={iconsArray}
@@ -65,7 +95,7 @@ export default function Explore() {
                 <h3>{dataExplore[0]?.original_title}</h3>
               </ExploreHeader>
             ) : (
-              <Skeleton variant='rectangular' width={600} height={335} />
+              <Skeleton variant="rectangular" width={600} height={335} />
             )}
 
             <ExploreContainer>
@@ -78,12 +108,12 @@ export default function Explore() {
                 </>
               ) : (
                 <>
-                  <Skeleton variant='text' />
-                  <Skeleton variant='text' />
-                  <Skeleton variant='text' />
-                  <Skeleton variant='text' />
-                  <Skeleton variant='text' />
-                  <Skeleton variant='text' />
+                  <Skeleton variant="text" />
+                  <Skeleton variant="text" />
+                  <Skeleton variant="text" />
+                  <Skeleton variant="text" />
+                  <Skeleton variant="text" />
+                  <Skeleton variant="text" />
                 </>
               )}
             </ExploreContainer>

@@ -73,7 +73,6 @@ export default function Login() {
       navigate("/home");
       setLoginError(false);
     } catch (err) {
-      console.log(err);
       setLoginError(true);
     }
   };

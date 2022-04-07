@@ -1,25 +1,29 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+// MUI
 import { Box } from "@mui/system";
 import { Button, Typography } from "@mui/material";
 
-import { icons, images } from "../../constants";
-
+// Firebase
 import { arrayRemove, doc, updateDoc } from "firebase/firestore";
-
 import { database } from "../../firebase-config";
 
+// Contexts
 import { useAuth } from "../../context/authContext";
+import { useGlobal } from "../../context/globalContext";
 
+// Constants & styles
+import { icons, images } from "../../constants";
 import useStyles from "./styles";
 
 // Composant pour afficher une list
 const UserList = ({ list, author }) => {
   const classes = useStyles();
 
-  // Utilisation du hook useContext pour récupérer le contexte Auth
+  // Contexts hooks
   const { authUser, userData } = useAuth();
+  const { dispatchSnackbar } = useGlobal();
 
   // Récupération du tableau de liste de l'utilisateur connecté
   const listsCurrentUser = userData?.[0]?.pinned_lists;
@@ -39,10 +43,20 @@ const UserList = ({ list, author }) => {
         pinned_lists: [list?.id],
       })
         .then(() => {
-          console.log("First pin created");
+          dispatchSnackbar({
+            type: "OPEN_INFO_SNACKBAR",
+            payload: {
+              message: `${list?.name} list has been added to your pinned lists`,
+            },
+          });
         })
         .catch((err) => {
-          console.log(err.message);
+          dispatchSnackbar({
+            type: "OPEN_ERROR_SNACKBAR",
+            payload: {
+              message: `An error occurred while adding the list ${list?.name} : ${err.message}`,
+            },
+          });
         });
       // Sinon on ajoute le pin dans le tableau existant
     } else {
@@ -51,10 +65,20 @@ const UserList = ({ list, author }) => {
         pinned_lists: [...userData?.[0]?.pinned_lists, list?.id],
       })
         .then(() => {
-          console.log("Pin created");
+          dispatchSnackbar({
+            type: "OPEN_INFO_SNACKBAR",
+            payload: {
+              message: `${list?.name} list has been added to your pinned lists`,
+            },
+          });
         })
         .catch((err) => {
-          console.log(err.message);
+          dispatchSnackbar({
+            type: "OPEN_ERROR_SNACKBAR",
+            payload: {
+              message: `An error occurred while adding the list ${list?.name} : ${err.message}`,
+            },
+          });
         });
     }
   };
@@ -65,7 +89,23 @@ const UserList = ({ list, author }) => {
     // Suppression du pin dans les datas de l'utilisateur connecté
     updateDoc(currentUserRef, {
       pinned_lists: arrayRemove(list?.id),
-    });
+    })
+      .then(() => {
+        dispatchSnackbar({
+          type: "OPEN_INFO_SNACKBAR",
+          payload: {
+            message: `${list?.name} list has been removed from your pinned lists`,
+          },
+        });
+      })
+      .catch((err) => {
+        dispatchSnackbar({
+          type: "OPEN_ERROR_SNACKBAR",
+          payload: {
+            message: `An error occurred while deleting the pinned list ${list?.name} : ${err.message}`,
+          },
+        });
+      });
   };
 
   return (

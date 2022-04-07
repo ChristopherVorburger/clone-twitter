@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 
+// MUI
 import {
   Box,
   Button,
@@ -10,10 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import { icons, images } from "../../constants";
-
-import useStyles from "./styles";
-
+// Firebase
 import {
   getFirestore,
   collection,
@@ -21,15 +19,22 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 
+// Contexts
 import { useAuth } from "../../context/authContext";
+import { useGlobal } from "../../context/globalContext";
+
+// Constant & styles
+import { icons, images } from "../../constants";
+import useStyles from "./styles";
 
 const NewTweet = () => {
-  const classes = useStyles();
   const [text, setText] = useState("");
   const [textError, setTextError] = useState(false);
   const [disableButton, setDisableButton] = useState(false);
 
+  const classes = useStyles();
   const { authUser, userData } = useAuth();
+  const { dispatchSnackbar } = useGlobal();
 
   const iconsArray = [
     { name: icons.ImageOutlinedIcon, path: "/" },
@@ -65,10 +70,18 @@ const NewTweet = () => {
       .then(() => {
         // on nettoie l'input si ok
         setText("");
-        console.log("Tweet created !");
+        dispatchSnackbar({
+          type: "OPEN_INFO_SNACKBAR",
+          payload: { message: "Tweet created !" },
+        });
       })
       .catch((err) => {
-        console.log(err.message);
+        dispatchSnackbar({
+          type: "OPEN_ERROR_SNACKBAR",
+          payload: {
+            message: `An error occurred while creating the tweet : ${err.message}`,
+          },
+        });
       });
   };
 
